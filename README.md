@@ -1,2 +1,3 @@
 # java-yahoo-finance-api
-(yet another) Java Client API for Yahoo Finance
+
+(coming soon) - my personal attempt for a Java wrapper for the Yahoo! Finance API
