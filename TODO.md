@@ -8,7 +8,8 @@
 - [ ] Add option to return "pretty" json (if desired)
 - [ ] Add option to return CSV instead of json
 - [ ] JSON structure conversion
-    - [ ] Add option keep 'raw', but remove 'fmt', 'longFmt' sections
+    - [x] Add code keep 'raw', but remove 'fmt', 'longFmt' sections
+    - [ ] Integrate in the remove 'raw' functionality above.
     - [ ] Add ability to reformat the JSON (namely b/c json response looks a little weird imho)
 - [ ] Implement support for multiple 'module' endpoints per a given request.
     - [ ] (ex ...v10/finance/quoteSummary/{symbol}?modules=assetProfile,price,financialData)
