@@ -7,7 +7,7 @@ package bwj.yahoofinance;
  * YahooEndpoints are an enumeration of the Yahoo! Finance API methods available.
  *
  * IMPORTANT NOTE:
- *   This is NOT an official list or documenation of the Yahoo! Finance API.
+ *   This is NOT an official list or documentation of the Yahoo! Finance API.
  *   Since no official documentation was found as of this writing, the endpoint values
  *   below were derived from ad hoc internet searching.
  *
@@ -63,10 +63,9 @@ public enum YahooEndpoint
 
     private static final int DEFAULT_VERSION = 10;
 
-    private final String path;
     private final String name;
-    private final int ver;
-    private final boolean isQuoteSummaryModule;
+    private final int version;
+    private final String moduleName;
 
     YahooEndpoint(String name)
     {
@@ -75,24 +74,30 @@ public enum YahooEndpoint
 
     YahooEndpoint(String name, int version)
     {
-        this.name = name;
-        this.ver = version;
-        this.isQuoteSummaryModule = (!name.equals("chart") && !name.equals("options"));
-
-        // path to be deprecated.
-        if (name.equals("chart")) {
-            this.path = "v8/finance/chart";
-        }
-        else if (name.equals("options")) {
-            this.path = "v7/finance/options";
+        boolean isQuoteSummaryModule = (!name.equals("chart") && !name.equals("options"));
+        if (isQuoteSummaryModule) {
+            this.name = "quoteSummary";
+            this.moduleName = name;
         }
         else {
-            this.path = "v10/finance/quoteSummary/%s?modules=" + name;
+            this.name = name;
+            this.moduleName = "";
         }
+        this.version = version;
     }
 
-    public String getPath() {
-        return this.path;
+    public String getName() {
+        return name;
+    }
+    public String getModuleName() {
+        return moduleName;
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public boolean isQuoteSummaryModule() {
+        return !this.moduleName.isEmpty();
+    }
 }

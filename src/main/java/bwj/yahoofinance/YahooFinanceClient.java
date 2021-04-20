@@ -3,49 +3,30 @@
  */
 package bwj.yahoofinance;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 
 public class YahooFinanceClient
 {
-    private static final String BASE_URL = "https://query1.finance.yahoo.com/";
+    private static final String BASE_API_SCHEME = "https";
+    private static final String BASE_API_HOST = "query1.finance.yahoo.com";
 
     private static final String DEFAULT_CONTENT_TYPE = ContentType.APPLICATION_JSON.getMimeType();
     private static final String DEFAULT_USER_AGENT = "Java-Http-Client/11.0.0";
 
-
-    public static void main(String[] args) {
-
-        PrivilegedAction<String> pa = () -> System.getProperty("java.version");
-        String version = AccessController.doPrivileged(pa);
-        String sss =  "Java-http-client/" + version;
-
-        int kjkj = 333;
-
-
-    }
 
     private final CloseableHttpClient httpClient;
     private String contentType;
@@ -88,47 +69,29 @@ public class YahooFinanceClient
     }
 
 
-    protected String buildRequestUrl(String ticker,  YahooEndpoint endpoint, Map<String,String> paramMap)
+    protected String buildRequestUrl(String ticker, YahooEndpoint endpoint, Map<String,String> paramMap)
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append(BASE_URL);
-
-        String endpointPath = endpoint.getPath();
-
-        // to confirm: all requests are for exactly 1 ticker symbol?
-        if (StringUtils.isEmpty(ticker)) {
-            throw new IllegalArgumentException("Must provide a ticker as part of the request.");
+        if (paramMap == null) {
+            paramMap = Collections.emptyMap();
         }
 
-        if (endpointPath.contains("%s")) {
-            endpointPath = String.format(endpointPath, ticker);
-            sb.append(endpointPath);
-        }
-        else {
-            sb.append(endpointPath);
-            sb.append('/');
-            sb.append(ticker);
-        }
+        URIBuilder builder = new URIBuilder();
+        builder.setScheme(BASE_API_SCHEME);
+        builder.setHost(BASE_API_HOST);
 
-        if (paramMap != null && paramMap.size() > 0)
-        {
-            List<NameValuePair> nvpList = new ArrayList<>(paramMap.size());
-            for (Map.Entry<String, String> entry : paramMap.entrySet()) {
-                nvpList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-            }
+        //  e.g. /v8/finance/chart
+        String path = "v" + endpoint.getVersion() + "/finance/" + endpoint.getName() + "/" + ticker.toUpperCase();
+        builder.setPath(path);
 
-            String paramString = URLEncodedUtils.format(nvpList, HTTP.DEF_CONTENT_CHARSET.name());
-
-            if (! sb.toString().contains("?")) {
-                sb.append('?');
-            }
-            else {
-                sb.append('&');
-            }
-            sb.append(paramString);
+        if (endpoint.isQuoteSummaryModule()) {
+            builder.addParameter("modules", endpoint.getModuleName());
         }
 
-        String url = sb.toString();
+        for (Map.Entry<String, String> paramEntry : paramMap.entrySet()) {
+            builder.addParameter(paramEntry.getKey(), paramEntry.getValue());
+        }
+
+        String url = builder.toString();
         return url;
     }
 
