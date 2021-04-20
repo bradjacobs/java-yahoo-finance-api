@@ -4,8 +4,7 @@
 - [x] Implement a basic API call with valid JSON response
 - [ ] Research "mock http clients"
 - [ ] Implement a few "happy path" tests
-- [ ] Add Validation/ErrorHandling for bad inputs
-    - [ ] Also include case checks ("AAPL" vs "aapl")
+- [x] Add Validation/ErrorHandling for bad inputs
 - [ ] Add option to return "pretty" json (if desired)
 - [ ] Add option to return CSV instead of json
 - [ ] JSON structure conversion

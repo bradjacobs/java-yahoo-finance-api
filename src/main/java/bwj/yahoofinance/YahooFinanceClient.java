@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 public class YahooFinanceClient
 {
@@ -27,6 +28,8 @@ public class YahooFinanceClient
     private static final String DEFAULT_CONTENT_TYPE = ContentType.APPLICATION_JSON.getMimeType();
     private static final String DEFAULT_USER_AGENT = "Java-Http-Client/11.0.0";
 
+
+    private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
 
     private final CloseableHttpClient httpClient;
     private String contentType;
@@ -40,6 +43,9 @@ public class YahooFinanceClient
 
     public YahooFinanceClient(CloseableHttpClient httpClient)
     {
+        if (httpClient == null) {
+            throw new IllegalArgumentException("HttpClient parameter cannot be null.");
+        }
         this.httpClient = httpClient;
         this.contentType = DEFAULT_CONTENT_TYPE;
         this.userAgent = DEFAULT_USER_AGENT;
@@ -57,34 +63,36 @@ public class YahooFinanceClient
         this.throwExceptionOnHttpError = throwExceptionOnHttpError;
     }
 
-    public String executeRequest(String ticker, YahooEndpoint endpoint)
+    public String executeRequest(YahooFinanceRequest request)
     {
-        return executeRequest(ticker, endpoint, null);
+        // validation will throw an exception if invalid request is detected
+        requestValidator.validationRequest(request);
 
-    }
-    public String executeRequest(String ticker, YahooEndpoint endpoint, Map<String,String> paramMap)
-    {
-        String url = buildRequestUrl(ticker, endpoint, paramMap);
+        String url = buildRequestUrl(request);
         return execute(url);
     }
 
 
-    protected String buildRequestUrl(String ticker, YahooEndpoint endpoint, Map<String,String> paramMap)
+    protected String buildRequestUrl(YahooFinanceRequest request)
     {
+        Map<String, String> paramMap = request.getParamMap();
         if (paramMap == null) {
             paramMap = Collections.emptyMap();
         }
+
+        String ticker = request.getTicker();
+        YahooEndpoint endpoint = request.getEndpoint();
 
         URIBuilder builder = new URIBuilder();
         builder.setScheme(BASE_API_SCHEME);
         builder.setHost(BASE_API_HOST);
 
-        //  e.g. /v8/finance/chart
+        //  e.g. /v8/finance/chart/AAPL
         String path = "v" + endpoint.getVersion() + "/finance/" + endpoint.getName() + "/" + ticker.toUpperCase();
         builder.setPath(path);
 
         if (endpoint.isQuoteSummaryModule()) {
-            builder.addParameter("modules", endpoint.getModuleName());
+            builder.addParameter("modules", generateModuleList(request));
         }
 
         for (Map.Entry<String, String> paramEntry : paramMap.entrySet()) {
@@ -93,6 +101,20 @@ public class YahooFinanceClient
 
         String url = builder.toString();
         return url;
+    }
+
+    private String generateModuleList(YahooFinanceRequest request)
+    {
+        StringBuilder sb = new StringBuilder();
+        Set<YahooEndpoint> endpoints = request.getEndpoints();
+        for (YahooEndpoint endpoint : endpoints) {
+            if (sb.length() > 0) {
+                sb.append(',');
+            }
+            sb.append(endpoint.getModuleName());
+        }
+        return sb.toString();
+
     }
 
 
@@ -162,9 +184,6 @@ public class YahooFinanceClient
 
         return httpClient;
     }
-
-
-
 
 
 }
