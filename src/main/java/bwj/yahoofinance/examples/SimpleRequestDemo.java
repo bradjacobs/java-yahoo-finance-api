@@ -3,7 +3,6 @@
  */
 package bwj.yahoofinance.examples;
 
-import bwj.yahoofinance.YahooEndpoint;
 import bwj.yahoofinance.YahooFinanceClient;
 import bwj.yahoofinance.YahooFinanceRequest;
 
@@ -19,13 +18,15 @@ public class SimpleRequestDemo
         try
         {
             //requestDemo.simpleRequest(testTicker);
-            requestDemo.multiEndpointRequest(testTicker);
+            //requestDemo.multiEndpointRequest(testTicker);
+            requestDemo.quoteRequest(testTicker);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
     }
+
 
     private void simpleRequest(String ticker)
     {
@@ -59,6 +60,22 @@ public class SimpleRequestDemo
                         .withEndpoint(ASSET_PROFILE, FINANCIAL_DATA, BALANCE_SHEET_HISTORY)
                         .withTicker(ticker);
 
+
+        String json = client.executeRequest(builder.build());
+
+        System.out.println("--JSON RESPONSE--");
+        System.out.println(json);
+    }
+
+    private void quoteRequest(String ticker)
+    {
+        // this will evolve over time.
+        YahooFinanceClient client = new YahooFinanceClient();
+
+        YahooFinanceRequest.Builder builder =
+                new YahooFinanceRequest.Builder()
+                        .withEndpoint(QUOTE)
+                        .withTicker(ticker);
 
         String json = client.executeRequest(builder.build());
 

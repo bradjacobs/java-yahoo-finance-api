@@ -80,7 +80,7 @@ public class YahooFinanceClient
             paramMap = Collections.emptyMap();
         }
 
-        String ticker = request.getTicker();
+        String ticker = request.getTicker().toUpperCase();
         YahooEndpoint endpoint = request.getEndpoint();
 
         URIBuilder builder = new URIBuilder();
@@ -88,7 +88,19 @@ public class YahooFinanceClient
         builder.setHost(BASE_API_HOST);
 
         //  e.g. /v8/finance/chart/AAPL
-        String path = "v" + endpoint.getVersion() + "/finance/" + endpoint.getName() + "/" + ticker.toUpperCase();
+        String path = "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
+        if (endpoint.isSupportsMultipleTickers()) {
+            // __ note: still need to add support for multi-tickers here __
+            builder.addParameter("symbols", ticker);
+        }
+        else if (endpoint.getVersion() == 1) {
+            // TO REVIEW if only applicable for version 1
+            builder.addParameter("symbol", ticker);
+        }
+        else {
+            path +=  "/" + ticker;
+        }
+
         builder.setPath(path);
 
         if (endpoint.isQuoteSummaryModule()) {
@@ -184,6 +196,5 @@ public class YahooFinanceClient
 
         return httpClient;
     }
-
 
 }

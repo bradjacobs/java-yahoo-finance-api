@@ -32,9 +32,12 @@ public class JsonUtil
      *     },
      *   AFTER
      *     ...
-     *     "cash": 38016000000
+     *     "cash": 78016000000
      * @param json jsonString
      * @return updated JSON  (NOTE: the returned JSON may have different indenting format)
+     *
+     * NOTE: the purpose of this is the same as an old yahoo param "...&formatted=false".
+     *    HOWEVER it appears that has no affect on most of the calls (unless they changed the name?)
      */
     public static String removeRawValues(String json)
     {
@@ -68,7 +71,7 @@ public class JsonUtil
             List<Object> objectList = (List<Object>) obj;
 
             for (Object listElement : objectList) {
-                // continue recursion of each areay element.
+                // continue recursion of each array element.
                 updateFlattenRawValues(listElement);
             }
         }
