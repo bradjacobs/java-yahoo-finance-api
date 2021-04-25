@@ -131,12 +131,4 @@ public enum YahooEndpoint
     public boolean isSupportsMultipleTickers() {
         return supportsMultipleTickers;
     }
-
-    /*
-       Skip this one for now b/c of special looking URL format
-       https://query1.finance.yahoo.com/ws/insights/v2/finance/insights?symbol=AAPL
-
-
-
-     */
 }
