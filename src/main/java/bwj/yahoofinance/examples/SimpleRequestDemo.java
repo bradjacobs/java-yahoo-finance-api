@@ -17,9 +17,10 @@ public class SimpleRequestDemo
 
         try
         {
-            //requestDemo.simpleRequest(testTicker);
+            requestDemo.simpleRequest(testTicker);
             //requestDemo.multiEndpointRequest(testTicker);
-            requestDemo.quoteRequest(testTicker);
+            //requestDemo.quoteRequest(testTicker);
+            //requestDemo.priceHistory(testTicker);
         }
         catch (Exception e)
         {
@@ -82,5 +83,46 @@ public class SimpleRequestDemo
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
     }
+
+    private void priceHistory(String ticker)
+    {
+        YahooFinanceClient client = new YahooFinanceClient();
+
+        YahooFinanceRequest.Builder builder =
+                new YahooFinanceRequest.Builder()
+                        .withEndpoint(CHART)
+                        .withTicker(ticker);
+
+        // NOTE: it is possible to query chart endpoint w/o any additional parameters
+        //   but the 'default' values used seem a bit unintuitive imho
+
+        builder.addParameter("range", "5d");
+        builder.addParameter("interval", "1d");
+
+        // can be used instead of range
+//        builder.addParameter("period1", "1619222400");
+//        builder.addParameter("period2", "1619222400");
+
+        // below can alter what data is returned
+//        builder.addParameter("indicators", "close");           // ONLY return close and adjclose
+//        builder.addParameter("includeTimestamps", "false");    // do NOT return timestamps
+//        builder.addParameter("includeAdjustedClose", "false"); // do NOT return adj close (default is true)
+
+//        builder.addParameter("events", "div");  // also include dividends (if exists in timerange)
+//        builder.addParameter("events", "split");  // also include stock splits (if exists in timerange)
+//        builder.addParameter("events", "div,split");  // also include BOTH dividends & stock splits (if exists in timerange)
+
+
+        String json = client.executeRequest(builder.build());
+
+        System.out.println("--JSON RESPONSE--");
+        System.out.println(json);
+
+        // additional notes:
+        //    &indicators=quote      (seems to do nothing)
+        //    &indicators=adjclose   (perhaps a yahoo bug, returns adjclose twice)
+        //    &includePrePost=true   (seen mentioned many times, but doesn't seem actually to do anything?)
+    }
+
 
 }
