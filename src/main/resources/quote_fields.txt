@@ -1,3 +1,4 @@
+argusRating
 ask
 askSize
 averageAnalystRating
@@ -11,6 +12,7 @@ currency
 displayName
 dividendDate
 dividendsPerShare
+dividendRate
 dividendYield
 earningsTimestamp
 earningsTimestampEnd
@@ -37,6 +39,7 @@ fiftyTwoWeekLowChangePercent
 fiftyTwoWeekRange
 financialCurrency
 firstTradeDateMilliseconds
+fiveYearGrowthRate
 floatShares
 forwardPE
 fullExchangeName
@@ -50,6 +53,17 @@ market
 marketCap
 marketState
 messageBoardId
+morningstarEconomicMoatRating
+morningstarFairValue
+morningstarIndustry
+morningstarLongDescription
+morningstarMoatTrendRating
+morningstarReportRating
+morningstarSector
+morningstarStewardshipRating
+morningstarUncertaintyRating
+netMargin
+oneYearEpsGrowth
 pegRatio
 postMarketChange
 postMarketChangePercent
