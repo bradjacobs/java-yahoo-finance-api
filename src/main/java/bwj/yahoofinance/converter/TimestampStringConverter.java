@@ -21,7 +21,7 @@ public class TimestampStringConverter
     private static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";  // appears the be the 'default' date format in Yahoo API response
     private static final String DEFAULT_DATE_TIME_PATTERN = "yyyy-MM-dd hh:mm a";
 
-    private static final String DEFAULT_TIMEZONE = ZoneId.systemDefault().toString();
+    private static final String DEFAULT_TIMEZONE = "GMT";
 
     private final String datePattern;
     private final String dateTimePattern;
