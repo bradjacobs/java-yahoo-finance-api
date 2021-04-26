@@ -40,6 +40,7 @@
 - [ ] Handle Special Case Endpoint Request Urls
     - [ ] .../ws/insights/v2/finance/insights?symbol=AAPL
     - [ ] .../ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?period1=x&period2=y&typee=z&.."
+    - [ ] .../ws/market-analytics/v1/finance/nonsubscriber/technicalevents?symbol=AAPL"
 - [ ] Some kind of "throttle support" to avoid making too many requests too quickly (and making Yahoo! sad)
 - [ ] Add option to return CSV instead of json
 - [ ] Take advantage of the PriceHistory `/v7/finance/download` CSV endpoint (if possible)
