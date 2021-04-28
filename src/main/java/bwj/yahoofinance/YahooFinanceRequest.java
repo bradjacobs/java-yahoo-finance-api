@@ -73,14 +73,18 @@ public class YahooFinanceRequest
 
     public static class Builder {
 
-        private String ticker;
+        // use collection to allow for case where some endpoints allow multiple ticker values
+        private Set<String> tickers = new LinkedHashSet<>();  // preserve insertion order
+
         private Set<YahooEndpoint> endpoints = new LinkedHashSet<>();
         private Map<String,String> paramMap = new LinkedHashMap<>();
 
         public Builder() { }
 
-        public Builder withTicker(String ticker) {
-            this.ticker = ticker;
+        public Builder withTicker(String... tickers) {
+            if (tickers != null) {
+                this.tickers.addAll(Arrays.asList(tickers));
+            }
             return this;
         }
 
@@ -97,8 +101,22 @@ public class YahooFinanceRequest
         }
 
         public YahooFinanceRequest build() {
-            YahooFinanceRequest req = new YahooFinanceRequest(this.ticker);
+            YahooFinanceRequest req = new YahooFinanceRequest();
             req.addEndpoint(this.endpoints.toArray(new YahooEndpoint[0]));
+
+            if (this.tickers.size() > 0) {
+                YahooEndpoint endpoint = req.getEndpoint();
+                if (endpoint != null && endpoint.isSupportsMultipleTickers()) {
+                    req.setTicker(String.join(",", this.tickers));
+                }
+                else {
+                    req.setTicker(this.tickers.iterator().next());
+                }
+            }
+            else {
+                req.setTicker("");
+            }
+
             req.addParams(paramMap);
             return req;
         }

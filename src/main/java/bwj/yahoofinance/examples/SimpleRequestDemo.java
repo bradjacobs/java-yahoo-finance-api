@@ -13,13 +13,15 @@ public class SimpleRequestDemo
     public static void main(String[] args)
     {
         String testTicker = "AAPL";
+        String testTicker2 = "CAT";
         SimpleRequestDemo requestDemo = new SimpleRequestDemo();
 
         try
         {
-            requestDemo.simpleRequest(testTicker);
+            //requestDemo.simpleRequest(testTicker);
             //requestDemo.multiEndpointRequest(testTicker);
             //requestDemo.quoteRequest(testTicker);
+            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
             //requestDemo.priceHistory(testTicker);
         }
         catch (Exception e)
@@ -76,7 +78,24 @@ public class SimpleRequestDemo
         YahooFinanceRequest.Builder builder =
                 new YahooFinanceRequest.Builder()
                         .withEndpoint(QUOTE)
-                        .withTicker(ticker);
+                        .withTicker(ticker).withTicker("CAT");
+
+        String json = client.executeRequest(builder.build());
+
+        System.out.println("--JSON RESPONSE--");
+        System.out.println(json);
+    }
+
+    private void quoteRequestMultipleTicker(String ticker1, String ticker2)
+    {
+        // this will evolve over time.
+        YahooFinanceClient client = new YahooFinanceClient();
+
+        YahooFinanceRequest.Builder builder =
+                new YahooFinanceRequest.Builder()
+                        .withEndpoint(QUOTE)
+                        .withTicker(ticker1)
+                        .withTicker(ticker2);
 
         String json = client.executeRequest(builder.build());
 
