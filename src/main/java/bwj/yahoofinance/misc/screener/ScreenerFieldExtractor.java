@@ -1,25 +1,24 @@
 package bwj.yahoofinance.misc.screener;
 
+import bwj.yahoofinance.misc.screener.autogen.Category;
 import bwj.yahoofinance.misc.screener.autogen.ScreenerField;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class ScreenerFieldExtractor
 {
@@ -50,6 +49,22 @@ public class ScreenerFieldExtractor
         List<Map<String, Object>> listOfMaps = new ArrayList<>(mapOfMaps.values());
 
         ScreenerField[] fields = mapper.convertValue(listOfMaps, ScreenerField[].class);
+
+
+        // filter out fields want to ignore.
+        List<ScreenerField> filteredList = Arrays.stream(fields)
+                .filter(sf -> !sf.getDeprecated())
+                .filter(sf -> !sf.getIsPremium())
+                .collect(Collectors.toList());
+
+        Map<Category,Set<ScreenerField>> categoryFieldMap = new TreeMap<>(); // treemap only to keep key order consistent
+
+        for (ScreenerField field : filteredList) {
+            Category category = field.getCategory();
+            Set<ScreenerField> categoryFields = categoryFieldMap.computeIfAbsent(category, k -> new TreeSet<>());
+            categoryFields.add(field);
+        }
+
 
         System.out.println("Total Fields: " + fields.length);
     }

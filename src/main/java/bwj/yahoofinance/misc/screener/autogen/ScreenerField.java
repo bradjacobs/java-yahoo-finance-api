@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -21,8 +22,8 @@ import java.util.List;
     "dropdownSupported",
     "isPremium"
 })
-public class ScreenerField {
-
+public class ScreenerField implements Comparable<ScreenerField>
+{
     @JsonProperty("fieldId")
     private String fieldId;
     @JsonProperty("category")
@@ -156,4 +157,23 @@ public class ScreenerField {
         this.isPremium = isPremium;
     }
 
+
+
+    @Override
+    public int compareTo(ScreenerField o) {
+        return this.displayName.compareTo(o.displayName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ScreenerField)) return false;
+        ScreenerField that = (ScreenerField) o;
+        return Objects.equals(fieldId, that.fieldId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fieldId);
+    }
 }
