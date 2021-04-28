@@ -4,7 +4,8 @@
 package bwj.yahoofinance.examples;
 
 import bwj.yahoofinance.YahooFinanceClient;
-import bwj.yahoofinance.YahooFinanceRequest;
+import bwj.yahoofinance.model.request.YahooFinanceRequest;
+import bwj.yahoofinance.model.request.YahooLookupRequest;
 
 import static bwj.yahoofinance.YahooEndpoint.*;
 
@@ -14,15 +15,19 @@ public class SimpleRequestDemo
     {
         String testTicker = "AAPL";
         String testTicker2 = "CAT";
+
+        String queryString = "AA*";
+
         SimpleRequestDemo requestDemo = new SimpleRequestDemo();
 
         try
         {
-            //requestDemo.simpleRequest(testTicker);
+            requestDemo.simpleRequest(testTicker);
             //requestDemo.multiEndpointRequest(testTicker);
             //requestDemo.quoteRequest(testTicker);
-            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
+            //requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
             //requestDemo.priceHistory(testTicker);
+            requestDemo.basicLookupQuery(queryString);
         }
         catch (Exception e)
         {
@@ -88,7 +93,6 @@ public class SimpleRequestDemo
 
     private void quoteRequestMultipleTicker(String ticker1, String ticker2)
     {
-        // this will evolve over time.
         YahooFinanceClient client = new YahooFinanceClient();
 
         YahooFinanceRequest.Builder builder =
@@ -102,6 +106,24 @@ public class SimpleRequestDemo
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
     }
+
+    private void basicLookupQuery(String query)
+    {
+        YahooFinanceClient client = new YahooFinanceClient();
+
+        YahooLookupRequest.Builder builder =
+                new YahooLookupRequest.Builder()
+                        .withQuery(query)
+                        .withFormatted(true)
+                        .withCount(20)
+                        .withStart(0);
+
+        String json = client.executeRequest(builder.build());
+
+        System.out.println("--JSON RESPONSE--");
+        System.out.println(json);
+    }
+
 
     private void priceHistory(String ticker)
     {

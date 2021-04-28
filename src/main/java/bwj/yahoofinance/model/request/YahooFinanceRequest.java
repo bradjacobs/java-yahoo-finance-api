@@ -1,8 +1,10 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance;
+package bwj.yahoofinance.model.request;
 
+
+import bwj.yahoofinance.YahooEndpoint;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,7 +17,7 @@ public class YahooFinanceRequest
 {
     private String ticker;
     private Set<YahooEndpoint> endpoints = new LinkedHashSet<>();
-    private Map<String,String> paramMap = new LinkedHashMap<>();
+    protected Map<String,String> paramMap = new LinkedHashMap<>();
 
     public YahooFinanceRequest() { }
 

@@ -3,6 +3,7 @@
  */
 package bwj.yahoofinance;
 
+import bwj.yahoofinance.model.request.YahooFinanceRequest;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.HttpResponseException;

@@ -3,6 +3,7 @@
  */
 package bwj.yahoofinance;
 
+import bwj.yahoofinance.model.request.YahooFinanceRequest;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
@@ -16,13 +17,13 @@ public class YahooRequestValidator
             throw new IllegalArgumentException("Request cannot be null.");
         }
 
-        if (StringUtils.isEmpty(request.getTicker())) {
-            throw new IllegalArgumentException("Request is missing a valid ticker value.");
-        }
-
         YahooEndpoint endpoint = request.getEndpoint();
         if (endpoint == null) {
             throw new IllegalArgumentException("Request is missing endpoint value.");
+        }
+
+        if (StringUtils.isEmpty(request.getTicker()) && !endpoint.isQuery()) {
+            throw new IllegalArgumentException("Request is missing a valid ticker value.");
         }
 
         // if there are multiple endpoints, they must all match the first.

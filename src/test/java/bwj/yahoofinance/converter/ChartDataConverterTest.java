@@ -3,7 +3,7 @@
  */
 package bwj.yahoofinance.converter;
 
-import bwj.yahoofinance.objects.PriceHistoryRecord;
+import bwj.yahoofinance.model.data.PriceHistoryRecord;
 import bwj.yahoofinance.util.ChartDataConverter;
 import org.testng.annotations.Test;
 

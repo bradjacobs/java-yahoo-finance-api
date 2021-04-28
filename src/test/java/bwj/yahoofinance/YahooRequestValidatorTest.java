@@ -1,5 +1,6 @@
 package bwj.yahoofinance;
 
+import bwj.yahoofinance.model.request.YahooFinanceRequest;
 import org.testng.annotations.Test;
 import static bwj.yahoofinance.YahooEndpoint.*;
 
