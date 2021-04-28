@@ -35,6 +35,9 @@ public enum YahooEndpoint
     ESG_CHART("esgChart", 1, false, false),
     ESG_PEER_SCORES("esgPeerScores", 1, false, false),
 
+    //   Query endpoints  (not ready yet)
+    //LOOKUP("lookup", 1, false, false),
+    //SCREENER("screener", 1, false, false),
 
     // Below are the quoteSummary + modules choices
 
@@ -60,6 +63,7 @@ public enum YahooEndpoint
     // (everything else)
     CALENDAR_EVENTS("calendarEvents"),
     EARNINGS_TREND("earningsTrend"),
+    FINANCIALS_TEMPLATE("financialsTemplate"), // note: doesn't seem too useful upon initial glance
     ESG_SCORES("esgScores"),
     FUND_OWNERSHIP("fundOwnership"),
     INDEX_TREND("indexTrend"),
@@ -79,7 +83,10 @@ public enum YahooEndpoint
     //  Fund-specific
     FUND_PERFORMANCE("fundPerformance"),
     FUND_PROFILE("fundProfile"),
-    TOP_HOLDINGS("topHoldings");
+    TOP_HOLDINGS("topHoldings"),
+
+    // Futures-specific
+    FUTURES_CHAIN("futuresChain");
 
 
     private static final int DEFAULT_VERSION = 10;
