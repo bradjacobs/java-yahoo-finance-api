@@ -4,7 +4,6 @@
 package bwj.yahoofinance;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,6 +43,7 @@ public enum YahooEndpoint
 
     //   Query endpoints  (not ready yet)
     LOOKUP("lookup", 1, FLAG_IS_QUERY),
+    LOOKUP_TOTALS("lookup/totals", 1, FLAG_IS_QUERY),
     //SCREENER("screener", 1, FLAG_IS_QUERY),
 
     // Below are the quoteSummary + modules choices

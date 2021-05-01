@@ -1,6 +1,7 @@
 package bwj.yahoofinance.model.request;
 
 import bwj.yahoofinance.YahooEndpoint;
+import bwj.yahoofinance.model.params.Type;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,32 +22,19 @@ public class YahooLookupRequest extends YahooFinanceRequest {
         super("", YahooEndpoint.LOOKUP);
     }
 
-    public String getQuery() {
-        return paramMap.get(KEY_QUERY);
+    public YahooLookupRequest(boolean totalsOnly) {
+        super("", getEndpoint(totalsOnly));
     }
 
-    public void setQuery(String query) {
-        paramMap.put(KEY_QUERY, query);
-    }
-
-    public Boolean getFormatted() {
-        String formattedValue = paramMap.get(KEY_FORMATTED);
-        return (formattedValue != null ? Boolean.valueOf(formattedValue) : null);
-    }
-
-    public void setFormatted(Boolean formatted) {
-        if (formatted != null) {
-            paramMap.put(KEY_FORMATTED, formatted.toString());
+    private static YahooEndpoint getEndpoint(boolean includeTotalsOnly) {
+        if (includeTotalsOnly) {
+            return YahooEndpoint.LOOKUP_TOTALS;
+        }
+        else {
+            return YahooEndpoint.LOOKUP;
         }
     }
 
-    public String getType() {
-        return paramMap.get(KEY_TYPE);
-    }
-
-    public void setType(String type) {
-        paramMap.put(KEY_TYPE, type);
-    }
 
     public Integer getStart() {
         String startValue = paramMap.get(KEY_START);
@@ -70,6 +58,8 @@ public class YahooLookupRequest extends YahooFinanceRequest {
         }
     }
 
+
+
     @Override
     public void setTicker(String ticker) {
         // ignore
@@ -84,9 +74,10 @@ public class YahooLookupRequest extends YahooFinanceRequest {
     {
         private String query;
         private Boolean formatted;
-        private String type;
+        private Type type;
         private Integer start;
         private Integer count;
+        private boolean includeTotalsOnly = false;
 
         // for any other misc params
         private Map<String,String> paramMap = new LinkedHashMap<>();
@@ -95,11 +86,15 @@ public class YahooLookupRequest extends YahooFinanceRequest {
             this.query = query;
             return this;
         }
+        public Builder withTotalsOnly(boolean includeTotalsOnly) {
+            this.includeTotalsOnly = includeTotalsOnly;
+            return this;
+        }
         public Builder withFormatted(Boolean formatted) {
             this.formatted = formatted;
             return this;
         }
-        public Builder withType(String type) {
+        public Builder withType(Type type) {
             this.type = type;
             return this;
         }
@@ -118,17 +113,26 @@ public class YahooLookupRequest extends YahooFinanceRequest {
         }
 
         public YahooLookupRequest build() {
-            YahooLookupRequest req = new YahooLookupRequest();
-            req.setQuery(this.query);
-            req.setFormatted(this.formatted);
-            req.setType(this.type);
-            req.setStart(this.start);
-            req.setCount(this.count);
+            YahooLookupRequest req = new YahooLookupRequest(this.includeTotalsOnly);
 
-            req.addParams(paramMap);
+            if (this.query != null) {
+                req.addParam(KEY_QUERY, query.trim());
+            }
+            if (! this.includeTotalsOnly)
+            {
+                if (this.formatted != null) {
+                    req.addParam(KEY_FORMATTED, formatted.toString().trim().toLowerCase());
+                }
+                if (this.type != null) {
+                    req.addParam(KEY_TYPE, type.toString().toLowerCase());
+                }
+                req.setStart(this.start);
+                req.setCount(this.count);
+
+                req.addParams(paramMap);
+            }
             return req;
         }
-
 
     }
 }

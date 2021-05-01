@@ -4,8 +4,12 @@
 package bwj.yahoofinance.examples;
 
 import bwj.yahoofinance.YahooFinanceClient;
+import bwj.yahoofinance.model.params.Interval;
+import bwj.yahoofinance.model.params.Range;
+import bwj.yahoofinance.model.params.Type;
 import bwj.yahoofinance.model.request.YahooFinanceRequest;
 import bwj.yahoofinance.model.request.YahooLookupRequest;
+import bwj.yahoofinance.model.request.YahooPriceHistoryRequest;
 
 import static bwj.yahoofinance.YahooEndpoint.*;
 
@@ -18,6 +22,9 @@ public class SimpleRequestDemo
 
         String queryString = "AA*";
 
+        YahooPriceHistoryRequest aa = new YahooPriceHistoryRequest();
+        aa.addEndpoint();
+
         SimpleRequestDemo requestDemo = new SimpleRequestDemo();
 
         try
@@ -26,8 +33,8 @@ public class SimpleRequestDemo
             //requestDemo.multiEndpointRequest(testTicker);
             //requestDemo.quoteRequest(testTicker);
             //requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
-            //requestDemo.priceHistory(testTicker);
-            requestDemo.basicLookupQuery(queryString);
+            requestDemo.priceHistory(testTicker);
+            //requestDemo.basicLookupQuery(queryString);
         }
         catch (Exception e)
         {
@@ -114,6 +121,7 @@ public class SimpleRequestDemo
         YahooLookupRequest.Builder builder =
                 new YahooLookupRequest.Builder()
                         .withQuery(query)
+                        .withType(Type.EQUITY)
                         .withFormatted(true)
                         .withCount(20)
                         .withStart(0);
@@ -129,30 +137,11 @@ public class SimpleRequestDemo
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
-        YahooFinanceRequest.Builder builder =
-                new YahooFinanceRequest.Builder()
-                        .withEndpoint(CHART)
-                        .withTicker(ticker);
-
-        // NOTE: it is possible to query chart endpoint w/o any additional parameters
-        //   but the 'default' values used seem a bit unintuitive imho
-
-        builder.addParameter("range", "5d");
-        builder.addParameter("interval", "1d");
-
-        // can be used instead of range
-//        builder.addParameter("period1", "1619222400");
-//        builder.addParameter("period2", "1619222400");
-
-        // below can alter what data is returned
-//        builder.addParameter("indicators", "close");           // ONLY return close and adjclose
-//        builder.addParameter("includeTimestamps", "false");    // do NOT return timestamps
-//        builder.addParameter("includeAdjustedClose", "false"); // do NOT return adj close (default is true)
-
-//        builder.addParameter("events", "div");  // also include dividends (if exists in timerange)
-//        builder.addParameter("events", "split");  // also include stock splits (if exists in timerange)
-//        builder.addParameter("events", "div,split");  // also include BOTH dividends & stock splits (if exists in timerange)
-
+        YahooPriceHistoryRequest.Builder builder =
+                new YahooPriceHistoryRequest.Builder()
+                        .withTicker(ticker)
+                        .withRange(Range.FIVE_DAYS)
+                        .withInterval(Interval.ONE_DAY);
 
         String json = client.executeRequest(builder.build());
 
@@ -164,6 +153,5 @@ public class SimpleRequestDemo
         //    &indicators=adjclose   (perhaps a yahoo bug, returns adjclose twice)
         //    &includePrePost=true   (seen mentioned many times, but doesn't seem actually to do anything?)
     }
-
 
 }
