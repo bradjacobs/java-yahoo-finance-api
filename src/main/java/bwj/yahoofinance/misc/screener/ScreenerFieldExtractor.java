@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class ScreenerFieldExtractor
 {
     // note: url copied from web (haven't analyzed what all the params mean)
-    private static final String FEILD_DEFN_QUERY = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=keystats%2Cfinancials%2Cvaluation%2Csector_industry%2Cesgscores%2Cincome%2Ccashflowstatement%2Cbalance_sheet%2Cearnings%2Cdividends_and_splits%2Cprofile%2Cfair_value%2Cpopular_filters%2Cchanges_in_price_and_market_cap%2Cchanges_in_volume_and_ownership%2Cvaluation_metric%2Cprofitability_ratios_and_dividends%2Cdebt_ratios%2Cliquidity_ratios%2Ceps_and_income_statement%2Ccash_flow%2Cesg_scores%2Cshort_interest%2Cfair_value&corsDomain=finance.yahoo.com";
+    private static final String FIELD_DEFN_QUERY = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=keystats%2Cfinancials%2Cvaluation%2Csector_industry%2Cesgscores%2Cincome%2Ccashflowstatement%2Cbalance_sheet%2Cearnings%2Cdividends_and_splits%2Cprofile%2Cfair_value%2Cpopular_filters%2Cchanges_in_price_and_market_cap%2Cchanges_in_volume_and_ownership%2Cvaluation_metric%2Cprofitability_ratios_and_dividends%2Cdebt_ratios%2Cliquidity_ratios%2Ceps_and_income_statement%2Ccash_flow%2Cesg_scores%2Cshort_interest%2Cfair_value&corsDomain=finance.yahoo.com";
 
     public static void main(String[] args) throws Exception
     {
@@ -33,7 +33,7 @@ public class ScreenerFieldExtractor
 
     public void contructFieldDefnitions() throws Exception
     {
-        String json = urlRead(FEILD_DEFN_QUERY);
+        String json = urlRead(FIELD_DEFN_QUERY);
 
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         JsonNode root = mapper.readTree(json);
