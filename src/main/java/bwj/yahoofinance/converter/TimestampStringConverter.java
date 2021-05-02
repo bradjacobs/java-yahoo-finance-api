@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
  *
  * For more on valid pattern values, check out docs for DateTimeFormatter
  * @see java.time.format.DateTimeFormatter
+ *
+ * @deprecated
  */
 public class TimestampStringConverter
 {
