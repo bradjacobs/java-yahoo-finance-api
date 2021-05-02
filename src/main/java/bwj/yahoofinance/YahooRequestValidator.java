@@ -7,7 +7,6 @@ import bwj.yahoofinance.model.request.YahooFinanceRequest;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
-import java.util.Set;
 
 public class YahooRequestValidator
 {
@@ -26,19 +25,6 @@ public class YahooRequestValidator
             throw new IllegalArgumentException("Request is missing a valid ticker value.");
         }
 
-        // if there are multiple endpoints, they must all match the first.
-        Set<YahooEndpoint> endpoints = request.getEndpoints();
-        if (endpoints != null && endpoints.size() > 1) {
-
-            for (YahooEndpoint yahooEndpoint : endpoints) {
-                if (!yahooEndpoint.isQuoteSummaryModule()) {
-                    throw new IllegalArgumentException("Multiple endpoints are only allowed for quote summary requests.");
-                }
-                if (yahooEndpoint.getVersion() != endpoint.getVersion()) {
-                    throw new IllegalArgumentException("At least 2 endpoints have different versions.");
-                }
-            }
-        }
 
         Map<String, String> paramMap = request.getParamMap();
         if (paramMap != null && !paramMap.isEmpty())
@@ -49,6 +35,19 @@ public class YahooRequestValidator
                 }
 
                 // still TBD if blank values should ever be allowed empty or not.
+            }
+        }
+
+        if (endpoint.equals(YahooEndpoint.QUOTE_SUMMARY))
+        {
+            String modulesValue = null;
+            if (paramMap != null) {
+                modulesValue = paramMap.get("modules");
+            }
+
+            if (StringUtils.isEmpty(modulesValue)) {
+                // this particular case want to catch before even trying to make Http request.
+                throw new IllegalArgumentException("QuoteSummary endpoint must have 1 or more modules value.");
             }
         }
     }

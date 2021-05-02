@@ -69,7 +69,7 @@ public class YahooLookupRequest extends YahooFinanceRequest {
     }
 
     @Override
-    public void addEndpoint(YahooEndpoint... endpoints) {
+    public void setEndpoint(YahooEndpoint endpoint) {
         // ignore
     }
 

@@ -12,6 +12,7 @@ import bwj.yahoofinance.model.request.YahooLookupRequest;
 import bwj.yahoofinance.model.request.YahooPriceHistoryRequest;
 
 import static bwj.yahoofinance.YahooEndpoint.*;
+import static bwj.yahoofinance.YahooModule.*;
 
 public class SimpleRequestDemo
 {
@@ -23,7 +24,6 @@ public class SimpleRequestDemo
         String queryString = "AA*";
 
         YahooPriceHistoryRequest aa = new YahooPriceHistoryRequest();
-        aa.addEndpoint();
 
         SimpleRequestDemo requestDemo = new SimpleRequestDemo();
 
@@ -33,7 +33,7 @@ public class SimpleRequestDemo
             //requestDemo.multiEndpointRequest(testTicker);
             //requestDemo.quoteRequest(testTicker);
             //requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
-            requestDemo.priceHistory(testTicker);
+            //requestDemo.priceHistory(testTicker);
             //requestDemo.basicLookupQuery(queryString);
         }
         catch (Exception e)
@@ -50,7 +50,7 @@ public class SimpleRequestDemo
 
         YahooFinanceRequest.Builder builder =
                 new YahooFinanceRequest.Builder()
-                        .withEndpoint(ASSET_PROFILE)
+                        .withModules(ASSET_PROFILE)
                         .withTicker(ticker);
         String json = client.executeRequest(builder.build());
 
@@ -58,21 +58,22 @@ public class SimpleRequestDemo
         System.out.println(json);
     }
 
-    private void multiEndpointRequest(String ticker)
+    private void multiModuleRequest(String ticker)
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
         YahooFinanceRequest.Builder builder =
                 new YahooFinanceRequest.Builder()
-                        .withEndpoint(ASSET_PROFILE)
-                        .withEndpoint(FINANCIAL_DATA)
-                        .withEndpoint(BALANCE_SHEET_HISTORY)
+                        .withEndpoint(QUOTE_SUMMARY)
+                        .withModules(ASSET_PROFILE)
+                        .withModules(FINANCIAL_DATA)
+                        .withModules(BALANCE_SHEET_HISTORY)
                         .withTicker(ticker);
 
         //  ... OR ...
         YahooFinanceRequest.Builder builderAlternate =
                 new YahooFinanceRequest.Builder()
-                        .withEndpoint(ASSET_PROFILE, FINANCIAL_DATA, BALANCE_SHEET_HISTORY)
+                        .withModules(ASSET_PROFILE, FINANCIAL_DATA, BALANCE_SHEET_HISTORY)
                         .withTicker(ticker);
 
 

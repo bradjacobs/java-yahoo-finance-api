@@ -5,6 +5,7 @@ package bwj.yahoofinance.model.request;
 
 
 import bwj.yahoofinance.YahooEndpoint;
+import bwj.yahoofinance.YahooModule;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +17,7 @@ import java.util.Set;
 public class YahooFinanceRequest
 {
     private String ticker;
-    private Set<YahooEndpoint> endpoints = new LinkedHashSet<>();
+    private YahooEndpoint endpoint;
     protected Map<String,String> paramMap = new LinkedHashMap<>();
 
     public YahooFinanceRequest() { }
@@ -27,7 +28,7 @@ public class YahooFinanceRequest
 
     public YahooFinanceRequest(String ticker, YahooEndpoint endpoint) {
         this.ticker = ticker;
-        this.endpoints.add(endpoint);
+        this.endpoint = endpoint;
     }
 
     public String getTicker() {
@@ -38,15 +39,12 @@ public class YahooFinanceRequest
         this.ticker = ticker;
     }
 
-
-    public void addEndpoint(YahooEndpoint... endpoints) {
-        if (endpoints != null) {
-            this.endpoints.addAll(Arrays.asList(endpoints));
-        }
+    public YahooEndpoint getEndpoint() {
+        return endpoint;
     }
 
-    public Set<YahooEndpoint> getEndpoints() {
-        return Collections.unmodifiableSet(this.endpoints);
+    public void setEndpoint(YahooEndpoint endpoint) {
+        this.endpoint = endpoint;
     }
 
     public Map<String, String> getParamMap() {
@@ -63,23 +61,16 @@ public class YahooFinanceRequest
     }
 
 
-
-    // todo: ponder this one
-    public YahooEndpoint getEndpoint() {
-        if (!this.endpoints.isEmpty()) {
-            return this.endpoints.iterator().next();
-        }
-        return null;
-    }
-
-
     public static class Builder {
+
+        private YahooEndpoint endpoint = null;
 
         // use collection to allow for case where some endpoints allow multiple ticker values
         private Set<String> tickers = new LinkedHashSet<>();  // preserve insertion order
-
-        private Set<YahooEndpoint> endpoints = new LinkedHashSet<>();
         private Map<String,String> paramMap = new LinkedHashMap<>();
+
+        private Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
+
 
         public Builder() { }
 
@@ -90,9 +81,21 @@ public class YahooFinanceRequest
             return this;
         }
 
-        public Builder withEndpoint(YahooEndpoint... endpoints) {
-            if (endpoints != null) {
-                this.endpoints.addAll(Arrays.asList(endpoints));
+        public Builder withEndpoint(YahooEndpoint endpoint) {
+            this.endpoint = endpoint;
+            return this;
+        }
+
+        public Builder withModules(YahooModule... modules) {
+            if (modules != null && modules.length > 0) {
+
+                if (this.endpoint == null) {
+                    this.endpoint = YahooEndpoint.QUOTE_SUMMARY;  // for convenience (or laziness)
+                }
+                this.modules.addAll(Arrays.asList(modules));
+            }
+            else {
+                this.modules.clear();
             }
             return this;
         }
@@ -104,11 +107,10 @@ public class YahooFinanceRequest
 
         public YahooFinanceRequest build() {
             YahooFinanceRequest req = new YahooFinanceRequest();
-            req.addEndpoint(this.endpoints.toArray(new YahooEndpoint[0]));
+            req.setEndpoint(this.endpoint);
 
-            if (this.tickers.size() > 0) {
-                YahooEndpoint endpoint = req.getEndpoint();
-                if (endpoint != null && endpoint.isSupportsMultipleTickers()) {
+            if (this.tickers.size() > 0 && this.endpoint != null) {
+                if (endpoint.isSupportsMultipleTickers()) {
                     req.setTicker(String.join(",", this.tickers));
                 }
                 else {
@@ -119,8 +121,25 @@ public class YahooFinanceRequest
                 req.setTicker("");
             }
 
+            if (YahooEndpoint.QUOTE_SUMMARY.equals(this.endpoint) && this.modules.size() > 0)
+            {
+               req.addParam("modules", generateModuleList(this.modules));
+            }
+
             req.addParams(paramMap);
             return req;
+        }
+
+        private String generateModuleList(Set<YahooModule> modules)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (YahooModule module : modules) {
+                if (sb.length() > 0) {
+                    sb.append(',');
+                }
+                sb.append(module.getName());
+            }
+            return sb.toString();
         }
     }
 

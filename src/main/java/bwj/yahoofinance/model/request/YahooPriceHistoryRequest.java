@@ -50,7 +50,7 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
 
 
     @Override
-    public void addEndpoint(YahooEndpoint... endpoints) {
+    public void setEndpoint(YahooEndpoint endpoints) {
         // ignore
     }
 

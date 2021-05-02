@@ -108,10 +108,6 @@ public class YahooFinanceClient
 
         builder.setPath(path);
 
-        if (endpoint.isQuoteSummaryModule()) {
-            builder.addParameter("modules", generateModuleList(request));
-        }
-
         for (Map.Entry<String, String> paramEntry : paramMap.entrySet()) {
             builder.addParameter(paramEntry.getKey(), paramEntry.getValue());
         }
@@ -120,19 +116,6 @@ public class YahooFinanceClient
         return url;
     }
 
-    private String generateModuleList(YahooFinanceRequest request)
-    {
-        StringBuilder sb = new StringBuilder();
-        Set<YahooEndpoint> endpoints = request.getEndpoints();
-        for (YahooEndpoint endpoint : endpoints) {
-            if (sb.length() > 0) {
-                sb.append(',');
-            }
-            sb.append(endpoint.getModuleName());
-        }
-        return sb.toString();
-
-    }
 
 
     protected String execute(String url)

@@ -21,10 +21,12 @@ import static bwj.yahoofinance.YahooEndpointFlag.*;
  *
  *   Extra Info:
  *     There are some "Premium" endpoints that are also available form Yahoo!, which are NOT represented here.
+ *
+ *  Also the {@link bwj.yahoofinance.YahooModule} enums for QuoteSummary endpoint.
  */
 public enum YahooEndpoint
 {
-    OPTIONS("options", 7),
+    QUOTE_SUMMARY("quoteSummary", 10),
 
     QUOTE("quote", 7, FLAG_SUPPORT_MULTI_TICKERS),
 
@@ -46,86 +48,20 @@ public enum YahooEndpoint
     LOOKUP_TOTALS("lookup/totals", 1, FLAG_IS_QUERY),
     //SCREENER("screener", 1, FLAG_IS_QUERY),
 
-    // Below are the quoteSummary + modules choices
+    OPTIONS("options", 7);
 
-    // general info
-    ASSET_PROFILE("assetProfile"),
-    SUMMARY_PROFILE("summaryProfile"),
-    SUMMARY_DETAIL("summaryDetail"),
-    QUOTE_TYPE("quoteType"),
-
-    // financial info
-    BALANCE_SHEET_HISTORY("balanceSheetHistory"),
-    BALANCE_SHEET_HISTORY_QUARTERLY("balanceSheetHistoryQuarterly"),
-    DEFAULT_KEY_STATISTICS("defaultKeyStatistics"),
-    CASH_FLOW_STMT_HISTORY("cashFlowStatementHistory"),
-    CASJ_FLOW_STMT_HISTORY_QUARTERLY("cashFlowStatementHistoryQuarterly"),
-    EARNINGS("earnings"),
-    EARNINGS_HISTORY("earningsHistory"),
-    FINANCIAL_DATA("financialData"),
-    INCOME_STMT_HISTORY("incomeStatementHistory"),
-    INCOME_STMT_HISTORY_QUARTERLY("incomeStatementHistoryQuarterly"),
-    PRICE("price"),
-
-    // (everything else)
-    CALENDAR_EVENTS("calendarEvents"),
-    EARNINGS_TREND("earningsTrend"),
-    FINANCIALS_TEMPLATE("financialsTemplate"), // note: doesn't seem too useful upon initial glance
-    ESG_SCORES("esgScores"),
-    FUND_OWNERSHIP("fundOwnership"),
-    INDEX_TREND("indexTrend"),
-    INDUSTRY_TREND("industryTrend"),
-    INSIDER_HOLDERS("insiderHolders"),
-    INSIDER_TRANSACTIONS("insiderTransactions"),
-    INSTITUTION_OWNERSHIP("institutionOwnership"),
-    MAJOR_HOLDERS("majorDirectHolders"),
-    MAJOR_HOLDERS_BREAKDOWN("majorHoldersBreakdown"),
-    NET_SHARE_PURCHASE_ACTIVITY("netSharePurchaseActivity"),
-    PAGE_VIEWS("pageviews"),
-    RECOMMENDATION_TREND("recommendationTrend"),
-    SEC_FILLINGS("secFilings"),
-    SECTOR_TREND("sectorTrend"),
-    UPGRADE_DOWNGRADE_HISTORY("upgradeDowngradeHistory"),
-
-    //  Fund-specific
-    FUND_PERFORMANCE("fundPerformance"),
-    FUND_PROFILE("fundProfile"),
-    TOP_HOLDINGS("topHoldings"),
-
-    // Futures-specific
-    FUTURES_CHAIN("futuresChain");
-
-
-    private static final int DEFAULT_QUOTE_SUMMARY_VERSION = 10;
 
     private final String name;
     private final int version;
-    private final String moduleName;
     private final boolean supportsMultipleTickers;
     private final boolean isQuery;
 
-    private static final String QUOTE_SUMMARY = "quoteSummary";
-
-    // name-only implies a quoteSummary endpoint
-    YahooEndpoint(String name) {
-        this(name, DEFAULT_QUOTE_SUMMARY_VERSION, FLAG_IS_QUOTE_SUMMARY);
-    }
     YahooEndpoint(String name, int version) {
         this(name, version, new YahooEndpointFlag[0]);
     }
     YahooEndpoint(String name, int version, YahooEndpointFlag ... flags) {
         Set<YahooEndpointFlag> flagSet = new HashSet<>(Arrays.asList(flags));
-
-        boolean isQuoteSummaryModule = flagSet.contains(FLAG_IS_QUOTE_SUMMARY);
-        if (isQuoteSummaryModule) {
-            this.name = QUOTE_SUMMARY;
-            this.moduleName = name;
-        }
-        else {
-            this.name = name;
-            this.moduleName = "";
-        }
-
+        this.name = name;
         this.version = version;
         this.supportsMultipleTickers = flagSet.contains(FLAG_SUPPORT_MULTI_TICKERS);
         this.isQuery = flagSet.contains(FLAG_IS_QUERY);
@@ -135,16 +71,9 @@ public enum YahooEndpoint
     public String getName() {
         return name;
     }
-    public String getModuleName() {
-        return moduleName;
-    }
 
     public int getVersion() {
         return version;
-    }
-
-    public boolean isQuoteSummaryModule() {
-        return this.name.equals(QUOTE_SUMMARY);
     }
 
     public boolean isSupportsMultipleTickers() {
