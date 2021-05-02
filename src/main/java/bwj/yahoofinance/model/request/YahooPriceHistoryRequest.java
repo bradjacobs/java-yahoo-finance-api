@@ -1,18 +1,21 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
 package bwj.yahoofinance.model.request;
 
 import bwj.yahoofinance.YahooEndpoint;
 import bwj.yahoofinance.model.params.Interval;
 import bwj.yahoofinance.model.params.Range;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
-import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.*;
+import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.ADJ_CLOSE_ONLY;
+import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.ALL;
+import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.CLOSE_ADJCLOSE;
+import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.CLOSE_ONLY;
 
 public class YahooPriceHistoryRequest extends YahooFinanceRequest
 {
@@ -52,12 +55,10 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
     }
 
 
-    public static class Builder
+    public static class Builder extends PeriodRangeRequestBuilder<Builder>
     {
         private String ticker;
         private Range range;
-        private Long startPeriod;
-        private Long endPeriod;
         private Interval interval;
         private Boolean formatted; // this seems only applicable when response includes div or splits
         private Set<String> eventValues = new LinkedHashSet<>();
@@ -66,13 +67,13 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
         private Boolean includeTimestamps;
         private Boolean includePrePost;
 
-        // if the input epoch time is greater than this value, then assume MILLISECONDS
-        //   otherwise assume SECONDS
-        private static final long EPOCH_MILLI_THRESHOLD = 4000000000L;
-        // todo: fix - put const above in single location
-
         // for any other misc params
         private Map<String,String> paramMap = new LinkedHashMap<>();
+
+        @Override
+        protected Builder getThis() {
+            return this;
+        }
 
         public Builder withTicker(String ticker) {
             this.ticker = ticker;
@@ -83,61 +84,6 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             return this;
         }
 
-        public Builder withTimeRange(Long start, Long end) {
-            return withStart(start).withEnd(end);
-        }
-        public Builder withTimeRange(Date start, Date end) {
-            return withStart(start).withEnd(end);
-        }
-        public Builder withTimeRange(Instant start, Instant end) {
-            return withStart(start).withEnd(end);
-        }
-
-        public Builder withStart(Instant start) {
-            if (start != null) {
-                this.startPeriod = start.toEpochMilli();
-            }
-            else {
-                this.startPeriod = null;
-            }
-            return this;
-        }
-        public Builder withStart(Date start) {
-            if (start != null) {
-                this.startPeriod = start.getTime();
-            }
-            else {
-                this.startPeriod = null;
-            }
-            return this;
-        }
-        public Builder withStart(Long start) {
-            this.startPeriod = start;
-            return this;
-        }
-
-        public Builder withEnd(Instant end) {
-            if (end != null) {
-                this.endPeriod = end.toEpochMilli();
-            }
-            else {
-                this.endPeriod = null;
-            }
-            return this;
-        }
-        public Builder withEnd(Date end) {
-            if (end != null) {
-                this.endPeriod = end.getTime();
-            }
-            else {
-                this.endPeriod = null;
-            }
-            return this;
-        }
-        public Builder withEnd(Long end) {
-            this.endPeriod = end;
-            return this;
-        }
 
         public Builder withInterval(Interval inverval) {
             this.interval = inverval;
@@ -210,21 +156,12 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             YahooPriceHistoryRequest req = new YahooPriceHistoryRequest();
             req.setTicker(this.ticker);
 
+            // if startPeriod is set, then it takes precedence over the 'range' parameter.
             if (this.startPeriod != null)
             {
-                Long start = this.startPeriod;
-                if (start > EPOCH_MILLI_THRESHOLD) {
-                    start /= 1000;
-                }
-
-                req.addParam(KEY_START, start.toString());
+                req.addParam(KEY_START, this.startPeriod.toString());
                 if (this.endPeriod != null) {
-                    Long end = this.endPeriod;
-                    if (end > EPOCH_MILLI_THRESHOLD) {
-                        end /= 1000;
-                    }
-
-                    req.addParam(KEY_END, end.toString());
+                    req.addParam(KEY_END, this.endPeriod.toString());
                 }
             }
             else if (this.range != null) {
@@ -274,6 +211,10 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
 
             req.addParams(paramMap);
             return req;
+        }
+
+        private long daysToSeconds(int days) {
+            return days * 86400L;
         }
     }
 

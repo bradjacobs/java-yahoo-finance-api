@@ -140,7 +140,10 @@ public class SimpleRequestDemo
         YahooPriceHistoryRequest.Builder builder =
                 new YahooPriceHistoryRequest.Builder()
                         .withTicker(ticker)
-                        .withRange(Range.FIVE_DAYS)
+                        //.withRange(Range.FIVE_DAYS)
+                        .withTimeRange("2021-01-25", "2021-01-28")
+                        //.withLastXMonths(6)
+                        //.withTimeRange(1619481600999L, 1619827200999L)
                         .withInterval(Interval.ONE_DAY);
 
         String json = client.executeRequest(builder.build());
@@ -149,9 +152,8 @@ public class SimpleRequestDemo
         System.out.println(json);
 
         // additional notes:
-        //    &indicators=quote      (seems to do nothing)
-        //    &indicators=adjclose   (perhaps a yahoo bug, returns adjclose twice)
-        //    &includePrePost=true   (seen mentioned many times, but doesn't seem actually to do anything?)
+        //    &indicators=quote      (seems to do nothing?)
+        //    &indicators=adjclose   (perhaps a yahoo bug, can return adjclose twice in some cases)
     }
 
 }

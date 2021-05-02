@@ -1,20 +1,19 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
 package bwj.yahoofinance.converter;
 
 import java.util.Date;
 
 public class EpochSecondsDateConverter
 {
-    // todo: fix this constant
-    private static final long EPOCH_MILLI_THRESHOLD = 4000000000L;
 
     public Date convertToDate(Long timestamp) {
         if (timestamp == null) {
             return null;
         }
 
-        if (timestamp < EPOCH_MILLI_THRESHOLD) {
-            timestamp *= 1000;
-        }
+        timestamp *= 1000L;
         return new Date(timestamp);
     }
 
@@ -22,7 +21,7 @@ public class EpochSecondsDateConverter
         if (date == null) {
             return null;
         }
-        return date.getTime() / 1000;
+        return date.getTime() / 1000L;
     }
 
 }
