@@ -25,11 +25,16 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
     private static final String KEY_INDICATORS = "indicators";
     private static final String KEY_FORMATTED = "formatted"; // only seems applicable when response includes div or splits
     private static final String KEY_INCLUDE_TIMESTAMPS = "includeTimestamps"; // default is true when unset
+    private static final String KEY_INCLUDE_PRE_POST = "includePrePost"; // not applicable with bigger intervals
+
     //private static final String KEY_NUMBER_OF_POINTS = "numberOfPoints";
     //private static final String KEY_USE_YFID = "useYfid";
 
     private static final String EVENT_VALUE_DIV = "div";
     private static final String EVENT_VALUE_SPLITS = "split";
+
+    private static final String INDICATOR_VALUE_CLOSE = "close";
+    private static final String INDICATOR_VALUE_ADJ_CLOSE = "adjclose";
 
 
     public YahooPriceHistoryRequest() {
@@ -59,6 +64,7 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
         private Boolean includeAdjustedClose = Boolean.TRUE;
         private IndicatorFieldSelection indicatorFieldSelection;
         private Boolean includeTimestamps;
+        private Boolean includePrePost;
 
         // if the input epoch time is greater than this value, then assume MILLISECONDS
         //   otherwise assume SECONDS
@@ -182,8 +188,14 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             this.indicatorFieldSelection = ALL;
             return this;
         }
-        public Builder withIncludeTimestamps(Boolean includeTimestamps) {
+
+        public Builder withTimestamps(Boolean includeTimestamps) {
             this.includeTimestamps = includeTimestamps;
+            return this;
+        }
+
+        public Builder withPrePost(Boolean includePrePost) {
+            this.includePrePost = includePrePost;
             return this;
         }
 
@@ -239,10 +251,10 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
                 includeAdjCloseValue = !this.indicatorFieldSelection.equals(CLOSE_ONLY);
 
                 if (this.indicatorFieldSelection.equals(CLOSE_ADJCLOSE) || this.indicatorFieldSelection.equals(CLOSE_ONLY)) {
-                    indicatorValue = "close";
+                    indicatorValue = INDICATOR_VALUE_CLOSE;
                 }
                 else if (this.indicatorFieldSelection.equals(ADJ_CLOSE_ONLY)) {
-                    indicatorValue = "adjclose";
+                    indicatorValue = INDICATOR_VALUE_ADJ_CLOSE;
                 }
             }
             else if (this.includeAdjustedClose != null) {
@@ -256,6 +268,9 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             if (this.includeTimestamps != null) {
                 req.addParam(KEY_INCLUDE_TIMESTAMPS, this.includeTimestamps.toString().toLowerCase());
             }
+            if (this.includePrePost != null) {
+                req.addParam(KEY_INCLUDE_PRE_POST, this.includePrePost.toString().toLowerCase());
+            }
 
             req.addParams(paramMap);
             return req;
@@ -263,7 +278,7 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
     }
 
 
-    static enum IndicatorFieldSelection
+    enum IndicatorFieldSelection
     {
         ALL,
         CLOSE_ADJCLOSE,
