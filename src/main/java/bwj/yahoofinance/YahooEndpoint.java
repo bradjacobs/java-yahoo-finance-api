@@ -52,9 +52,13 @@ public enum YahooEndpoint
 
     TIMESERIES("timeseries", 1, "ws/fundamentals-timeseries/"),
     INSIGHTS("insights", 2, "ws/insights/", FLAG_REQUIRES_SYMBOL_PARAM),
-    TECHNICAL_EVENTS("nonsubscriber/technicalevents", 1, "/ws/market-analytics/", FLAG_REQUIRES_SYMBOL_PARAM),
+    TECHNICAL_EVENTS("nonsubscriber/technicalevents", 1, "ws/market-analytics/", FLAG_REQUIRES_SYMBOL_PARAM),
 
-    OPTIONS("options", 7);
+    OPTIONS("options", 7),
+
+
+    // note: QuoteType is virtually identical to ".../quoteSummary/____?modules=quoteType"
+    QUOTE_TYPE("quoteType/", 1, FLAG_REQUIRES_SYMBOL_PARAM);  // trailing slash _IS_ required in this case)
 
 
     private final String name;
@@ -104,11 +108,4 @@ public enum YahooEndpoint
     public String getPathPrefix() {
         return pathPrefix;
     }
-
-    //    v8/finance/chart/
-//    v10/finance/quoteSummary/
-//      - [ ] .../ws/insights/v2/finance/insights?symbol=AAPL
-//    - [ ] .../ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?period1=x&period2=y&typee=z&.."
-//    - [ ] .../ws/market-analytics/v1/finance/nonsubscriber/technicalevents?symbol=AAPL"
-
 }
