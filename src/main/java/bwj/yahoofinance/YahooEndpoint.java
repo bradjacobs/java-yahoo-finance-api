@@ -46,6 +46,7 @@ public enum YahooEndpoint
     //   Query endpoints  (not ready yet)
     LOOKUP("lookup", 1, FLAG_IS_QUERY),
     LOOKUP_TOTALS("lookup/totals", 1, FLAG_IS_QUERY),
+    SEARCH("search", 1, FLAG_IS_QUERY),
     //SCREENER("screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
     //VISUALIZATION("visualization", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
 
