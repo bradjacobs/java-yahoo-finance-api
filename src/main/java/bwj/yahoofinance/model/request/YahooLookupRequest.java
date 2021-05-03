@@ -16,70 +16,52 @@ public class YahooLookupRequest extends YahooFinanceRequest {
     private static final String KEY_START = "start";
     private static final String KEY_COUNT = "count";
 
+    private final int count;
+    private final int start;
+
     // can add these later
 //    private static final String KEY_LANG = "lang";
 //    private static final String KEY_REGION = "region";
 //    private static final String KEY_CORS_DOMAIN = "corsDomain";
 
-    public YahooLookupRequest() {
-        super("", YahooEndpoint.LOOKUP);
+    protected YahooLookupRequest(Builder builder)
+    {
+        this(builder.getEndpoint(), builder.generateParamMap(), builder.getCount(), builder.getStart());
     }
 
-    public YahooLookupRequest(boolean totalsOnly) {
-        super("", getEndpoint(totalsOnly));
-    }
-
-    private static YahooEndpoint getEndpoint(boolean includeTotalsOnly) {
-        if (includeTotalsOnly) {
-            return YahooEndpoint.LOOKUP_TOTALS;
-        }
-        else {
-            return YahooEndpoint.LOOKUP;
-        }
-    }
-
-
-    public Integer getStart() {
-        String startValue = paramMap.get(KEY_START);
-        return (startValue != null ? Integer.valueOf(startValue) : null);
-    }
-
-    public void setStart(Integer start) {
-        if (start != null) {
-            paramMap.put(KEY_START, start.toString());
-        }
-    }
-
-    public Integer getCount() {
-        String countValue = paramMap.get(KEY_COUNT);
-        return (countValue != null ? Integer.valueOf(countValue) : null);
-    }
-
-    public void setCount(Integer count) {
-        if (count != null) {
-            paramMap.put(KEY_COUNT, count.toString());
-        }
+    protected YahooLookupRequest(YahooEndpoint endpoint, Map<String,String> paramMap, int count, int start)
+    {
+        super(endpoint, "", paramMap);
+        this.count = count;
+        this.start = start;
+        paramMap.put(KEY_COUNT, String.valueOf(count));
+        paramMap.put(KEY_START, String.valueOf(start));
     }
 
 
 
-    @Override
-    public void setTicker(String ticker) {
-        // ignore
+    public YahooLookupRequest createNextBatchRequest()
+    {
+        Map<String,String> paramMapCopy = new LinkedHashMap<>(this.paramMap);
+        return new YahooLookupRequest(this.getEndpoint(), paramMapCopy, count, (start+count));
     }
 
-    @Override
-    public void setEndpoint(YahooEndpoint endpoint) {
-        // ignore
+    public int getCount() {
+        return count;
     }
+
+    public int getStart() {
+        return start;
+    }
+
 
     public static class Builder
     {
         private String query;
         private Boolean formatted;
         private Type type;
-        private Integer start;
-        private Integer count;
+        private int count = 20; // default
+        private int start = 0; // default
         private boolean includeTotalsOnly = false;
 
         // for any other misc params
@@ -101,12 +83,12 @@ public class YahooLookupRequest extends YahooFinanceRequest {
             this.type = type;
             return this;
         }
-        public Builder withStart(Integer start) {
-            this.start = start;
+        public Builder withCount(int count) {
+            this.count = Math.max(count, 0); // no negative allowed
             return this;
         }
-        public Builder withCount(Integer count) {
-            this.count = count;
+        public Builder withStart(int start) {
+            this.start = Math.max(start, 0); // no negative allowed
             return this;
         }
 
@@ -115,25 +97,46 @@ public class YahooLookupRequest extends YahooFinanceRequest {
             return this;
         }
 
-        public YahooLookupRequest build() {
-            YahooLookupRequest req = new YahooLookupRequest(this.includeTotalsOnly);
+        private YahooEndpoint getEndpoint() {
+            if (includeTotalsOnly) {
+                return YahooEndpoint.LOOKUP_TOTALS;
+            }
+            else {
+                return YahooEndpoint.LOOKUP;
+            }
+        }
 
+        private Map<String,String> generateParamMap()
+        {
+            Map<String,String> map = new LinkedHashMap<>();
             if (this.query != null) {
-                req.addParam(KEY_QUERY, query.trim());
+                map.put(KEY_QUERY, query.trim());
             }
             if (! this.includeTotalsOnly)
             {
-                if (this.formatted != null) {
-                    req.addParam(KEY_FORMATTED, formatted.toString().trim().toLowerCase());
-                }
                 if (this.type != null) {
-                    req.addParam(KEY_TYPE, type.toString().toLowerCase());
+                    map.put(KEY_TYPE, type.toString().toLowerCase());
                 }
-                req.setStart(this.start);
-                req.setCount(this.count);
-
-                req.addParams(paramMap);
+                if (this.formatted != null) {
+                    map.put(KEY_FORMATTED, formatted.toString().trim().toLowerCase());
+                }
+                map.putAll(paramMap);
             }
+            return map;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public int getStart() {
+            return start;
+        }
+
+
+        public YahooLookupRequest build() {
+            YahooLookupRequest req = new YahooLookupRequest(this);
+
             return req;
         }
 

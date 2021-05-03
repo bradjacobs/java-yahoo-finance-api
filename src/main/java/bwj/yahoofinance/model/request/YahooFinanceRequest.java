@@ -11,53 +11,45 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class YahooFinanceRequest
 {
-    private String ticker;
-    private YahooEndpoint endpoint;
-    protected final Map<String,String> paramMap = new LinkedHashMap<>(); // maintains order in which params are added.
+    protected final YahooEndpoint endpoint;
+    protected final String ticker;
+    protected final Map<String,String> paramMap;
 
-    public YahooFinanceRequest() { }
-
-    public YahooFinanceRequest(String ticker) {
-        this.ticker = ticker;
+    protected YahooFinanceRequest(Builder builder)
+    {
+        this.endpoint = builder.getEndpoint();
+        this.ticker = builder.getTickerString();
+        this.paramMap = builder.getParamMap();
     }
 
-    public YahooFinanceRequest(String ticker, YahooEndpoint endpoint) {
-        this.ticker = ticker;
+    protected YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap)
+    {
         this.endpoint = endpoint;
+        this.ticker = ticker;
+        this.paramMap = paramMap;
     }
+
 
     public String getTicker() {
         return ticker;
-    }
-
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
     }
 
     public YahooEndpoint getEndpoint() {
         return endpoint;
     }
 
-    public void setEndpoint(YahooEndpoint endpoint) {
-        this.endpoint = endpoint;
-    }
-
     public Map<String, String> getParamMap() {
-
         return Collections.unmodifiableMap(this.paramMap);
     }
-
-    public void addParams(Map<String, String> paramMap) {
-        this.paramMap.putAll(paramMap);
-    }
-
-    public void addParam(String key, String value) {
-        this.paramMap.put(key, value);
+    public String getParam(String key) {
+        if (key == null) { return null; }
+        return this.paramMap.get(key);
     }
 
 
@@ -71,12 +63,15 @@ public class YahooFinanceRequest
 
         private Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
 
+        private static final String KEY_MODULES = "modules";
 
         public Builder() { }
 
         public Builder withTicker(String... tickers) {
             if (tickers != null) {
-                this.tickers.addAll(Arrays.asList(tickers));
+                List<String> tickerList = Arrays.asList(tickers);
+                tickerList.replaceAll(String::toUpperCase);  // make them all UPPERCASE
+                this.tickers.addAll(tickerList);
             }
             return this;
         }
@@ -105,29 +100,45 @@ public class YahooFinanceRequest
             return this;
         }
 
-        public YahooFinanceRequest build() {
-            YahooFinanceRequest req = new YahooFinanceRequest();
-            req.setEndpoint(this.endpoint);
 
+        private YahooEndpoint getEndpoint() {
+            return this.endpoint;
+        }
+
+        private String getTickerString() {
             if (this.tickers.size() > 0 && this.endpoint != null) {
                 if (endpoint.getSupportsMultipleTickers()) {
-                    req.setTicker(String.join(",", this.tickers));
+                    return String.join(",", this.tickers);
                 }
                 else {
-                    req.setTicker(this.tickers.iterator().next());
+                    return this.tickers.iterator().next();
                 }
             }
-            else {
-                req.setTicker("");
-            }
+            return "";
+        }
 
+        private Map<String,String> getParamMap()
+        {
+            // give a 'copy' of the param map
+            Map<String, String> paramMap = new LinkedHashMap<>();
+
+            // slightly pedantic, but want modules in front (if applicable)
             if (YahooEndpoint.QUOTE_SUMMARY.equals(this.endpoint) && this.modules.size() > 0)
             {
-               req.addParam("modules", generateModuleList(this.modules));
+                paramMap.put(KEY_MODULES, generateModuleList(this.modules));
             }
+            paramMap.putAll(this.paramMap);
+            return paramMap;
+        }
 
-            req.addParams(paramMap);
+        public YahooFinanceRequest build() {
+            YahooFinanceRequest req = new YahooFinanceRequest(this);
+            validateRequestObject(req);
             return req;
+        }
+
+        private void validateRequestObject(YahooFinanceRequest req) {
+            // TBD
         }
 
         private String generateModuleList(Set<YahooModule> modules)

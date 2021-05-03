@@ -23,18 +23,16 @@ public class SimpleRequestDemo
 
         String queryString = "AA*";
 
-        YahooPriceHistoryRequest aa = new YahooPriceHistoryRequest();
-
         SimpleRequestDemo requestDemo = new SimpleRequestDemo();
 
         try
         {
-            requestDemo.simpleRequest(testTicker);
+            //requestDemo.simpleRequest(testTicker);
             //requestDemo.multiEndpointRequest(testTicker);
             //requestDemo.quoteRequest(testTicker);
             //requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
             //requestDemo.priceHistory(testTicker);
-            //requestDemo.basicLookupQuery(queryString);
+            requestDemo.basicLookupQuery(queryString);
         }
         catch (Exception e)
         {
@@ -124,7 +122,7 @@ public class SimpleRequestDemo
                         .withQuery(query)
                         .withType(Type.EQUITY)
                         .withFormatted(true)
-                        .withCount(20)
+                        .withCount(25)
                         .withStart(0);
 
         String json = client.executeRequest(builder.build());

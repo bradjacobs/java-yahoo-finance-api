@@ -26,42 +26,36 @@ public class YahooRequestValidatorTest
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_TICKER_MSG)
     public void testMissingTicker() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest();
-        req.setEndpoint(CHART);
+        YahooFinanceRequest req = new YahooFinanceRequest.Builder().withEndpoint(CHART).build();
         validator.validationRequest(req);
     }
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_TICKER_MSG)
     public void testBlankTicker() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest();
-        req.setEndpoint(CHART);
-        req.setTicker("");
+        YahooFinanceRequest req = new YahooFinanceRequest.Builder().withEndpoint(CHART).withTicker("").build();
         validator.validationRequest(req);
     }
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_ENDPOINT_MSG)
     public void testMissingEndpoint() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest();
-        req.setTicker("AAPL");
+        YahooFinanceRequest req = new YahooFinanceRequest.Builder().withTicker("AAPL").build();
         validator.validationRequest(req);
     }
 
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_BLANK_PARAM_KEY_MSG)
     public void testBlankKeyParam() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest();
-        req.setTicker("AAPL");
-        req.setEndpoint(CHART);
-        req.addParam("", "some_value");
 
+        YahooFinanceRequest req = new YahooFinanceRequest.Builder()
+                .withEndpoint(CHART)
+                .withTicker("AAPL")
+                .addParameter("", "some_value").build();
         validator.validationRequest(req);
     }
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_MODULES_MSG)
     public void testMissingModules() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest();
-        req.setTicker("AAPL");
-        req.setEndpoint(QUOTE_SUMMARY);
+        YahooFinanceRequest req = new YahooFinanceRequest.Builder().withEndpoint(QUOTE_SUMMARY).withTicker("AAPL").build();
         validator.validationRequest(req);
     }
 

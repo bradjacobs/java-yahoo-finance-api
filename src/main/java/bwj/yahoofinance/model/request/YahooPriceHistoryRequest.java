@@ -12,10 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.ADJ_CLOSE_ONLY;
-import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.ALL;
-import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.CLOSE_ADJCLOSE;
-import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.CLOSE_ONLY;
+import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.*;
 
 public class YahooPriceHistoryRequest extends YahooFinanceRequest
 {
@@ -40,24 +37,18 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
     private static final String INDICATOR_VALUE_ADJ_CLOSE = "adjclose";
 
 
-    public YahooPriceHistoryRequest() {
-        super("", YahooEndpoint.CHART);
+
+    protected YahooPriceHistoryRequest(Builder builder)
+    {
+        super(builder.getEndpoint(), builder.getTicker(), builder.generateParamMap());
     }
 
-    public YahooPriceHistoryRequest(String ticker) {
-        super(ticker, YahooEndpoint.CHART);
-    }
-
-
-    @Override
-    public void setEndpoint(YahooEndpoint endpoints) {
-        // ignore
-    }
 
 
     public static class Builder extends PeriodRangeRequestBuilder<Builder>
     {
         private String ticker;
+        private final YahooEndpoint endpoint = YahooEndpoint.CHART;
         private Range range;
         private Interval interval;
         private Boolean formatted; // this seems only applicable when response includes div or splits
@@ -83,7 +74,6 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             this.range = range;
             return this;
         }
-
 
         public Builder withInterval(Interval inverval) {
             this.interval = inverval;
@@ -116,7 +106,7 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             return this;
         }
 
-        //  convenience methods to have response only return certain fields
+        //  convenience methods for when response is to only return certain fields
         //   (b/c not very intuitive)
         public Builder withIndicatorCloseAdjCloseOnly() {
             this.indicatorFieldSelection = CLOSE_ADJCLOSE;
@@ -152,33 +142,41 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             return this;
         }
 
-        public YahooPriceHistoryRequest build() {
-            YahooPriceHistoryRequest req = new YahooPriceHistoryRequest();
-            req.setTicker(this.ticker);
+        public YahooEndpoint getEndpoint() {
+            return endpoint;
+        }
+
+        public String getTicker() {
+            return ticker;
+        }
+
+        public Map<String,String> generateParamMap() {
+
+            Map<String,String> map = new LinkedHashMap<>();
 
             // if startPeriod is set, then it takes precedence over the 'range' parameter.
             if (this.startPeriod != null)
             {
-                req.addParam(KEY_START, this.startPeriod.toString());
+                map.put(KEY_START, this.startPeriod.toString());
                 if (this.endPeriod != null) {
-                    req.addParam(KEY_END, this.endPeriod.toString());
+                    map.put(KEY_END, this.endPeriod.toString());
                 }
             }
             else if (this.range != null) {
-                req.addParam(KEY_RANGE, this.range.getValue());
+                map.put(KEY_RANGE, this.range.getValue());
             }
 
             if (this.interval != null) {
-                req.addParam(KEY_INTERVAL, this.interval.getValue());
+                map.put(KEY_INTERVAL, this.interval.getValue());
             }
             if (this.formatted != null) {
-                req.addParam(KEY_FORMATTED, this.formatted.toString().toLowerCase());
+                map.put(KEY_FORMATTED, this.formatted.toString().toLowerCase());
             }
 
             if (this.eventValues.size() > 0) {
                 // delim can be ',' or '|'
                 String eventValueString = String.join(",", eventValues);
-                req.addParam(KEY_EVENTS, eventValueString);
+                map.put(KEY_EVENTS, eventValueString);
             }
 
             boolean includeAdjCloseValue = true;
@@ -198,24 +196,27 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
                 includeAdjCloseValue = this.includeAdjustedClose;
             }
 
-            req.addParam(KEY_INCLUDE_ADJ_CLOSE, Boolean.toString(includeAdjCloseValue).toLowerCase());
+            map.put(KEY_INCLUDE_ADJ_CLOSE, Boolean.toString(includeAdjCloseValue).toLowerCase());
             if (indicatorValue != null) {
-                req.addParam(KEY_INDICATORS, indicatorValue);
+                map.put(KEY_INDICATORS, indicatorValue);
             }
             if (this.includeTimestamps != null) {
-                req.addParam(KEY_INCLUDE_TIMESTAMPS, this.includeTimestamps.toString().toLowerCase());
+                map.put(KEY_INCLUDE_TIMESTAMPS, this.includeTimestamps.toString().toLowerCase());
             }
             if (this.includePrePost != null) {
-                req.addParam(KEY_INCLUDE_PRE_POST, this.includePrePost.toString().toLowerCase());
+                map.put(KEY_INCLUDE_PRE_POST, this.includePrePost.toString().toLowerCase());
             }
 
-            req.addParams(paramMap);
+            map.putAll(paramMap);
+            return map;
+        }
+
+        public YahooPriceHistoryRequest build() {
+
+            YahooPriceHistoryRequest req = new YahooPriceHistoryRequest(this);
             return req;
         }
 
-        private long daysToSeconds(int days) {
-            return days * 86400L;
-        }
     }
 
 
