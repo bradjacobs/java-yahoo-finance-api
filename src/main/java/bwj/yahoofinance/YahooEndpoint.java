@@ -26,7 +26,7 @@ import static bwj.yahoofinance.YahooEndpointFlag.*;
  */
 public enum YahooEndpoint
 {
-    QUOTE_SUMMARY("quoteSummary", 10),
+    QUOTE_SUMMARY("quoteSummary", 10),   // NOTE: "formatted=false" stops working on v11
 
     QUOTE("quote", 7, FLAG_SUPPORT_MULTI_TICKERS),
 
@@ -34,7 +34,7 @@ public enum YahooEndpoint
     //  Note:  version 9 of chart requires a 'crumb' but didn't notice any functional difference at initial glance.
     CHART("chart", 8),
 
-    // Spark is really "History" but only will return a "close" and/or "adjclose"
+    // Spark is really "History" but only will return a "close"
     //  Note: spark v8 has a very different (flatter) format than spark v7
     SPARK("spark", 8, FLAG_SUPPORT_MULTI_TICKERS),
 
@@ -42,6 +42,7 @@ public enum YahooEndpoint
     RECOMMENDATIONS_BY_SYMBOL("recommendationsbysymbol", 7),
     ESG_CHART("esgChart", 1, FLAG_REQUIRES_SYMBOL_PARAM),
     ESG_PEER_SCORES("esgPeerScores", 1, FLAG_REQUIRES_SYMBOL_PARAM),
+
 
     //   Query endpoints  (not ready yet)
     LOOKUP("lookup", 1, FLAG_IS_QUERY),
@@ -60,6 +61,11 @@ public enum YahooEndpoint
 
     // note: QuoteType is virtually identical to ".../quoteSummary/____?modules=quoteType"
     QUOTE_TYPE("quoteType/", 1, FLAG_REQUIRES_SYMBOL_PARAM);  // trailing slash _IS_ required in this case)
+
+
+    //  Region requests  (not ready yet)
+    //MARKET_SUMMARY("quote/marketSummary", 6),
+    //TRENDING("trending/", 1),   // 'trending/US' or 'trending/?region=US'
 
 
     private final String name;
