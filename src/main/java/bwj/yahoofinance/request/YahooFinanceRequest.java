@@ -63,7 +63,6 @@ public class YahooFinanceRequest
 
         private Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
 
-        private static final String KEY_MODULES = "modules";
 
         public Builder() { }
 
@@ -125,7 +124,7 @@ public class YahooFinanceRequest
             // slightly pedantic, but want modules in front (if applicable)
             if (YahooEndpoint.QUOTE_SUMMARY.equals(this.endpoint) && this.modules.size() > 0)
             {
-                paramMap.put(KEY_MODULES, generateModuleList(this.modules));
+                paramMap.put(ParamKeys.MODULES, generateModuleList(this.modules));
             }
             paramMap.putAll(this.paramMap);
             return paramMap;

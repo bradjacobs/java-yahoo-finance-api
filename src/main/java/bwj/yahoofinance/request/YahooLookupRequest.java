@@ -9,20 +9,10 @@ import bwj.yahoofinance.enums.Type;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class YahooLookupRequest extends YahooFinanceRequest {
-    private static final String KEY_QUERY = "query";
-    private static final String KEY_FORMATTED = "formatted";
-    private static final String KEY_TYPE = "type";
-    private static final String KEY_START = "start";
-    private static final String KEY_COUNT = "count";
-
+public class YahooLookupRequest extends YahooFinanceRequest
+{
     private final int count;
     private final int start;
-
-    // can add these later
-//    private static final String KEY_LANG = "lang";
-//    private static final String KEY_REGION = "region";
-//    private static final String KEY_CORS_DOMAIN = "corsDomain";
 
     protected YahooLookupRequest(Builder builder)
     {
@@ -34,8 +24,8 @@ public class YahooLookupRequest extends YahooFinanceRequest {
         super(endpoint, "", paramMap);
         this.count = count;
         this.start = start;
-        paramMap.put(KEY_COUNT, String.valueOf(count));
-        paramMap.put(KEY_START, String.valueOf(start));
+        paramMap.put(ParamKeys.COUNT, String.valueOf(count));
+        paramMap.put(ParamKeys.START, String.valueOf(start));
     }
 
 
@@ -110,15 +100,15 @@ public class YahooLookupRequest extends YahooFinanceRequest {
         {
             Map<String,String> map = new LinkedHashMap<>();
             if (this.query != null) {
-                map.put(KEY_QUERY, query.trim());
+                map.put(ParamKeys.QUERY, query.trim());
             }
             if (! this.includeTotalsOnly)
             {
                 if (this.type != null) {
-                    map.put(KEY_TYPE, type.toString().toLowerCase());
+                    map.put(ParamKeys.TYPE, type.toString().toLowerCase());
                 }
                 if (this.formatted != null) {
-                    map.put(KEY_FORMATTED, formatted.toString().trim().toLowerCase());
+                    map.put(ParamKeys.FORMATTED, formatted.toString().trim().toLowerCase());
                 }
                 map.putAll(paramMap);
             }

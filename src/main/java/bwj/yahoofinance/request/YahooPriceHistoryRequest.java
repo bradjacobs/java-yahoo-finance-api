@@ -16,20 +16,6 @@ import static bwj.yahoofinance.request.YahooPriceHistoryRequest.IndicatorFieldSe
 
 public class YahooPriceHistoryRequest extends YahooFinanceRequest
 {
-    private static final String KEY_RANGE = "range";
-    private static final String KEY_START = "period1";
-    private static final String KEY_END = "period2";
-    private static final String KEY_INTERVAL = "interval";
-    private static final String KEY_INCLUDE_ADJ_CLOSE = "includeAdjustedClose";
-    private static final String KEY_EVENTS = "events";
-    private static final String KEY_INDICATORS = "indicators";
-    private static final String KEY_FORMATTED = "formatted"; // only seems applicable when response includes div or splits
-    private static final String KEY_INCLUDE_TIMESTAMPS = "includeTimestamps"; // default is true when unset
-    private static final String KEY_INCLUDE_PRE_POST = "includePrePost"; // not applicable with bigger intervals
-
-    //private static final String KEY_NUMBER_OF_POINTS = "numberOfPoints";
-    //private static final String KEY_USE_YFID = "useYfid";
-
     private static final String EVENT_VALUE_DIV = "div";
     private static final String EVENT_VALUE_SPLITS = "split";
 
@@ -37,12 +23,10 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
     private static final String INDICATOR_VALUE_ADJ_CLOSE = "adjclose";
 
 
-
     protected YahooPriceHistoryRequest(Builder builder)
     {
         super(builder.getEndpoint(), builder.getTicker(), builder.generateParamMap());
     }
-
 
 
     public static class Builder extends PeriodRangeRequestBuilder<Builder>
@@ -157,26 +141,26 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             // if startPeriod is set, then it takes precedence over the 'range' parameter.
             if (this.startPeriod != null)
             {
-                map.put(KEY_START, this.startPeriod.toString());
+                map.put(ParamKeys.PERIOD1, this.startPeriod.toString());
                 if (this.endPeriod != null) {
-                    map.put(KEY_END, this.endPeriod.toString());
+                    map.put(ParamKeys.PERIOD2, this.endPeriod.toString());
                 }
             }
             else if (this.range != null) {
-                map.put(KEY_RANGE, this.range.getValue());
+                map.put(ParamKeys.RANGE, this.range.getValue());
             }
 
             if (this.interval != null) {
-                map.put(KEY_INTERVAL, this.interval.getValue());
+                map.put(ParamKeys.INTERVAL, this.interval.getValue());
             }
             if (this.formatted != null) {
-                map.put(KEY_FORMATTED, this.formatted.toString().toLowerCase());
+                map.put(ParamKeys.FORMATTED, this.formatted.toString().toLowerCase());
             }
 
             if (this.eventValues.size() > 0) {
                 // delim can be ',' or '|'
                 String eventValueString = String.join(",", eventValues);
-                map.put(KEY_EVENTS, eventValueString);
+                map.put(ParamKeys.EVENTS, eventValueString);
             }
 
             boolean includeAdjCloseValue = true;
@@ -196,15 +180,15 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
                 includeAdjCloseValue = this.includeAdjustedClose;
             }
 
-            map.put(KEY_INCLUDE_ADJ_CLOSE, Boolean.toString(includeAdjCloseValue).toLowerCase());
+            map.put(ParamKeys.INCLUDE_ADJ_CLOSE, Boolean.toString(includeAdjCloseValue).toLowerCase());
             if (indicatorValue != null) {
-                map.put(KEY_INDICATORS, indicatorValue);
+                map.put(ParamKeys.INDICATORS, indicatorValue);
             }
             if (this.includeTimestamps != null) {
-                map.put(KEY_INCLUDE_TIMESTAMPS, this.includeTimestamps.toString().toLowerCase());
+                map.put(ParamKeys.INCLUDE_TIMESTAMPS, this.includeTimestamps.toString().toLowerCase());
             }
             if (this.includePrePost != null) {
-                map.put(KEY_INCLUDE_PRE_POST, this.includePrePost.toString().toLowerCase());
+                map.put(ParamKeys.INCLUDE_PRE_POST, this.includePrePost.toString().toLowerCase());
             }
 
             map.putAll(paramMap);
