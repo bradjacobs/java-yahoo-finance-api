@@ -18,7 +18,7 @@ public class YahooFinanceRequest
 {
     private String ticker;
     private YahooEndpoint endpoint;
-    protected Map<String,String> paramMap = new LinkedHashMap<>();
+    protected final Map<String,String> paramMap = new LinkedHashMap<>(); // maintains order in which params are added.
 
     public YahooFinanceRequest() { }
 
@@ -110,7 +110,7 @@ public class YahooFinanceRequest
             req.setEndpoint(this.endpoint);
 
             if (this.tickers.size() > 0 && this.endpoint != null) {
-                if (endpoint.isSupportsMultipleTickers()) {
+                if (endpoint.getSupportsMultipleTickers()) {
                     req.setTicker(String.join(",", this.tickers));
                 }
                 else {

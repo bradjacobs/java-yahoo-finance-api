@@ -40,30 +40,43 @@ public enum YahooEndpoint
 
     VALIDATE("quote/validate", 6, FLAG_SUPPORT_MULTI_TICKERS),
     RECOMMENDATIONS_BY_SYMBOL("recommendationsbysymbol", 7),
-    ESG_CHART("esgChart", 1),
-    ESG_PEER_SCORES("esgPeerScores", 1),
+    ESG_CHART("esgChart", 1, FLAG_REQUIRES_SYMBOL_PARAM),
+    ESG_PEER_SCORES("esgPeerScores", 1, FLAG_REQUIRES_SYMBOL_PARAM),
 
     //   Query endpoints  (not ready yet)
     LOOKUP("lookup", 1, FLAG_IS_QUERY),
     LOOKUP_TOTALS("lookup/totals", 1, FLAG_IS_QUERY),
-    //SCREENER("screener", 1, FLAG_IS_QUERY),
+    //SCREENER("screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
+    //VISUALIZATION("visualization", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
+
+
+    TIMESERIES("timeseries", 1, "ws/fundamentals-timeseries/"),
+    INSIGHTS("insights", 2, "ws/insights/", FLAG_REQUIRES_SYMBOL_PARAM),
+    TECHNICAL_EVENTS("nonsubscriber/technicalevents", 1, "/ws/market-analytics/", FLAG_REQUIRES_SYMBOL_PARAM),
 
     OPTIONS("options", 7);
 
 
     private final String name;
     private final int version;
+    private final String pathPrefix;
     private final boolean supportsMultipleTickers;
+    private final boolean requiresSymbolParam;
     private final boolean isQuery;
 
-    YahooEndpoint(String name, int version) {
-        this(name, version, new YahooEndpointFlag[0]);
-    }
     YahooEndpoint(String name, int version, YahooEndpointFlag ... flags) {
+        this(name, version, "", flags);
+    }
+    YahooEndpoint(String name, int version, String pathPrefix) {
+        this(name, version, pathPrefix, new YahooEndpointFlag[0]);
+    }
+    YahooEndpoint(String name, int version, String pathPrefix, YahooEndpointFlag ... flags) {
         Set<YahooEndpointFlag> flagSet = new HashSet<>(Arrays.asList(flags));
         this.name = name;
         this.version = version;
+        this.pathPrefix = pathPrefix;
         this.supportsMultipleTickers = flagSet.contains(FLAG_SUPPORT_MULTI_TICKERS);
+        this.requiresSymbolParam = flagSet.contains(FLAG_REQUIRES_SYMBOL_PARAM);
         this.isQuery = flagSet.contains(FLAG_IS_QUERY);
     }
 
@@ -76,11 +89,26 @@ public enum YahooEndpoint
         return version;
     }
 
-    public boolean isSupportsMultipleTickers() {
+    public boolean getSupportsMultipleTickers() {
         return supportsMultipleTickers;
     }
 
-    public boolean isQuery() {
+    public boolean getRequiresSymbolParam() {
+        return requiresSymbolParam;
+    }
+
+    public boolean getIsQuery() {
         return isQuery;
     }
+
+    public String getPathPrefix() {
+        return pathPrefix;
+    }
+
+    //    v8/finance/chart/
+//    v10/finance/quoteSummary/
+//      - [ ] .../ws/insights/v2/finance/insights?symbol=AAPL
+//    - [ ] .../ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?period1=x&period2=y&typee=z&.."
+//    - [ ] .../ws/market-analytics/v1/finance/nonsubscriber/technicalevents?symbol=AAPL"
+
 }

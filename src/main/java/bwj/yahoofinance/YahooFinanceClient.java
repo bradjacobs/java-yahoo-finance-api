@@ -19,7 +19,6 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 public class YahooFinanceClient
 {
@@ -89,16 +88,14 @@ public class YahooFinanceClient
         builder.setHost(BASE_API_HOST);
 
         //  e.g. /v8/finance/chart/AAPL
-        String path = "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
+        String path = endpoint.getPathPrefix() + "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
 
-        if (! endpoint.isQuery())
+        if (! endpoint.getIsQuery())
         {
-            if (endpoint.isSupportsMultipleTickers()) {
-                // __ note: still need to add support for multi-tickers here __
+            if (endpoint.getSupportsMultipleTickers()) {
                 builder.addParameter("symbols", ticker);
             }
-            else if (endpoint.getVersion() == 1) {
-                // TO REVIEW if only applicable for version 1
+            else if (endpoint.getRequiresSymbolParam()) {
                 builder.addParameter("symbol", ticker);
             }
             else {
