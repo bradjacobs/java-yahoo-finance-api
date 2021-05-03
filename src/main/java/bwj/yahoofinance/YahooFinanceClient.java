@@ -3,7 +3,9 @@
  */
 package bwj.yahoofinance;
 
-import bwj.yahoofinance.model.request.YahooFinanceRequest;
+import bwj.yahoofinance.enums.YahooEndpoint;
+import bwj.yahoofinance.request.YahooFinanceRequest;
+import bwj.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.HttpResponseException;

@@ -1,9 +1,9 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.model.request;
+package bwj.yahoofinance.request;
 
-import bwj.yahoofinance.converter.EpochSecondsConverter;
+import bwj.yahoofinance.converter.datetime.EpochSecondsConverter;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

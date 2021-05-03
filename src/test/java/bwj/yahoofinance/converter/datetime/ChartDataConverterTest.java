@@ -1,9 +1,9 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.converter;
+package bwj.yahoofinance.converter.datetime;
 
-import bwj.yahoofinance.model.data.PriceHistoryRecord;
+import bwj.yahoofinance.model.PriceHistoryRecord;
 import bwj.yahoofinance.util.ChartDataConverter;
 import org.testng.annotations.Test;
 

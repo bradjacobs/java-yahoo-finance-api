@@ -1,11 +1,11 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.model.request;
+package bwj.yahoofinance.request;
 
 
-import bwj.yahoofinance.YahooEndpoint;
-import bwj.yahoofinance.YahooModule;
+import bwj.yahoofinance.enums.YahooEndpoint;
+import bwj.yahoofinance.enums.YahooModule;
 
 import java.util.Arrays;
 import java.util.Collections;

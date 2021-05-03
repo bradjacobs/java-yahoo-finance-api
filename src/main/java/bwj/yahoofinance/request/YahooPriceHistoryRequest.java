@@ -1,18 +1,18 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.model.request;
+package bwj.yahoofinance.request;
 
-import bwj.yahoofinance.YahooEndpoint;
-import bwj.yahoofinance.model.params.Interval;
-import bwj.yahoofinance.model.params.Range;
+import bwj.yahoofinance.enums.YahooEndpoint;
+import bwj.yahoofinance.enums.Interval;
+import bwj.yahoofinance.enums.Range;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static bwj.yahoofinance.model.request.YahooPriceHistoryRequest.IndicatorFieldSelection.*;
+import static bwj.yahoofinance.request.YahooPriceHistoryRequest.IndicatorFieldSelection.*;
 
 public class YahooPriceHistoryRequest extends YahooFinanceRequest
 {

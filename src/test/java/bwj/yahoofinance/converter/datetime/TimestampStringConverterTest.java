@@ -1,8 +1,9 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.converter;
+package bwj.yahoofinance.converter.datetime;
 
+import bwj.yahoofinance.converter.datetime.TimestampStringConverter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

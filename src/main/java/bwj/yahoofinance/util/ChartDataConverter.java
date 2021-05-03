@@ -3,7 +3,7 @@
  */
 package bwj.yahoofinance.util;
 
-import bwj.yahoofinance.model.data.PriceHistoryRecord;
+import bwj.yahoofinance.model.PriceHistoryRecord;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

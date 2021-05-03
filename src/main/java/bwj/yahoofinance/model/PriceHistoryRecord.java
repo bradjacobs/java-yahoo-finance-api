@@ -1,7 +1,7 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.model.data;
+package bwj.yahoofinance.model;
 
 /**
  * Represents a unique record entry from a CHART response

@@ -1,7 +1,8 @@
 package bwj.yahoofinance.model.request;
 
-import bwj.yahoofinance.model.params.Interval;
-import bwj.yahoofinance.model.params.Range;
+import bwj.yahoofinance.enums.Interval;
+import bwj.yahoofinance.enums.Range;
+import bwj.yahoofinance.request.YahooPriceHistoryRequest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

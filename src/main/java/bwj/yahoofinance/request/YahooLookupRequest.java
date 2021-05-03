@@ -1,10 +1,10 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.model.request;
+package bwj.yahoofinance.request;
 
-import bwj.yahoofinance.YahooEndpoint;
-import bwj.yahoofinance.model.params.Type;
+import bwj.yahoofinance.enums.YahooEndpoint;
+import bwj.yahoofinance.enums.Type;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -4,15 +4,14 @@
 package bwj.yahoofinance.examples;
 
 import bwj.yahoofinance.YahooFinanceClient;
-import bwj.yahoofinance.model.params.Interval;
-import bwj.yahoofinance.model.params.Range;
-import bwj.yahoofinance.model.params.Type;
-import bwj.yahoofinance.model.request.YahooFinanceRequest;
-import bwj.yahoofinance.model.request.YahooLookupRequest;
-import bwj.yahoofinance.model.request.YahooPriceHistoryRequest;
+import bwj.yahoofinance.enums.Interval;
+import bwj.yahoofinance.enums.Type;
+import bwj.yahoofinance.request.YahooFinanceRequest;
+import bwj.yahoofinance.request.YahooLookupRequest;
+import bwj.yahoofinance.request.YahooPriceHistoryRequest;
 
-import static bwj.yahoofinance.YahooEndpoint.*;
-import static bwj.yahoofinance.YahooModule.*;
+import static bwj.yahoofinance.enums.YahooEndpoint.*;
+import static bwj.yahoofinance.enums.YahooModule.*;
 
 public class SimpleRequestDemo
 {

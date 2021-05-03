@@ -13,11 +13,6 @@
 - [ ] Add logger support (log4j, slf4j, etc, ...)
 - [ ] Add screener query support
   - [ ] Include any cookie/crumb handling (as needed)
-- [ ] Devise simpler way for handling all params for a 'Price History' call
-  - [ ] range, interval, period1, period1
-  - [ ] events=div,split,...
-  - [ ] indicators= (close | adjclose | close%7Cadjclose)
-  - [ ] (others)
 - [ ] Add rudimentary 'retry' logic when certain exceptions occur.
 - [ ] Confirm not pulling in 2 or more different versions for any given maven dependency
 - [ ] Check and handle ticker symbol formatting
@@ -37,6 +32,11 @@
     - [x] .../ws/insights/v2/finance/insights?symbol=AAPL
     - [x] .../ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?period1=x&period2=y&typee=z&.."
     - [x] .../ws/market-analytics/v1/finance/nonsubscriber/technicalevents?symbol=AAPL"
+- [x] Devise simpler way for handling all params for a 'Price History' call
+  - [x] range, interval, period1, period1
+  - [x] events=div,split,...
+  - [x] indicators= (close | adjclose | close%7Cadjclose)
+  - [x] (others)    
 <br>
 
 #### distant backlog and random ideas ( lower priority and may or may not get to)
