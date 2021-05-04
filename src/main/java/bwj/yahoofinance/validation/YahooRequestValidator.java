@@ -4,13 +4,42 @@
 package bwj.yahoofinance.validation;
 
 import bwj.yahoofinance.enums.YahooEndpoint;
+import bwj.yahoofinance.request.ParamKeys;
 import bwj.yahoofinance.request.YahooFinanceRequest;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static bwj.yahoofinance.enums.YahooEndpoint.*;
+
 
 public class YahooRequestValidator
 {
+    private static final Map<YahooEndpoint, List<String>> requiredParamsMap = new HashMap<>();
+
+    // list of any 'required' url params for a given endpoint.
+    static {
+        // todo: need to look for a better home
+        requiredParamsMap.put(ESG_CHART, Collections.singletonList(ParamKeys.SYMBOL));
+        requiredParamsMap.put(ESG_PEER_SCORES, Collections.singletonList(ParamKeys.SYMBOL));
+        requiredParamsMap.put(INSIGHTS, Collections.singletonList(ParamKeys.SYMBOL));
+        requiredParamsMap.put(LOOKUP, Collections.singletonList(ParamKeys.QUERY));
+        requiredParamsMap.put(LOOKUP_TOTALS, Collections.singletonList(ParamKeys.QUERY));
+        requiredParamsMap.put(QUOTE, Collections.singletonList(ParamKeys.SYMBOLS));
+        requiredParamsMap.put(QUOTE_SUMMARY, Collections.singletonList(ParamKeys.MODULES));
+        requiredParamsMap.put(QUOTE_TYPE, Collections.singletonList(ParamKeys.SYMBOL));
+        requiredParamsMap.put(SEARCH, Collections.singletonList(ParamKeys.Q));
+        requiredParamsMap.put(SPARK, Collections.singletonList(ParamKeys.SYMBOLS));
+        requiredParamsMap.put(TECHNICAL_EVENTS, Collections.singletonList(ParamKeys.SYMBOL));
+        requiredParamsMap.put(TIMESERIES, Arrays.asList(ParamKeys.PERIOD1, ParamKeys.PERIOD2));
+        requiredParamsMap.put(VALIDATE, Collections.singletonList(ParamKeys.SYMBOLS));
+    }
+
+
     public void validationRequest(YahooFinanceRequest request)
     {
         if (request == null) {
@@ -28,7 +57,11 @@ public class YahooRequestValidator
 
 
         Map<String, String> paramMap = request.getParamMap();
-        if (paramMap != null && !paramMap.isEmpty())
+        if (paramMap == null) {
+            paramMap = Collections.emptyMap();
+        }
+
+        if (!paramMap.isEmpty())
         {
             for (Map.Entry<String, String> entry : paramMap.entrySet()) {
                 if (StringUtils.isEmpty(entry.getKey())) {
@@ -39,16 +72,12 @@ public class YahooRequestValidator
             }
         }
 
-        if (endpoint.equals(YahooEndpoint.QUOTE_SUMMARY))
+        List<String> requiredParams = requiredParamsMap.get(endpoint);
+        if (requiredParams != null)
         {
-            String modulesValue = null;
-            if (paramMap != null) {
-                modulesValue = paramMap.get("modules");
-            }
-
-            if (StringUtils.isEmpty(modulesValue)) {
-                // this particular case want to catch before even trying to make Http request.
-                throw new IllegalArgumentException("QuoteSummary endpoint must have 1 or more modules value.");
+            for (String requiredParam : requiredParams) {
+                String paramValue = paramMap.get(requiredParam);
+                throw new IllegalArgumentException(String.format("Endpoint %s is missing required parameter '%s'.", endpoint, requiredParam));
             }
         }
     }

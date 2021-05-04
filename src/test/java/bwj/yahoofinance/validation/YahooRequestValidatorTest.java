@@ -17,7 +17,7 @@ public class YahooRequestValidatorTest
     private static final String EXPECTED_MISSING_TICKER_MSG = "Request is missing a valid ticker value.";
     private static final String EXPECTED_MISSING_ENDPOINT_MSG = "Request is missing endpoint value.";
     private static final String EXPECTED_BLANK_PARAM_KEY_MSG = "Cannot have a blank parameter key";
-    private static final String EXPECTED_MISSING_MODULES_MSG = "QuoteSummary endpoint must have 1 or more modules value.";
+    private static final String EXPECTED_MISSING_MODULES_MSG = "Endpoint QUOTE_SUMMARY is missing required parameter 'modules'.";
 
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_REQUEST_MSG)
