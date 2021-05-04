@@ -1,7 +1,7 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.request;
+package bwj.yahoofinance.request.builder;
 
 import bwj.yahoofinance.converter.datetime.EpochSecondsConverter;
 
@@ -17,7 +17,7 @@ import java.util.Date;
  * DEV NOTE: this is probably overkill and when discovered that certain methods will never
  *    get used, then they will be subject to 'pruning'
  */
-abstract class PeriodRangeRequestBuilder<T extends PeriodRangeRequestBuilder<T>>
+abstract public class PeriodRequestParamBuilder<T extends PeriodRequestParamBuilder<T>> extends BaseRequestParamBuilder<T>
 {
     private static final EpochSecondsConverter epochSecondsConverter = new EpochSecondsConverter();
     private static final ZoneId GMT_ZONE = ZoneId.of("GMT");

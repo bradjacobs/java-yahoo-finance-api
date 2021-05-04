@@ -3,8 +3,9 @@
  */
 package bwj.yahoofinance.request;
 
-import bwj.yahoofinance.enums.YahooEndpoint;
 import bwj.yahoofinance.enums.Type;
+import bwj.yahoofinance.enums.YahooEndpoint;
+import bwj.yahoofinance.request.builder.BaseRequestParamBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,13 +15,9 @@ public class YahooLookupRequest extends YahooFinanceRequest
     private final int count;
     private final int start;
 
-    protected YahooLookupRequest(Builder builder)
-    {
-        this(builder.getEndpoint(), builder.generateParamMap(), builder.getCount(), builder.getStart());
-    }
-
     protected YahooLookupRequest(YahooEndpoint endpoint, Map<String,String> paramMap, int count, int start)
     {
+        // todo: this code block is on the 'to revisit' list.
         super(endpoint, "", paramMap);
         this.count = count;
         this.start = start;
@@ -45,7 +42,7 @@ public class YahooLookupRequest extends YahooFinanceRequest
     }
 
 
-    public static class Builder
+    public static class Builder extends BaseRequestParamBuilder<Builder>
     {
         private String query;
         private Boolean formatted;
@@ -54,8 +51,6 @@ public class YahooLookupRequest extends YahooFinanceRequest
         private int start = 0; // default
         private boolean includeTotalsOnly = false;
 
-        // for any other misc params
-        private Map<String,String> paramMap = new LinkedHashMap<>();
 
         public Builder withQuery(String query) {
             this.query = query;
@@ -82,21 +77,9 @@ public class YahooLookupRequest extends YahooFinanceRequest
             return this;
         }
 
-        public Builder addParameter(String key, String value) {
-            this.paramMap.put(key, value);
-            return this;
-        }
 
-        private YahooEndpoint getEndpoint() {
-            if (includeTotalsOnly) {
-                return YahooEndpoint.LOOKUP_TOTALS;
-            }
-            else {
-                return YahooEndpoint.LOOKUP;
-            }
-        }
-
-        private Map<String,String> generateParamMap()
+        @Override
+        protected Map<String, String> buildRequestSpecificMap()
         {
             Map<String,String> map = new LinkedHashMap<>();
             if (this.query != null) {
@@ -108,12 +91,12 @@ public class YahooLookupRequest extends YahooFinanceRequest
                     map.put(ParamKeys.TYPE, type.toString().toLowerCase());
                 }
                 if (this.formatted != null) {
-                    map.put(ParamKeys.FORMATTED, formatted.toString().trim().toLowerCase());
+                    map.put(ParamKeys.FORMATTED, formatted.toString());
                 }
-                map.putAll(paramMap);
             }
             return map;
         }
+
 
         public int getCount() {
             return count;
@@ -124,11 +107,16 @@ public class YahooLookupRequest extends YahooFinanceRequest
         }
 
 
-        public YahooLookupRequest build() {
-            YahooLookupRequest req = new YahooLookupRequest(this);
-
+        public YahooLookupRequest build()
+        {
+            YahooEndpoint endpoint = includeTotalsOnly ? YahooEndpoint.LOOKUP_TOTALS : YahooEndpoint.LOOKUP;
+            YahooLookupRequest req = new YahooLookupRequest(endpoint, this.buildParamMap(), count, start);
             return req;
         }
 
+        @Override
+        protected Builder getThis() {
+            return this;
+        }
     }
 }

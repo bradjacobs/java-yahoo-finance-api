@@ -6,6 +6,8 @@ package bwj.yahoofinance.request;
 
 import bwj.yahoofinance.enums.YahooEndpoint;
 import bwj.yahoofinance.enums.YahooModule;
+import bwj.yahoofinance.request.builder.BaseRequestParamBuilder;
+import bwj.yahoofinance.request.builder.PeriodRequestParamBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,13 +22,6 @@ public class YahooFinanceRequest
     protected final YahooEndpoint endpoint;
     protected final String ticker;
     protected final Map<String,String> paramMap;
-
-    protected YahooFinanceRequest(Builder builder)
-    {
-        this.endpoint = builder.getEndpoint();
-        this.ticker = builder.getTickerString();
-        this.paramMap = builder.getParamMap();
-    }
 
     protected YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap)
     {
@@ -53,14 +48,12 @@ public class YahooFinanceRequest
     }
 
 
-    public static class Builder {
-
+    public static class Builder extends BaseRequestParamBuilder<Builder>
+    {
         private YahooEndpoint endpoint = null;
 
         // use collection to allow for case where some endpoints allow multiple ticker values
         private Set<String> tickers = new LinkedHashSet<>();  // preserve insertion order
-        private Map<String,String> paramMap = new LinkedHashMap<>();
-
         private Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
 
 
@@ -94,17 +87,22 @@ public class YahooFinanceRequest
             return this;
         }
 
-        public Builder addParameter(String key, String value) {
-            this.paramMap.put(key, value);
-            return this;
+        public YahooFinanceRequest build() {
+
+            String tickerStr = generateTickerString();
+            Map<String, String> paramMap = buildParamMap();
+
+            YahooFinanceRequest req = new YahooFinanceRequest(this.endpoint, tickerStr, paramMap);
+            validateRequestObject(req);
+            return req;
         }
 
 
-        private YahooEndpoint getEndpoint() {
-            return this.endpoint;
+        private void validateRequestObject(YahooFinanceRequest req) {
+            // TBD
         }
 
-        private String getTickerString() {
+        private String generateTickerString() {
             if (this.tickers.size() > 0 && this.endpoint != null) {
                 if (endpoint.getSupportsMultipleTickers()) {
                     return String.join(",", this.tickers);
@@ -116,28 +114,22 @@ public class YahooFinanceRequest
             return "";
         }
 
-        private Map<String,String> getParamMap()
-        {
-            // give a 'copy' of the param map
-            Map<String, String> paramMap = new LinkedHashMap<>();
 
-            // slightly pedantic, but want modules in front (if applicable)
+
+        @Override
+        protected Builder getThis() {
+            return this;
+        }
+
+        @Override
+        protected Map<String, String> buildRequestSpecificMap() {
+
+            Map<String,String> requestParamMap = new LinkedHashMap<>();
             if (YahooEndpoint.QUOTE_SUMMARY.equals(this.endpoint) && this.modules.size() > 0)
             {
-                paramMap.put(ParamKeys.MODULES, generateModuleList(this.modules));
+                requestParamMap.put(ParamKeys.MODULES, generateModuleList(this.modules));
             }
-            paramMap.putAll(this.paramMap);
-            return paramMap;
-        }
-
-        public YahooFinanceRequest build() {
-            YahooFinanceRequest req = new YahooFinanceRequest(this);
-            validateRequestObject(req);
-            return req;
-        }
-
-        private void validateRequestObject(YahooFinanceRequest req) {
-            // TBD
+            return requestParamMap;
         }
 
         private String generateModuleList(Set<YahooModule> modules)
@@ -151,6 +143,7 @@ public class YahooFinanceRequest
             }
             return sb.toString();
         }
+
     }
 
 }

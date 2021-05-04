@@ -6,6 +6,7 @@ package bwj.yahoofinance.request;
 import bwj.yahoofinance.enums.YahooEndpoint;
 import bwj.yahoofinance.enums.Interval;
 import bwj.yahoofinance.enums.Range;
+import bwj.yahoofinance.request.builder.PeriodRequestParamBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -22,14 +23,12 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
     private static final String INDICATOR_VALUE_CLOSE = "close";
     private static final String INDICATOR_VALUE_ADJ_CLOSE = "adjclose";
 
-
-    protected YahooPriceHistoryRequest(Builder builder)
-    {
-        super(builder.getEndpoint(), builder.getTicker(), builder.generateParamMap());
+    protected YahooPriceHistoryRequest(YahooEndpoint endpoint, String ticker, Map<String, String> paramMap) {
+        super(endpoint, ticker, paramMap);
     }
 
 
-    public static class Builder extends PeriodRangeRequestBuilder<Builder>
+    public static class Builder extends PeriodRequestParamBuilder<Builder>
     {
         private String ticker;
         private final YahooEndpoint endpoint = YahooEndpoint.CHART;
@@ -42,8 +41,6 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
         private Boolean includeTimestamps;
         private Boolean includePrePost;
 
-        // for any other misc params
-        private Map<String,String> paramMap = new LinkedHashMap<>();
 
         @Override
         protected Builder getThis() {
@@ -119,23 +116,8 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
             return this;
         }
 
-        public Builder withParam(String key, String value) {
-            if (key != null && value != null) {
-                this.paramMap.put(key.trim(), value.trim());
-            }
-            return this;
-        }
-
-        public YahooEndpoint getEndpoint() {
-            return endpoint;
-        }
-
-        public String getTicker() {
-            return ticker;
-        }
-
-        public Map<String,String> generateParamMap() {
-
+        @Override
+        protected Map<String, String> buildRequestSpecificMap() {
             Map<String,String> map = new LinkedHashMap<>();
 
             // if startPeriod is set, then it takes precedence over the 'range' parameter.
@@ -154,7 +136,7 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
                 map.put(ParamKeys.INTERVAL, this.interval.getValue());
             }
             if (this.formatted != null) {
-                map.put(ParamKeys.FORMATTED, this.formatted.toString().toLowerCase());
+                map.put(ParamKeys.FORMATTED, this.formatted.toString());
             }
 
             if (this.eventValues.size() > 0) {
@@ -180,27 +162,25 @@ public class YahooPriceHistoryRequest extends YahooFinanceRequest
                 includeAdjCloseValue = this.includeAdjustedClose;
             }
 
-            map.put(ParamKeys.INCLUDE_ADJ_CLOSE, Boolean.toString(includeAdjCloseValue).toLowerCase());
+            map.put(ParamKeys.INCLUDE_ADJ_CLOSE, Boolean.toString(includeAdjCloseValue));
             if (indicatorValue != null) {
                 map.put(ParamKeys.INDICATORS, indicatorValue);
             }
             if (this.includeTimestamps != null) {
-                map.put(ParamKeys.INCLUDE_TIMESTAMPS, this.includeTimestamps.toString().toLowerCase());
+                map.put(ParamKeys.INCLUDE_TIMESTAMPS, this.includeTimestamps.toString());
             }
             if (this.includePrePost != null) {
-                map.put(ParamKeys.INCLUDE_PRE_POST, this.includePrePost.toString().toLowerCase());
+                map.put(ParamKeys.INCLUDE_PRE_POST, this.includePrePost.toString());
             }
 
-            map.putAll(paramMap);
             return map;
         }
 
         public YahooPriceHistoryRequest build() {
 
-            YahooPriceHistoryRequest req = new YahooPriceHistoryRequest(this);
+            YahooPriceHistoryRequest req = new YahooPriceHistoryRequest(this.endpoint, this.ticker, this.buildParamMap());
             return req;
         }
-
     }
 
 

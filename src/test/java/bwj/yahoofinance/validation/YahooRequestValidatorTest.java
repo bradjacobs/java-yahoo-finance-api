@@ -50,7 +50,7 @@ public class YahooRequestValidatorTest
         YahooFinanceRequest req = new YahooFinanceRequest.Builder()
                 .withEndpoint(CHART)
                 .withTicker("AAPL")
-                .addParameter("", "some_value").build();
+                .addParam("", "some_value").build();
         validator.validationRequest(req);
     }
 
