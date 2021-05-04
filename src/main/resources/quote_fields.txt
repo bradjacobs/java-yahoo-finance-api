@@ -8,6 +8,7 @@ beta
 bid
 bidSize
 bookValue
+contractSymbol
 currency
 displayName
 dividendDate
