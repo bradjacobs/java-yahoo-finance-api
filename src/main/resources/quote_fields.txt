@@ -102,6 +102,8 @@ totalCash
 tradeable
 trailingAnnualDividendRate
 trailingAnnualDividendYield
+trailingThreeMonthNavReturns
+trailingThreeMonthReturns
 trailingPE
 triggerable
 twoHundredDayAverage
@@ -110,3 +112,4 @@ twoHundredDayAverageChangePercent
 underlyingExchangeSymbol
 underlyingSymbol
 uuid
+ytdReturn
