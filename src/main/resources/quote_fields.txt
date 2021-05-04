@@ -27,6 +27,8 @@ exchangeDataDelayedBy
 exchangeTimezoneName
 exchangeTimezoneShortName
 exDividendDate
+expireDate
+expireIsoDate
 fiftyDayAverage
 fiftyDayAverageChange
 fiftyDayAverageChangePercent
@@ -64,6 +66,7 @@ morningstarStewardshipRating
 morningstarUncertaintyRating
 netMargin
 oneYearEpsGrowth
+openInterest
 pegRatio
 postMarketChange
 postMarketChangePercent
@@ -92,6 +95,7 @@ sharesShort
 shortName
 shortRatio
 sourceInterval
+strike
 symbol
 targetPriceMean
 totalCash
