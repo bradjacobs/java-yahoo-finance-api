@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,6 @@ import java.util.Map;
  * Given a JSON response from a chart endpoint request (i.e.  v8/finance/chart/{symbol} ),
  *  see if can convert the data into a more friendly format.
  *
- *  Note: this is a still a prototype to see how conversion might work
- *     still needs error case handling.
  */
 public class ChartDataConverter
 {
@@ -61,19 +60,44 @@ public class ChartDataConverter
 
         List<Map<String, Number>> resultKeyValueList = new ArrayList<>();
 
+        if (timestampValues == null) {
+            // Two scenarios for this case:
+            //   1. response has no data whatsoever (i.e. a date range w/ no data) === > return empty collection
+            //   2. request was made with &includeTimestamps=false === > throw an exception
+            if ((closeValues != null && closeValues.length > 0) || (adjCloseValues != null && adjCloseValues.length > 0)) {
+                throw new IllegalStateException("Cannot convert price history to map: Timestamps missing.");
+            }
+            return Collections.emptyList();
+        }
+
+
         // ASSERT all lists are same length
         int entryCount = timestampValues.length;
 
         for (int i = 0; i < entryCount; i++)
         {
             Map<String,Number> entryMap = new HashMap<>();
+
+            // will refactor iff slow performance is shown
             entryMap.put(KEY_TIMESTAMP, timestampValues[i]);
-            entryMap.put(KEY_OPEN, openValues[i]);
-            entryMap.put(KEY_CLOSE, closeValues[i]);
-            entryMap.put(KEY_LOW, lowValues[i]);
-            entryMap.put(KEY_HIGH, highValues[i]);
-            entryMap.put(KEY_VOLUME, volumeValues[i]);
-            entryMap.put(KEY_ADJ_CLOSE, adjCloseValues[i]);
+            if (openValues != null) {
+                entryMap.put(KEY_OPEN, openValues[i]);
+            }
+            if (closeValues != null) {
+                entryMap.put(KEY_CLOSE, closeValues[i]);
+            }
+            if (lowValues != null) {
+                entryMap.put(KEY_LOW, lowValues[i]);
+            }
+            if (highValues != null) {
+                entryMap.put(KEY_HIGH, highValues[i]);
+            }
+            if (volumeValues != null) {
+                entryMap.put(KEY_VOLUME, volumeValues[i]);
+            }
+            if (adjCloseValues != null) {
+                entryMap.put(KEY_ADJ_CLOSE, adjCloseValues[i]);
+            }
             resultKeyValueList.add(entryMap);
         }
 
