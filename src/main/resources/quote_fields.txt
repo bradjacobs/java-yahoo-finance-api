@@ -98,6 +98,7 @@ sourceInterval
 strike
 symbol
 targetPriceMean
+totalAssets
 totalCash
 tradeable
 trailingAnnualDividendRate
