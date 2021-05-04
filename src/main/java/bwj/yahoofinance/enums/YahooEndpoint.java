@@ -60,7 +60,7 @@ public enum YahooEndpoint
 
 
     // note: QuoteType is virtually identical to ".../quoteSummary/____?modules=quoteType"
-    QUOTE_TYPE("quoteType/", 1, FLAG_REQUIRES_SYMBOL_PARAM);  // trailing slash _IS_ required in this case)
+    QUOTE_TYPE("quoteType", 1);
 
 
     //  Region requests  (not ready yet)
