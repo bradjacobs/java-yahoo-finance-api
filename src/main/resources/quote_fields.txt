@@ -8,6 +8,8 @@ beta
 bid
 bidSize
 bookValue
+circulatingSupply
+coinImageUrl
 contractSymbol
 currency
 displayName
@@ -45,12 +47,15 @@ firstTradeDateMilliseconds
 fiveYearGrowthRate
 floatShares
 forwardPE
+fromCurrency
+fromExchange
 fullExchangeName
 gmtOffSetMilliseconds
 headSymbolAsString
 heldPercentInsiders
 heldPercentInstitutions
 language
+lastMarket
 longName
 market
 marketCap
@@ -96,9 +101,12 @@ sharesShort
 shortName
 shortRatio
 sourceInterval
+startDate
 strike
 symbol
 targetPriceMean
+toCurrency
+toExchange
 totalAssets
 totalCash
 tradeable
@@ -114,4 +122,6 @@ twoHundredDayAverageChangePercent
 underlyingExchangeSymbol
 underlyingSymbol
 uuid
+volume24Hr
+volumeAllCurrencies
 ytdReturn
