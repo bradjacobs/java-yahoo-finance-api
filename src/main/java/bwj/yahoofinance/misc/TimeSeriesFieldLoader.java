@@ -33,6 +33,13 @@ import java.util.Set;
  *   * Financials -> Income Statement
  *   * Financials -> Balance Sheet
  *   * Financials -> Cash Flow
+ *
+ * __UPDATE__
+ *   Note 2 above is incorrect (or rather incomplete).  Namely the list of fields you can get
+ *   from looking at a particular ticker can vary.  (example:  financial stocks tend to have extra fields)
+ *
+ *   thus have created a separate file with an 'attempt' to keep the rare fields from the commons ones.
+ *
  */
 public class TimeSeriesFieldLoader
 {
