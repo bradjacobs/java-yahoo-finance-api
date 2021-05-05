@@ -1,13 +1,13 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.enums;
+package bwj.yahoofinance.types;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static bwj.yahoofinance.enums.YahooEndpointFlag.*;
+import static bwj.yahoofinance.types.YahooEndpointFlag.*;
 
 /**
  * YahooEndpoints are an enumeration of the Yahoo! Finance API methods available.
@@ -22,7 +22,7 @@ import static bwj.yahoofinance.enums.YahooEndpointFlag.*;
  *   Extra Info:
  *     There are some "Premium" endpoints that are also available form Yahoo!, which are NOT represented here.
  *
- *  Also the {@link YahooModule} enums for QuoteSummary endpoint.
+ *  Also the {@link YahooModule} types for QuoteSummary endpoint.
  */
 public enum YahooEndpoint
 {

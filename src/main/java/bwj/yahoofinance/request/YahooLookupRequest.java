@@ -3,8 +3,8 @@
  */
 package bwj.yahoofinance.request;
 
-import bwj.yahoofinance.enums.Type;
-import bwj.yahoofinance.enums.YahooEndpoint;
+import bwj.yahoofinance.types.Type;
+import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.builder.BaseRequestParamBuilder;
 
 import java.util.LinkedHashMap;

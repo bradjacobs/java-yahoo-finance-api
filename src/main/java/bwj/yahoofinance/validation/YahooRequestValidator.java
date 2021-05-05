@@ -3,7 +3,7 @@
  */
 package bwj.yahoofinance.validation;
 
-import bwj.yahoofinance.enums.YahooEndpoint;
+import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.ParamKeys;
 import bwj.yahoofinance.request.YahooFinanceRequest;
 import org.apache.commons.lang.StringUtils;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static bwj.yahoofinance.enums.YahooEndpoint.*;
+import static bwj.yahoofinance.types.YahooEndpoint.*;
 
 
 public class YahooRequestValidator

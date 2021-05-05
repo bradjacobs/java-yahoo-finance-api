@@ -1,9 +1,8 @@
 package bwj.yahoofinance.validation;
 
 import bwj.yahoofinance.request.YahooFinanceRequest;
-import bwj.yahoofinance.validation.YahooRequestValidator;
 import org.testng.annotations.Test;
-import static bwj.yahoofinance.enums.YahooEndpoint.*;
+import static bwj.yahoofinance.types.YahooEndpoint.*;
 
 public class YahooRequestValidatorTest
 {

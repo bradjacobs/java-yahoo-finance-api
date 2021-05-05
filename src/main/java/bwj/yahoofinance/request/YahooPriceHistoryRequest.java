@@ -3,9 +3,9 @@
  */
 package bwj.yahoofinance.request;
 
-import bwj.yahoofinance.enums.YahooEndpoint;
-import bwj.yahoofinance.enums.Interval;
-import bwj.yahoofinance.enums.Range;
+import bwj.yahoofinance.types.YahooEndpoint;
+import bwj.yahoofinance.types.Interval;
+import bwj.yahoofinance.types.Range;
 import bwj.yahoofinance.request.builder.PeriodRequestParamBuilder;
 
 import java.util.LinkedHashMap;

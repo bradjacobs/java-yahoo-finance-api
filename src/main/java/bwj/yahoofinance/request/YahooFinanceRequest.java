@@ -4,10 +4,9 @@
 package bwj.yahoofinance.request;
 
 
-import bwj.yahoofinance.enums.YahooEndpoint;
-import bwj.yahoofinance.enums.YahooModule;
+import bwj.yahoofinance.types.YahooEndpoint;
+import bwj.yahoofinance.types.YahooModule;
 import bwj.yahoofinance.request.builder.BaseRequestParamBuilder;
-import bwj.yahoofinance.request.builder.PeriodRequestParamBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
