@@ -51,6 +51,13 @@ public class ScreenerFieldExtractor
         ScreenerField[] fields = mapper.convertValue(listOfMaps, ScreenerField[].class);
 
 
+        List<ScreenerField> premiumFields = Arrays.stream(fields)
+                .filter(sf -> !sf.getDeprecated())
+                .filter(sf -> sf.getIsPremium())
+                .collect(Collectors.toList());
+
+
+
         // filter out fields want to ignore.
         List<ScreenerField> filteredList = Arrays.stream(fields)
                 .filter(sf -> !sf.getDeprecated())
