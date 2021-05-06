@@ -19,8 +19,15 @@ import static bwj.yahoofinance.types.YahooEndpointFlag.*;
  *
  *   Therefore CANNOT GUARANTEE that this endpoint list is correct, complete, or will remain up-to-date.
  *
- *   Extra Info:
- *     There are some "Premium" endpoints that are also available form Yahoo!, which are NOT represented here.
+ *
+ * NOT INCLUDED:
+ *  - "Premium" endpoints
+ *  - "portfolio" endpoints
+ *  - "screener specific" endpoints (saved/predefined screens, etc)
+ *  - "video" endpoints
+ *  - anything that requires username/userId/login
+ *  - other misc that was subjectively determined to not have much usefulness here.
+ *
  *
  *  Also the {@link YahooModule} types for QuoteSummary endpoint.
  */
@@ -44,11 +51,11 @@ public enum YahooEndpoint
     ESG_PEER_SCORES("esgPeerScores", 1, FLAG_REQUIRES_SYMBOL_PARAM),
 
 
-    //   Query endpoints  (not ready yet)
+    // Query endpoints  (NOT READY!)
     LOOKUP("lookup", 1, FLAG_IS_QUERY),
     LOOKUP_TOTALS("lookup/totals", 1, FLAG_IS_QUERY),
     SEARCH("search", 1, FLAG_IS_QUERY),
-    //SCREENER("screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
+    SCREENER("screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
     //VISUALIZATION("visualization", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
 
 

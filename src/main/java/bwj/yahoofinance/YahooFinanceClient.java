@@ -6,6 +6,7 @@ package bwj.yahoofinance;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.YahooFinanceRequest;
 import bwj.yahoofinance.validation.YahooRequestValidator;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.HttpResponseException;
@@ -84,6 +85,12 @@ public class YahooFinanceClient
 
         String ticker = request.getTicker().toUpperCase();
         YahooEndpoint endpoint = request.getEndpoint();
+
+
+        // todo: handle screener w/ POST + crumb
+        if (endpoint.equals(YahooEndpoint.SCREENER)) {
+            throw new NotImplementedException("Screener query is not yet implemented.");
+        }
 
         URIBuilder builder = new URIBuilder();
         builder.setScheme(BASE_API_SCHEME);
