@@ -11,22 +11,20 @@ import java.nio.file.Paths;
 
 import static org.testng.Assert.*;
 
-public class JsonUtilTest
+public class JsonFormatRemoverTest
 {
     @Test
     public void testFlattenRawValueHappyPath() throws Exception
     {
         String originalJson = readTestResourceFile("appl_balhistory_formated.json");
 
-        String expectedSubstring1 = "\"cash\" : 38016000000";  // from first balSheet
-        String expectedSubstring2 = "\"shortTermInvestments\" : 51713000000";  // from second balSheet
+        String expectedSubstring1 = "\"cash\":38016000000";  // from first balSheet
+        String expectedSubstring2 = "\"shortTermInvestments\":51713000000";  // from second balSheet
 
-        String updatedJson = JsonUtil.removeRawValues(originalJson);
-
-        // System.out.println(updatedJson);
+        String updatedJson = JsonFormatRemover.removeFormats(originalJson, true);
 
         // assertions currently require knowledge of data contents within file.
-        assertNotNull(updatedJson, "expeted a non-null value from JsonUtil method.");
+        assertNotNull(updatedJson, "expeted a non-null value from JsonFormatRemover.");
         assertTrue(updatedJson.contains(expectedSubstring1), "Expected substring not found with JSON response: " + expectedSubstring1);
         assertTrue(updatedJson.contains(expectedSubstring1), "Expected substring not found with JSON response: " + expectedSubstring2);
     }
