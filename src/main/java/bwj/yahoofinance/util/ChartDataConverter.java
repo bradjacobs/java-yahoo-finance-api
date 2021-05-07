@@ -6,6 +6,7 @@ package bwj.yahoofinance.util;
 import bwj.yahoofinance.model.PriceHistoryRecord;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +22,7 @@ import java.util.Map;
  */
 public class ChartDataConverter
 {
-    private static final ObjectMapper mapper = new ObjectMapper();
-
+    // key titles for the output map
     private static final String KEY_TIMESTAMP = "timestamp";
     private static final String KEY_OPEN = "open";
     private static final String KEY_LOW = "low";
@@ -31,45 +31,53 @@ public class ChartDataConverter
     private static final String KEY_VOLUME = "volume";
     private static final String KEY_ADJ_CLOSE = "adjclose";
 
+
+    // path locations for data within the JSON response
+    private static final String BASE_PATH = "/chart/result/0";
+    private static final String QUOTE_PATH = BASE_PATH + "/indicators/quote/0";
+    private static final String ADJ_QUOTE_PATH = BASE_PATH + "/indicators/adjclose/0/" + KEY_ADJ_CLOSE;
+
+    private static final String TIMESTAMP_PATH = BASE_PATH + "/" + KEY_TIMESTAMP;
+    private static final String OPEN_PATH = QUOTE_PATH + "/" + KEY_OPEN;
+    private static final String LOW_PATH = QUOTE_PATH + "/" + KEY_LOW;
+    private static final String HIGH_PATH = QUOTE_PATH + "/" + KEY_HIGH;
+    private static final String CLOSE_PATH = QUOTE_PATH + "/" + KEY_CLOSE;
+    private static final String VOLUME_PATH = QUOTE_PATH + "/" + KEY_VOLUME;
+
+
+    private static final boolean EXCEPTION_ON_INVALID_PATH = false;
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+
+
     public List<Map<String, Number>> toListOfMaps(String json) throws Exception
     {
-        JsonNode root = null;
-        try {
-            root = mapper.readTree(json);
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Unable to parse json content: " + e.getMessage(), e);
-        }
+        JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json, EXCEPTION_ON_INVALID_PATH);
 
-        //JsonNode innerArrayElement = root.at("/chart/result/0");
-        JsonNode innerArrayElement = root.required("chart").required("result").required(0);
+        Long[] timestampValues = jsonDataExtractor.parseLongArray(TIMESTAMP_PATH);
 
-        JsonNode indicatorsNode = innerArrayElement.path("indicators");
-        JsonNode quoteValuesNode = indicatorsNode.path("quote").path(0);
-        JsonNode adjQuoteValuesNode = indicatorsNode.path("adjclose").path(0);
+        Double[] closeValues = jsonDataExtractor.parseDoubleArray(CLOSE_PATH);
+        Double[] adjCloseValues = jsonDataExtractor.parseDoubleArray(ADJ_QUOTE_PATH);
 
-        Double[] openValues = mapper.convertValue(quoteValuesNode.path(KEY_OPEN), Double[].class);
-        Double[] closeValues = mapper.convertValue(quoteValuesNode.path(KEY_CLOSE), Double[].class);
-        Double[] lowValues = mapper.convertValue(quoteValuesNode.path(KEY_LOW), Double[].class);
-        Double[] highValues = mapper.convertValue(quoteValuesNode.path(KEY_HIGH), Double[].class);
-        Long[] volumeValues = mapper.convertValue(quoteValuesNode.path(KEY_VOLUME), Long[].class);
-
-        Double[] adjCloseValues = mapper.convertValue(adjQuoteValuesNode.path(KEY_ADJ_CLOSE), Double[].class);
-
-        Long[] timestampValues = mapper.convertValue(innerArrayElement.path(KEY_TIMESTAMP), Long[].class);
-
-        List<Map<String, Number>> resultKeyValueList = new ArrayList<>();
-
-        if (timestampValues == null) {
+        // check if have minimal data
+        if (ArrayUtils.isEmpty(timestampValues)) {
             // Two scenarios for this case:
             //   1. response has no data whatsoever (i.e. a date range w/ no data) === > return empty collection
             //   2. request was made with &includeTimestamps=false === > throw an exception
-            if ((closeValues != null && closeValues.length > 0) || (adjCloseValues != null && adjCloseValues.length > 0)) {
+            if (ArrayUtils.isNotEmpty(closeValues) || ArrayUtils.isNotEmpty(adjCloseValues)) {
                 throw new IllegalStateException("Cannot convert price history to map: Timestamps missing.");
             }
             return Collections.emptyList();
         }
 
+
+        Double[] openValues = jsonDataExtractor.parseDoubleArray(OPEN_PATH);
+        Double[] lowValues = jsonDataExtractor.parseDoubleArray(LOW_PATH);
+        Double[] highValues = jsonDataExtractor.parseDoubleArray(HIGH_PATH);
+        Long[] volumeValues = jsonDataExtractor.parseLongArray(VOLUME_PATH);
+
+
+        List<Map<String, Number>> resultKeyValueList = new ArrayList<>();
 
         // ASSERT all lists are same length
         int entryCount = timestampValues.length;
@@ -80,22 +88,22 @@ public class ChartDataConverter
 
             // will refactor iff slow performance is shown
             entryMap.put(KEY_TIMESTAMP, timestampValues[i]);
-            if (openValues != null) {
+            if (ArrayUtils.isNotEmpty(openValues)) {
                 entryMap.put(KEY_OPEN, openValues[i]);
             }
-            if (closeValues != null) {
+            if (ArrayUtils.isNotEmpty(closeValues)) {
                 entryMap.put(KEY_CLOSE, closeValues[i]);
             }
-            if (lowValues != null) {
+            if (ArrayUtils.isNotEmpty(lowValues)) {
                 entryMap.put(KEY_LOW, lowValues[i]);
             }
-            if (highValues != null) {
+            if (ArrayUtils.isNotEmpty(highValues)) {
                 entryMap.put(KEY_HIGH, highValues[i]);
             }
-            if (volumeValues != null) {
+            if (ArrayUtils.isNotEmpty(volumeValues)) {
                 entryMap.put(KEY_VOLUME, volumeValues[i]);
             }
-            if (adjCloseValues != null) {
+            if (ArrayUtils.isNotEmpty(adjCloseValues)) {
                 entryMap.put(KEY_ADJ_CLOSE, adjCloseValues[i]);
             }
             resultKeyValueList.add(entryMap);

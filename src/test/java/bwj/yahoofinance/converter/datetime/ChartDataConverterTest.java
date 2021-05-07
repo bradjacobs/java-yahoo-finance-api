@@ -5,6 +5,7 @@ package bwj.yahoofinance.converter.datetime;
 
 import bwj.yahoofinance.model.PriceHistoryRecord;
 import bwj.yahoofinance.util.ChartDataConverter;
+import bwj.yahoofinance.util.JsonDataExtractor;
 import org.testng.annotations.Test;
 
 import java.net.URL;
@@ -25,6 +26,13 @@ public class ChartDataConverterTest
 
         ChartDataConverter chartDataConverter = new ChartDataConverter();
         List<Map<String, Number>> listOfMapRecords = chartDataConverter.toListOfMaps(originalJson);
+
+        String path = "/chart/result/0";
+        JsonDataExtractor j = new JsonDataExtractor(originalJson);
+
+        List<Object> foo = j.findValues("/", "timestamp");
+
+
 
         assertNotNull(listOfMapRecords);
         assertEquals(listOfMapRecords.size(), 5);
