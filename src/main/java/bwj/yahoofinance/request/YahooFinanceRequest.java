@@ -124,15 +124,16 @@ public class YahooFinanceRequest
         @Override
         protected Map<String, String> buildRequestSpecificMap() {
 
-
             Map<String,String> requestParamMap = new LinkedHashMap<>();
-            if (this.endpoint.getSupportsMultipleTickers())
+
+            if (this.endpoint != null)
             {
-                requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());
-            }
-            else if (this.endpoint.getRequiresSymbolParam())
-            {
-                requestParamMap.put(ParamKeys.SYMBOL, generateTickerString());
+                if (this.endpoint.getSupportsMultipleTickers()) {
+                    requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());
+                }
+                else if (this.endpoint.getRequiresSymbolParam()) {
+                    requestParamMap.put(ParamKeys.SYMBOL, generateTickerString());
+                }
             }
 
             if (YahooEndpoint.QUOTE_SUMMARY.equals(this.endpoint) && this.modules.size() > 0)
