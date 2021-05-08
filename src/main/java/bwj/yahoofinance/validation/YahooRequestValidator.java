@@ -72,11 +72,12 @@ public class YahooRequestValidator
         }
 
         List<String> requiredParams = requiredParamsMap.get(endpoint);
-        if (requiredParams != null)
-        {
-            for (String requiredParam : requiredParams) {
-                String paramValue = paramMap.get(requiredParam);
-                throw new IllegalArgumentException(String.format("Endpoint %s is missing required parameter '%s'.", endpoint, requiredParam));
+        if (requiredParams != null) {
+            for (String requiredParam : requiredParams)
+            {
+                if (!paramMap.containsKey(requiredParam)) {
+                    throw new IllegalArgumentException(String.format("Endpoint %s is missing required parameter '%s'.", endpoint, requiredParam));
+                }
             }
         }
     }
