@@ -5,11 +5,8 @@ package bwj.yahoofinance.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
@@ -30,10 +27,6 @@ import java.util.Map;
 public class JsonDataExtractor
 {
     private static final ObjectMapper mapper = new ObjectMapper();
-    private static final ObjectMapper prettyMapper =
-        new ObjectMapper()
-            .enable(SerializationFeature.INDENT_OUTPUT)
-            .setDefaultPrettyPrinter(new DefaultPrettyPrinter().withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE));
 
     private static final boolean DEFAULT_EXCEPTION_ON_INVALID_PATH = true;
 
@@ -83,18 +76,16 @@ public class JsonDataExtractor
         try
         {
             if (pretty) {
-                return prettyMapper.writeValueAsString(node);
+                return PrettyFormatter.prettyJson(node);
             }
             else {
                 return mapper.writeValueAsString(node);
             }
         }
-        catch (JsonProcessingException e) {
+        catch (Exception e) {
             throw new IllegalArgumentException(String.format("Unable to extract nested json from path '%s'. Error: %s", path, e.getMessage()), e);
         }
-
     }
-
 
 
 
