@@ -3,7 +3,8 @@
  */
 package bwj.yahoofinance.request;
 
-import bwj.yahoofinance.request.builder.BaseRequestParamBuilder;
+import bwj.yahoofinance.request.builder.BaseRequestParamMapBuilder;
+import bwj.yahoofinance.request.builder.ParamKeys;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.types.screener.Operand;
 import bwj.yahoofinance.types.screener.Operator;
@@ -34,7 +35,7 @@ public class YahooScreenerRequest extends YahooFinanceRequest
         return criteria;
     }
 
-    public static class Builder extends BaseRequestParamBuilder<Builder>
+    public static class Builder extends BaseRequestParamMapBuilder<Builder>
     {
         private Boolean formatted;
         private int size = 0; // default

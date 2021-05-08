@@ -4,9 +4,10 @@
 package bwj.yahoofinance.request;
 
 
+import bwj.yahoofinance.request.builder.ParamKeys;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.types.YahooModule;
-import bwj.yahoofinance.request.builder.BaseRequestParamBuilder;
+import bwj.yahoofinance.request.builder.BaseRequestParamMapBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,7 +48,7 @@ public class YahooFinanceRequest
     }
 
 
-    public static class Builder extends BaseRequestParamBuilder<Builder>
+    public static class Builder extends BaseRequestParamMapBuilder<Builder>
     {
         private YahooEndpoint endpoint = null;
 
@@ -123,7 +124,17 @@ public class YahooFinanceRequest
         @Override
         protected Map<String, String> buildRequestSpecificMap() {
 
+
             Map<String,String> requestParamMap = new LinkedHashMap<>();
+            if (this.endpoint.getSupportsMultipleTickers())
+            {
+                requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());
+            }
+            else if (this.endpoint.getRequiresSymbolParam())
+            {
+                requestParamMap.put(ParamKeys.SYMBOL, generateTickerString());
+            }
+
             if (YahooEndpoint.QUOTE_SUMMARY.equals(this.endpoint) && this.modules.size() > 0)
             {
                 requestParamMap.put(ParamKeys.MODULES, generateModuleList(this.modules));

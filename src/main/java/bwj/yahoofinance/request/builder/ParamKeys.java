@@ -1,7 +1,7 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package bwj.yahoofinance.request;
+package bwj.yahoofinance.request.builder;
 
 /**
  * Constants for url parameter "keys"

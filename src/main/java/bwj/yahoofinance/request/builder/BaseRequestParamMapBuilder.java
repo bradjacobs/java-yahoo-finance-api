@@ -3,7 +3,6 @@
  */
 package bwj.yahoofinance.request.builder;
 
-import bwj.yahoofinance.request.ParamKeys;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedHashMap;
@@ -14,7 +13,7 @@ import java.util.Map;
  * Class for common code for _ALL_ requests regarding building the parameter map.
  * @param <T>
  */
-abstract public class BaseRequestParamBuilder<T extends BaseRequestParamBuilder<T>>
+abstract public class BaseRequestParamMapBuilder<T extends BaseRequestParamMapBuilder<T>>
 {
 
     private boolean includeRegionParam = true;

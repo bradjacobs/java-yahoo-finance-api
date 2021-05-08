@@ -3,6 +3,7 @@
  */
 package bwj.yahoofinance.request;
 
+import bwj.yahoofinance.request.builder.ParamKeys;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.types.Interval;
 import bwj.yahoofinance.types.Range;

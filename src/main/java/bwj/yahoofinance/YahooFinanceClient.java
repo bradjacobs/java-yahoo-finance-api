@@ -99,17 +99,10 @@ public class YahooFinanceClient
         //  e.g. /v8/finance/chart/AAPL
         String path = endpoint.getPathPrefix() + "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
 
-        if (! endpoint.getIsQuery())
+        // check if need to append the ticker to the path itself.
+        if ( !endpoint.getIsQuery() && !endpoint.getSupportsMultipleTickers() && !endpoint.getRequiresSymbolParam() )
         {
-            if (endpoint.getSupportsMultipleTickers()) {
-                builder.addParameter("symbols", ticker);
-            }
-            else if (endpoint.getRequiresSymbolParam()) {
-                builder.addParameter("symbol", ticker);
-            }
-            else {
-                path +=  "/" + ticker;
-            }
+            path +=  "/" + ticker;
         }
 
         builder.setPath(path);

@@ -4,7 +4,7 @@
 package bwj.yahoofinance.validation;
 
 import bwj.yahoofinance.types.YahooEndpoint;
-import bwj.yahoofinance.request.ParamKeys;
+import bwj.yahoofinance.request.builder.ParamKeys;
 import bwj.yahoofinance.request.YahooFinanceRequest;
 import org.apache.commons.lang.StringUtils;
 

@@ -3,9 +3,10 @@
  */
 package bwj.yahoofinance.request;
 
+import bwj.yahoofinance.request.builder.ParamKeys;
 import bwj.yahoofinance.types.Type;
 import bwj.yahoofinance.types.YahooEndpoint;
-import bwj.yahoofinance.request.builder.BaseRequestParamBuilder;
+import bwj.yahoofinance.request.builder.BaseRequestParamMapBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class YahooLookupRequest extends YahooFinanceRequest
     }
 
 
-    public static class Builder extends BaseRequestParamBuilder<Builder>
+    public static class Builder extends BaseRequestParamMapBuilder<Builder>
     {
         private String query;
         private Boolean formatted;
