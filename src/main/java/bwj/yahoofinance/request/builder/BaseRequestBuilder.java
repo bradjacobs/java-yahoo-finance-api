@@ -3,6 +3,8 @@
  */
 package bwj.yahoofinance.request.builder;
 
+import bwj.yahoofinance.types.YahooEndpoint;
+import bwj.yahoofinance.validation.YahooRequestValidator;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedHashMap;
@@ -13,8 +15,9 @@ import java.util.Map;
  * Class for common code for _ALL_ requests regarding building the parameter map.
  * @param <T>
  */
-abstract public class BaseRequestParamMapBuilder<T extends BaseRequestParamMapBuilder<T>>
+abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 {
+    protected static final YahooRequestValidator requestValidator = new YahooRequestValidator();
 
     private boolean includeRegionParam = true;
     private String region = Locale.getDefault().getCountry();
@@ -64,7 +67,7 @@ abstract public class BaseRequestParamMapBuilder<T extends BaseRequestParamMapBu
 
     protected Map<String,String> buildParamMap() {
 
-        Map<String, String> paramMap = buildRequestSpecificMap();
+        Map<String, String> paramMap = _buildParamMap();
         paramMap.putAll(this.extraParametersMap);
 
         if (includeRegionParam) {
@@ -73,9 +76,37 @@ abstract public class BaseRequestParamMapBuilder<T extends BaseRequestParamMapBu
         return paramMap;
     }
 
-    abstract protected Map<String,String> buildRequestSpecificMap();
 
 
+    abstract protected Map<String,String> _buildParamMap();
+    abstract protected YahooEndpoint _getRequestEndpoiint();
+    abstract protected String _getRequestTicker();
 
+    protected Object _buildRequestPostBody() {
+        return null;
+    }
+
+    public YahooFinanceRequest build() {
+
+        YahooEndpoint endpoint = _getRequestEndpoiint();
+        String ticker = _getRequestTicker();
+        Map<String, String> paramMap = buildParamMap();
+        Object postBody = _buildRequestPostBody();
+
+        YahooFinanceRequest req = new YahooFinanceRequest(endpoint, ticker, paramMap, postBody);
+        validateRequest(req);
+        return req;
+    }
+
+
+    /**
+     * Will throw exception if request is invalid
+     * @param req request to be validated
+     */
+    protected void validateRequest(YahooFinanceRequest req)
+    {
+        // this will throw exception if request is invalid
+        requestValidator.validationRequest(req);
+    }
 
 }

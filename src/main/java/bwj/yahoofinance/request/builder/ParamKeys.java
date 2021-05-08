@@ -48,7 +48,7 @@ public final class ParamKeys
     public static final String KEY_USE_YFID = "useYfid";  // still tdb what this does
 
 
-    // typically for PriceHistory
+    // typically for TimeSeries
     public static final String MERGE = "merge";
     public static final String PAD_TIME_SERIES = "padTimeSeries";
 

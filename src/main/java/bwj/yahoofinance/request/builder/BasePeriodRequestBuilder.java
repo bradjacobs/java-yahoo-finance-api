@@ -17,7 +17,7 @@ import java.util.Date;
  * DEV NOTE: this is probably overkill and when discovered that certain methods will never
  *    get used, then they will be subject to 'pruning'
  */
-abstract public class PeriodRequestParamBuilder<T extends PeriodRequestParamBuilder<T>> extends BaseRequestParamMapBuilder<T>
+abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilder<T>> extends BaseRequestBuilder<T>
 {
     private static final EpochSecondsConverter epochSecondsConverter = new EpochSecondsConverter();
     private static final ZoneId GMT_ZONE = ZoneId.of("GMT");

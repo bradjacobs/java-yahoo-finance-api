@@ -4,11 +4,10 @@
 package bwj.yahoofinance.examples;
 
 import bwj.yahoofinance.YahooFinanceClient;
+import bwj.yahoofinance.request.YahooRequestBuilder;
 import bwj.yahoofinance.types.Interval;
 import bwj.yahoofinance.types.Type;
-import bwj.yahoofinance.request.YahooFinanceRequest;
-import bwj.yahoofinance.request.YahooLookupRequest;
-import bwj.yahoofinance.request.YahooPriceHistoryRequest;
+import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 
 import static bwj.yahoofinance.types.YahooEndpoint.*;
 import static bwj.yahoofinance.types.YahooModule.*;
@@ -26,12 +25,12 @@ public class SimpleRequestDemo
 
         try
         {
-            //requestDemo.simpleRequest(testTicker);
-            //requestDemo.multiEndpointRequest(testTicker);
-            //requestDemo.quoteRequest(testTicker);
-            //requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
-            //requestDemo.priceHistory(testTicker);
-            requestDemo.basicLookupQuery(queryString);
+            requestDemo.simpleRequest(testTicker);
+//            requestDemo.multiModuleRequest(testTicker);
+//            requestDemo.quoteRequest(testTicker);
+//            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
+//            requestDemo.priceHistory(testTicker);
+//            requestDemo.basicLookupQuery(queryString);
         }
         catch (Exception e)
         {
@@ -45,11 +44,13 @@ public class SimpleRequestDemo
         // Query for Profile
         YahooFinanceClient client = new YahooFinanceClient();
 
-        YahooFinanceRequest.Builder builder =
-                new YahooFinanceRequest.Builder()
-                        .withModules(ASSET_PROFILE)
-                        .withTicker(ticker);
-        String json = client.executeRequest(builder.build());
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .quoteSummary()
+            .withModules(ASSET_PROFILE)
+            .withTicker(ticker)
+            .build();
+
+        String json = client.executeRequest(req);
 
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
@@ -59,22 +60,23 @@ public class SimpleRequestDemo
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
-        YahooFinanceRequest.Builder builder =
-                new YahooFinanceRequest.Builder()
-                        .withEndpoint(QUOTE_SUMMARY)
-                        .withModules(ASSET_PROFILE)
-                        .withModules(FINANCIAL_DATA)
-                        .withModules(BALANCE_SHEET_HISTORY)
-                        .withTicker(ticker);
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .quoteSummary()
+            .withModules(ASSET_PROFILE)
+            .withModules(FINANCIAL_DATA)
+            .withModules(BALANCE_SHEET_HISTORY)
+            .withTicker(ticker)
+            .build();
+
 
         //  ... OR ...
-        YahooFinanceRequest.Builder builderAlternate =
-                new YahooFinanceRequest.Builder()
-                        .withModules(ASSET_PROFILE, FINANCIAL_DATA, BALANCE_SHEET_HISTORY)
-                        .withTicker(ticker);
+        YahooFinanceRequest reqAlternative = YahooRequestBuilder.api()
+            .quoteSummary()
+            .withModules(ASSET_PROFILE, FINANCIAL_DATA, BALANCE_SHEET_HISTORY)
+            .withTicker(ticker)
+            .build();
 
-
-        String json = client.executeRequest(builder.build());
+        String json = client.executeRequest(req);
 
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
@@ -85,12 +87,12 @@ public class SimpleRequestDemo
         // this will evolve over time.
         YahooFinanceClient client = new YahooFinanceClient();
 
-        YahooFinanceRequest.Builder builder =
-                new YahooFinanceRequest.Builder()
-                        .withEndpoint(QUOTE)
-                        .withTicker(ticker).withTicker("CAT");
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .quote()
+            .withTicker(ticker)
+            .build();
 
-        String json = client.executeRequest(builder.build());
+        String json = client.executeRequest(req);
 
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
@@ -100,13 +102,20 @@ public class SimpleRequestDemo
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
-        YahooFinanceRequest.Builder builder =
-                new YahooFinanceRequest.Builder()
-                        .withEndpoint(QUOTE)
-                        .withTicker(ticker1)
-                        .withTicker(ticker2);
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .quote()
+            .withTicker(ticker1)
+            .withTicker(ticker2)
+            .build();
 
-        String json = client.executeRequest(builder.build());
+        String json = client.executeRequest(req);
+
+        YahooFinanceRequest reqAlternate = YahooRequestBuilder.api()
+            .quote()
+            .withTicker(ticker1, ticker2)
+            .build();
+
+        String jsonAlternate = client.executeRequest(reqAlternate);
 
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
@@ -116,15 +125,16 @@ public class SimpleRequestDemo
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
-        YahooLookupRequest.Builder builder =
-                new YahooLookupRequest.Builder()
-                        .withQuery(query)
-                        .withType(Type.EQUITY)
-                        .withFormatted(true)
-                        .withCount(25)
-                        .withStart(0);
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .lookup()
+            .withQuery(query)
+            .withType(Type.EQUITY)
+            .withFormatted(true)
+            .withCount(25)
+            .withStart(0)
+            .build();
 
-        String json = client.executeRequest(builder.build());
+        String json = client.executeRequest(req);
 
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
@@ -135,16 +145,17 @@ public class SimpleRequestDemo
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
-        YahooPriceHistoryRequest.Builder builder =
-                new YahooPriceHistoryRequest.Builder()
-                        .withTicker(ticker)
-                        //.withRange(Range.FIVE_DAYS)
-                        .withTimeRange("2021-01-25", "2021-01-28")
-                        //.withLastXMonths(6)
-                        //.withTimeRange(1619481600999L, 1619827200999L)
-                        .withInterval(Interval.ONE_DAY);
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .priceHistory()
+            .withTicker(ticker)
+            //.withRange(Range.FIVE_DAYS)
+            .withTimeRange("2021-01-25", "2021-01-28")
+            //.withLastXMonths(6)
+            //.withTimeRange(1619481600999L, 1619827200999L)
+            .withInterval(Interval.ONE_DAY)
+            .build();
 
-        String json = client.executeRequest(builder.build());
+        String json = client.executeRequest(req);
 
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);

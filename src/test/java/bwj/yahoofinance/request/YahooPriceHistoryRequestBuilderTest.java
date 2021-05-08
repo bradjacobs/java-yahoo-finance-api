@@ -1,8 +1,10 @@
-package bwj.yahoofinance.model.request;
+package bwj.yahoofinance.request;
 
+import bwj.yahoofinance.YahooFinanceClient;
+import bwj.yahoofinance.request.builder.PriceHistoryBuilder;
+import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import bwj.yahoofinance.types.Interval;
 import bwj.yahoofinance.types.Range;
-import bwj.yahoofinance.request.YahooPriceHistoryRequest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -15,13 +17,14 @@ public class YahooPriceHistoryRequestBuilderTest {
     public void testBaseCase() throws Exception {
 
         String tickerSymbol = "MSFT";
-        YahooPriceHistoryRequest.Builder builder =
-                new YahooPriceHistoryRequest.Builder()
-                        .withTicker(tickerSymbol)
-                        .withRange(Range.FIVE_DAYS)
-                        .withInterval(Interval.ONE_DAY);
+        YahooFinanceRequest request =
+            YahooRequestBuilder.api()
+            .priceHistory()
+            .withTicker(tickerSymbol)
+            .withRange(Range.FIVE_DAYS)
+            .withInterval(Interval.ONE_DAY)
+            .build();
 
-        YahooPriceHistoryRequest request = builder.build();
         assertNotNull(request, "Expected non null request from builder");
 
         assertEquals(request.getTicker(), tickerSymbol, "Mismatch expected ticker value");
@@ -37,13 +40,15 @@ public class YahooPriceHistoryRequestBuilderTest {
 
         Long period1 = 1612137600L;
         Long period2 = 1619827200L;
-        YahooPriceHistoryRequest.Builder builder =
-                new YahooPriceHistoryRequest.Builder()
-                        .withTicker("AAPL")
-                        .withStart(period1)
-                        .withEnd(period2);
 
-        YahooPriceHistoryRequest req = builder.build();
+        YahooFinanceRequest req =
+            YahooRequestBuilder.api()
+                .priceHistory()
+                .withTicker("AAPL")
+                .withStart(period1)
+                .withEnd(period2)
+                .build();
+
         Map<String, String> paramMap = getParamMap(req);
 
         assertEquals(paramMap.get("period1"), period1.toString());
@@ -54,12 +59,14 @@ public class YahooPriceHistoryRequestBuilderTest {
 
         Long period1 = 1612137600L;
         Long period2 = 1619827200L;
-        YahooPriceHistoryRequest.Builder builder =
-                new YahooPriceHistoryRequest.Builder()
-                        .withTicker("AAPL")
-                        .withTimeRange(period1, period2);
 
-        YahooPriceHistoryRequest req = builder.build();
+        YahooFinanceRequest req =
+            YahooRequestBuilder.api()
+                .priceHistory()
+                .withTicker("AAPL")
+                .withTimeRange(period1, period2)
+                .build();
+
         Map<String, String> paramMap = getParamMap(req);
 
         assertEquals(paramMap.get("period1"), period1.toString());
@@ -74,13 +81,14 @@ public class YahooPriceHistoryRequestBuilderTest {
         Long expectedPeriod1 = period1 / 1000;
         Long expectedPeriod2 = period2 / 1000;
 
-        YahooPriceHistoryRequest.Builder builder =
-                new YahooPriceHistoryRequest.Builder()
-                        .withTicker("AAPL")
-                        .withStart(period1)
-                        .withEnd(period2);
+        YahooFinanceRequest req =
+            YahooRequestBuilder.api()
+                .priceHistory()
+                .withTicker("AAPL")
+                .withStart(period1)
+                .withEnd(period2)
+                .build();
 
-        YahooPriceHistoryRequest req = builder.build();
         Map<String, String> paramMap = getParamMap(req);
 
         assertEquals(paramMap.get("period1"), expectedPeriod1.toString());
@@ -94,14 +102,17 @@ public class YahooPriceHistoryRequestBuilderTest {
 
         Long period1 = 1612137600L;
         Long period2 = 1619827200L;
-        YahooPriceHistoryRequest.Builder builder =
-                new YahooPriceHistoryRequest.Builder()
-                        .withTicker("AAPL")
-                        .withRange(Range.FIVE_DAYS)
-                        .withStart(period1)
-                        .withEnd(period2);
 
-        YahooPriceHistoryRequest req = builder.build();
+        YahooFinanceRequest req =
+            YahooRequestBuilder.api()
+                .priceHistory()
+                .withTicker("AAPL")
+                .withRange(Range.FIVE_DAYS)
+                .withStart(period1)
+                .withEnd(period2)
+                .build();
+
+
         Map<String, String> paramMap = getParamMap(req);
 
         assertNull(paramMap.get("range"));
@@ -125,14 +136,15 @@ public class YahooPriceHistoryRequestBuilderTest {
     @Test(dataProvider = "event-permutations")
     public void testSetEvents(Boolean includeDividends, Boolean includeSplits, String expectedEventString) throws Exception {
 
-        YahooPriceHistoryRequest.Builder builder =
-                new YahooPriceHistoryRequest.Builder()
-                        .withTicker("AAPL")
-                        .withRange(Range.FIVE_DAYS)
-                        .withDividends(includeDividends)
-                        .withSplits(includeSplits);
+        YahooFinanceRequest req =
+            YahooRequestBuilder.api()
+                .priceHistory()
+                .withTicker("AAPL")
+                .withRange(Range.FIVE_DAYS)
+                .withDividends(includeDividends)
+                .withSplits(includeSplits)
+                .build();
 
-        YahooPriceHistoryRequest req = builder.build();
         Map<String, String> paramMap = getParamMap(req);
         assertEquals(paramMap.get("events"), expectedEventString);
     }
@@ -141,13 +153,14 @@ public class YahooPriceHistoryRequestBuilderTest {
     @Test
     public void testIndicatorFieldSelection() throws Exception {
 
-        YahooPriceHistoryRequest.Builder builder =
-                new YahooPriceHistoryRequest.Builder()
-                        .withTicker("AAPL")
-                        .withRange(Range.FIVE_DAYS)
-                        .withIndicatorCloseAdjCloseOnly();
+        PriceHistoryBuilder builder =
+            YahooRequestBuilder.api()
+                .priceHistory()
+                .withTicker("AAPL")
+                .withRange(Range.FIVE_DAYS)
+                .withIndicatorCloseAdjCloseOnly();
 
-        YahooPriceHistoryRequest req = builder.build();
+        YahooFinanceRequest req = builder.build();
         Map<String, String> paramMap = getParamMap(req);
         assertEquals(paramMap.get("indicators"), "close");
         assertEquals(paramMap.get("includeAdjustedClose"), "true");
@@ -167,14 +180,13 @@ public class YahooPriceHistoryRequestBuilderTest {
         builder = builder.withIndicatorAllFields();
         req = builder.build();
         paramMap = getParamMap(req);
-        assertEquals(paramMap.get("indicators"), null);
+        assertNull(paramMap.get("indicators"));
         assertEquals(paramMap.get("includeAdjustedClose"), "true");
     }
 
 
-
     // helper to get the paramMap w/ some asserts
-    private Map<String, String> getParamMap(YahooPriceHistoryRequest request)
+    private Map<String, String> getParamMap(YahooFinanceRequest request)
     {
         assertNotNull(request, "Expected non null request");
         Map<String, String> paramMap = request.getParamMap();
@@ -185,14 +197,10 @@ public class YahooPriceHistoryRequestBuilderTest {
     }
 
 
+    @Test
+    public void testRangeOverrideStartEnd() throws Exception {
 
-
-
-//    @Test
-//    public void testRangeOverrideStartEnd() throws Exception {
-//
-//
-//
-//    }
+        // todo
+    }
 
 }

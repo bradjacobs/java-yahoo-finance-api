@@ -5,7 +5,7 @@ package bwj.yahoofinance.validation;
 
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.builder.ParamKeys;
-import bwj.yahoofinance.request.YahooFinanceRequest;
+import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ public class YahooRequestValidator
 {
     private static final Map<YahooEndpoint, List<String>> requiredParamsMap = new HashMap<>();
 
-    // list of any 'required' url params for a given endpoint.
+    // list of any 'required' url params for a given endpointRequest.
     static {
         // todo: need to look for a better home
         requiredParamsMap.put(ESG_CHART, Collections.singletonList(ParamKeys.SYMBOL));
@@ -47,7 +47,7 @@ public class YahooRequestValidator
 
         YahooEndpoint endpoint = request.getEndpoint();
         if (endpoint == null) {
-            throw new IllegalArgumentException("Request is missing endpoint value.");
+            throw new IllegalArgumentException("Request is missing endpointRequest value.");
         }
 
         if (StringUtils.isEmpty(request.getTicker()) && !endpoint.getIsQuery()) {

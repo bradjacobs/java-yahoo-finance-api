@@ -1,6 +1,10 @@
 package bwj.yahoofinance.request;
 
 import bwj.yahoofinance.YahooFinanceClient;
+import bwj.yahoofinance.request.builder.LookupBuilder;
+import bwj.yahoofinance.request.builder.YahooFinanceRequest;
+import bwj.yahoofinance.types.Interval;
+import bwj.yahoofinance.types.Range;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -20,14 +24,18 @@ public class YahooLookupRequestTest
     public void testBuildNext() throws Exception
     {
         String testQuery = "myQuery";
-        YahooLookupRequest.Builder builder = new YahooLookupRequest.Builder()
-            .withQuery(testQuery)
-            .withCount(30)
-            .withStart(10);
 
-        YahooLookupRequest req1 = builder.buildNext();
-        YahooLookupRequest req2 = builder.buildNext();
-        YahooLookupRequest req3 = builder.buildNext();
+        LookupBuilder builder =
+            YahooRequestBuilder.api()
+                .lookup()
+                .withQuery(testQuery)
+                .withCount(30)
+                .withStart(10);
+
+
+        YahooFinanceRequest req1 = builder.buildNext();
+        YahooFinanceRequest req2 = builder.buildNext();
+        YahooFinanceRequest req3 = builder.buildNext();
 
         assertNotNull(req1);
         assertEquals(req1.getParam("query"), testQuery);

@@ -1,6 +1,7 @@
 package bwj.yahoofinance.validation;
 
-import bwj.yahoofinance.request.YahooFinanceRequest;
+import bwj.yahoofinance.request.YahooRequestBuilder;
+import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import org.testng.annotations.Test;
 import static bwj.yahoofinance.types.YahooEndpoint.*;
 
@@ -14,7 +15,7 @@ public class YahooRequestValidatorTest
 
     private static final String EXPECTED_MISSING_REQUEST_MSG = "Request cannot be null.";
     private static final String EXPECTED_MISSING_TICKER_MSG = "Request is missing a valid ticker value.";
-    private static final String EXPECTED_MISSING_ENDPOINT_MSG = "Request is missing endpoint value.";
+    private static final String EXPECTED_MISSING_ENDPOINT_MSG = "Request is missing endpointRequest value.";
     private static final String EXPECTED_BLANK_PARAM_KEY_MSG = "Cannot have a blank parameter key";
     private static final String EXPECTED_MISSING_MODULES_MSG = "Endpoint QUOTE_SUMMARY is missing required parameter 'modules'.";
 
@@ -26,19 +27,19 @@ public class YahooRequestValidatorTest
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_TICKER_MSG)
     public void testMissingTicker() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest.Builder().withEndpoint(CHART).build();
+        YahooFinanceRequest req = YahooRequestBuilder.api().priceHistory().build();
         validator.validationRequest(req);
     }
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_TICKER_MSG)
     public void testBlankTicker() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest.Builder().withEndpoint(CHART).withTicker("").build();
+        YahooFinanceRequest req = YahooRequestBuilder.api().priceHistory().withTicker("").build();
         validator.validationRequest(req);
     }
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_ENDPOINT_MSG)
     public void testMissingEndpoint() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest.Builder().withTicker("AAPL").build();
+        YahooFinanceRequest req = YahooRequestBuilder.api().endpointRequest(null).withTicker("AAPL").build();
         validator.validationRequest(req);
     }
 
@@ -46,16 +47,23 @@ public class YahooRequestValidatorTest
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_BLANK_PARAM_KEY_MSG)
     public void testBlankKeyParam() throws Exception {
 
-        YahooFinanceRequest req = new YahooFinanceRequest.Builder()
-                .withEndpoint(CHART)
-                .withTicker("AAPL")
-                .addParam("", "some_value").build();
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .priceHistory()
+            .withTicker("AAPL")
+            .addParam("", "some_value")
+            .build();
+
         validator.validationRequest(req);
     }
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_MODULES_MSG)
     public void testMissingModules() throws Exception {
-        YahooFinanceRequest req = new YahooFinanceRequest.Builder().withEndpoint(QUOTE_SUMMARY).withTicker("AAPL").build();
+
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .quoteSummary()
+            .withTicker("AAPL")
+            .build();
+
         validator.validationRequest(req);
     }
 
