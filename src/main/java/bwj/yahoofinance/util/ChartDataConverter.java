@@ -4,7 +4,6 @@
 package bwj.yahoofinance.util;
 
 import bwj.yahoofinance.model.PriceHistoryRecord;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.ArrayUtils;
 
@@ -35,7 +34,7 @@ public class ChartDataConverter
     // path locations for data within the JSON response
     private static final String BASE_PATH = "/chart/result/0";
     private static final String QUOTE_PATH = BASE_PATH + "/indicators/quote/0";
-    private static final String ADJ_QUOTE_PATH = BASE_PATH + "/indicators/adjclose/0/" + KEY_ADJ_CLOSE;
+    private static final String ADJ_CLOSE_PATH = BASE_PATH + "/indicators/adjclose/0/" + KEY_ADJ_CLOSE;
 
     private static final String TIMESTAMP_PATH = BASE_PATH + "/" + KEY_TIMESTAMP;
     private static final String OPEN_PATH = QUOTE_PATH + "/" + KEY_OPEN;
@@ -57,7 +56,7 @@ public class ChartDataConverter
         Long[] timestampValues = jsonDataExtractor.parseLongArray(TIMESTAMP_PATH);
 
         Double[] closeValues = jsonDataExtractor.parseDoubleArray(CLOSE_PATH);
-        Double[] adjCloseValues = jsonDataExtractor.parseDoubleArray(ADJ_QUOTE_PATH);
+        Double[] adjCloseValues = jsonDataExtractor.parseDoubleArray(ADJ_CLOSE_PATH);
 
         // check if have minimal data
         if (ArrayUtils.isEmpty(timestampValues)) {
