@@ -13,33 +13,12 @@ import java.util.Map;
 
 public class YahooLookupRequest extends YahooFinanceRequest
 {
-    private final int count;
-    private final int start;
+    private static final int DEFAULT_COUNT = 20;
+    private static final int DEFAULT_START = 0;
 
-    protected YahooLookupRequest(YahooEndpoint endpoint, Map<String,String> paramMap, int count, int start)
+    protected YahooLookupRequest(YahooEndpoint endpoint, Map<String,String> paramMap)
     {
-        // todo: this code block is on the 'to revisit' list.
         super(endpoint, "", paramMap);
-        this.count = count;
-        this.start = start;
-        paramMap.put(ParamKeys.COUNT, String.valueOf(count));
-        paramMap.put(ParamKeys.START, String.valueOf(start));
-    }
-
-
-
-    public YahooLookupRequest createNextBatchRequest()
-    {
-        Map<String,String> paramMapCopy = new LinkedHashMap<>(this.paramMap);
-        return new YahooLookupRequest(this.getEndpoint(), paramMapCopy, count, (start+count));
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public int getStart() {
-        return start;
     }
 
 
@@ -48,10 +27,12 @@ public class YahooLookupRequest extends YahooFinanceRequest
         private String query;
         private Boolean formatted;
         private Type type;
-        private int count = 20; // default
-        private int start = 0; // default
+        private int count = DEFAULT_COUNT;
+        private int start = DEFAULT_START;
         private boolean includeTotalsOnly = false;
 
+
+        private boolean hasBeenBuilt = false; //internal flag
 
         public Builder withQuery(String query) {
             this.query = query;
@@ -94,6 +75,9 @@ public class YahooLookupRequest extends YahooFinanceRequest
                 if (this.formatted != null) {
                     map.put(ParamKeys.FORMATTED, formatted.toString());
                 }
+
+                map.put(ParamKeys.COUNT, String.valueOf(count));
+                map.put(ParamKeys.START, String.valueOf(start));
             }
             return map;
         }
@@ -111,8 +95,17 @@ public class YahooLookupRequest extends YahooFinanceRequest
         public YahooLookupRequest build()
         {
             YahooEndpoint endpoint = includeTotalsOnly ? YahooEndpoint.LOOKUP_TOTALS : YahooEndpoint.LOOKUP;
-            YahooLookupRequest req = new YahooLookupRequest(endpoint, this.buildParamMap(), count, start);
+            YahooLookupRequest req = new YahooLookupRequest(endpoint, this.buildParamMap());
+            hasBeenBuilt = true;
             return req;
+        }
+
+        public YahooLookupRequest buildNext()
+        {
+            if (hasBeenBuilt) {
+                start += count;
+            }
+            return build();
         }
 
         @Override
