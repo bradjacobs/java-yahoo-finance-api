@@ -33,16 +33,22 @@ import static bwj.yahoofinance.types.YahooEndpointFlag.*;
  */
 public enum YahooEndpoint
 {
-    QUOTE_SUMMARY("quoteSummary", 10),   // NOTE: "formatted=false" stops working on v11
+    //   NOTE: see YahooModule for relevant modules
+    //   NOTE:  "&formatted=false" stops working on v11
+    QUOTE_SUMMARY("quoteSummary", 10),
 
     QUOTE("quote", 7, FLAG_SUPPORT_MULTI_TICKERS),
 
-    // Chart is really "History" (or Price History)
-    //  Note:  version 9 of chart requires a 'crumb' but didn't notice any functional difference at initial glance.
+    // Price History
+    //  NOTE: version 9 requires a 'crumb' but didn't notice any functional difference.
     CHART("chart", 8),
 
-    // Spark is really "History" but only will return a "close"
-    //  Note: spark v8 has a very different (flatter) format than spark v7
+    // Price History (alternate)
+    //   NOTE:  primary differences from CHART
+    //     1.  only returns "close"
+    //     2.  will support multiple tickers
+    //     3.  response will have a different format
+    //   NOTE: noticeable different is response format b/w v8 and v7
     SPARK("spark", 8, FLAG_SUPPORT_MULTI_TICKERS),
 
     VALIDATE("quote/validate", 6, FLAG_SUPPORT_MULTI_TICKERS),
@@ -66,7 +72,7 @@ public enum YahooEndpoint
     OPTIONS("options", 7),
 
 
-    // note: QuoteType is virtually identical to ".../quoteSummary/____?modules=quoteType"
+    //  NOTE:  virtually identical to ".../quoteSummary/{symbol}?modules=quoteType"
     QUOTE_TYPE("quoteType", 1);
 
 
@@ -78,8 +84,8 @@ public enum YahooEndpoint
     private final String name;
     private final int version;
     private final String pathPrefix;
-    private final boolean supportsMultipleTickers;
-    private final boolean requiresSymbolParam;
+    private final boolean isMultiTickerSupported;
+    private final boolean isTickerKeyValueParam;
     private final boolean isQuery;
 
     YahooEndpoint(String name, int version, YahooEndpointFlag... flags) {
@@ -93,8 +99,8 @@ public enum YahooEndpoint
         this.name = name;
         this.version = version;
         this.pathPrefix = pathPrefix;
-        this.supportsMultipleTickers = flagSet.contains(FLAG_SUPPORT_MULTI_TICKERS);
-        this.requiresSymbolParam = flagSet.contains(FLAG_REQUIRES_SYMBOL_PARAM);
+        this.isMultiTickerSupported = flagSet.contains(FLAG_SUPPORT_MULTI_TICKERS);
+        this.isTickerKeyValueParam = flagSet.contains(FLAG_REQUIRES_SYMBOL_PARAM);
         this.isQuery = flagSet.contains(FLAG_IS_QUERY);
     }
 
@@ -107,19 +113,35 @@ public enum YahooEndpoint
         return version;
     }
 
-    public boolean getSupportsMultipleTickers() {
-        return supportsMultipleTickers;
+    public boolean isMultiTickerSupported() {
+        return isMultiTickerSupported;
     }
 
-    public boolean getRequiresSymbolParam() {
-        return requiresSymbolParam;
+    public boolean isTickerKeyValueParam() {
+        return isTickerKeyValueParam;
     }
 
-    public boolean getIsQuery() {
+    public boolean isQuery() {
         return isQuery;
     }
 
     public String getPathPrefix() {
         return pathPrefix;
+    }
+
+    /**
+     * Check if endpoint request contains ticker as part of the URL path
+     *   (as opposed to a key/value) parameter
+     *   i.e.
+     *       ../quoteSummary/AAPL?modules=financialData (returns TRUE)
+     *       ../quote?symbols=AAPL (returns FALSE)
+     * @return if ticker on the path portion of a URL request.
+     */
+    public boolean isTickerOnPath() {
+        if (isQuery) { return false; }
+        if (isMultiTickerSupported) { return false; }
+        if (isTickerKeyValueParam) { return false; }
+
+        return true;
     }
 }

@@ -61,10 +61,10 @@ public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
 
         if (this.endpoint != null)
         {
-            if (this.endpoint.getSupportsMultipleTickers()) {
+            if (this.endpoint.isMultiTickerSupported()) {
                 requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());
             }
-            else if (this.endpoint.getRequiresSymbolParam()) {
+            else if (this.endpoint.isTickerKeyValueParam()) {
                 requestParamMap.put(ParamKeys.SYMBOL, generateTickerString());
             }
         }
@@ -80,7 +80,7 @@ public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
 
     private String generateTickerString() {
         if (this.tickerSet.size() > 0 && this.endpoint != null) {
-            if (endpoint.getSupportsMultipleTickers()) {
+            if (endpoint.isMultiTickerSupported()) {
                 return String.join(",", this.tickerSet);
             }
             else {

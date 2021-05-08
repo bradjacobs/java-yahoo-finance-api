@@ -6,7 +6,6 @@ package bwj.yahoofinance;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import bwj.yahoofinance.validation.YahooRequestValidator;
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.HttpResponseException;
@@ -97,7 +96,7 @@ public class YahooFinanceClient
         String path = endpoint.getPathPrefix() + "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
 
         // check if need to append the ticker to the path itself.
-        if ( !endpoint.getIsQuery() && !endpoint.getSupportsMultipleTickers() && !endpoint.getRequiresSymbolParam() )
+        if ( endpoint.isTickerOnPath() )
         {
             path +=  "/" + ticker;
         }

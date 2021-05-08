@@ -50,7 +50,7 @@ public class YahooRequestValidator
             throw new IllegalArgumentException("Request is missing endpointRequest value.");
         }
 
-        if (StringUtils.isEmpty(request.getTicker()) && !endpoint.getIsQuery()) {
+        if (StringUtils.isEmpty(request.getTicker()) && !endpoint.isQuery()) {
             throw new IllegalArgumentException("Request is missing a valid ticker value.");
         }
 
