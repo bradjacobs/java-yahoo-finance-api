@@ -6,6 +6,7 @@ package bwj.yahoofinance.examples;
 import bwj.yahoofinance.YahooFinanceClient;
 import bwj.yahoofinance.request.YahooRequestBuilder;
 import bwj.yahoofinance.types.Interval;
+import bwj.yahoofinance.types.Region;
 import bwj.yahoofinance.types.Type;
 import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 
@@ -21,6 +22,7 @@ public class SimpleRequestDemo
         String testTicker2 = "CAT";
 
         String queryString = "AA*";
+        Region region = Region.FRANCE;
 
         SimpleRequestDemo requestDemo = new SimpleRequestDemo();
 
@@ -32,6 +34,7 @@ public class SimpleRequestDemo
             requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
             requestDemo.priceHistory(testTicker);
             requestDemo.basicLookupQuery(queryString);
+            requestDemo.regionRequest(region);
         }
         catch (Exception e)
         {
@@ -167,7 +170,7 @@ public class SimpleRequestDemo
     }
 
 
-    private void regionRequest(String region)
+    private void regionRequest(Region region)
     {
         YahooFinanceClient client = new YahooFinanceClient();
 

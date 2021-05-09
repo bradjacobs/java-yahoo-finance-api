@@ -3,6 +3,7 @@
  */
 package bwj.yahoofinance.request.builder;
 
+import bwj.yahoofinance.types.Region;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.validation.YahooRequestValidator;
 import org.apache.commons.lang.StringUtils;
@@ -44,7 +45,14 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         }
     }
 
-    public T withRegion(String region) {
+    public T withRegion(Region region) {
+        if (region != null) {
+            this.region = region.getCode();
+        }
+        return getThis();
+    }
+
+    protected T withRegion(String region) {
         if (StringUtils.isEmpty(region)) {
             throw new IllegalArgumentException("Region value cannot be blank/empty.");
         }
