@@ -12,6 +12,7 @@ import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import static bwj.yahoofinance.types.YahooEndpoint.*;
 import static bwj.yahoofinance.types.YahooModule.*;
 
+// TODO - redo this class (split up examples)
 public class SimpleRequestDemo
 {
     public static void main(String[] args)
@@ -26,11 +27,11 @@ public class SimpleRequestDemo
         try
         {
             requestDemo.simpleRequest(testTicker);
-//            requestDemo.multiModuleRequest(testTicker);
-//            requestDemo.quoteRequest(testTicker);
-//            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
-//            requestDemo.priceHistory(testTicker);
-//            requestDemo.basicLookupQuery(queryString);
+            requestDemo.multiModuleRequest(testTicker);
+            requestDemo.quoteRequest(testTicker);
+            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
+            requestDemo.priceHistory(testTicker);
+            requestDemo.basicLookupQuery(queryString);
         }
         catch (Exception e)
         {
@@ -163,6 +164,22 @@ public class SimpleRequestDemo
         // additional notes:
         //    &indicators=quote      (seems to do nothing?)
         //    &indicators=adjclose   (perhaps a yahoo bug, can return adjclose twice in some cases)
+    }
+
+
+    private void regionRequest(String region)
+    {
+        YahooFinanceClient client = new YahooFinanceClient();
+
+        YahooFinanceRequest req = YahooRequestBuilder.api()
+            .endpointRequest(MARKET_SUMMARY)
+            .withRegion(region)
+            .build();
+
+        String json = client.executeRequest(req);
+
+        System.out.println("--JSON RESPONSE--");
+        System.out.println(json);
     }
 
 }

@@ -73,12 +73,12 @@ public enum YahooEndpoint
 
 
     //  NOTE:  virtually identical to ".../quoteSummary/{symbol}?modules=quoteType"
-    QUOTE_TYPE("quoteType", 1);
+    QUOTE_TYPE("quoteType", 1),
 
 
-    //  Region requests  (not ready yet)
-    //MARKET_SUMMARY("quote/marketSummary", 6),
-    //TRENDING("trending/", 1),   // 'trending/US' or 'trending/?region=US'
+    //  Regional requests
+    MARKET_SUMMARY("quote/marketSummary", 6, FLAG_IS_REGION),
+    TRENDING("trending/", 1, FLAG_IS_REGION); // 'trending/US' or 'trending/?region=US'
 
 
     private final String name;
@@ -87,6 +87,7 @@ public enum YahooEndpoint
     private final boolean isMultiTickerSupported;
     private final boolean isTickerKeyValueParam;
     private final boolean isQuery;
+    private final boolean isRegionRequest;
 
     YahooEndpoint(String name, int version, YahooEndpointFlag... flags) {
         this(name, version, "", flags);
@@ -102,6 +103,7 @@ public enum YahooEndpoint
         this.isMultiTickerSupported = flagSet.contains(FLAG_SUPPORT_MULTI_TICKERS);
         this.isTickerKeyValueParam = flagSet.contains(FLAG_REQUIRES_SYMBOL_PARAM);
         this.isQuery = flagSet.contains(FLAG_IS_QUERY);
+        this.isRegionRequest = flagSet.contains(FLAG_IS_REGION);
     }
 
 
@@ -141,7 +143,14 @@ public enum YahooEndpoint
         if (isQuery) { return false; }
         if (isMultiTickerSupported) { return false; }
         if (isTickerKeyValueParam) { return false; }
+        if (isRegionRequest) { return false; }
 
+        return true;
+    }
+
+    public boolean requiresTicker() {
+        if (isQuery) { return false; }
+        if (isRegionRequest) { return false; }
         return true;
     }
 }
