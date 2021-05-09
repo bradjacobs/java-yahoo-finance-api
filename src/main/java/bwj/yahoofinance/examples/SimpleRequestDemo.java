@@ -18,7 +18,7 @@ public class SimpleRequestDemo
 {
     public static void main(String[] args)
     {
-        String testTicker = "AAPL";
+        String testTicker = "MSFT";
         String testTicker2 = "CAT";
 
         String queryString = "AA*";
@@ -29,12 +29,12 @@ public class SimpleRequestDemo
         try
         {
             requestDemo.simpleRequest(testTicker);
-            requestDemo.multiModuleRequest(testTicker);
-            requestDemo.quoteRequest(testTicker);
-            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
-            requestDemo.priceHistory(testTicker);
-            requestDemo.basicLookupQuery(queryString);
-            requestDemo.regionRequest(region);
+//            requestDemo.multiModuleRequest(testTicker);
+//            requestDemo.quoteRequest(testTicker);
+//            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
+//            requestDemo.priceHistory(testTicker);
+//            requestDemo.basicLookupQuery(queryString);
+//            requestDemo.regionRequest(region);
         }
         catch (Exception e)
         {

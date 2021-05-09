@@ -3,23 +3,16 @@
  */
 package bwj.yahoofinance;
 
+import bwj.yahoofinance.http.RawClientFactory;
+import bwj.yahoofinance.http.RawHttpClient;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import bwj.yahoofinance.validation.YahooRequestValidator;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class YahooFinanceClient
@@ -27,42 +20,30 @@ public class YahooFinanceClient
     private static final String BASE_API_SCHEME = "https";
     private static final String BASE_API_HOST = "query1.finance.yahoo.com";
 
-    private static final String DEFAULT_CONTENT_TYPE = ContentType.APPLICATION_JSON.getMimeType();
+    private static final String DEFAULT_CONTENT_TYPE = "application/json";
     private static final String DEFAULT_USER_AGENT = "Java-Http-Client/11.0.0";
 
+    private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
 
     private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
 
-    private final CloseableHttpClient httpClient;
-    private String contentType;
-    private String userAgent;
-    private boolean throwExceptionOnHttpError = true;
+    // rawHttpClient is a simple interface around the 'true' httpClient.
+    private RawHttpClient rawHttpClient;
+
 
     public YahooFinanceClient()
     {
-        this(createDefaultHttpClient());
-    }
-
-    public YahooFinanceClient(CloseableHttpClient httpClient)
-    {
-        if (httpClient == null) {
-            throw new IllegalArgumentException("HttpClient parameter cannot be null.");
-        }
-        this.httpClient = httpClient;
-        this.contentType = DEFAULT_CONTENT_TYPE;
-        this.userAgent = DEFAULT_USER_AGENT;
+        setContentType(DEFAULT_CONTENT_TYPE);
+        setUserAgent(DEFAULT_USER_AGENT);
+        setInternalClient(RawClientFactory.createDefaultClient());
     }
 
     public void setContentType(String contentType) {
-        this.contentType = contentType;
+        requestHeaderMap.put("Content-Type", contentType);
     }
 
     public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-    }
-
-    public void setThrowExceptionOnHttpError(boolean throwExceptionOnHttpError) {
-        this.throwExceptionOnHttpError = throwExceptionOnHttpError;
+        requestHeaderMap.put("User-Agent", userAgent);
     }
 
     public String executeRequest(YahooFinanceRequest request)
@@ -71,7 +52,7 @@ public class YahooFinanceClient
         requestValidator.validationRequest(request);
 
         String url = buildRequestUrl(request);
-        return execute(url);
+        return rawHttpClient.executeGet(url, this.requestHeaderMap);
     }
 
 
@@ -112,72 +93,14 @@ public class YahooFinanceClient
     }
 
 
-
-    protected String execute(String url)
-    {
-        HttpGet httpGet = createGetMethod(url);
-        String responseString = "";
-
-        int statusCode = 0;
-
-        // auto-close when declare closable in a try
-        try (CloseableHttpResponse response = this.httpClient.execute(httpGet)) {
-
-            HttpEntity entity = response.getEntity();
-            if (entity == null) {
-                throw new IOException("Unable to read entity response from httpResponse!");
-            }
-
-            statusCode = response.getStatusLine().getStatusCode();
-            responseString = EntityUtils.toString(entity);
-
-            if (statusCode >= 400 && throwExceptionOnHttpError)
-            {
-                throw new HttpResponseException(statusCode, responseString);
-            }
-        }
-        catch (Exception e) {
-            httpGet.releaseConnection(); // always release connection on error
-            throw new RuntimeException(String.format("Unable to fetch content from '%s'. Reason: %s.", url, e.getMessage()), e);
-        }
-
-        return responseString;
+    public void setInternalClient(CloseableHttpClient client) {
+        setInternalClient(RawClientFactory.createRawHttpClient(client));
     }
-
-
-    protected HttpGet createGetMethod(String url)
-    {
-        HttpGet httpGet = new HttpGet(url);
-        httpGet.setHeader(HttpHeaders.CONTENT_TYPE, this.contentType);
-        httpGet.setHeader(HttpHeaders.USER_AGENT, this.userAgent);
-        // side note: no need to set "Accept-Encoding" here.
-        //    done auto-magically via the 'contentCompressionEnabled' flag inside RequestConfig class
-        return httpGet;
-    }
-
-
-
-    // todo: values are arbitrary
-    private static final int MAX_CONNECTIONS_PER_HOST = 10;
-    private static final int MAX_TOTAL_CONNECTIONS = 10;
-    private static final int CONNECTION_TIMEOUT = 20000;
-    private static final int READ_TIMEOUT = 30000;
-
-    private static CloseableHttpClient createDefaultHttpClient()
-    {
-        RequestConfig config = RequestConfig.custom()
-                .setConnectTimeout(CONNECTION_TIMEOUT)
-                .setConnectionRequestTimeout(CONNECTION_TIMEOUT)
-                .setSocketTimeout(READ_TIMEOUT).build();
-
-        CloseableHttpClient httpClient = HttpClientBuilder.create()
-                //.setKeepAliveStrategy() // default should be fine
-                .setDefaultRequestConfig(config)
-                .setMaxConnPerRoute(MAX_CONNECTIONS_PER_HOST)
-                .setMaxConnTotal(MAX_TOTAL_CONNECTIONS)
-                .build();
-
-        return httpClient;
+    public void setInternalClient(RawHttpClient client) {
+        if (client == null) {
+            throw new IllegalArgumentException("Cannot set the internal client to null.");
+        }
+        this.rawHttpClient = client;
     }
 
 }
