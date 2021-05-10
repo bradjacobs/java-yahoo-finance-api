@@ -5,8 +5,12 @@ package bwj.yahoofinance.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.MissingNode;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
@@ -26,7 +30,12 @@ import java.util.Map;
  */
 public class JsonDataExtractor
 {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper =
+        new ObjectMapper()
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .setDefaultPrettyPrinter(
+                new DefaultPrettyPrinter()
+                    .withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE));
 
     private static final boolean DEFAULT_EXCEPTION_ON_INVALID_PATH = true;
 
@@ -76,10 +85,10 @@ public class JsonDataExtractor
         try
         {
             if (pretty) {
-                return PrettyFormatter.prettyJson(node);
+                return mapper.writeValueAsString(node);
             }
             else {
-                return mapper.writeValueAsString(node);
+                return node.toString();
             }
         }
         catch (Exception e) {
@@ -138,37 +147,33 @@ public class JsonDataExtractor
 
     public Map<String,Object> parseMap(String path) {
         JsonNode innerNode = getInnerNode(path);
-
-        try {
-            return mapper.readValue(innerNode.toString(), new TypeReference<Map<String, Object>>() {});
-        }
-        catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("Unable to convert node to map: " + e.getMessage(), e);
-        }
+        return convertToTypeReference(innerNode, new TypeReference<Map<String, Object>>() {});
     }
 
     public Map<String,Map<String, Object>> parseMapOfMaps(String path) {
         JsonNode innerNode = getInnerNode(path);
-
-        try {
-            return mapper.readValue(innerNode.toString(), new TypeReference<Map<String, Map<String, Object>>>() {});
-        }
-        catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("Unable to convert node to map: " + e.getMessage(), e);
-        }
+        return convertToTypeReference(innerNode, new TypeReference<Map<String, Map<String, Object>>>() {});
     }
 
     public List<Map<String, Object>> parseListOfMaps(String path) {
         JsonNode innerNode = getInnerArrayNode(path);
+        return convertToTypeReference(innerNode, new TypeReference<List<Map<String, Object>>>() {});
+    }
 
+    public <T> T parseTypedReference(String path, TypeReference<T> typeReference) {
+        JsonNode innerNode = getInnerArrayNode(path);
+        return convertToTypeReference(innerNode, typeReference);
+    }
+
+    private <T> T convertToTypeReference(JsonNode node, TypeReference<T> typeReference)
+    {
         try {
-            return mapper.readValue(innerNode.toString(), new TypeReference<List<Map<String, Object>>>() {});
+            return mapper.readValue(node.toString(), typeReference);
         }
         catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Unable to convert node to map: " + e.getMessage(), e);
         }
     }
-
 
 
     protected <T> List<T> findValues(String path, String field, Class<T> clz) {
@@ -190,8 +195,14 @@ public class JsonDataExtractor
     protected JsonNode getInnerArrayNode(String path)
     {
         JsonNode node = getInnerNode(path);
-        if (!node.isArray() && this.exceptionOnInvalidPath) {
-            throw new IllegalArgumentException(String.format("Path does not point to a valid array: '%s'", path));
+        if (!node.isArray()) {
+            if (this.exceptionOnInvalidPath) {
+                throw new IllegalArgumentException(String.format("Path does not point to a valid array: '%s'", path));
+            }
+            else {
+                // if asked for array but it's not an array node, then mark as missing
+                node = MissingNode.getInstance();
+            }
         }
         return node;
     }
@@ -211,16 +222,13 @@ public class JsonDataExtractor
     }
 
 
-
     protected <T> T convert(Class<T> clz, JsonNode node)
     {
         if (node.isMissingNode()) {
             return null;
         }
-
         return mapper.convertValue(node, clz);
     }
-
 
 
 
