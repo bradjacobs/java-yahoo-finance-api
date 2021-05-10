@@ -3,14 +3,16 @@
  */
 package bwj.yahoofinance;
 
-import bwj.yahoofinance.http.RawClientFactory;
-import bwj.yahoofinance.http.RawHttpClient;
+import bwj.yahoofinance.http.HttpClientAdapterFactory;
+import bwj.yahoofinance.http.HttpClientAdapter;
+import bwj.yahoofinance.http.Response;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import bwj.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -28,14 +30,14 @@ public class YahooFinanceClient
     private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
 
     // rawHttpClient is a simple interface around the 'true' httpClient.
-    private RawHttpClient rawHttpClient;
+    private HttpClientAdapter rawHttpClient;
 
 
     public YahooFinanceClient()
     {
         setContentType(DEFAULT_CONTENT_TYPE);
         setUserAgent(DEFAULT_USER_AGENT);
-        setInternalClient(RawClientFactory.createDefaultClient());
+        setInternalClient(HttpClientAdapterFactory.createDefaultClient());
     }
 
     public void setContentType(String contentType) {
@@ -46,13 +48,19 @@ public class YahooFinanceClient
         requestHeaderMap.put("User-Agent", userAgent);
     }
 
-    public String executeRequest(YahooFinanceRequest request)
+    public String executeRequest(YahooFinanceRequest request) throws IOException
     {
         // validation will throw an exception if invalid request is detected
         requestValidator.validationRequest(request);
 
         String url = buildRequestUrl(request);
-        return rawHttpClient.executeGet(url, this.requestHeaderMap);
+
+        Response response = rawHttpClient.executeGet(url, this.requestHeaderMap);
+        if (response.isError()) {
+            // TODO - come back and handle better
+            throw new RuntimeException("Error occurred during request: ");
+        }
+        return response.getBody();
     }
 
 
@@ -94,9 +102,9 @@ public class YahooFinanceClient
 
 
     public void setInternalClient(CloseableHttpClient client) {
-        setInternalClient(RawClientFactory.createRawHttpClient(client));
+        setInternalClient(HttpClientAdapterFactory.createHttpClient(client));
     }
-    public void setInternalClient(RawHttpClient client) {
+    public void setInternalClient(HttpClientAdapter client) {
         if (client == null) {
             throw new IllegalArgumentException("Cannot set the internal client to null.");
         }

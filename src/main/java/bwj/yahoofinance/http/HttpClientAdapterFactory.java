@@ -4,16 +4,16 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-public class RawClientFactory
+public class HttpClientAdapterFactory
 {
 
-    public static RawHttpClient createDefaultClient() {
-        return new RawApacheClient( createDefaultHttpClient() );
+    public static HttpClientAdapter createDefaultClient() {
+        return new ApacheHttpClientAdapter( createDefaultHttpClient() );
     }
 
-    public static RawHttpClient createRawHttpClient(CloseableHttpClient apacheClientj)
+    public static HttpClientAdapter createHttpClient(CloseableHttpClient apacheClientj)
     {
-        return new RawApacheClient(apacheClientj);
+        return new ApacheHttpClientAdapter(apacheClientj);
     }
 
 
