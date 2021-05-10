@@ -10,6 +10,8 @@ import bwj.yahoofinance.types.Region;
 import bwj.yahoofinance.types.Type;
 import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 
+import java.io.IOException;
+
 import static bwj.yahoofinance.types.YahooEndpoint.*;
 import static bwj.yahoofinance.types.YahooModule.*;
 
@@ -43,7 +45,7 @@ public class SimpleRequestDemo
     }
 
 
-    private void simpleRequest(String ticker)
+    private void simpleRequest(String ticker) throws IOException
     {
         // Query for Profile
         YahooFinanceClient client = new YahooFinanceClient();
@@ -60,7 +62,7 @@ public class SimpleRequestDemo
         System.out.println(json);
     }
 
-    private void multiModuleRequest(String ticker)
+    private void multiModuleRequest(String ticker) throws IOException
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
@@ -86,7 +88,7 @@ public class SimpleRequestDemo
         System.out.println(json);
     }
 
-    private void quoteRequest(String ticker)
+    private void quoteRequest(String ticker) throws IOException
     {
         // this will evolve over time.
         YahooFinanceClient client = new YahooFinanceClient();
@@ -102,7 +104,7 @@ public class SimpleRequestDemo
         System.out.println(json);
     }
 
-    private void quoteRequestMultipleTicker(String ticker1, String ticker2)
+    private void quoteRequestMultipleTicker(String ticker1, String ticker2) throws IOException
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
@@ -125,7 +127,7 @@ public class SimpleRequestDemo
         System.out.println(json);
     }
 
-    private void basicLookupQuery(String query)
+    private void basicLookupQuery(String query) throws IOException
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
@@ -145,7 +147,7 @@ public class SimpleRequestDemo
     }
 
 
-    private void priceHistory(String ticker)
+    private void priceHistory(String ticker) throws IOException
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
@@ -170,7 +172,7 @@ public class SimpleRequestDemo
     }
 
 
-    private void regionRequest(Region region)
+    private void regionRequest(Region region) throws IOException
     {
         YahooFinanceClient client = new YahooFinanceClient();
 
