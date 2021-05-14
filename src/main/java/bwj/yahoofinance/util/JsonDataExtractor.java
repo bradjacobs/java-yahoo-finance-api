@@ -355,14 +355,14 @@ public class JsonDataExtractor
      */
     private static class DecimalSerializer<T extends Number> extends StdSerializer<T>
     {
+        private static final String[] PRICE_FIELD_SUFFIXES = {"price", "open", "high", "low", "close"};
+
         private static final DecimalFormat formatter = new DecimalFormat();
         static {
             formatter.setMaximumFractionDigits(6); // max digits after decimal
             formatter.setMinimumFractionDigits(0);
             formatter.setGroupingUsed(false);
         }
-
-        private static final String PRICE_FIELD = "price";
 
         public DecimalSerializer() {
             this(null);
@@ -378,7 +378,7 @@ public class JsonDataExtractor
             String serializedNumber;
 
             // allow special case for any "price" field to avoid output like: 32.700001  or  32.099998  ( a little kludgy )
-            if (gen.getOutputContext().getCurrentName().toLowerCase().contains(PRICE_FIELD))
+            if (isPriceField(gen.getOutputContext().getCurrentName()))
             {
                 double numValue = value.doubleValue();
                 if (value.doubleValue() < 1) {
@@ -393,6 +393,19 @@ public class JsonDataExtractor
             }
 
             gen.writeNumber( serializedNumber );
+        }
+
+
+        private boolean isPriceField(String fieldName)
+        {
+            String lowerFieldName = fieldName.toLowerCase();
+            for (String priceFieldSuffix : PRICE_FIELD_SUFFIXES)
+            {
+                if (lowerFieldName.endsWith(priceFieldSuffix)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
