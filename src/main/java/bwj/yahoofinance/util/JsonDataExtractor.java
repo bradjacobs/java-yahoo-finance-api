@@ -2,19 +2,28 @@
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
 package bwj.yahoofinance.util;
-
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.MissingNode;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -30,29 +39,24 @@ import java.util.Map;
  */
 public class JsonDataExtractor
 {
-    private static final ObjectMapper mapper =
-        new ObjectMapper()
-            .enable(SerializationFeature.INDENT_OUTPUT)
-            .setDefaultPrettyPrinter(
-                new DefaultPrettyPrinter()
-                    .withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE));
-
-    private static final boolean DEFAULT_EXCEPTION_ON_INVALID_PATH = true;
-
+    private static final JsonMapper mapper = createDefaultObjectMapper();
 
     private final JsonNode rootNode;
-    private boolean exceptionOnInvalidPath;
+    private boolean errorOnInvalidPath = true;
 
 
-    public JsonDataExtractor(String json) {
-        this(json, DEFAULT_EXCEPTION_ON_INVALID_PATH);
+    public JsonDataExtractor(InputStream inputStream) {
+        this( convertToText(inputStream) );
     }
 
+    public JsonDataExtractor(Reader reader) {
+        this( convertToText(reader) );
+    }
 
-    public JsonDataExtractor(String json, boolean exceptionOnInvalidPath)
+    public JsonDataExtractor(String json)
     {
         if (StringUtils.isEmpty(json)) {
-            throw new IllegalArgumentException("must provide a json string");
+            throw new IllegalArgumentException("Must provide a JSON string");
         }
 
         try {
@@ -61,7 +65,6 @@ public class JsonDataExtractor
         catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Invalid JSON string: " + e.getMessage(), e);
         }
-        this.exceptionOnInvalidPath = exceptionOnInvalidPath;
     }
 
 
@@ -69,12 +72,9 @@ public class JsonDataExtractor
         return getInnerJson(path, false);
     }
 
-    public String getPrettyInnerJson(String path) {
-        return getInnerJson(path, true);
-    }
 
 
-    private String getInnerJson(String path, boolean pretty)
+    public String getInnerJson(String path, boolean pretty)
     {
         JsonNode node = getInnerNode(path);
 
@@ -82,14 +82,11 @@ public class JsonDataExtractor
             return null;
         }
 
-        try
-        {
+        try {
             if (pretty) {
-                return mapper.writeValueAsString(node);
+                return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
             }
-            else {
-                return node.toString();
-            }
+            return node.toString();
         }
         catch (Exception e) {
             throw new IllegalArgumentException(String.format("Unable to extract nested json from path '%s'. Error: %s", path, e.getMessage()), e);
@@ -98,105 +95,141 @@ public class JsonDataExtractor
 
 
 
-    public List<Object> findValues(String path, String field) {
-        return findValues(path, field, Object.class);
+    public List<String> getStrings(String path) {
+        return getList(path, String.class);
     }
-    public List<Long> findLongValues(String path, String field) {
-        return findValues(path, field, Long.class);
+    public List<Long> getLongs(String path) {
+        return getList(path, Long.class);
     }
-    public List<Double> findDoubleValues(String path, String field) {
-        return findValues(path, field, Double.class);
+    public List<Double> getDoubles(String path) {
+        return getList(path, Double.class);
     }
-    public List<String> findStringValues(String path, String field) {
-        return findValues(path, field, String.class);
+    public List<Object> getObjects(String path) {
+        return getList(path, Object.class);
+    }
+    public <T> List<T> getValues(String path, Class<T> clazz) {
+        return getList(path, clazz);
     }
 
 
-    public Object[] parseArray(String path) {
+
+
+    protected <T> List<T> getList(String path, Class<T> clazz) {
+        validateClassParameter(clazz);
         JsonNode innerNode = getInnerArrayNode(path);
-        return convert(Object[].class, innerNode);
-    }
-    public Long[] parseLongArray(String path) {
-        JsonNode innerNode = getInnerArrayNode(path);
-        return convert(Long[].class, innerNode);
-    }
-    public Double[] parseDoubleArray(String path) {
-        JsonNode innerNode = getInnerArrayNode(path);
-        return convert(Double[].class, innerNode);
-    }
-    public String[] parseStringArray(String path) {
-        JsonNode innerNode = getInnerArrayNode(path);
-        return convert(String[].class, innerNode);
+        JavaType listOfClassType = getListClassType(clazz);
+        return mapper.convertValue(innerNode, listOfClassType);
     }
 
-    public List<Object> parseList(String path) {
-        return Arrays.asList(parseArray(path));
+    public String getString(String path) {
+        return getValue(path, String.class);
     }
-    public List<Long> parseLongList(String path) {
-        return Arrays.asList(parseLongArray(path));
+    public Long getLong(String path) {
+        return getValue(path, Long.class);
     }
-    public List<Double> parseDoubleList(String path) {
-        return Arrays.asList(parseDoubleArray(path));
+    public Double getDouble(String path) {
+        return getValue(path, Double.class);
     }
-    public List<String> parseStringList(String path) {
-        return Arrays.asList(parseStringArray(path));
+    public Boolean getBoolean(String path) {
+        return getValue(path, Boolean.class);
+    }
+    public Object getObject(String path) {
+        return getValue(path, Object.class);
     }
 
-
-
-
-    public Map<String,Object> parseMap(String path) {
+    public <T> T getValue(String path, Class<T> clazz) {
+        validateClassParameter(clazz);
         JsonNode innerNode = getInnerNode(path);
-        return convertToTypeReference(innerNode, new TypeReference<Map<String, Object>>() {});
-    }
-
-    public Map<String,Map<String, Object>> parseMapOfMaps(String path) {
-        JsonNode innerNode = getInnerNode(path);
-        return convertToTypeReference(innerNode, new TypeReference<Map<String, Map<String, Object>>>() {});
-    }
-
-    public List<Map<String, Object>> parseListOfMaps(String path) {
-        JsonNode innerNode = getInnerArrayNode(path);
-        return convertToTypeReference(innerNode, new TypeReference<List<Map<String, Object>>>() {});
-    }
-
-    public <T> T parseTypedReference(String path, TypeReference<T> typeReference) {
-        JsonNode innerNode = getInnerArrayNode(path);
-        return convertToTypeReference(innerNode, typeReference);
-    }
-
-    private <T> T convertToTypeReference(JsonNode node, TypeReference<T> typeReference)
-    {
-        try {
-            return mapper.readValue(node.toString(), typeReference);
-        }
-        catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("Unable to convert node to map: " + e.getMessage(), e);
-        }
+        return mapper.convertValue(innerNode, clazz);
     }
 
 
-    protected <T> List<T> findValues(String path, String field, Class<T> clz) {
-        List<JsonNode> resultNodes = findNodeValues(path, field);
-        // convert the found nodes to array of given class type
-        T[] results = (T[]) mapper.convertValue(resultNodes, classToArrayMap.get(clz));
-        return Arrays.asList(results);
+
+
+    public List<String> findStrings(String startingPath, String field) {
+        return findValues(startingPath, field, String.class);
     }
-    // note: might be more performant to use node.asLong() or node.asDouble(), etc
-    //   depending on the given class type
+    public List<Long> findLongs(String startingPath, String field) {
+        return findValues(startingPath, field, Long.class);
+    }
+    public List<Double> findDoubles(String startingPath, String field) {
+        return findValues(startingPath, field, Double.class);
+    }
+    public List<Object> findObjects(String startingPath, String field) {
+        return findValues(startingPath, field, Object.class);
+    }
 
+    public <T> List<T> findValues(String startingPath, String field, Class<T> clazz) {
+        validateFieldParameter(field);
+        validateClassParameter(clazz);
+        List<JsonNode> resultNodes = findNodeValues(startingPath, field);
+        JavaType listOfClassType = getListClassType(clazz);
+        return mapper.convertValue(resultNodes, listOfClassType);
+    }
 
-
-    protected List<JsonNode> findNodeValues(String path, String field) {
-        JsonNode innerNode = getInnerNode(path);
+    protected List<JsonNode> findNodeValues(String startingPath, String field) {
+        JsonNode innerNode = getInnerNode(startingPath);
         return innerNode.findValues(field);
     }
 
+
+    protected void validateFieldParameter(String fieldName) throws IllegalArgumentException
+    {
+        // only blank is invalid
+        if (StringUtils.isEmpty(fieldName)) {
+            throw new IllegalArgumentException("Must provide a 'field' parameter.");
+        }
+    }
+
+    /**
+     * Validate if this a valid class.
+     * @param clazz class to validate
+     * @throws IllegalArgumentException if invalid class
+     */
+    protected <T> void validateClassParameter(Class<T> clazz) throws IllegalArgumentException
+    {
+        // for now, only a "NULL" is considered invalid.
+        if (clazz == null) {
+            throw new IllegalArgumentException("Must provide a 'class' parameter.");
+        }
+    }
+
+    /**
+     * Creates a JavaType definition for a "List of the given class"
+     * @param clazz class type for definition
+     * @return JavaType representing List of Class types
+     */
+    protected <T> JavaType getListClassType(Class<T> clazz) {
+        return mapper.getTypeFactory().constructParametricType(List.class, clazz);
+    }
+
+
+    // "a few" special return types.
+    public Map<String,Object> getMap(String path) {
+        JsonNode innerNode = getInnerNode(path);
+        return mapper.convertValue(innerNode, new TypeReference<Map<String, Object>>(){});
+    }
+    public Map<String,Map<String, Object>> getMapOfMaps(String path) {
+        JsonNode innerNode = getInnerNode(path);
+        return mapper.convertValue(innerNode, new TypeReference<Map<String, Map<String, Object>>>(){});
+    }
+    public List<Map<String, Object>> getListOfMaps(String path) {
+        JsonNode innerNode = getInnerArrayNode(path);
+        return mapper.convertValue(innerNode, new TypeReference<List<Map<String, Object>>>(){});
+    }
+
+
+
+    /**
+     * Search for nested node at the given path, with the expectation that this represents and ARRAY.
+     * @param path node path location
+     * @return JsonNode
+     */
     protected JsonNode getInnerArrayNode(String path)
     {
         JsonNode node = getInnerNode(path);
         if (!node.isArray()) {
-            if (this.exceptionOnInvalidPath) {
+            if (this.errorOnInvalidPath) {
                 throw new IllegalArgumentException(String.format("Path does not point to a valid array: '%s'", path));
             }
             else {
@@ -207,13 +240,21 @@ public class JsonDataExtractor
         return node;
     }
 
+
+    /**
+     * Search for nested node forthe give path.  A path must ALWAYS start with a slash "/"
+     *   Use literal string "/" to represent the root node.
+     *   For accessing an array element, include the array index as part of the path.
+     * @param path path location of for the node to find relative to the root node.
+     * @return JsonNode
+     */
     protected JsonNode getInnerNode(String path) {
 
         if (StringUtils.isEmpty(path) || path.equals("/")) {
             return rootNode;
         }
 
-        if (this.exceptionOnInvalidPath) {
+        if (this.errorOnInvalidPath) {
             return rootNode.requiredAt(path);
         }
         else {
@@ -222,36 +263,137 @@ public class JsonDataExtractor
     }
 
 
-    protected <T> T convert(Class<T> clz, JsonNode node)
+    public boolean isErrorOnInvalidPath()
     {
-        if (node.isMissingNode()) {
-            return null;
+        return errorOnInvalidPath;
+    }
+
+    public void setErrorOnInvalidPath(boolean errorOnInvalidPath)
+    {
+        this.errorOnInvalidPath = errorOnInvalidPath;
+    }
+
+
+
+
+    public static String makeJson(Object obj) {
+        return makeJson(obj, false);
+    }
+
+    public static String makeJson(Object obj, boolean pretty)
+    {
+        if (obj == null) {
+            throw new IllegalArgumentException("must provide object(s) to serialize to JSON.");
         }
-        return mapper.convertValue(node, clz);
+
+        try {
+            if (pretty) {
+                return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+            }
+            return mapper.writeValueAsString(obj);
+        }
+        catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Unable to convert to JSON: " + e.getMessage(), e);
+        }
     }
 
 
+    protected static String convertToText(InputStream inputStream) {
+        if (inputStream == null) {
+            throw new IllegalArgumentException("Must provide inputStream");
+        }
 
-    public boolean isExceptionOnInvalidPath()
+        try {
+            return IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+        }
+        catch (IOException e) {
+            throw new IllegalArgumentException("Unable to read InputStream: " + e.getMessage(), e);
+        }
+    }
+
+    protected static String convertToText(Reader reader) {
+        if (reader == null) {
+            throw new IllegalArgumentException("Must provide reader");
+        }
+
+        try {
+            return IOUtils.toString(reader);
+        }
+        catch (IOException e) {
+            throw new IllegalArgumentException("Unable to read Reader: " + e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * Creates ObjectMapper with default custom settings
+     * @return ObjectMapper
+     */
+    private static JsonMapper createDefaultObjectMapper()
     {
-        return exceptionOnInvalidPath;
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Float.class, new DecimalSerializer<Float>());
+        module.addSerializer(Double.class, new DecimalSerializer<Double>());
+        module.addSerializer(BigDecimal.class, new DecimalSerializer<BigDecimal>());
+
+        PrettyPrinter prettyPrinter = new DefaultPrettyPrinter()
+            .withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
+
+        return JsonMapper.builder()
+            .defaultPrettyPrinter(prettyPrinter)
+            .addModule(module)
+            .build();
     }
 
-    public void setExceptionOnInvalidPath(boolean exceptionOnInvalidPath)
+    /**
+     * Custom Serializer for decimal number formats.
+     *  (though "price" values are treated as a special case)
+     * i.e.
+     *   YES: "0.0002"
+     *    NO: "2.0E-4"
+     *    NO: "0.000200000000012"
+     */
+    private static class DecimalSerializer<T extends Number> extends StdSerializer<T>
     {
-        this.exceptionOnInvalidPath = exceptionOnInvalidPath;
+        private static final DecimalFormat formatter = new DecimalFormat();
+        static {
+            formatter.setMaximumFractionDigits(6); // max digits after decimal
+            formatter.setMinimumFractionDigits(0);
+            formatter.setGroupingUsed(false);
+        }
+
+        private static final String PRICE_FIELD = "price";
+
+        public DecimalSerializer() {
+            this(null);
+        }
+
+        public DecimalSerializer(Class<T> t) {
+            super(t);
+        }
+
+        @Override
+        public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+
+            String serializedNumber;
+
+            // allow special case for any "price" field to avoid output like: 32.700001  or  32.099998  ( a little kludgy )
+            if (gen.getOutputContext().getCurrentName().toLowerCase().contains(PRICE_FIELD))
+            {
+                double numValue = value.doubleValue();
+                if (value.doubleValue() < 1) {
+                    serializedNumber = String.format("%.3f", numValue);
+                }
+                else {
+                    serializedNumber = String.format("%.2f", numValue);
+                }
+            }
+            else {
+                serializedNumber = formatter.format(value);
+            }
+
+            gen.writeNumber( serializedNumber );
+        }
     }
-
-
-
-    // side note:
-    //   the generic way to get array class is "Array.newInstance(clazz, 0).getClass()"
-    //   but already know all the types going to encounter.
-    private static final Map<Class,Class> classToArrayMap = new HashMap<Class,Class>() {{
-        put(String.class, String[].class);
-        put(Long.class, Long[].class);
-        put(Double.class, Double[].class);
-        put(Object.class, Object[].class);
-    }};
 
 }

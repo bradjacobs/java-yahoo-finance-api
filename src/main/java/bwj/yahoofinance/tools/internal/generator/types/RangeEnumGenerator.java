@@ -35,7 +35,7 @@ class RangeEnumGenerator extends EnumStringBlobGenerator
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
         JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
-        List<String> valueList = jsonDataExtractor.parseStringList("/chart/result/0/meta/validRanges");
+        List<String> valueList = jsonDataExtractor.getStrings("/chart/result/0/meta/validRanges");
 
         List<EnumInfo> enumInfoList = new ArrayList<>();
         for (String value : valueList)

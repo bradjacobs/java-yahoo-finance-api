@@ -5,6 +5,7 @@ package bwj.yahoofinance.util;
 
 import bwj.yahoofinance.model.PriceHistoryRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
@@ -45,65 +46,65 @@ public class ChartDataConverter
 
 
     private static final boolean EXCEPTION_ON_INVALID_PATH = false;
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final JsonMapper mapper = new JsonMapper();
 
 
 
     public List<Map<String, Number>> toListOfMaps(String json) throws Exception
     {
-        JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json, EXCEPTION_ON_INVALID_PATH);
+        JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
 
-        Long[] timestampValues = jsonDataExtractor.parseLongArray(TIMESTAMP_PATH);
+        List<Long> timestampValues = jsonDataExtractor.getLongs(TIMESTAMP_PATH);
 
-        Double[] closeValues = jsonDataExtractor.parseDoubleArray(CLOSE_PATH);
-        Double[] adjCloseValues = jsonDataExtractor.parseDoubleArray(ADJ_CLOSE_PATH);
+        List<Double> closeValues = jsonDataExtractor.getDoubles(CLOSE_PATH);
+        List<Double> adjCloseValues = jsonDataExtractor.getDoubles(ADJ_CLOSE_PATH);
 
         // check if have minimal data
-        if (ArrayUtils.isEmpty(timestampValues)) {
+        if (timestampValues.isEmpty()) {
             // Two scenarios for this case:
             //   1. response has no data whatsoever (i.e. a date range w/ no data) === > return empty collection
             //   2. request was made with &includeTimestamps=false === > throw an exception
-            if (ArrayUtils.isNotEmpty(closeValues) || ArrayUtils.isNotEmpty(adjCloseValues)) {
+            if (closeValues.isEmpty() || adjCloseValues.isEmpty()) {
                 throw new IllegalStateException("Cannot convert price history to map: Timestamps missing.");
             }
             return Collections.emptyList();
         }
 
 
-        Double[] openValues = jsonDataExtractor.parseDoubleArray(OPEN_PATH);
-        Double[] lowValues = jsonDataExtractor.parseDoubleArray(LOW_PATH);
-        Double[] highValues = jsonDataExtractor.parseDoubleArray(HIGH_PATH);
-        Long[] volumeValues = jsonDataExtractor.parseLongArray(VOLUME_PATH);
+        List<Double> openValues = jsonDataExtractor.getDoubles(OPEN_PATH);
+        List<Double> lowValues = jsonDataExtractor.getDoubles(LOW_PATH);
+        List<Double> highValues = jsonDataExtractor.getDoubles(HIGH_PATH);
+        List<Long> volumeValues = jsonDataExtractor.getLongs(VOLUME_PATH);
 
 
         List<Map<String, Number>> resultKeyValueList = new ArrayList<>();
 
         // ASSERT all lists are same length
-        int entryCount = timestampValues.length;
+        int entryCount = timestampValues.size();
 
         for (int i = 0; i < entryCount; i++)
         {
             Map<String,Number> entryMap = new HashMap<>();
 
             // will refactor iff slow performance is shown
-            entryMap.put(KEY_TIMESTAMP, timestampValues[i]);
-            if (ArrayUtils.isNotEmpty(openValues)) {
-                entryMap.put(KEY_OPEN, openValues[i]);
+            entryMap.put(KEY_TIMESTAMP, timestampValues.get(i));
+            if (! openValues.isEmpty()) {
+                entryMap.put(KEY_OPEN, openValues.get(i));
             }
-            if (ArrayUtils.isNotEmpty(closeValues)) {
-                entryMap.put(KEY_CLOSE, closeValues[i]);
+            if (! closeValues.isEmpty()) {
+                entryMap.put(KEY_CLOSE, closeValues.get(i));
             }
-            if (ArrayUtils.isNotEmpty(lowValues)) {
-                entryMap.put(KEY_LOW, lowValues[i]);
+            if (! lowValues.isEmpty()) {
+                entryMap.put(KEY_LOW, lowValues.get(i));
             }
-            if (ArrayUtils.isNotEmpty(highValues)) {
-                entryMap.put(KEY_HIGH, highValues[i]);
+            if (! highValues.isEmpty()) {
+                entryMap.put(KEY_HIGH, highValues.get(i));
             }
-            if (ArrayUtils.isNotEmpty(volumeValues)) {
-                entryMap.put(KEY_VOLUME, volumeValues[i]);
+            if (! volumeValues.isEmpty()) {
+                entryMap.put(KEY_VOLUME, volumeValues.get(i));
             }
-            if (ArrayUtils.isNotEmpty(adjCloseValues)) {
-                entryMap.put(KEY_ADJ_CLOSE, adjCloseValues[i]);
+            if (! adjCloseValues.isEmpty()) {
+                entryMap.put(KEY_ADJ_CLOSE, adjCloseValues.get(i));
             }
             resultKeyValueList.add(entryMap);
         }

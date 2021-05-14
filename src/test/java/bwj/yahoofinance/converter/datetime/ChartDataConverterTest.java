@@ -30,9 +30,6 @@ public class ChartDataConverterTest
         String path = "/chart/result/0";
         JsonDataExtractor j = new JsonDataExtractor(originalJson);
 
-        List<Object> foo = j.findValues("/", "timestamp");
-
-
 
         assertNotNull(listOfMapRecords);
         assertEquals(listOfMapRecords.size(), 5);

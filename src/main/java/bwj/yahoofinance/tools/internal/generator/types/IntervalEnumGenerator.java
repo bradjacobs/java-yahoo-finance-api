@@ -39,7 +39,7 @@ class IntervalEnumGenerator extends EnumStringBlobGenerator
     {
         JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
 
-        List<String> descriptionValues = jsonDataExtractor.findStringValues("/", "description");
+        List<String> descriptionValues = jsonDataExtractor.findStrings("/", "description");
         if (descriptionValues.isEmpty()) {
             return Collections.emptyList();
         }

@@ -36,7 +36,7 @@ class TypesEnumGenerator extends EnumStringBlobGenerator
     {
         JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
 
-        List<String> descriptionValues = jsonDataExtractor.findStringValues("/", "descriptiondddd");
+        List<String> descriptionValues = jsonDataExtractor.findStrings("/", "descriptiondddd");
         if (descriptionValues.isEmpty()) {
             return Collections.emptyList();
         }

@@ -37,7 +37,7 @@ public class ScreenerFieldExtractor
 
         // extract inner map of maps
         JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
-        Map<String, Map<String, Object>> mapOfMaps = jsonDataExtractor.parseMapOfMaps("/finance/result/0/fields");
+        Map<String, Map<String, Object>> mapOfMaps = jsonDataExtractor.getMapOfMaps("/finance/result/0/fields");
 
         // the key name is the same as the fieldId, thus we only need all the "values" from the collection.
         List<Map<String, Object>> listOfMaps = new ArrayList<>(mapOfMaps.values());

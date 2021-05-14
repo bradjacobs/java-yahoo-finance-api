@@ -36,7 +36,7 @@ class RegionEnumGenerator extends EnumStringBlobGenerator
     {
         JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
 
-        List<Map<String, Object>> listOfMaps = jsonDataExtractor.parseListOfMaps("/finance/result/0/fields/region/labels");
+        List<Map<String, Object>> listOfMaps = jsonDataExtractor.getListOfMaps("/finance/result/0/fields/region/labels");
 
         List<EnumInfo> enumInfoList = new ArrayList<>();
 
