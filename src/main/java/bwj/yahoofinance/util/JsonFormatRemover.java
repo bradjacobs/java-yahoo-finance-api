@@ -5,7 +5,7 @@ package bwj.yahoofinance.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang.StringUtils;
 
@@ -17,9 +17,12 @@ import java.util.Map;
 /**
  * Given a JSON structure, return JSON with the "raw" values flattened.
  *
- * NOTE: this is like the behavior of yahoo param "...&formatted=false"
- *   BUT this yahoo param does _NOT_ work in all cases.
- *     (i.e.  ".../quoteSummary/__ticker__?modules=balanceSheetHistory&formatted=false"
+ * NOTE: this is just like the behavior of yahoo param
+ *     "...&formatted=false"
+ *
+ * HOWEVER
+ *    the need for this arised b/e the yahoo param does _NOT_ work in all cases.
+ *       (i.e.  ".../quoteSummary/__ticker__?modules=balanceSheetHistory&formatted=false"
  *
  * Example:
  *   INPUT
@@ -41,7 +44,8 @@ import java.util.Map;
  */
 public class JsonFormatRemover
 {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final JsonMapper mapper = new JsonMapper();
+    private static final String RAW_KEY = "raw";
 
     /**
      * Removes the special Yahoo fmt sub-fields and replaces with 'raw' value.
@@ -81,7 +85,7 @@ public class JsonFormatRemover
         {
             ObjectNode objNode = (ObjectNode) node;
 
-            // keep track of any object fields that don't have a value
+            // keep track if there are any object fields that don't have a value
             List<String> emptyObjectFieldNames = new ArrayList<>();
             boolean rawValuesFound = false;
 
@@ -95,26 +99,29 @@ public class JsonFormatRemover
                     emptyObjectFieldNames.add(fieldName);
                 }
 
-                JsonNode rawValueNode = childNode.get("raw");
+                JsonNode rawValueNode = childNode.get(RAW_KEY);
                 if (rawValueNode != null) {
                     // if found a 'raw' value, the reassign the parent to the true value
                     rawValuesFound = true;
                     objNode.set(fieldName, rawValueNode);
                 }
                 else {
+                    // if not found, continue the recursion.
                     removeFormats(childNode, removeEmptyEntries);
                 }
             }
 
-            // if any raw fields were found AND if there were any empty sibling fields,
-            //   then update them accordingly
+            // if any raw fields were found
+            //   _AND_
+            // if there were any empty sibling fields,
+            //   then update the empty siblings accordingly
             if (rawValuesFound && emptyObjectFieldNames.size() > 0) {
                 for (String fieldName : emptyObjectFieldNames) {
                     if (removeEmptyEntries) {
-                        objNode.remove(fieldName);
+                        objNode.remove(fieldName); // remove entirely
                     }
                     else {
-                        objNode.set(fieldName, null);
+                        objNode.set(fieldName, null); // field get a 'null' value
                     }
                 }
             }
@@ -134,5 +141,4 @@ public class JsonFormatRemover
             throw new IllegalArgumentException("Invalid JSON string: " + e.getMessage(), e);
         }
     }
-
 }
