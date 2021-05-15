@@ -1,14 +1,30 @@
 package bwj.yahoofinance.http;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 public class HttpClientAdapterFactory
 {
     public static HttpClientAdapter createDefaultClient() {
-        return new ApacheHttpClientAdapter( createDefaultHttpClient() );
+        return new ApacheHttpClientAdapter( createDefaultApacheHttpClient() );
+    }
+    public static HttpClientAdapter createDefaultApacheClient() {
+        return new ApacheHttpClientAdapter( createDefaultApacheHttpClient() );
+    }
+    public static HttpClientAdapter createDefaultOkClient() {
+        return new OkHttpClientAdapter( createDefaultOkHttpClient() );
     }
 
     public static HttpClientAdapter createHttpClient(CloseableHttpClient apacheClientj)
@@ -31,7 +47,7 @@ public class HttpClientAdapterFactory
     private static final int CONNECTION_TIMEOUT = 20000;
     private static final int READ_TIMEOUT = 30000;
 
-    private static CloseableHttpClient createDefaultHttpClient()
+    private static CloseableHttpClient createDefaultApacheHttpClient()
     {
         RequestConfig config = RequestConfig.custom()
             .setConnectTimeout(CONNECTION_TIMEOUT)
@@ -48,5 +64,43 @@ public class HttpClientAdapterFactory
         return httpClient;
     }
 
+
+    private static OkHttpClient createDefaultOkHttpClient()
+    {
+        HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+        return new OkHttpClient.Builder()
+            .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
+            .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
+            .addInterceptor(new HttpLoggingInterceptor())  // todo: experiment w/ what this does/doesn't do
+            .cookieJar(new SimpleCookieJar())
+            .build();
+    }
+
+    // needed for "screener" requests
+    private static class SimpleCookieJar implements CookieJar
+    {
+        private final Map<String, List<Cookie>> cookieStore;
+        SimpleCookieJar() {
+            cookieStore = new HashMap<>();
+        }
+
+        @Override
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            cookieStore.put(url.host(), cookies);
+        }
+
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl url)
+        {
+            String host = url.host();
+            //   if asking for cookie for "query1.finance.yahoo.com", then give cookie for "finance.yahoo.com"
+            // todo: make cleaner when time allows
+            host = host.replace("query1.", "");
+            host = host.replace("query2.", "");
+
+            List<Cookie> cookies = cookieStore.get(host);
+            return cookies != null ? cookies : new ArrayList<Cookie>();
+        }
+    }
 
 }

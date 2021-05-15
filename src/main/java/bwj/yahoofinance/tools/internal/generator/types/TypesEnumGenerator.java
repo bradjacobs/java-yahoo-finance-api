@@ -1,3 +1,6 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
 package bwj.yahoofinance.tools.internal.generator.types;
 
 import bwj.yahoofinance.util.JsonDataExtractor;
@@ -36,7 +39,7 @@ class TypesEnumGenerator extends EnumStringBlobGenerator
     {
         JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
 
-        List<String> descriptionValues = jsonDataExtractor.findStrings("/", "descriptiondddd");
+        List<String> descriptionValues = jsonDataExtractor.findStrings("/", "description");
         if (descriptionValues.isEmpty()) {
             return Collections.emptyList();
         }

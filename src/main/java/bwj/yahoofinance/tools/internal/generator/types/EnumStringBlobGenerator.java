@@ -1,3 +1,6 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
 package bwj.yahoofinance.tools.internal.generator.types;
 
 import java.io.IOException;
@@ -60,15 +63,20 @@ abstract class EnumStringBlobGenerator
             sb.append(INDENT);
             sb.append(enumInfo.getEnumName());
 
-            List<String> enumParamValues = enumInfo.getEnumParamValues();
-            // note: currently assuming values are always of type 'string' (thus quoted)
+            List<EnumInfo.EnumParamInfo> enumParamValues = enumInfo.getEnumParamValues();
 
             if (enumParamValues.size() > 0)
             {
                 List<String> quotedParamValues = new ArrayList<>();
-                for (String enumParamValue : enumParamValues)
+                for (EnumInfo.EnumParamInfo enumParamValue : enumParamValues)
                 {
-                    quotedParamValues.add("\"" + enumParamValue + "\"");
+                    String value = enumParamValue.getParamValue();
+                    if (enumParamValue.isString()) {
+                        quotedParamValues.add("\"" + value + "\"");
+                    }
+                    else {
+                        quotedParamValues.add(value);
+                    }
                 }
                 sb.append("(");
                 sb.append( String.join(", ", quotedParamValues) );

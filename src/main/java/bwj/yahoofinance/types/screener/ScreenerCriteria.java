@@ -38,7 +38,7 @@ public class ScreenerCriteria
     @JsonProperty("userId")
     private String userId = "";
     @JsonProperty("userIdType")
-    private String userIdType = "guid";
+    private String userIdType = "";
 
     public Integer getSize()
     {

@@ -1,3 +1,6 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
 package bwj.yahoofinance.tools.internal.generator.types;
 
 import org.apache.commons.io.FileUtils;
@@ -29,6 +32,7 @@ class MasterEnumFileGenerator
         enumGeneratorMap.put("Range.java", new RangeEnumGenerator());
         enumGeneratorMap.put("Region.java", new RegionEnumGenerator());
         enumGeneratorMap.put("Type.java", new TypesEnumGenerator());
+        enumGeneratorMap.put("ScreenerField.java", new ScreenerFieldEnumGenerator());
     }
 
 

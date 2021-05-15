@@ -6,6 +6,7 @@ package bwj.yahoofinance;
 import bwj.yahoofinance.http.HttpClientAdapterFactory;
 import bwj.yahoofinance.http.HttpClientAdapter;
 import bwj.yahoofinance.http.Response;
+import bwj.yahoofinance.request.CrumbDataSource;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import bwj.yahoofinance.validation.YahooRequestValidator;
@@ -30,6 +31,7 @@ public class YahooFinanceClient
 
     // httpClient is a simple interface around the 'true' httpClient.
     private final HttpClientAdapter httpClient;
+    private final CrumbDataSource crumbDataSource;
 
 
     public YahooFinanceClient()
@@ -46,6 +48,7 @@ public class YahooFinanceClient
         setContentType(DEFAULT_CONTENT_TYPE);
         setUserAgent(DEFAULT_USER_AGENT);
         this.httpClient = httpClient;
+        this.crumbDataSource = new CrumbDataSource(httpClient);
     }
 
 
@@ -65,7 +68,17 @@ public class YahooFinanceClient
 
         String url = buildRequestUrl(request);
 
-        Response response = httpClient.executeGet(url, this.requestHeaderMap);
+        Response response = null;
+        if (request.isPost())
+        {
+            String postBody = request.getPostBody();
+            response = httpClient.executePost(url, postBody, this.requestHeaderMap);
+        }
+        else
+        {
+            response = httpClient.executeGet(url, this.requestHeaderMap);
+        }
+
         if (response.isError()) {
             // TODO - come back and handle better
             throw new RuntimeException("Error occurred during request: ");
@@ -74,7 +87,7 @@ public class YahooFinanceClient
     }
 
 
-    protected String buildRequestUrl(YahooFinanceRequest request)
+    protected String buildRequestUrl(YahooFinanceRequest request) throws IOException
     {
         Map<String, String> paramMap = request.getParamMap();
         if (paramMap == null) {
@@ -84,8 +97,14 @@ public class YahooFinanceClient
         String ticker = request.getTicker().toUpperCase();
         YahooEndpoint endpoint = request.getEndpoint();
 
+        if (endpoint.isCrumbRequest())
+        {
+            String crumb = crumbDataSource.getCrumb();
+            Map<String,String> updatedParamMap = new LinkedHashMap<>(paramMap);
+            updatedParamMap.put("crumb", crumb);
+            paramMap = updatedParamMap;
+        }
 
-        // todo: handle request w/ POST + crumb
 
         URIBuilder builder = new URIBuilder();
         builder.setScheme(BASE_API_SCHEME);
@@ -106,9 +125,7 @@ public class YahooFinanceClient
             builder.addParameter(paramEntry.getKey(), paramEntry.getValue());
         }
 
-        String url = builder.toString();
-        return url;
+        return builder.toString();
     }
-
 
 }

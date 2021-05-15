@@ -8,7 +8,6 @@ import okhttp3.RequestBody;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
 public class OkHttpClientAdapter implements HttpClientAdapter
 {
@@ -58,10 +57,7 @@ public class OkHttpClientAdapter implements HttpClientAdapter
 
         Headers headers = okResponse.headers();
         if (headers != null) {
-
-            Set<String> names = headers.names();
-            for (String name : headers.names())
-            {
+            for (String name : headers.names()) {
                 builder.withHeader(name, headers.get(name));
             }
         }

@@ -1,5 +1,6 @@
 package bwj.yahoofinance.request.builder;
 
+import bwj.yahoofinance.types.ScreenerField;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.types.screener.Operand;
 import bwj.yahoofinance.types.screener.Operator;
@@ -20,7 +21,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
 
     public ScreenerBuilder()
     {
-        throw new NotImplementedException("ScreenerBuilder query is not yet implemented.");
     }
 
 
@@ -64,36 +64,37 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
 
 
     // TODO: methods need better names.
-    public ScreenerBuilder addFilterEq(String field, Number value)
+    public ScreenerBuilder eq(ScreenerField field, Long value)
     {
         this.queryBuilder.eq(field, value);
         return this;
     }
-    public ScreenerBuilder addFilterLt(String field, Number value)
+    public ScreenerBuilder lt(ScreenerField field, Number value)
     {
         this.queryBuilder.lt(field, value);
         return this;
     }
-    public ScreenerBuilder addFilterGt(String field, Number value)
+    public ScreenerBuilder gt(ScreenerField field, Number value)
     {
         this.queryBuilder.gt(field, value);
         return this;
     }
-    public ScreenerBuilder addFilterBetween(String field, Number value1, Number value2)
+    public ScreenerBuilder bwtn(ScreenerField field, Number value1, Number value2)
     {
         this.queryBuilder.between(field, value1, value2);
         return this;
     }
-    public ScreenerBuilder addFilterInList(String field, List<String> values)
+    public ScreenerBuilder in(ScreenerField field, List<String> values)
     {
         this.queryBuilder.in(field, values);
         return this;
     }
-    public ScreenerBuilder addFilterEq(String field, String value)
-    {
-        this.queryBuilder.eq(field, value);
-        return this;
-    }
+    // not sure if below ever gets used (usually 'in' for strings
+//    public ScreenerBuilder eq(ScreenerFieldDefinition field, String value)
+//    {
+//        this.queryBuilder.eq(field, value);
+//        return this;
+//    }
 
 
 
@@ -152,38 +153,38 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
         private static final Operator op = Operator.AND;  // unchangable (for now)
 
 
-        private Map<String, Operand> fieldOperandMap = new LinkedHashMap<>();  // preserving creation order.
+        private Map<ScreenerField, Operand> fieldOperandMap = new LinkedHashMap<>();  // preserving creation order.
 
-        public ScreenerQueryBuilder eq(String field, Number value)
+        public ScreenerQueryBuilder eq(ScreenerField field, Long value)
         {
             fieldOperandMap.put(field, generateRestriction(field, Operator.EQUAL, value));
             return this;
         }
-        public ScreenerQueryBuilder lt(String field, Number value)
+        public ScreenerQueryBuilder lt(ScreenerField field, Number value)
         {
             fieldOperandMap.put(field, generateRestriction(field, Operator.LESS_THAN, value));
             return this;
         }
-        public ScreenerQueryBuilder gt(String field, Number value)
+        public ScreenerQueryBuilder gt(ScreenerField field, Number value)
         {
             fieldOperandMap.put(field, generateRestriction(field, Operator.GREATER_THAN, value));
             return this;
         }
-        public ScreenerQueryBuilder between(String field, Number value1, Number value2)
+        public ScreenerQueryBuilder between(ScreenerField field, Number value1, Number value2)
         {
             fieldOperandMap.put(field, generateRestriction(field, Operator.BETWEEN, value1, value2));
             return this;
         }
-        public ScreenerQueryBuilder in(String field, List<String> values)
+        public ScreenerQueryBuilder in(ScreenerField field, List<String> values)
         {
             fieldOperandMap.put(field, generateInListRestriction(field, values));
             return this;
         }
-        public ScreenerQueryBuilder eq(String field, String value)
-        {
-            fieldOperandMap.put(field, generateRestriction(field, Operator.EQUAL, value));
-            return this;
-        }
+//        public ScreenerQueryBuilder eq(ScreenerFieldDefinition field, String value)
+//        {
+//            fieldOperandMap.put(field, generateRestriction(field, Operator.EQUAL, value));
+//            return this;
+//        }
 
         public Query build() {
             Query query = new Query();
@@ -192,23 +193,23 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
             return query;
         }
 
-        private static Operand generateRestriction(String field, Operator op, Object value)
+        private static Operand generateRestriction(ScreenerField field, Operator op, Object value)
         {
             Operand operand = new Operand();
             operand.setOperator(op.getValue());
-            operand.setOperands(Arrays.asList(field, value));
+            operand.setOperands(Arrays.asList(field.getValue(), value));
             return operand;
         }
 
-        private static Operand generateRestriction(String field, Operator op, Object value1, Object value2)
+        private static Operand generateRestriction(ScreenerField field, Operator op, Object value1, Object value2)
         {
             Operand operand = new Operand();
             operand.setOperator(op.getValue());
-            operand.setOperands(Arrays.asList(field, value1, value2));
+            operand.setOperands(Arrays.asList(field.getValue(), value1, value2));
             return operand;
         }
 
-        private static Operand generateInListRestriction(String field, List<String> values)
+        private static Operand generateInListRestriction(ScreenerField field, List<String> values)
         {
             Operand operand = new Operand();
             operand.setOperator(Operator.OR.getValue());

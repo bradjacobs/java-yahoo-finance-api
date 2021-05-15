@@ -1,5 +1,7 @@
-
-package bwj.yahoofinance.misc.screener.autogen;
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
+package bwj.yahoofinance.tools.internal.generator.types.autogen;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,7 +24,7 @@ import java.util.Objects;
     "dropdownSupported",
     "isPremium"
 })
-public class ScreenerField implements Comparable<ScreenerField>
+public class ScreenerFieldDefinition implements Comparable<ScreenerFieldDefinition>
 {
     @JsonProperty("fieldId")
     private String fieldId;
@@ -160,15 +162,15 @@ public class ScreenerField implements Comparable<ScreenerField>
 
 
     @Override
-    public int compareTo(ScreenerField o) {
+    public int compareTo(ScreenerFieldDefinition o) {
         return this.displayName.compareTo(o.displayName);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ScreenerField)) return false;
-        ScreenerField that = (ScreenerField) o;
+        if (!(o instanceof ScreenerFieldDefinition)) return false;
+        ScreenerFieldDefinition that = (ScreenerFieldDefinition) o;
         return Objects.equals(fieldId, that.fieldId);
     }
 

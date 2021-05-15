@@ -13,5 +13,6 @@ public enum Type
     CURRENCY,
     FUTURE,
     CRYPTOCURRENCY,
-    ALL
+    ALL;
+
 }

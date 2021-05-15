@@ -1,3 +1,6 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
 package bwj.yahoofinance.tools.internal.generator.types;
 
 import java.util.ArrayList;
@@ -6,7 +9,7 @@ import java.util.List;
 class EnumInfo implements Comparable<EnumInfo>
 {
     private String enumName;
-    private List<String> enumParamValues = new ArrayList<>();
+    private List<EnumParamInfo> enumParamValues = new ArrayList<>();
 
     public EnumInfo(String enumName)
     {
@@ -14,7 +17,10 @@ class EnumInfo implements Comparable<EnumInfo>
     }
 
     public void addParamValue(String value) {
-        this.enumParamValues.add(value);
+        addParamValue(value, true);
+    }
+    public void addParamValue(String value, boolean isString) {
+        this.enumParamValues.add(new EnumParamInfo(value, isString));
     }
 
     public String getEnumName()
@@ -22,7 +28,7 @@ class EnumInfo implements Comparable<EnumInfo>
         return enumName;
     }
 
-    public List<String> getEnumParamValues()
+    public List<EnumParamInfo> getEnumParamValues()
     {
         return enumParamValues;
     }
@@ -40,4 +46,26 @@ class EnumInfo implements Comparable<EnumInfo>
     {
         return this.enumName.compareTo(o.enumName);
     }
+
+    static class EnumParamInfo {
+        private final String paramValue;
+        private final boolean isString;
+
+        public EnumParamInfo(String paramValue) {
+           this(paramValue, true);
+        }
+        public EnumParamInfo(String paramValue, boolean isString) {
+            this.paramValue = paramValue;
+            this.isString = isString;
+        }
+
+        public String getParamValue() {
+            return paramValue;
+        }
+
+        public boolean isString() {
+            return isString;
+        }
+    }
+
 }

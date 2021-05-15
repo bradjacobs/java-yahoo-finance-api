@@ -5,6 +5,9 @@ package bwj.yahoofinance.request.builder;
 
 
 import bwj.yahoofinance.types.YahooEndpoint;
+import bwj.yahoofinance.util.JsonDataExtractor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import java.util.Collections;
 import java.util.Map;
@@ -48,4 +51,31 @@ public class YahooFinanceRequest
         return this.paramMap.get(key);
     }
 
+    public boolean isPost() {
+        return this.endpoint != null && this.endpoint.isPostRequest();
+    }
+
+    public Object getPostObject()
+    {
+        return postBody;
+    }
+
+    public String getPostBody() {
+        if (postBody == null) {
+            return null;
+        }
+        else if (postBody instanceof String) {
+            return (String)postBody;
+        }
+        else {
+            // todo - this code belongs in differen spot
+            JsonMapper mapper = new JsonMapper();
+            try {
+                return mapper.writeValueAsString(postBody);
+            }
+            catch (JsonProcessingException e) {
+                throw new InternalError("Unable to create request postBody: " + e.getMessage(), e);
+            }
+        }
+    }
 }

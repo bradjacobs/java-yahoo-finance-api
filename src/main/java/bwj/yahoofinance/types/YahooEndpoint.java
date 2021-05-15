@@ -84,10 +84,8 @@ public enum YahooEndpoint
     private final String name;
     private final int version;
     private final String pathPrefix;
-    private final boolean isMultiTickerSupported;
-    private final boolean isTickerKeyValueParam;
-    private final boolean isQuery;
-    private final boolean isRegionRequest;
+
+    private final Set<YahooEndpointFlag> flags;
 
     YahooEndpoint(String name, int version, YahooEndpointFlag... flags) {
         this(name, version, "", flags);
@@ -96,14 +94,10 @@ public enum YahooEndpoint
         this(name, version, pathPrefix, new YahooEndpointFlag[0]);
     }
     YahooEndpoint(String name, int version, String pathPrefix, YahooEndpointFlag ... flags) {
-        Set<YahooEndpointFlag> flagSet = new HashSet<>(Arrays.asList(flags));
+        this.flags = new HashSet<>(Arrays.asList(flags));
         this.name = name;
         this.version = version;
         this.pathPrefix = pathPrefix;
-        this.isMultiTickerSupported = flagSet.contains(FLAG_SUPPORT_MULTI_TICKERS);
-        this.isTickerKeyValueParam = flagSet.contains(FLAG_REQUIRES_SYMBOL_PARAM);
-        this.isQuery = flagSet.contains(FLAG_IS_QUERY);
-        this.isRegionRequest = flagSet.contains(FLAG_IS_REGION);
     }
 
 
@@ -115,21 +109,34 @@ public enum YahooEndpoint
         return version;
     }
 
-    public boolean isMultiTickerSupported() {
-        return isMultiTickerSupported;
-    }
-
-    public boolean isTickerKeyValueParam() {
-        return isTickerKeyValueParam;
-    }
-
-    public boolean isQuery() {
-        return isQuery;
-    }
-
     public String getPathPrefix() {
         return pathPrefix;
     }
+
+    public boolean isMultiTickerSupported() {
+        return flags.contains(FLAG_SUPPORT_MULTI_TICKERS);
+    }
+
+    public boolean isQuery() {
+        return flags.contains(FLAG_IS_QUERY);
+    }
+
+    public boolean isCrumbRequest() {
+        return flags.contains(FLAG_REQUIRES_CRUMB);
+    }
+
+    public boolean isPostRequest() {
+        return flags.contains(FLAG_REQUIRES_POST);
+    }
+
+    public boolean isTickerKeyValueParam() {
+        return flags.contains(FLAG_REQUIRES_SYMBOL_PARAM);
+    }
+
+    private boolean isRegionRequest() {
+        return flags.contains(FLAG_IS_REGION);
+    }
+
 
     /**
      * Check if endpoint request contains ticker as part of the URL path
@@ -140,17 +147,18 @@ public enum YahooEndpoint
      * @return if ticker on the path portion of a URL request.
      */
     public boolean isTickerOnPath() {
-        if (isQuery) { return false; }
-        if (isMultiTickerSupported) { return false; }
-        if (isTickerKeyValueParam) { return false; }
-        if (isRegionRequest) { return false; }
+        if (isQuery()) { return false; }
+        if (isMultiTickerSupported()) { return false; }
+        if (isTickerKeyValueParam()) { return false; }
+        if (isRegionRequest()) { return false; }
 
         return true;
     }
 
     public boolean requiresTicker() {
-        if (isQuery) { return false; }
-        if (isRegionRequest) { return false; }
+        if (isQuery()) { return false; }
+        if (isRegionRequest()) { return false; }
         return true;
     }
+
 }

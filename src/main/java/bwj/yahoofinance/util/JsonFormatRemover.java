@@ -21,10 +21,10 @@ import java.util.Map;
  *     "...&formatted=false"
  *
  * HOWEVER
- *    the need for this arised b/e the yahoo param does _NOT_ work in all cases.
+ *    the need for this arose b/c the 'formatted' yahoo param does _NOT_ work in all cases.
  *       (i.e.  ".../quoteSummary/__ticker__?modules=balanceSheetHistory&formatted=false"
  *
- * Example:
+ * Behavior Example:
  *   INPUT
  *       ...
  *     "enterpriseValue": { "raw": 2216864251904, "fmt": "2.22T", "longFmt": "2,216,864,251,904" },

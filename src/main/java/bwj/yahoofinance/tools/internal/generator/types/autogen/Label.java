@@ -1,5 +1,7 @@
-
-package bwj.yahoofinance.misc.screener.autogen;
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
+package bwj.yahoofinance.tools.internal.generator.types.autogen;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
