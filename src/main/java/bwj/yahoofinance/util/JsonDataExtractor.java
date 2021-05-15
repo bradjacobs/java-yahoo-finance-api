@@ -30,6 +30,9 @@ import java.util.Map;
 /**
  * Helper class to extract data from a JSON string blob
  *
+ * todo: just discovered the following project   (might be able to utilize (or replace this)  tbd
+ *     https://github.com/json-path/JsonPath
+ * todo: this class really needs its own home
  * todo: javadocs
  * todo: unittests
  * todo: better error/exception msg handling
