@@ -1,12 +1,12 @@
 package bwj.yahoofinance.http;
 
+import okhttp3.OkHttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 public class HttpClientAdapterFactory
 {
-
     public static HttpClientAdapter createDefaultClient() {
         return new ApacheHttpClientAdapter( createDefaultHttpClient() );
     }
@@ -16,7 +16,14 @@ public class HttpClientAdapterFactory
         return new ApacheHttpClientAdapter(apacheClientj);
     }
 
+    public static HttpClientAdapter createHttpClient(OkHttpClient okHttpClient)
+    {
+        return new OkHttpClientAdapter(okHttpClient);
+    }
 
+
+
+    // todo - cleanup / remove below
 
     // todo: values are arbitrary
     private static final int MAX_CONNECTIONS_PER_HOST = 10;

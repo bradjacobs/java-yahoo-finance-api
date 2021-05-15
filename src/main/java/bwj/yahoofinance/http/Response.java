@@ -1,6 +1,5 @@
 package bwj.yahoofinance.http;
 
-import okhttp3.Handshake;
 
 import java.util.Collections;
 import java.util.Map;

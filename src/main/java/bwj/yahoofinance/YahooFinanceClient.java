@@ -10,7 +10,6 @@ import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.request.builder.YahooFinanceRequest;
 import bwj.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -29,16 +28,27 @@ public class YahooFinanceClient
 
     private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
 
-    // rawHttpClient is a simple interface around the 'true' httpClient.
-    private HttpClientAdapter rawHttpClient;
+    // httpClient is a simple interface around the 'true' httpClient.
+    private final HttpClientAdapter httpClient;
 
 
     public YahooFinanceClient()
     {
+        this(HttpClientAdapterFactory.createDefaultClient());
+    }
+
+    public YahooFinanceClient(HttpClientAdapter httpClient)
+    {
+        if (httpClient == null) {
+            throw new IllegalArgumentException("httpClient cannot be null.");
+        }
+
         setContentType(DEFAULT_CONTENT_TYPE);
         setUserAgent(DEFAULT_USER_AGENT);
-        setInternalClient(HttpClientAdapterFactory.createDefaultClient());
+        this.httpClient = httpClient;
     }
+
+
 
     public void setContentType(String contentType) {
         requestHeaderMap.put("Content-Type", contentType);
@@ -55,7 +65,7 @@ public class YahooFinanceClient
 
         String url = buildRequestUrl(request);
 
-        Response response = rawHttpClient.executeGet(url, this.requestHeaderMap);
+        Response response = httpClient.executeGet(url, this.requestHeaderMap);
         if (response.isError()) {
             // TODO - come back and handle better
             throw new RuntimeException("Error occurred during request: ");
@@ -100,15 +110,5 @@ public class YahooFinanceClient
         return url;
     }
 
-
-    public void setInternalClient(CloseableHttpClient client) {
-        setInternalClient(HttpClientAdapterFactory.createHttpClient(client));
-    }
-    public void setInternalClient(HttpClientAdapter client) {
-        if (client == null) {
-            throw new IllegalArgumentException("Cannot set the internal client to null.");
-        }
-        this.rawHttpClient = client;
-    }
 
 }

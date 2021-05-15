@@ -4,11 +4,13 @@
 package bwj.yahoofinance.examples;
 
 import bwj.yahoofinance.YahooFinanceClient;
+import bwj.yahoofinance.http.HttpClientAdapterFactory;
 import bwj.yahoofinance.request.YahooRequestBuilder;
 import bwj.yahoofinance.types.Interval;
 import bwj.yahoofinance.types.Region;
 import bwj.yahoofinance.types.Type;
 import bwj.yahoofinance.request.builder.YahooFinanceRequest;
+import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 
@@ -48,7 +50,7 @@ public class SimpleRequestDemo
     private void simpleRequest(String ticker) throws IOException
     {
         // Query for Profile
-        YahooFinanceClient client = new YahooFinanceClient();
+        YahooFinanceClient client = new YahooFinanceClient(HttpClientAdapterFactory.createHttpClient(new OkHttpClient()));
 
         YahooFinanceRequest req = YahooRequestBuilder.api()
             .quoteSummary()
