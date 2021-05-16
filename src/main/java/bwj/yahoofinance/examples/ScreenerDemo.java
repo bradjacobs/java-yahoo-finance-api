@@ -76,7 +76,7 @@ public class ScreenerDemo
             Object pb = entryMap.get("priceToBook");
             Object averageAnalystRating = entryMap.get("averageAnalystRating");
 
-            String formattedStr = String.format("|%-5s| %-35s| %-12s| %-12s| %-18s|", symbol, name, pe, pb, averageAnalystRating); // prints: |Hello World |
+            String formattedStr = String.format("|%-5s| %-35s| %-12s| %-12s| %-18s|", symbol, name, pe, pb, averageAnalystRating);
             System.out.println(formattedStr);
         }
 
