@@ -52,5 +52,8 @@ public final class ParamKeys
     public static final String MERGE = "merge";
     public static final String PAD_TIME_SERIES = "padTimeSeries";
 
+    // typically for Screener
+    public static final String USE_RECORD_RESPONSE = "useRecordResponse";  // only returns total (no records) when true
+
 
 }

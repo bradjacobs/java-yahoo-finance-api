@@ -23,10 +23,12 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     {
     }
 
-
     private Boolean formatted;
     private int size = DEFAULT_SIZE;
     private int offset = DEFAULT_OFFSET;
+
+    private Boolean totalOnly; //  aka useRecordResponse=true   (no record data returned)
+
 
     private String sortField = "intradaymarketcap";
     private String sortType = "DESC";
@@ -59,6 +61,10 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     }
     public ScreenerBuilder setSortType(String sortType) {
         this.sortField = sortField;
+        return this;
+    }
+    public ScreenerBuilder setTotalOnly(Boolean totalOnly) {
+        this.totalOnly = totalOnly;
         return this;
     }
 
@@ -116,6 +122,9 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
         Map<String,String> map = new LinkedHashMap<>();
         if (this.formatted != null) {
             map.put(ParamKeys.FORMATTED, Boolean.toString(this.formatted));
+        }
+        if (this.totalOnly != null) {
+            map.put(ParamKeys.USE_RECORD_RESPONSE, Boolean.toString(this.totalOnly));
         }
         return map;
     }
