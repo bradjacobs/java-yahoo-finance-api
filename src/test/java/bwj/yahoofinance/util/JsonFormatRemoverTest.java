@@ -3,6 +3,7 @@
  */
 package bwj.yahoofinance.util;
 
+import bwj.yahoofinance.converter.json.JsonFormatRemover;
 import org.testng.annotations.Test;
 
 import java.net.URL;

@@ -3,9 +3,9 @@
  */
 package bwj.yahoofinance.tools.internal.generator.types;
 
+import bwj.yahoofinance.converter.json.JsonDataExtractor;
 import bwj.yahoofinance.tools.internal.generator.types.autogen.Category;
 import bwj.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
-import bwj.yahoofinance.util.JsonDataExtractor;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

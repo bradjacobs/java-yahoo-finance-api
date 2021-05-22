@@ -3,7 +3,7 @@
  */
 package bwj.yahoofinance.tools.internal.generator.types;
 
-import bwj.yahoofinance.util.JsonDataExtractor;
+import bwj.yahoofinance.converter.json.JsonDataExtractor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
