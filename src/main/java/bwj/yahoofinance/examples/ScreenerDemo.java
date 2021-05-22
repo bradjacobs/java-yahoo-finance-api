@@ -24,7 +24,7 @@ public class ScreenerDemo
 
     private void screeenerRequest1() throws IOException
     {
-        YahooFinanceClient client = new YahooFinanceClient(HttpClientAdapterFactory.createDefaultOkClient());
+        YahooFinanceClient client = new YahooFinanceClient(HttpClientAdapterFactory.createDefaultOkHttpClient());
 
         // still _VERY_ beta
 
@@ -43,7 +43,7 @@ public class ScreenerDemo
 
     private void screeenerRequest2() throws IOException
     {
-        YahooFinanceClient client = new YahooFinanceClient(HttpClientAdapterFactory.createDefaultOkClient());
+        YahooFinanceClient client = new YahooFinanceClient(HttpClientAdapterFactory.createDefaultOkHttpClient());
 
         // still _VERY_ beta
 

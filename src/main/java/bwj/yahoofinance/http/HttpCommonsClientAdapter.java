@@ -11,11 +11,11 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.Map;
 
-public class ApacheHttpClientAdapter implements HttpClientAdapter
+public class HttpCommonsClientAdapter implements HttpClientAdapter
 {
     private final CloseableHttpClient httpClient;
 
-    public ApacheHttpClientAdapter(CloseableHttpClient httpClient)
+    public HttpCommonsClientAdapter(CloseableHttpClient httpClient)
     {
         if (httpClient == null) {
             throw new IllegalArgumentException("httpClient cannot be null.");

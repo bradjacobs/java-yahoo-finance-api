@@ -18,18 +18,20 @@ import java.util.concurrent.TimeUnit;
 public class HttpClientAdapterFactory
 {
     public static HttpClientAdapter createDefaultClient() {
-        return new ApacheHttpClientAdapter( createDefaultApacheHttpClient() );
+        return new HttpCommonsClientAdapter( createInternalHttpCommonsClient() );
     }
-    public static HttpClientAdapter createDefaultApacheClient() {
-        return new ApacheHttpClientAdapter( createDefaultApacheHttpClient() );
+    public static HttpClientAdapter createDefaultHttpCommonsClient() {
+        return new HttpCommonsClientAdapter( createInternalHttpCommonsClient() );
     }
-    public static HttpClientAdapter createDefaultOkClient() {
-        return new OkHttpClientAdapter( createDefaultOkHttpClient() );
+    public static HttpClientAdapter createDefaultOkHttpClient() {
+        return new OkHttpClientAdapter( createInternalOkHttpClient() );
     }
+
+
 
     public static HttpClientAdapter createHttpClient(CloseableHttpClient apacheClientj)
     {
-        return new ApacheHttpClientAdapter(apacheClientj);
+        return new HttpCommonsClientAdapter(apacheClientj);
     }
 
     public static HttpClientAdapter createHttpClient(OkHttpClient okHttpClient)
@@ -47,7 +49,7 @@ public class HttpClientAdapterFactory
     private static final int CONNECTION_TIMEOUT = 20000;
     private static final int READ_TIMEOUT = 30000;
 
-    private static CloseableHttpClient createDefaultApacheHttpClient()
+    private static CloseableHttpClient createInternalHttpCommonsClient()
     {
         RequestConfig config = RequestConfig.custom()
             .setConnectTimeout(CONNECTION_TIMEOUT)
@@ -65,7 +67,7 @@ public class HttpClientAdapterFactory
     }
 
 
-    private static OkHttpClient createDefaultOkHttpClient()
+    private static OkHttpClient createInternalOkHttpClient()
     {
         HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
         return new OkHttpClient.Builder()
