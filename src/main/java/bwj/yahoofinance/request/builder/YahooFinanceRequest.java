@@ -5,7 +5,6 @@ package bwj.yahoofinance.request.builder;
 
 
 import bwj.yahoofinance.types.YahooEndpoint;
-import bwj.yahoofinance.util.JsonDataExtractor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
