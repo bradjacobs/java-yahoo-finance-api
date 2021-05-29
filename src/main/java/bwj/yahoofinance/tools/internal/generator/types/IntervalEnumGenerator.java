@@ -3,13 +3,12 @@
  */
 package bwj.yahoofinance.tools.internal.generator.types;
 
-import bwj.yahoofinance.converter.json.JsonDataExtractor;
+import com.jayway.jsonpath.JsonPath;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static bwj.yahoofinance.tools.internal.generator.types.TimeIntervalEnumInfoGenerator.generateEnumInfo;
@@ -40,14 +39,7 @@ class IntervalEnumGenerator extends EnumStringBlobGenerator
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
-        JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
-
-        List<String> descriptionValues = jsonDataExtractor.findStrings("/", "description");
-        if (descriptionValues.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        String description = descriptionValues.get(0);
+        String description = JsonPath.read(json, "$.chart.error.description");
         int startBracketIndex = description.indexOf('[');
         int endBracketIndex = description.lastIndexOf(']');
         String intervalChoiceString = description.substring(startBracketIndex+1, endBracketIndex);

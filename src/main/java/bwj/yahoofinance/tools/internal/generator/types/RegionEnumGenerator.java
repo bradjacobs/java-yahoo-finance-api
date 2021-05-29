@@ -3,7 +3,7 @@
  */
 package bwj.yahoofinance.tools.internal.generator.types;
 
-import bwj.yahoofinance.converter.json.JsonDataExtractor;
+import com.jayway.jsonpath.JsonPath;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -37,10 +37,7 @@ class RegionEnumGenerator extends EnumStringBlobGenerator
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
-        JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
-
-        List<Map<String, Object>> listOfMaps = jsonDataExtractor.getListOfMaps("/finance/result/0/fields/region/labels");
-
+        List<Map<String, Object>> listOfMaps = JsonPath.read(json, "$.finance.result[0].fields.region.labels");
         List<EnumInfo> enumInfoList = new ArrayList<>();
 
         for (Map<String, Object> entryMap : listOfMaps)

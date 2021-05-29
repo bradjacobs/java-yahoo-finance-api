@@ -3,10 +3,10 @@
  */
 package bwj.yahoofinance.tools.internal.generator.types;
 
-import bwj.yahoofinance.converter.json.JsonDataExtractor;
 import bwj.yahoofinance.tools.internal.generator.types.autogen.Category;
 import bwj.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.jayway.jsonpath.JsonPath;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -44,13 +44,7 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
-        // extract inner map of maps
-        JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
-        Map<String, Map<String, Object>> mapOfMaps = jsonDataExtractor.getMapOfMaps("/finance/result/0/fields");
-
-        // the key name is the same as the fieldId, thus we only need all the "values" from the collection.
-        List<Map<String, Object>> listOfMaps = new ArrayList<>(mapOfMaps.values());
-
+        List<Map<String, Object>> listOfMaps = JsonPath.read(json, "$.finance.result[0].fields.*");
         ScreenerFieldDefinition[] fields = mapper.convertValue(listOfMaps, ScreenerFieldDefinition[].class);
 
         // filter out fields want to ignore.

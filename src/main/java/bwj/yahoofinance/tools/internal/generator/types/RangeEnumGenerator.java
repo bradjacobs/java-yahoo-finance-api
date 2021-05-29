@@ -3,7 +3,7 @@
  */
 package bwj.yahoofinance.tools.internal.generator.types;
 
-import bwj.yahoofinance.converter.json.JsonDataExtractor;
+import com.jayway.jsonpath.JsonPath;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -37,8 +37,7 @@ class RangeEnumGenerator extends EnumStringBlobGenerator
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
-        JsonDataExtractor jsonDataExtractor = new JsonDataExtractor(json);
-        List<String> valueList = jsonDataExtractor.getStrings("/chart/result/0/meta/validRanges");
+        List<String> valueList = JsonPath.read(json, "$.chart.result[0].meta.validRanges");
 
         List<EnumInfo> enumInfoList = new ArrayList<>();
         for (String value : valueList)
