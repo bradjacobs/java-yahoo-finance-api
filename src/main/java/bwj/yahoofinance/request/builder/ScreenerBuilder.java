@@ -6,7 +6,6 @@ import bwj.yahoofinance.types.screener.Operand;
 import bwj.yahoofinance.types.screener.Operator;
 import bwj.yahoofinance.types.screener.Query;
 import bwj.yahoofinance.types.screener.ScreenerCriteria;
-import org.apache.commons.lang.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;

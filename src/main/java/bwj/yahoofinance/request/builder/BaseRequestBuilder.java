@@ -6,7 +6,7 @@ package bwj.yahoofinance.request.builder;
 import bwj.yahoofinance.types.Region;
 import bwj.yahoofinance.types.YahooEndpoint;
 import bwj.yahoofinance.validation.YahooRequestValidator;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Locale;

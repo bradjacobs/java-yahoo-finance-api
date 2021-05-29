@@ -1,7 +1,7 @@
 package bwj.yahoofinance.request.builder;
 
 import bwj.yahoofinance.types.YahooEndpoint;
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
