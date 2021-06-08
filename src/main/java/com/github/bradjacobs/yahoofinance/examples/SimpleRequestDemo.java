@@ -6,16 +6,18 @@ package com.github.bradjacobs.yahoofinance.examples;
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
+import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.Type;
-import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpoint.*;
-import static com.github.bradjacobs.yahoofinance.types.YahooModule.*;
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpoint.MARKET_SUMMARY;
+import static com.github.bradjacobs.yahoofinance.types.YahooModule.ASSET_PROFILE;
+import static com.github.bradjacobs.yahoofinance.types.YahooModule.BALANCE_SHEET_HISTORY;
+import static com.github.bradjacobs.yahoofinance.types.YahooModule.FINANCIAL_DATA;
 
 // TODO - redo this class (split up examples)
 public class SimpleRequestDemo
@@ -32,10 +34,10 @@ public class SimpleRequestDemo
 
         try
         {
-            requestDemo.simpleRequest(testTicker);
+//            requestDemo.simpleRequest(testTicker);
 //            requestDemo.multiModuleRequest(testTicker);
 //            requestDemo.quoteRequest(testTicker);
-//            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
+            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
 //            requestDemo.priceHistory(testTicker);
 //            requestDemo.basicLookupQuery(queryString);
 //            requestDemo.regionRequest(region);

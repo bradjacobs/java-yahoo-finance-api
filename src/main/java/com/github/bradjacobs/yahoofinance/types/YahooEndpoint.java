@@ -45,10 +45,10 @@ public enum YahooEndpoint
 
     // Price History (alternate)
     //   NOTE:  primary differences from CHART
-    //     1.  only returns "close"
+    //     1.  only returns "close" (and timestamps)
     //     2.  will support multiple tickers
     //     3.  response will have a different format
-    //   NOTE: noticeable different is response format b/w v8 and v7
+    //   NOTE: noticeable difference is response format b/w v8 and v7
     SPARK("spark", 8, FLAG_SUPPORT_MULTI_TICKERS),
 
     VALIDATE("quote/validate", 6, FLAG_SUPPORT_MULTI_TICKERS),

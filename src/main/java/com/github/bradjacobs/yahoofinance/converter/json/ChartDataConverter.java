@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Given a JSON response from a chart endpoint request (i.e.  v8/finance/chart/{symbol} ),
@@ -48,10 +49,22 @@ public class ChartDataConverter
 
     private static final JsonMapper mapper = new JsonMapper();
 
-
-    public List<Map<String, Number>> toListOfMaps(String json) throws Exception
+    // temp hack for map value type until better soln
+    public List<Map<String, Object>> toListOfMaps2(String json)
     {
+        List<Map<String, Number>> resultList = toListOfMaps(json);
 
+        List<Map<String,Object>> convertedList = new ArrayList<>();
+        for (Map<String, Number> entryMap : resultList) {
+            convertedList.add(entryMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+        }
+        return convertedList;
+    }
+
+
+    public List<Map<String, Number>> toListOfMaps(String json)
+    {
         // configure to return NULL (instead of Exception) if the _LEAF_ is missing
         //   b/c the field might not always be there.
 
@@ -59,9 +72,7 @@ public class ChartDataConverter
         conf = conf.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL);
         conf = conf.addOptions(Option.SUPPRESS_EXCEPTIONS);
 
-
         DocumentContext jsonDoc = JsonPath.using(conf).parse(json);
-
 
         Long[] timestampValues = jsonDoc.read(TIMESTAMP_PATH, Long[].class);
 
