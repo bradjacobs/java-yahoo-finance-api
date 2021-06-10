@@ -20,6 +20,8 @@ public class ResponseConverterFactory
                 return new ScreenerResponseConverter();
             case QUOTE_SUMMARY:
                 return new QuoteSummaryResponseConverter();
+            case QUOTE:
+                return new QuoteResponseConverter();
             case TIMESERIES:
                 return new TimeSeriesResponseConverter(true); // todo: come back to the future of the boolean param
             default:
