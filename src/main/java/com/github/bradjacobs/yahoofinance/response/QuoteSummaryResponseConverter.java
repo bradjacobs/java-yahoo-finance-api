@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response;
 
+import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.ArrayList;
@@ -37,7 +38,10 @@ public class QuoteSummaryResponseConverter implements YahooResponseConverter
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
     {
+        // remove all of the 'raw', 'fmt' stuff (if exists)
+        String updatedJson = JsonFormatRemover.removeFormats(json, false);
+
         // todo - this won't work if get an 'error response'
-        return JsonPath.read(json, DEFAULT_MAP_PATH);
+        return JsonPath.read(updatedJson, DEFAULT_MAP_PATH);
     }
 }
