@@ -31,6 +31,7 @@ public class PriceHistoryBuilder extends BasePeriodRequestBuilder<PriceHistoryBu
     private IndicatorFieldSelection indicatorFieldSelection;
     private Boolean includeTimestamps;
     private Boolean includePrePost;
+    private Integer numberOfPoints;
 
     enum IndicatorFieldSelection
     {
@@ -111,6 +112,10 @@ public class PriceHistoryBuilder extends BasePeriodRequestBuilder<PriceHistoryBu
         this.includePrePost = includePrePost;
         return this;
     }
+    public PriceHistoryBuilder withNumberOfPoints(Integer numberOfPoints) {
+        this.numberOfPoints = numberOfPoints;
+        return this;
+    }
 
 
     @Override
@@ -180,6 +185,10 @@ public class PriceHistoryBuilder extends BasePeriodRequestBuilder<PriceHistoryBu
         }
         if (this.includePrePost != null) {
             map.put(ParamKeys.INCLUDE_PRE_POST, this.includePrePost.toString());
+        }
+
+        if (this.numberOfPoints != null) {
+            map.put(ParamKeys.KEY_NUMBER_OF_POINTS, this.numberOfPoints.toString());
         }
 
         return map;
