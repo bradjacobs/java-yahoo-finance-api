@@ -159,9 +159,9 @@ public class SimpleRequestDemo
             .priceHistory()
             .withTicker(ticker)
             //.withRange(Range.FIVE_DAYS)
-            .withTimeRange("2021-01-25", "2021-01-28")
-            //.withLastXMonths(6)
-            //.withTimeRange(1619481600999L, 1619827200999L)
+            .setTimeRange("2021-01-25", "2021-01-28")
+            //.setTimeRangeLastXMonths(6)
+            //.setTimeRange(1619481600999L, 1619827200999L)
             .withInterval(Interval.ONE_DAY)
             .build();
 

@@ -22,8 +22,8 @@ public class ScreenerDemo
         ScreenerDemo screenerDemo = new ScreenerDemo();
         //screenerDemo.screeenerRequest1();
         //screenerDemo.screeenerRequest2();
-        screenerDemo.screeenerRequestMapClient();
-        //screenerDemo.screeenerRequestObjectClient();
+        //screenerDemo.screeenerRequestMapClient();
+        screenerDemo.screeenerRequestObjectClient();
     }
 
     private void screeenerRequest1() throws IOException
@@ -134,21 +134,19 @@ public class ScreenerDemo
             .screener()
             .setSize(100)
             .in(ScreenerField.REGION, Collections.singletonList("us"))
-            .lt(ScreenerField.PERATIO, 20)
-            .lt(ScreenerField.PRICEBOOKRATIO, 4)
+            .lt(ScreenerField.PERATIO, 22)
+            .lt(ScreenerField.PRICEBOOKRATIO, 3.5)
             .gt(ScreenerField.ALTMANZSCOREUSINGTHEAVERAGESTOCKINFORMATIONFORAPERIOD, 3)
             .lt(ScreenerField.TOTALDEBTEQUITY, 110)
             .gt(ScreenerField.CURRENTRATIO, 1.5)
-            .gt(ScreenerField.RETURNONEQUITY, 5)
-            .gt(ScreenerField.NETINCOMEMARGIN, 7)
+            .gt(ScreenerField.RETURNONEQUITY, 3)
+            .gt(ScreenerField.NETINCOMEMARGIN, 1)
             .lt(ScreenerField.PEGRATIO_5Y, 1.1)
-            .gt(ScreenerField.EODPRICE, 0.4)
+            .gt(ScreenerField.EODPRICE, 0.3)
             .build();
 
         //ScreenerResult[] arrayResult = client.executeRequest(req, ScreenerResult[].class);
         List<ScreenerResult> listResult = client.fetchObjects(req, ScreenerResult.class);
-
-        int kkkl  = 22;
 
     }
 

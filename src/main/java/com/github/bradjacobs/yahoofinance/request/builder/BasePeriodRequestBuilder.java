@@ -27,74 +27,74 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
 
     protected abstract T getThis();
 
-    public T withLastXHours(int hours) {
-        return withLastXUnits(hours, ChronoUnit.HOURS);
+    public T setTimeRangeLastXHours(int hours) {
+        return setTimeRangeLastXUnits(hours, ChronoUnit.HOURS);
     }
-    public T withLastXDays(int days) {
-        return withLastXUnits(days, ChronoUnit.DAYS);
+    public T setTimeRangeLastXDays(int days) {
+        return setTimeRangeLastXUnits(days, ChronoUnit.DAYS);
     }
-    public T withLastXWeeks(int weeks) {
-        return withLastXUnits(weeks, ChronoUnit.WEEKS);
+    public T setTimeRangeLastXWeeks(int weeks) {
+        return setTimeRangeLastXUnits(weeks, ChronoUnit.WEEKS);
     }
-    public T withLastXMonths(int months) {
-        return withLastXUnits(months, ChronoUnit.MONTHS);
+    public T setTimeRangeLastXMonths(int months) {
+        return setTimeRangeLastXUnits(months, ChronoUnit.MONTHS);
     }
-    public T withLastXYears(int years) {
-        return withLastXUnits(years, ChronoUnit.YEARS);
+    public T setTimeRangeLastXYears(int years) {
+        return setTimeRangeLastXUnits(years, ChronoUnit.YEARS);
     }
 
 
-    public T withTimeRange(String startDate, String endDate) {
-        return withStart(startDate).withEnd(endDate);
+    public T setTimeRange(String startDate, String endDate) {
+        return setStart(startDate).setEnd(endDate);
     }
-    public T withTimeRange(Long start, Long end) {
-        return withStart(start).withEnd(end);
+    public T setTimeRange(Long start, Long end) {
+        return setStart(start).setEnd(end);
     }
-    public T withTimeRange(Date start, Date end) {
-        return withStart(start).withEnd(end);
+    public T setTimeRange(Date start, Date end) {
+        return setStart(start).setEnd(end);
     }
-    public T withTimeRange(Instant start, Instant end) {
-        return withStart(start).withEnd(end);
+    public T setTimeRange(Instant start, Instant end) {
+        return setStart(start).setEnd(end);
     }
 
     // methods below as being considered for removal (or no longer public)  TBD.
 
-    public T withStart(String startDate) {
+    public T setStart(String startDate) {
         this.startPeriod = epochSecondsConverter.convertToEpochSeconds(startDate);
         return getThis();
     }
-    public T withStart(Instant start) {
+    public T setStart(Instant start) {
         this.startPeriod = epochSecondsConverter.convertToEpochSeconds(start);
         return getThis();
     }
-    public T withStart(Date start) {
+    public T setStart(Date start) {
         this.startPeriod = epochSecondsConverter.convertToEpochSeconds(start);
         return getThis();
     }
-    public T withStart(Long start) {
+    public T setStart(Long start) {
         this.startPeriod = epochSecondsConverter.convertToEpochSeconds(start);
         return getThis();
     }
 
-    public T withEnd(String endDate) {
+    public T setEnd(String endDate) {
         this.endPeriod = epochSecondsConverter.convertToEpochSeconds(endDate);
         return getThis();
     }
-    public T withEnd(Instant end) {
+    public T setEnd(Instant end) {
         this.endPeriod = epochSecondsConverter.convertToEpochSeconds(end);
         return getThis();
     }
-    public T withEnd(Date end) {
+    public T setEnd(Date end) {
         this.endPeriod = epochSecondsConverter.convertToEpochSeconds(end);
         return getThis();
     }
-    public T withEnd(Long end) {
+    public T setEnd(Long end) {
         this.endPeriod = epochSecondsConverter.convertToEpochSeconds(end);
         return getThis();
     }
 
 
-    protected T withLastXUnits(int value, ChronoUnit unit) {
+    protected T setTimeRangeLastXUnits(int value, ChronoUnit unit) {
         Instant instantNow = Instant.now();
         Instant instantStart = null;
 
@@ -109,7 +109,6 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
                 instantStart = instantNow.minus(value, unit);
                 break;
             case WEEKS:
-                //instantStart = instantNow.minus(value*7, ChronoUnit.DAYS);
                 ldt = ldt.minusWeeks(value);
                 instantStart = ldt.atZone(GMT_ZONE).toInstant();
                 break;

@@ -30,8 +30,8 @@ public class TimeSeriesDemo
         YahooFinanceRequest req = YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("AAPL")
-            .withStart(1501100800L)
-            .withEnd(1618790400L)
+            .setStart(1501100800L)
+            .setEnd(1618790400L)
             .withPadTimeSeries(true)
             .build();
 

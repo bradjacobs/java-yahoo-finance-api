@@ -1,9 +1,6 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.PriceHistoryBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
 import org.testng.annotations.DataProvider;
@@ -47,8 +44,8 @@ public class PriceHistoryBuilderTest
             YahooRequestBuilder.api()
                 .priceHistory()
                 .withTicker("AAPL")
-                .withStart(period1)
-                .withEnd(period2)
+                .setStart(period1)
+                .setEnd(period2)
                 .build();
 
         Map<String, String> paramMap = getParamMap(req);
@@ -66,7 +63,7 @@ public class PriceHistoryBuilderTest
             YahooRequestBuilder.api()
                 .priceHistory()
                 .withTicker("AAPL")
-                .withTimeRange(period1, period2)
+                .setTimeRange(period1, period2)
                 .build();
 
         Map<String, String> paramMap = getParamMap(req);
@@ -87,8 +84,8 @@ public class PriceHistoryBuilderTest
             YahooRequestBuilder.api()
                 .priceHistory()
                 .withTicker("AAPL")
-                .withStart(period1)
-                .withEnd(period2)
+                .setStart(period1)
+                .setEnd(period2)
                 .build();
 
         Map<String, String> paramMap = getParamMap(req);
@@ -110,8 +107,8 @@ public class PriceHistoryBuilderTest
                 .priceHistory()
                 .withTicker("AAPL")
                 .withRange(Range.FIVE_DAYS)
-                .withStart(period1)
-                .withEnd(period2)
+                .setStart(period1)
+                .setEnd(period2)
                 .build();
 
 
