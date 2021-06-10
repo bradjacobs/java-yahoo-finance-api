@@ -1,7 +1,5 @@
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
 import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 import com.jayway.jsonpath.DocumentContext;
@@ -41,11 +39,7 @@ public class TimeSeriesResponseConverter implements YahooResponseConverter
         json = JsonFormatRemover.removeFormats(json, true);
 
         DocumentContext jsonDoc = JsonPath.parse(json);
-
-        ObjectMapper mapper =
-            new ObjectMapper()
-                .enable(SerializationFeature.INDENT_OUTPUT);
-
+        
         // first fetch all the names (aka types) (aka names of the fields that were returned)
         String[] elementNames = jsonDoc.read(ELEMENT_NAMES_PATH, String[].class);
 
@@ -110,5 +104,4 @@ public class TimeSeriesResponseConverter implements YahooResponseConverter
         sb.append(pathSuffix);
         return sb.toString();
     }
-
 }
