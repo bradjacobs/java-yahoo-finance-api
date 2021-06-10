@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response;
 
+import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChartResponseConverter extends YahooResponseConverter
+public class ChartResponseConverter implements YahooResponseConverter
 {
     // key titles for the output map
     private static final String KEY_TIMESTAMP = "timestamp";
@@ -42,9 +43,9 @@ public class ChartResponseConverter extends YahooResponseConverter
             .addOptions(Option.SUPPRESS_EXCEPTIONS);
 
     @Override
-    protected String getPrimaryMapKeyName()
+    public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
     {
-        return KEY_TIMESTAMP;
+        return ListToMapConverter.convertToMap(KEY_TIMESTAMP, convertToListOfMaps(json));
     }
 
     @Override

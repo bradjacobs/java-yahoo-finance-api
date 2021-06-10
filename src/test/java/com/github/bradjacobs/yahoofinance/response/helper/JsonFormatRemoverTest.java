@@ -1,16 +1,16 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package com.github.bradjacobs.yahoofinance.response;
+package com.github.bradjacobs.yahoofinance.response.helper;
 
-import com.github.bradjacobs.yahoofinance.response.JsonFormatRemover;
 import org.testng.annotations.Test;
 
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 public class JsonFormatRemoverTest
 {

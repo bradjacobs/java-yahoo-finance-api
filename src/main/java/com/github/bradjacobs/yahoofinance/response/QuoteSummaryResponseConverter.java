@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuoteSummaryResponseConverter extends YahooResponseConverter
+public class QuoteSummaryResponseConverter implements YahooResponseConverter
 {
     private static final String DEFAULT_MAP_PATH = "$.quoteSummary.result[0]";
 
@@ -39,11 +39,5 @@ public class QuoteSummaryResponseConverter extends YahooResponseConverter
     {
         // todo - this won't work if get an 'error response'
         return JsonPath.read(json, DEFAULT_MAP_PATH);
-    }
-
-    @Override
-    protected String getPrimaryMapKeyName()
-    {
-        return "";
     }
 }

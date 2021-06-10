@@ -2,6 +2,8 @@ package com.github.bradjacobs.yahoofinance.response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
+import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
@@ -11,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TimeSeriesResponseConverter extends YahooResponseConverter
+public class TimeSeriesResponseConverter implements YahooResponseConverter
 {
     private static final String OUTPUT_FIELD_NAME_KEY = "fieldType";
     private static final String OUTPUT_FIELD_VALUES_KEY = "timeEntries";
@@ -19,7 +21,6 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
     private static final String ROOT_PATH = "$.timeseries.result";
     private static final String ELEMENT_NAMES_PATH = ROOT_PATH + "[*].meta.type[0]";
     private static final String KEY_TIMESTAMP = "timestamp";
-
 
     private final boolean pruneEmptyEntries;
 
@@ -29,9 +30,9 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
     }
 
     @Override
-    protected String getPrimaryMapKeyName()
+    public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
     {
-        return OUTPUT_FIELD_NAME_KEY;
+        return ListToMapConverter.convertToMap(OUTPUT_FIELD_NAME_KEY, convertToListOfMaps(json));
     }
 
     @Override

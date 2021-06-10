@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultResponseConverter extends YahooResponseConverter
+public class DefaultResponseConverter implements YahooResponseConverter
 {
     private static final String DEFAULT_LIST_PATH = "$.*.result[*]";
 
@@ -38,11 +38,5 @@ public class DefaultResponseConverter extends YahooResponseConverter
         }
 
         return JsonPath.read(json, "$");
-    }
-
-    @Override
-    protected String getPrimaryMapKeyName()
-    {
-        return ""; // not used for this class.
     }
 }
