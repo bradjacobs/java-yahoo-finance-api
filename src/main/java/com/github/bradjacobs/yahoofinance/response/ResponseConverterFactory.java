@@ -18,6 +18,8 @@ public class ResponseConverterFactory
                 return new ChartResponseConverter();
             case SCREENER:
                 return new ScreenerResponseConverter();
+            case QUOTE_SUMMARY:
+                return new QuoteSummaryResponseConverter();
             case TIMESERIES:
                 return new TimeSeriesResponseConverter(true); // todo: come back to the future of the boolean param
             default:
