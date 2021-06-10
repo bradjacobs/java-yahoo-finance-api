@@ -3,9 +3,9 @@
  */
 package com.github.bradjacobs.yahoofinance.validation;
 
-import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.request.builder.ParamKeys;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;

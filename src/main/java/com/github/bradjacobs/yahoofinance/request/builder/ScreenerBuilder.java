@@ -1,6 +1,7 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
+import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.types.screener.Operand;
 import com.github.bradjacobs.yahoofinance.types.screener.Operator;
@@ -15,31 +16,31 @@ import java.util.Map;
 
 public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
 {
-    private static final int DEFAULT_SIZE = 25;
-    private static final int DEFAULT_OFFSET = 0;
+    private static final String SORT_DESC = "DESC";
+    private static final String SORT_ASC = "ASC";
 
-    public ScreenerBuilder()
-    {
-    }
-
-    private Boolean formatted;
-    private int size = DEFAULT_SIZE;
-    private int offset = DEFAULT_OFFSET;
-
-    private Boolean totalOnly; //  aka useRecordResponse=true   (no record data returned)
-
-
-    private String sortField = "intradaymarketcap";
-    private String sortType = "DESC";
-
-    private ScreenerQueryBuilder queryBuilder = new ScreenerQueryBuilder();
+    // __NOTE__: all variables are set to DEFAULT value
+    private int size = 25;
+    private int offset = 0;
+    private ScreenerField sortField = ScreenerField.INTRADAYMARKETCAP;
+    private String sortType = SORT_DESC;
+    private Boolean formatted = null;
+    private Boolean totalOnly = null; //  aka useRecordResponse=true   (no record data returned)
 
     // thse remain const until there's need otherwise.
-    private String quoteType = "EQUITY";
+    private Type quoteType = Type.EQUITY;
     private String topOperator = Operator.AND.getValue();
     private String userId = "";
     private String userIdType = "guid";
 
+    // side note:  it's possible to use 'entityIdType' instead of a quoteType, but is untested/unsupported for now
+
+    private ScreenerQueryBuilder queryBuilder = new ScreenerQueryBuilder();
+
+
+    public ScreenerBuilder()
+    {
+    }
 
 
     public ScreenerBuilder setFormatted(Boolean formatted) {
@@ -54,12 +55,16 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
         this.offset = Math.max(offset, 0); // no negative allowed
         return this;
     }
-    public ScreenerBuilder setSortField(String sortField) {
+    public ScreenerBuilder setSortField(ScreenerField sortField) {
         this.sortField = sortField;
         return this;
     }
-    public ScreenerBuilder setSortType(String sortType) {
-        this.sortField = sortField;
+    public ScreenerBuilder sortDecending() {
+        this.sortType = SORT_DESC;
+        return this;
+    }
+    public ScreenerBuilder sortAscending() {
+        this.sortType = SORT_ASC;
         return this;
     }
     public ScreenerBuilder setTotalOnly(Boolean totalOnly) {
@@ -68,7 +73,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     }
 
 
-    // TODO: methods need better names.
     public ScreenerBuilder eq(ScreenerField field, Long value)
     {
         this.queryBuilder.eq(field, value);
@@ -125,18 +129,28 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
         if (this.totalOnly != null) {
             map.put(ParamKeys.USE_RECORD_RESPONSE, Boolean.toString(this.totalOnly));
         }
+
+        if (! Boolean.TRUE.equals(this.totalOnly)) {
+            // note: apparently you can add 'fields' parameter on screener similar to quote endpoint.
+            List<String> fieldList = QuoteFieldFactory.getQuoteFields(this.quoteType);
+            String fieldValueString = String.join(",", fieldList);
+            map.put(ParamKeys.FIELDS, fieldValueString);
+        }
+
         return map;
     }
 
     @Override
     protected Object _buildRequestPostBody()
     {
+        validateSortField(sortField);
+
         ScreenerCriteria criteria = new ScreenerCriteria();
         criteria.setSize(size);
         criteria.setOffset(offset);
-        criteria.setSortField(sortField);
+        criteria.setSortField(sortField.getValue());
         criteria.setSortType(sortType);
-        criteria.setQuoteType(quoteType);
+        criteria.setQuoteType(quoteType.toString());
         criteria.setTopOperator(topOperator);
         criteria.setUserId(userId);
         criteria.setUserIdType(userIdType);
@@ -154,7 +168,15 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
 
 
 
-
+    // todo - should make run w/ common validation
+    private void validateSortField(ScreenerField sortField) {
+        if (sortField == null) {
+            throw new IllegalArgumentException("The sortField cannot be null.");
+        }
+        if (! sortField.isSortable()) {
+            throw new IllegalArgumentException(String.format("Cannnot sort by '%s'.  It is not a sortable field", sortField.toString()));
+        }
+    }
 
     private static class ScreenerQueryBuilder
     {

@@ -3,9 +3,9 @@
  */
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.Category;
 import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -1,10 +1,10 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package com.github.bradjacobs.yahoofinance.misc;
+package com.github.bradjacobs.yahoofinance.types;
 
 // NOTE: names and structure of this is very likely to change.
-enum StatementType {
+public enum StatementType {
     INC_STMT("income_statement", true),
     BAL_SHEET("balance_sheet", false),
     CASH_FLOW("cash_flow", true),
@@ -12,7 +12,7 @@ enum StatementType {
 
     private final String key;
     private final boolean allowsTtm;
-    private StatementType(String key, boolean allowsTtm)
+    StatementType(String key, boolean allowsTtm)
     {
         this.key = key;
         this.allowsTtm = allowsTtm;

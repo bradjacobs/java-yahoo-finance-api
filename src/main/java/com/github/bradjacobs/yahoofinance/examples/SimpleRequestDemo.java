@@ -36,8 +36,8 @@ public class SimpleRequestDemo
         {
 //            requestDemo.simpleRequest(testTicker);
 //            requestDemo.multiModuleRequest(testTicker);
-//            requestDemo.quoteRequest(testTicker);
-            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
+            requestDemo.quoteRequest(testTicker);
+//            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
 //            requestDemo.priceHistory(testTicker);
 //            requestDemo.basicLookupQuery(queryString);
 //            requestDemo.regionRequest(region);

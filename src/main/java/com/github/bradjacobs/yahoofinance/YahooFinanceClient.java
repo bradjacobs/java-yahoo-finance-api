@@ -3,18 +3,20 @@
  */
 package com.github.bradjacobs.yahoofinance;
 
-import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
+import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
-import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.response.ResponseConverterFactory;
+import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class YahooFinanceClient
@@ -52,7 +54,6 @@ public class YahooFinanceClient
     }
 
 
-
     public void setContentType(String contentType) {
         requestHeaderMap.put("Content-Type", contentType);
     }
@@ -62,6 +63,40 @@ public class YahooFinanceClient
     }
 
     public String executeRequest(YahooFinanceRequest request) throws IOException
+    {
+        Response response = executeInternal(request);
+        return response.getBody();
+    }
+
+    /**
+     * Executes request and returns result in a custom list format
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    // todo - fix terrible method name
+    public List<Map<String,Object>> executeListRequest(YahooFinanceRequest request) throws IOException
+    {
+        String responseJson = executeRequest(request);
+        return ResponseConverterFactory.getResponseConverter(request.getEndpoint()).convertToListOfMaps(responseJson);
+    }
+
+    /**
+     * Executes request and returns result in a custom map format
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    // todo - fix terrible method name
+    // todo - may change key just to type 'object'   tbd.
+    public Map<String,Map<String,Object>> executeMapRequest(YahooFinanceRequest request) throws IOException
+    {
+        String responseJson = executeRequest(request);
+        return ResponseConverterFactory.getResponseConverter(request.getEndpoint()).convertToMapOfMaps(responseJson);
+    }
+
+
+    protected Response executeInternal(YahooFinanceRequest request) throws IOException
     {
         // validation will throw an exception if invalid request is detected
         requestValidator.validationRequest(request);
@@ -83,7 +118,7 @@ public class YahooFinanceClient
             // TODO - come back and handle better
             throw new RuntimeException("Error occurred during request: ");
         }
-        return response.getBody();
+        return response;
     }
 
 

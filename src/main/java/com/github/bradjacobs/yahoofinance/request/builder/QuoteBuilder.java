@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.util.Arrays;
@@ -43,6 +44,13 @@ public class QuoteBuilder extends BaseRequestBuilder<QuoteBuilder>
     {
         Map<String,String> requestParamMap = new LinkedHashMap<>();
         requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());
+
+
+        // todo: right now only focusing on equities.  obvilusly this needs to be fixed when consider other types.
+        List<String> fields = QuoteFieldFactory.getQuoteFields(Type.EQUITY);
+        String fieldValueString = String.join(",", fields);
+        requestParamMap.put(ParamKeys.FIELDS, fieldValueString);
+
         return requestParamMap;
     }
 

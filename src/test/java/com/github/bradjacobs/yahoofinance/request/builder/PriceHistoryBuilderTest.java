@@ -1,6 +1,7 @@
-package com.github.bradjacobs.yahoofinance.request;
+package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
+import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.PriceHistoryBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
@@ -12,7 +13,8 @@ import java.util.Map;
 
 import static org.testng.Assert.*;
 
-public class YahooPriceHistoryRequestBuilderTest {
+public class PriceHistoryBuilderTest
+{
     @Test
     public void testBaseCase() throws Exception {
 

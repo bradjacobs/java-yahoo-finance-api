@@ -112,4 +112,14 @@ public enum ScreenerField
     public String getValue() {
         return value;
     }
+
+    public boolean isSortable()
+    {
+        return sortable;
+    }
+
+    public String getDisplayString()
+    {
+        return displayString;
+    }
 }

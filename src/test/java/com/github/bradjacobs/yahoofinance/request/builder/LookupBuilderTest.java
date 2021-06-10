@@ -1,6 +1,7 @@
-package com.github.bradjacobs.yahoofinance.request;
+package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
+import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.LookupBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import org.testng.annotations.Test;
@@ -8,7 +9,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
-public class YahooLookupRequestTest
+public class LookupBuilderTest
 {
     // todo: lots more tests.
 

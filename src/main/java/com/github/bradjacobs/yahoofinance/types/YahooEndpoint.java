@@ -7,7 +7,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.*;
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_IS_QUERY;
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_IS_REGION;
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_REQUIRES_CRUMB;
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_REQUIRES_POST;
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_REQUIRES_SYMBOL_PARAM;
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_SUPPORT_MULTI_TICKERS;
 
 /**
  * YahooEndpoints are an enumeration of the Yahoo! Finance API methods available.
@@ -62,6 +67,9 @@ public enum YahooEndpoint
     LOOKUP_TOTALS("lookup/totals", 1, FLAG_IS_QUERY),
     SEARCH("search", 1, FLAG_IS_QUERY),
     SCREENER("screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
+
+    //  NOTE: 'visualization' correlates to the information that can be viewed at:  https://finance.yahoo.com/calendar
+    //     implementing the functionality for this is currently a lower priority.
     //VISUALIZATION("visualization", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
 
 

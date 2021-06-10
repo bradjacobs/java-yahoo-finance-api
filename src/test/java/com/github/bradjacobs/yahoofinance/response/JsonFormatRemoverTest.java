@@ -1,9 +1,9 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package com.github.bradjacobs.yahoofinance.util;
+package com.github.bradjacobs.yahoofinance.response;
 
-import com.github.bradjacobs.yahoofinance.converter.json.JsonFormatRemover;
+import com.github.bradjacobs.yahoofinance.response.JsonFormatRemover;
 import org.testng.annotations.Test;
 
 import java.net.URL;
