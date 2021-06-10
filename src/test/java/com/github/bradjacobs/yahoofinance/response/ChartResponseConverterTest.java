@@ -3,8 +3,6 @@
  */
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.github.bradjacobs.yahoofinance.converter.json.ChartDataConverter;
-import com.github.bradjacobs.yahoofinance.model.PriceHistoryRecord;
 import org.testng.annotations.Test;
 
 import java.net.URL;
