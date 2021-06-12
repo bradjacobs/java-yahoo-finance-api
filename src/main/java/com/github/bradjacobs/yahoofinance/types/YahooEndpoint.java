@@ -67,6 +67,7 @@ public enum YahooEndpoint
     LOOKUP_TOTALS("lookup/totals", 1, FLAG_IS_QUERY),
     SEARCH("search", 1, FLAG_IS_QUERY),
     SCREENER("screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
+    SCREENER_TOTALS("screener/total", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
 
     //  NOTE: 'visualization' correlates to the information that can be viewed at:  https://finance.yahoo.com/calendar
     //     implementing the functionality for this is currently a lower priority.

@@ -25,13 +25,15 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     private ScreenerField sortField = ScreenerField.INTRADAYMARKETCAP;
     private String sortType = SORT_DESC;
     private Boolean formatted = null;
-    private Boolean totalOnly = null; //  aka useRecordResponse=true   (no record data returned)
+
+    private Boolean useRecordResponse = null;  // not sure what this actually does
+    private Boolean totalOnly = null; // return record count only
 
     // thse remain const until there's need otherwise.
-    private Type quoteType = Type.EQUITY;
-    private String topOperator = Operator.AND.getValue();
-    private String userId = "";
-    private String userIdType = "guid";
+    private final Type quoteType = Type.EQUITY;
+    private final String topOperator = Operator.AND.getValue();
+    private final String userId = "";
+    private final String userIdType = "guid";
 
     // side note:  it's possible to use 'entityIdType' instead of a quoteType, but is untested/unsupported for now
 
@@ -65,6 +67,10 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     }
     public ScreenerBuilder sortAscending() {
         this.sortType = SORT_ASC;
+        return this;
+    }
+    public ScreenerBuilder setUseRecordResponse(Boolean useRecordResponse) {
+        this.useRecordResponse = useRecordResponse;
         return this;
     }
     public ScreenerBuilder setTotalOnly(Boolean totalOnly) {
@@ -106,12 +112,15 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
 //    }
 
 
-
     @Override
     protected YahooEndpoint _getRequestEndpoiint()
     {
+        if (Boolean.TRUE.equals(this.totalOnly)) {
+            return YahooEndpoint.SCREENER_TOTALS;
+        }
         return YahooEndpoint.SCREENER;
     }
+
 
     @Override
     protected String _getRequestTicker()
@@ -126,11 +135,13 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
         if (this.formatted != null) {
             map.put(ParamKeys.FORMATTED, Boolean.toString(this.formatted));
         }
-        if (this.totalOnly != null) {
-            map.put(ParamKeys.USE_RECORD_RESPONSE, Boolean.toString(this.totalOnly));
-        }
 
-        if (! Boolean.TRUE.equals(this.totalOnly)) {
+        if (! Boolean.TRUE.equals(this.totalOnly))
+        {
+            if (this.useRecordResponse != null) {
+                map.put(ParamKeys.USE_RECORD_RESPONSE, Boolean.toString(this.useRecordResponse));
+            }
+
             // note: apparently you can add 'fields' parameter on screener similar to quote endpoint.
             List<String> fieldList = QuoteFieldFactory.getQuoteFields(this.quoteType);
             String fieldValueString = String.join(",", fieldList);
