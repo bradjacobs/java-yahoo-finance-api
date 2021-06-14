@@ -20,6 +20,8 @@ public class TimeSeriesResponseConverter implements YahooResponseConverter
     private static final String ELEMENT_NAMES_PATH = ROOT_PATH + "[*].meta.type[0]";
     private static final String KEY_TIMESTAMP = "timestamp";
 
+    private static final boolean SORT_MAP_KEYS = Boolean.TRUE;
+
     private final boolean pruneEmptyEntries;
 
     public TimeSeriesResponseConverter(boolean pruneEmptyEntries)
@@ -30,7 +32,7 @@ public class TimeSeriesResponseConverter implements YahooResponseConverter
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
     {
-        return ListToMapConverter.convertToMap(OUTPUT_FIELD_NAME_KEY, convertToListOfMaps(json));
+        return ListToMapConverter.convertToMap(OUTPUT_FIELD_NAME_KEY, convertToListOfMaps(json), SORT_MAP_KEYS);
     }
 
     @Override
