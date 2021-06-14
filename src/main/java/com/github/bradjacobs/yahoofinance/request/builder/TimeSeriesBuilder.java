@@ -44,20 +44,24 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
         return this;
     }
 
-    public FieldBuilder withStatement(StatementType... statements) {
-        return fieldBuilder.withStatement(statements);
+    public TimeSeriesBuilder withStatement(StatementType... statements) {
+        fieldBuilder.withStatement(statements);
+        return this;
     }
 
-    public FieldBuilder withAllStatements() {
-        return fieldBuilder.withAllStatements();
+    public TimeSeriesBuilder withAllStatements() {
+        fieldBuilder.withAllStatements();
+        return this;
     }
 
-    public FieldBuilder withTimeFrame(TimeSeriesUnit... timeFrames) {
-        return fieldBuilder.withTimeframes(timeFrames);
+    public TimeSeriesBuilder withTimeFrame(TimeSeriesUnit... timeFrames) {
+        fieldBuilder.withTimeframes(timeFrames);
+        return this;
     }
 
-    public FieldBuilder withAllTimeFrame() {
-        return fieldBuilder.withAllTimeframes();
+    public TimeSeriesBuilder withAllTimeFrame() {
+        fieldBuilder.withAllTimeframes();
+        return this;
     }
 
 
