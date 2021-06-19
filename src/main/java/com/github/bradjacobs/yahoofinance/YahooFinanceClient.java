@@ -27,6 +27,8 @@ public class YahooFinanceClient
     private static final String DEFAULT_CONTENT_TYPE = "application/json";
     private static final String DEFAULT_USER_AGENT = "Java-Http-Client/11.0.0";
 
+    private static final String CRUMB_KEY = "crumb";
+
     private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
 
     private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
@@ -136,7 +138,7 @@ public class YahooFinanceClient
         {
             String crumb = crumbDataSource.getCrumb();
             Map<String,String> updatedParamMap = new LinkedHashMap<>(paramMap);
-            updatedParamMap.put("crumb", crumb);
+            updatedParamMap.put(CRUMB_KEY, crumb);
             paramMap = updatedParamMap;
         }
 
