@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
 {
@@ -101,15 +102,21 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     }
     public ScreenerBuilder in(ScreenerField field, List<String> values)
     {
-        this.queryBuilder.in(field, values);
+        this.queryBuilder.in(field, adjustValuesCase(field, values));
         return this;
     }
-    // not sure if below ever gets used (usually 'in' for strings
-//    public ScreenerBuilder eq(ScreenerFieldDefinition field, String value)
-//    {
-//        this.queryBuilder.eq(field, value);
-//        return this;
-//    }
+    public ScreenerBuilder in(ScreenerField field, String ... values)
+    {
+        return (values != null ? in(field, Arrays.asList(values)) : this);
+    }
+
+    private List<String> adjustValuesCase(ScreenerField field, List<String> values) {
+        // region must be lowercase in screener
+        if (ScreenerField.REGION.equals(field)) {
+            return values.stream().map(String::toLowerCase).collect(Collectors.toList());
+        }
+        return values;
+    }
 
 
     @Override
@@ -221,11 +228,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
             fieldOperandMap.put(field, generateInListRestriction(field, values));
             return this;
         }
-//        public ScreenerQueryBuilder eq(ScreenerFieldDefinition field, String value)
-//        {
-//            fieldOperandMap.put(field, generateRestriction(field, Operator.EQUAL, value));
-//            return this;
-//        }
 
         public Query build() {
             Query query = new Query();
