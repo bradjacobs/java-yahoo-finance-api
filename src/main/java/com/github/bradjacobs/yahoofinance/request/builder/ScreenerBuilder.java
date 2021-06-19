@@ -94,7 +94,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
         this.queryBuilder.gt(field, value);
         return this;
     }
-    public ScreenerBuilder bwtn(ScreenerField field, Number value1, Number value2)
+    public ScreenerBuilder btwn(ScreenerField field, Number value1, Number value2)
     {
         this.queryBuilder.between(field, value1, value2);
         return this;
