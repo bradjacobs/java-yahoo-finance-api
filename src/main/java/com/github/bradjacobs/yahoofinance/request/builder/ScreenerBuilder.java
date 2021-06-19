@@ -113,7 +113,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     private List<String> adjustValuesCase(ScreenerField field, List<String> values) {
         // region must be lowercase in screener
         if (ScreenerField.REGION.equals(field)) {
-            return values.stream().map(String::toLowerCase).collect(Collectors.toList());
+            values.replaceAll(String::toLowerCase);
         }
         return values;
     }
