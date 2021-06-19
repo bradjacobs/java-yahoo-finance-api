@@ -6,6 +6,7 @@ import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.model.ScreenerResult;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.jayway.jsonpath.JsonPath;
 
@@ -35,7 +36,7 @@ public class ScreenerDemo
 
         YahooFinanceRequest req = YahooRequestBuilder.api()
             .screener()
-            .in(ScreenerField.REGION, Collections.singletonList("us"))
+            .in(ScreenerField.REGION, Region.UNITED_STATES)
             .gt(ScreenerField.LEVEREDFREECASHFLOW1YRGROWTH, 2)
             .gt(ScreenerField.NETINCOME1YRGROWTH, 5)
             .build();
@@ -54,7 +55,7 @@ public class ScreenerDemo
 
         YahooFinanceRequest req = YahooRequestBuilder.api()
             .screener()
-            .in(ScreenerField.REGION, Collections.singletonList("us"))
+            .in(ScreenerField.REGION, Region.UNITED_STATES)
             .gt(ScreenerField.EODPRICE, 0.01)
             .setTotalOnly(true)
             .build();
@@ -74,7 +75,7 @@ public class ScreenerDemo
         YahooFinanceRequest req = YahooRequestBuilder.api()
             .screener()
             .setSize(100)
-            .in(ScreenerField.REGION, Collections.singletonList("us"))
+            .in(ScreenerField.REGION, Region.UNITED_STATES)
             .lt(ScreenerField.PERATIO, 20)
             .lt(ScreenerField.PRICEBOOKRATIO, 4)
             .gt(ScreenerField.ALTMANZSCOREUSINGTHEAVERAGESTOCKINFORMATIONFORAPERIOD, 3)
@@ -115,7 +116,7 @@ public class ScreenerDemo
         YahooFinanceRequest req = YahooRequestBuilder.api()
             .screener()
             .setSize(100)
-            .in(ScreenerField.REGION, Collections.singletonList("us"))
+            .in(ScreenerField.REGION, Region.UNITED_STATES)
             .lt(ScreenerField.PERATIO, 20)
             .lt(ScreenerField.PRICEBOOKRATIO, 4)
             .gt(ScreenerField.ALTMANZSCOREUSINGTHEAVERAGESTOCKINFORMATIONFORAPERIOD, 3)
@@ -153,7 +154,7 @@ public class ScreenerDemo
         YahooFinanceRequest req = YahooRequestBuilder.api()
             .screener()
             .setSize(100)
-            .in(ScreenerField.REGION, Collections.singletonList("us"))
+            .in(ScreenerField.REGION, Region.UNITED_STATES)
             .lt(ScreenerField.PERATIO, 22)
             .lt(ScreenerField.PRICEBOOKRATIO, 3.5)
             .gt(ScreenerField.ALTMANZSCOREUSINGTHEAVERAGESTOCKINFORMATIONFORAPERIOD, 3)

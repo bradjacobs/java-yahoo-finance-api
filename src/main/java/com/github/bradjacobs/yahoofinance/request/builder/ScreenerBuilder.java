@@ -3,6 +3,7 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
+import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
 import com.github.bradjacobs.yahoofinance.types.screener.Operand;
 import com.github.bradjacobs.yahoofinance.types.screener.Operator;
 import com.github.bradjacobs.yahoofinance.types.screener.Query;
@@ -102,7 +103,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     }
     public ScreenerBuilder in(ScreenerField field, List<String> values)
     {
-        this.queryBuilder.in(field, adjustValuesCase(field, values));
+        this.queryBuilder.in(field, values);
         return this;
     }
     public ScreenerBuilder in(ScreenerField field, String ... values)
@@ -110,13 +111,15 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
         return (values != null ? in(field, Arrays.asList(values)) : this);
     }
 
-    private List<String> adjustValuesCase(ScreenerField field, List<String> values) {
-        // region must be lowercase in screener
-        if (ScreenerField.REGION.equals(field)) {
-            values.replaceAll(String::toLowerCase);
+    public ScreenerBuilder in(ScreenerField field, CriteriaEnum ... values)
+    {
+        if (values != null) {
+            List<String> criteriaValues = Arrays.stream(values).map(CriteriaEnum::getCriteriaValue).collect(Collectors.toList());
+            return in(field, criteriaValues);
         }
-        return values;
+        return this;
     }
+
 
 
     @Override

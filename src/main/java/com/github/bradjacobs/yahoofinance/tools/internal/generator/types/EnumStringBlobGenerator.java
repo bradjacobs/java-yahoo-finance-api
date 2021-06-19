@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,9 @@ abstract class EnumStringBlobGenerator
 
     private static final String RESOURCES_TEMPLATE_DIR = "tools/internal/generator/types/templates/";
     private static final String TEMPLATE_PLACEHOLDER = "{ENUM_LIST}";
-    private static final String GENERATOR_CLASS_PLACEHOLDER = "{GENERATOR_CLASS}";
+    private static final String GENERATOR_LINE_PLACEHOLDER = "{GENERATOR_LINE}";
 
+    private static final String GENERATOR_LINE_TEMPLATE = "@Generated(value=\"yahoo-finance-api-internal-tools\", date=\"%s\")";
 
     private final String templateFilePath;
 
@@ -40,10 +42,7 @@ abstract class EnumStringBlobGenerator
         String enumStringBlob = convertToEnumStringBlob(enumInfoList);
 
         String fileData = template.replace(TEMPLATE_PLACEHOLDER, enumStringBlob);
-
-        //  tbd if this part is worthwhile
-        //fileData = template.replace(GENERATOR_CLASS_PLACEHOLDER, this.getClass().getCanonicalName());
-        //fileData = template.replace(GENERATOR_CLASS_PLACEHOLDER, this.getClass().getSimpleName());
+        fileData = fileData.replace(GENERATOR_LINE_PLACEHOLDER, String.format(GENERATOR_LINE_TEMPLATE, LocalDate.now().toString()));
 
         return fileData;
     }
