@@ -3,21 +3,28 @@
  */
 package com.github.bradjacobs.yahoofinance.types;
 
+import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
+
 import javax.annotation.Generated;
 
 {GENERATOR_LINE}
-public enum Interval
+public enum Exchange implements CriteriaEnum
 {
 {ENUM_LIST}
 
     private final String value;
 
-    Interval(String value) {
+    Exchange(String value) {
         this.value = value;
 
     }
 
     public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String getCriteriaValue() {
         return value;
     }
 }

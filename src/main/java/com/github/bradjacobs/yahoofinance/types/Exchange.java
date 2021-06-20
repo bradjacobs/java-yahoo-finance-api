@@ -3,31 +3,35 @@
  */
 package com.github.bradjacobs.yahoofinance.types;
 
+import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
+
 import javax.annotation.Generated;
 
 @Generated(value="yahoo-finance-api-internal-tools", date="2021-06-19")
-public enum Range
+public enum Exchange implements CriteriaEnum
 {
-    ONE_DAY("1d"),
-    FIVE_DAYS("5d"),
-    ONE_MONTH("1mo"),
-    THREE_MONTHS("3mo"),
-    SIX_MONTHS("6mo"),
-    ONE_YEAR("1y"),
-    TWO_YEARS("2y"),
-    FIVE_YEARS("5y"),
-    TEN_YEARS("10y"),
-    YTD("ytd"),
-    MAX("max");
+    BSE("BSE"),
+    NASDAQ("NAS"),
+    NASDAQCM("NCM"),
+    NASDAQGM("NGM"),
+    NASDAQGS("NMS"),
+    NYSE("NYQ"),
+    YHD("YHD");
 
 
     private final String value;
 
-    Range(String value) {
+    Exchange(String value) {
         this.value = value;
+
     }
 
     public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String getCriteriaValue() {
         return value;
     }
 }
