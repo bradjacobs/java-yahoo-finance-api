@@ -34,6 +34,7 @@ class MasterEnumFileGenerator
         enumGeneratorMap.put("Type.java", new TypesEnumGenerator());
         enumGeneratorMap.put("ScreenerField.java", new ScreenerFieldEnumGenerator());
         enumGeneratorMap.put("Exchange.java", new ExchangeEnumGenerator());
+        enumGeneratorMap.put("Sector.java", new SectorEnumGenerator());
     }
 
 
