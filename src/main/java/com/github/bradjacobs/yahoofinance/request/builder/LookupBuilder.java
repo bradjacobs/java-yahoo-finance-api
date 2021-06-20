@@ -10,6 +10,8 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
 {
     private static final int DEFAULT_COUNT = 100;
     private static final int DEFAULT_START = 0;
+    private static final int MIN_BATCHABLE_SIZE = 10;
+
 
     private String query;
     private Boolean formatted;
@@ -120,7 +122,7 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     @Override
     protected BatchableRequestStrategy getBatchableRequestStrategy()
     {
-        if (!requestBatchingEnabled || includeTotalsOnly) {
+        if (!requestBatchingEnabled || includeTotalsOnly || count < MIN_BATCHABLE_SIZE) {
             return null;
         }
         return this;

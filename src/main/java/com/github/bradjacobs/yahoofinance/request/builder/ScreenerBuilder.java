@@ -20,6 +20,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
 {
     private static final String SORT_DESC = "DESC";
     private static final String SORT_ASC = "ASC";
+    private static final int MIN_BATCHABLE_SIZE = 10;
 
     // __NOTE__: all variables are set to DEFAULT value
     private int size = 100;
@@ -304,7 +305,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     @Override
     protected BatchableRequestStrategy getBatchableRequestStrategy() {
 
-        if (!requestBatchingEnabled || Boolean.TRUE.equals(this.totalOnly)) {
+        if (!requestBatchingEnabled || Boolean.TRUE.equals(this.totalOnly || size < MIN_BATCHABLE_SIZE)) {
             return null;
         }
         return this;

@@ -7,12 +7,16 @@ import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
+import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.response.ResponseConverterFactory;
+import com.github.bradjacobs.yahoofinance.response.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,7 +40,9 @@ public class YahooFinanceClient
     private final HttpClientAdapter httpClient;
     private final CrumbDataSource crumbDataSource;
 
-    private static final CollectionRequestExecutor collectionRequestExecutor = new CollectionRequestExecutor();
+    // allow a very brief pause b/w each batch request for philanthropy.
+    private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
+
 
 
     public YahooFinanceClient()
@@ -80,7 +86,9 @@ public class YahooFinanceClient
     // todo - fix terrible method name
     public List<Map<String,Object>> executeListRequest(YahooFinanceRequest request) throws IOException
     {
-        return collectionRequestExecutor.fetchListData(this, request);
+        ListOfMapsResponseCollector listOfMapsResponseCollector = new ListOfMapsResponseCollector(request.getEndpoint());
+        executeCollectionRequest(request, listOfMapsResponseCollector);
+        return listOfMapsResponseCollector.getTotalResults();
     }
 
     /**
@@ -93,7 +101,9 @@ public class YahooFinanceClient
     // todo - may change key just to type 'object'   tbd.
     public Map<String,Map<String,Object>> executeMapRequest(YahooFinanceRequest request) throws IOException
     {
-        return collectionRequestExecutor.fetchMapData(this, request);
+        MapOfMapsResponseCollector mapOfMapsResponseCollector = new MapOfMapsResponseCollector(request.getEndpoint());
+        executeCollectionRequest(request, mapOfMapsResponseCollector);
+        return mapOfMapsResponseCollector.getTotalResults();
     }
 
 
@@ -164,4 +174,86 @@ public class YahooFinanceClient
         return builder.toString();
     }
 
+
+
+    protected void executeCollectionRequest(YahooFinanceRequest request, ResponseCollector responseCollector) throws IOException
+    {
+        BatchableRequestStrategy batchableRequestStrategy = request.getBatchableRequestStrategy();
+        if (batchableRequestStrategy == null) {
+            // normal single request
+            String responseJson = executeRequest(request);
+            responseCollector.constructObjectCollections(responseJson);
+        }
+        else
+        {
+            int generatedObjectCount = -1;
+            int configuredBatchSize = batchableRequestStrategy.getBatchSize();
+            do {
+                YahooFinanceRequest batchRequest = batchableRequestStrategy.buildNewRequest();
+
+                String responseJson = executeRequest(batchRequest);
+                generatedObjectCount = responseCollector.constructObjectCollections(responseJson);
+                batchableRequestStrategy.incrementBatchOffset();
+                if (configuredBatchSize == generatedObjectCount) {
+                    batchIterationSleep();
+                }
+            } while (configuredBatchSize == generatedObjectCount);
+        }
+    }
+
+    private static void batchIterationSleep() {
+        try { Thread.sleep(SLEEP_TIME_BETWEEN_BATCH_REQUESTS); }
+        catch (InterruptedException e) {/* ignore */ }
+    }
+
+    // pseudo-observer to avoid redundant batching code.
+    //
+    private static abstract class ResponseCollector
+    {
+        protected final YahooResponseConverter responseConverter;
+
+        protected ResponseCollector(YahooEndpoint endpoint) {
+            this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);;
+        }
+
+        public abstract int constructObjectCollections(String json);
+    }
+
+    private static class ListOfMapsResponseCollector extends ResponseCollector
+    {
+        private final List<Map<String, Object>> totalResults = new ArrayList<>();
+
+        public ListOfMapsResponseCollector(YahooEndpoint endpoint) {
+            super(endpoint);
+        }
+
+        public int constructObjectCollections(String json) {
+            List<Map<String, Object>> batchResponse = responseConverter.convertToListOfMaps(json);
+            this.totalResults.addAll(batchResponse);
+            return batchResponse.size();
+        }
+
+        public List<Map<String, Object>> getTotalResults() {
+            return totalResults;
+        }
+    }
+
+    private static class MapOfMapsResponseCollector extends ResponseCollector
+    {
+        private final Map<String,Map<String,Object>> totalResults = new LinkedHashMap<>();  // todo - which kind of map
+
+        public MapOfMapsResponseCollector(YahooEndpoint endpoint) {
+            super(endpoint);
+        }
+
+        public int constructObjectCollections(String json) {
+            Map<String,Map<String,Object>> batchResponse = responseConverter.convertToMapOfMaps(json);
+            this.totalResults.putAll(batchResponse);
+            return batchResponse.size();
+        }
+
+        public Map<String, Map<String, Object>> getTotalResults() {
+            return totalResults;
+        }
+    }
 }
