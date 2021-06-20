@@ -6,11 +6,10 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class LookupBuilder extends BaseRequestBuilder<LookupBuilder>
+public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements BatchableRequestStrategy
 {
-    private static final int DEFAULT_COUNT = 20;
+    private static final int DEFAULT_COUNT = 100;
     private static final int DEFAULT_START = 0;
-
 
     private String query;
     private Boolean formatted;
@@ -18,9 +17,7 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder>
     private int count = DEFAULT_COUNT;
     private int start = DEFAULT_START;
     private boolean includeTotalsOnly = false;
-
-
-    private boolean hasBeenBuilt = false; //internal flag
+    private boolean requestBatchingEnabled = false;
 
 
     public LookupBuilder withQuery(String query) {
@@ -48,12 +45,13 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder>
         return this;
     }
 
-    public int getCount() {
-        return count;
+    public LookupBuilder enableRequestBatching() {
+        this.requestBatchingEnabled = true;
+        return this;
     }
-
-    public int getStart() {
-        return start;
+    public LookupBuilder disableRequestBatching() {
+        this.requestBatchingEnabled = false;
+        return this;
     }
 
 
@@ -94,25 +92,37 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder>
         return map;
     }
 
-
-    @Override
-    public YahooFinanceRequest build() {
-        YahooFinanceRequest req = super.build();
-        hasBeenBuilt = true;
-        return req;
-    }
-
-
-    public YahooFinanceRequest buildNext()
-    {
-        if (hasBeenBuilt) {
-            start += count;
-        }
-        return build();
-    }
-
     @Override
     protected LookupBuilder getThis() {
+        return this;
+    }
+
+    @Override
+    public int getBatchSize() {
+        return this.count;
+    }
+
+    @Override
+    public int getCurrentOffset() {
+        return this.start;
+    }
+
+    @Override
+    public void incrementBatchOffset() {
+        this.withStart(this.start + this.count);
+    }
+
+    @Override
+    public YahooFinanceRequest buildNewRequest() {
+        return this.build();
+    }
+
+    @Override
+    protected BatchableRequestStrategy getBatchableRequestStrategy()
+    {
+        if (!requestBatchingEnabled || includeTotalsOnly) {
+            return null;
+        }
         return this;
     }
 }

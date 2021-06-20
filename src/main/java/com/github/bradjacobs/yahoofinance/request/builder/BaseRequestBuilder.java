@@ -101,11 +101,15 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         Map<String, String> paramMap = buildParamMap();
         Object postBody = _buildRequestPostBody();
 
-        YahooFinanceRequest req = new YahooFinanceRequest(endpoint, ticker, paramMap, postBody);
+        YahooFinanceRequest req = new YahooFinanceRequest(endpoint, ticker, paramMap, postBody, getBatchableRequestStrategy());
         validateRequest(req);
         return req;
     }
 
+    protected BatchableRequestStrategy getBatchableRequestStrategy()
+    {
+        return null;
+    }
 
     /**
      * Will throw exception if request is invalid

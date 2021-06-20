@@ -16,17 +16,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
+public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> implements BatchableRequestStrategy
 {
     private static final String SORT_DESC = "DESC";
     private static final String SORT_ASC = "ASC";
 
     // __NOTE__: all variables are set to DEFAULT value
-    private int size = 25;
+    private int size = 100;
     private int offset = 0;
     private ScreenerField sortField = ScreenerField.INTRADAYMARKETCAP;
     private String sortType = SORT_DESC;
     private Boolean formatted = null;
+    private boolean requestBatchingEnabled = false;
 
     private Boolean useRecordResponse = null;  // not sure what this actually does
     private Boolean totalOnly = null; // return record count only
@@ -46,6 +47,14 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
     {
     }
 
+    public ScreenerBuilder enableRequestBatching() {
+        this.requestBatchingEnabled = true;
+        return this;
+    }
+    public ScreenerBuilder disableRequestBatching() {
+        this.requestBatchingEnabled = false;
+        return this;
+    }
 
     public ScreenerBuilder setFormatted(Boolean formatted) {
         this.formatted = formatted;
@@ -199,6 +208,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
         }
     }
 
+
     private static class ScreenerQueryBuilder
     {
         private static final Operator op = Operator.AND;  // unchangable (for now)
@@ -269,5 +279,34 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder>
             operand.setOperands(subOpList);
             return operand;
         }
+    }
+
+    @Override
+    public int getBatchSize() {
+        return size;
+    }
+
+    @Override
+    public int getCurrentOffset() {
+        return offset;
+    }
+
+    @Override
+    public void incrementBatchOffset() {
+        this.setOffset(this.offset + this.size);
+    }
+
+    @Override
+    public YahooFinanceRequest buildNewRequest() {
+        return this.build();
+    }
+
+    @Override
+    protected BatchableRequestStrategy getBatchableRequestStrategy() {
+
+        if (!requestBatchingEnabled || Boolean.TRUE.equals(this.totalOnly)) {
+            return null;
+        }
+        return this;
     }
 }

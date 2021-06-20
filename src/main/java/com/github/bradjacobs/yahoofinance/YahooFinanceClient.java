@@ -8,7 +8,6 @@ import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
-import com.github.bradjacobs.yahoofinance.response.ResponseConverterFactory;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.client.utils.URIBuilder;
@@ -36,6 +35,8 @@ public class YahooFinanceClient
     // httpClient is a simple interface around the 'true' httpClient.
     private final HttpClientAdapter httpClient;
     private final CrumbDataSource crumbDataSource;
+
+    private static final CollectionRequestExecutor collectionRequestExecutor = new CollectionRequestExecutor();
 
 
     public YahooFinanceClient()
@@ -79,8 +80,7 @@ public class YahooFinanceClient
     // todo - fix terrible method name
     public List<Map<String,Object>> executeListRequest(YahooFinanceRequest request) throws IOException
     {
-        String responseJson = executeRequest(request);
-        return ResponseConverterFactory.getResponseConverter(request.getEndpoint()).convertToListOfMaps(responseJson);
+        return collectionRequestExecutor.fetchListData(this, request);
     }
 
     /**
@@ -93,8 +93,7 @@ public class YahooFinanceClient
     // todo - may change key just to type 'object'   tbd.
     public Map<String,Map<String,Object>> executeMapRequest(YahooFinanceRequest request) throws IOException
     {
-        String responseJson = executeRequest(request);
-        return ResponseConverterFactory.getResponseConverter(request.getEndpoint()).convertToMapOfMaps(responseJson);
+        return collectionRequestExecutor.fetchMapData(this, request);
     }
 
 

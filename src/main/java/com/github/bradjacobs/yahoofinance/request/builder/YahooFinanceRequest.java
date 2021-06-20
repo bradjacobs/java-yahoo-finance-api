@@ -17,19 +17,16 @@ public class YahooFinanceRequest
     protected final String ticker;
     protected final Map<String,String> paramMap;
     protected final Object postBody;
+    protected BatchableRequestStrategy batchableRequestStrategy;
 
 
-    protected YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap)
-    {
-        this(endpoint, ticker, paramMap, null);
-    }
-
-    protected YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody)
+    protected YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody, BatchableRequestStrategy batchableRequestStrategy)
     {
         this.endpoint = endpoint;
         this.ticker = ticker;
         this.paramMap = paramMap;
         this.postBody = postBody;
+        this.batchableRequestStrategy = batchableRequestStrategy;
     }
 
 
@@ -76,5 +73,10 @@ public class YahooFinanceRequest
                 throw new InternalError("Unable to create request postBody: " + e.getMessage(), e);
             }
         }
+    }
+
+    public BatchableRequestStrategy getBatchableRequestStrategy()
+    {
+        return batchableRequestStrategy;
     }
 }
