@@ -1,10 +1,11 @@
 package com.github.bradjacobs.yahoofinance.util;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class ResourceUtil
 {
@@ -17,11 +18,11 @@ public class ResourceUtil
         }
 
         try {
-            URL resource = ResourceUtil.class.getClassLoader().getResource(fileName);
-            if (resource == null) {
-                throw new IllegalArgumentException("Unable to reade resourse: " + fileName);
+            try(  InputStream is = ResourceUtil.class.getClassLoader().getResourceAsStream(fileName);
+                  BufferedInputStream bis = new BufferedInputStream(is) )
+            {
+                return IOUtils.toString(bis, StandardCharsets.UTF_8.name());
             }
-            return new String ( Files.readAllBytes( Paths.get(resource.getPath()) ) );
         }
         catch (Exception e) {
             throw new RuntimeException(String.format("Unable to read resource file: %s.  Reason: %s", fileName, e.getMessage()), e);
