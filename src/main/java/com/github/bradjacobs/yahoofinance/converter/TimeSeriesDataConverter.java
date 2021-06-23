@@ -61,7 +61,7 @@ public class TimeSeriesDataConverter
             String attributeName = timeResult.getFieldType();
             List<TimeEntry> entries = timeResult.getTimeEntries();
 
-         //   attributeName = cleanAttributeName(attributeName, prefix);
+            attributeName = cleanAttributeName(attributeName, prefix);
 
             for (TimeEntry timeEntry : entries)
             {
