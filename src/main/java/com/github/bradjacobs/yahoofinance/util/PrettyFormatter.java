@@ -1,20 +1,12 @@
 package com.github.bradjacobs.yahoofinance.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 public class PrettyFormatter
 {
-    private static final ObjectMapper prettyMapper =
-        new ObjectMapper()
-            .enable(SerializationFeature.INDENT_OUTPUT)
-            .setDefaultPrettyPrinter(
-                new DefaultPrettyPrinter()
-                    .withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE));
+    private static final JsonMapper prettyMapper = JsonMapperSingleton.getPrettyInstance();
 
 
     private PrettyFormatter() { }

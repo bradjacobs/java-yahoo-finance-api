@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.Set;
 // todo - try to think of better name.
 public class YahooFinanceObjectClient
 {
-    private static final JsonMapper mapper = new JsonMapper();
+    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
     // this is in-flux, so temporarily keep a list of supported endpoints (and return error if another type is detected)
     private static final Set<YahooEndpoint> SUPPORTED_ENDPOINTS =

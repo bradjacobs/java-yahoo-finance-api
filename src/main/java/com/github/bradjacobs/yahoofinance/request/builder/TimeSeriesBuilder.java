@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.types.StatementType;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ import java.util.Set;
 
 public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilder>
 {
+    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
+
+
     private String ticker;
 
     // merge seems to 'mess up' results (or at least that is what is perceived)  leave always false for now.
@@ -219,7 +223,6 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
 
         private static Map<String,List<String>> convertToMap(String json) {
             try {
-                JsonMapper mapper = new JsonMapper();
                 return mapper.readValue(json, new TypeReference<Map<String, List<String>>>() {});
             }
             catch (JsonProcessingException e) {

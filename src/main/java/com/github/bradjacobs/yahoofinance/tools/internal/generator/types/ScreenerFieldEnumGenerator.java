@@ -6,6 +6,7 @@ package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.Category;
 import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
 {
     private static final String TEMPLATE_NAME = "screener_field_template.txt";
-    private static final JsonMapper mapper = new JsonMapper();
+    private static final JsonMapper mapper = JsonMapperSingleton.getPrettyInstance();
 
     private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=keystats%2Cfinancials%2Cvaluation%2Csector_industry%2Cesgscores%2Cincome%2Ccashflowstatement%2Cbalance_sheet%2Cearnings%2Cdividends_and_splits%2Cprofile%2Cfair_value%2Cpopular_filters%2Cchanges_in_price_and_market_cap%2Cchanges_in_volume_and_ownership%2Cvaluation_metric%2Cprofitability_ratios_and_dividends%2Cdebt_ratios%2Cliquidity_ratios%2Ceps_and_income_statement%2Ccash_flow%2Cesg_scores%2Cshort_interest";
 

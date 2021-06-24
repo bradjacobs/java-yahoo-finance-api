@@ -5,8 +5,10 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 
 import java.util.Collections;
 import java.util.Map;
@@ -18,6 +20,8 @@ public class YahooFinanceRequest
     protected final Map<String,String> paramMap;
     protected final Object postBody;
     protected BatchableRequestStrategy batchableRequestStrategy;
+
+    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
 
     protected YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody, BatchableRequestStrategy batchableRequestStrategy)
@@ -65,7 +69,6 @@ public class YahooFinanceRequest
         }
         else {
             // todo - this code belongs in differen spot
-            JsonMapper mapper = new JsonMapper();
             try {
                 return mapper.writeValueAsString(postBody);
             }
