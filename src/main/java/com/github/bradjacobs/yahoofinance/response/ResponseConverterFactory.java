@@ -25,7 +25,7 @@ public class ResponseConverterFactory
             case LOOKUP:
                 return new LookupResponseConverter();
             case TIMESERIES:
-                return new TimeSeriesResponseConverter(true); // todo: come back to the future of the boolean param
+                return new TimeSeriesResponseConverter(true, true); // todo: come back to the future of the boolean params
             default:
                 return new DefaultResponseConverter();
         }

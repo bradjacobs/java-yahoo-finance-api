@@ -3,7 +3,6 @@ package com.github.bradjacobs.yahoofinance.examples;
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.YahooFinanceObjectClient;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
-import com.github.bradjacobs.yahoofinance.model.TimeSeriesResult;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 
@@ -35,9 +34,8 @@ public class TimeSeriesDemo
             .withPadTimeSeries(true)
             .build();
 
-//        String json = client.executeRequest(req);
+       String json = client.executeRequest(req);
 //        List<Map<String, Object>> listofMaps = client.executeListRequest(req);
-        List<TimeSeriesResult> listResult = pbjectClient.fetchObjects(req, TimeSeriesResult.class);
 
         System.out.println("Done!");
     }
