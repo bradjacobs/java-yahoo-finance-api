@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response;
 
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsDateStrConverter;
 import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
@@ -24,6 +25,10 @@ public class ChartResponseConverter implements YahooResponseConverter
     private static final String KEY_VOLUME = "volume";
     private static final String KEY_ADJ_CLOSE = "adjclose";
 
+    //   todo: for now date does NOT have any hh/mm/ss, but that would probably be desired if querying on in-day values.
+    private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
+
+
     // path locations for data within the JSON response
     private static final String BASE_PATH      = "$.chart.result[0]";
     private static final String TIMESTAMP_PATH = BASE_PATH + "." + KEY_TIMESTAMP;
@@ -35,6 +40,8 @@ public class ChartResponseConverter implements YahooResponseConverter
     private static final String ADJ_CLOSE_PATH = BASE_PATH + ".indicators.adjclose[0]." + KEY_ADJ_CLOSE;
 
 
+    private static final EpochSecondsDateStrConverter epochSecondsToStringConverter = new EpochSecondsDateStrConverter();
+
     // configure to return NULL (instead of Exception) if the _LEAF_ is missing
     //   b/c the field might not always be there.
     private static final Configuration JSON_PATH_CONFIG =
@@ -45,7 +52,7 @@ public class ChartResponseConverter implements YahooResponseConverter
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
     {
-        return ListToMapConverter.convertToMap(KEY_TIMESTAMP, convertToListOfMaps(json));
+        return ListToMapConverter.convertToMap(KEY_DATE, convertToListOfMaps(json));
     }
 
     @Override
@@ -89,7 +96,10 @@ public class ChartResponseConverter implements YahooResponseConverter
             Map<String,Object> entryMap = new HashMap<>();
 
             // will refactor iff slow performance is shown
-            entryMap.put(KEY_TIMESTAMP, timestampValues[i]);
+            Long timestamp = timestampValues[i];
+            entryMap.put(KEY_DATE, epochSecondsToStringConverter.convertToString(timestamp));
+            entryMap.put(KEY_TIMESTAMP, timestamp);
+
             if (openLowHighExists) {
                 entryMap.put(KEY_OPEN, openValues[i]);
                 entryMap.put(KEY_LOW, lowValues[i]);

@@ -11,6 +11,7 @@ package com.github.bradjacobs.yahoofinance.model;
  */
 public class PriceHistoryRecord
 {
+    private String date;
     private Long timestamp;
     private Double open;
     private Double close;
@@ -18,6 +19,11 @@ public class PriceHistoryRecord
     private Double low;
     private Double high;
     private Long volume;
+
+    public String getDate()
+    {
+        return date;
+    }
 
     public Long getTimestamp()
     {
