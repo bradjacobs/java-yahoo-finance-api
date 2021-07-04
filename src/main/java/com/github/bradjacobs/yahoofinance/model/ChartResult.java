@@ -9,7 +9,7 @@ package com.github.bradjacobs.yahoofinance.model;
  *   IMPORTANT NOTE:  playing around to see how this might look,
  *   may ultimately decide this class isn't worth having and remove this it.
  */
-public class PriceHistoryRecord
+public class ChartResult
 {
     private String date;
     private Long timestamp;

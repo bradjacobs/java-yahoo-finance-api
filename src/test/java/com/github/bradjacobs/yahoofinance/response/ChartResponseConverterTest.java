@@ -52,14 +52,14 @@ public class ChartResponseConverterTest
 //    public void testConvertToPojos() throws Exception
 //    {
 //        String originalJson = readTestResourceFile("aapl_chart_5d_formatted.json");
-//        List<PriceHistoryRecord> recordList = xx
+//        List<ChartResult> recordList = xx
 //
 //        assertNotNull(recordList);
 //        assertEquals(recordList.size(), LIST_SIZE);
 //
 //        for (int i = 0; i < recordList.size(); i++)
 //        {
-//            PriceHistoryRecord record = recordList.get(i);
+//            ChartResult record = recordList.get(i);
 //            assertNotNull(record, "list contains a null record!");
 //            assertEquals(record.getTimestamp(), expectedTimestamps[i], "mismatch of expected timestamp");
 //            assertEquals(record.getVolume(), expectedVolumes[i], "mismatch of expected volume");

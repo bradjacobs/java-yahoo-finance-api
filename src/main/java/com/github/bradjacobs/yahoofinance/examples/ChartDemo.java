@@ -5,7 +5,7 @@ import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.YahooFinanceObjectClient;
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
-import com.github.bradjacobs.yahoofinance.model.PriceHistoryRecord;
+import com.github.bradjacobs.yahoofinance.model.ChartResult;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
@@ -87,8 +87,8 @@ public class ChartDemo
             .withIndicatorAllFields()
             .build();
 
-        //List<PriceHistoryRecord> recordList = client.fetchObjects(req, PriceHistoryRecord.class);
-        Map<String, PriceHistoryRecord> recordList2 = client.fetchMappedObjects(req, PriceHistoryRecord.class);
+        //List<ChartResult> recordList = client.fetchObjects(req, ChartResult.class);
+        Map<String, ChartResult> recordList2 = client.fetchMappedObjects(req, ChartResult.class);
 
         int kjk = 3333;
        // System.out.println("Record count: " + recordArray.length);
