@@ -17,6 +17,7 @@ public class JsonMapperSingleton
             .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS) // avoid big numbers as scientific notation
             .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN)   // avoid big numbers as scientific notation
             .enable(DeserializationFeature.USE_LONG_FOR_INTS)
+            //.nodeFactory(JsonNodeFactory.withExactBigDecimals(true))  // todo - test what affect this line has.
             .build();
 
         prettyInstance = instance.rebuild()
