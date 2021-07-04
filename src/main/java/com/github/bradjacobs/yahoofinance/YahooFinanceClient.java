@@ -13,6 +13,7 @@ import com.github.bradjacobs.yahoofinance.response.ResponseConverterFactory;
 import com.github.bradjacobs.yahoofinance.response.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
+import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
@@ -32,17 +33,16 @@ public class YahooFinanceClient
 
     private static final String CRUMB_KEY = "crumb";
 
-    private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
-
     private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
+
+    // allow a very brief pause b/w each batch request for philanthropy.
+    private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
 
     // httpClient is a simple interface around the 'true' httpClient.
     private final HttpClientAdapter httpClient;
     private final CrumbDataSource crumbDataSource;
 
-    // allow a very brief pause b/w each batch request for philanthropy.
-    private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
-
+    private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
 
 
     public YahooFinanceClient()
@@ -64,11 +64,11 @@ public class YahooFinanceClient
 
 
     public void setContentType(String contentType) {
-        requestHeaderMap.put("Content-Type", contentType);
+        requestHeaderMap.put(HttpHeaders.CONTENT_TYPE, contentType);
     }
 
     public void setUserAgent(String userAgent) {
-        requestHeaderMap.put("User-Agent", userAgent);
+        requestHeaderMap.put(HttpHeaders.USER_AGENT, userAgent);
     }
 
     public String executeRequest(YahooFinanceRequest request) throws IOException
@@ -256,4 +256,59 @@ public class YahooFinanceClient
             return totalResults;
         }
     }
+
+
+    /*
+        TODO - originally pondering of doing a builder for client creation,
+              but temporarily having 2nd thoughts.  may eventually do it... TBD
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public static class Builder
+        {
+            private static final String DEFAULT_CONTENT_TYPE = "application/json";
+            private static final String DEFAULT_USER_AGENT = "Java-Http-Client/11.0.0";
+
+            private String defaultContentType = DEFAULT_CONTENT_TYPE;
+            private String defaultUserAgent = DEFAULT_USER_AGENT;
+            private boolean throwExceptionOnHttpError = true;
+            private boolean prettyJsonEnabled = false;
+            //private boolean flattenRawResponses = false;
+            private HttpClientAdapter httpClientAdapter = HttpClientAdapterFactory.createDefaultClient();
+
+            private Builder() {}
+
+            public YahooFinanceClient.Builder setDefaultContentType(String defaultContentType) {
+                this.defaultContentType = defaultContentType;
+                return this;
+            }
+            public YahooFinanceClient.Builder setDefaultUserAgent(String defaultUserAgent) {
+                this.defaultUserAgent = defaultUserAgent;
+                return this;
+            }
+            public YahooFinanceClient.Builder setExceptionOnHttpError(boolean exceptionOnHttpError) {
+                this.throwExceptionOnHttpError = exceptionOnHttpError;
+                return this;
+            }
+            public YahooFinanceClient.Builder setUsePrettyJson(boolean usePrettyJson) {
+                this.prettyJsonEnabled = usePrettyJson;
+                return this;
+            }
+    //        public YahooFinanceClient.Builder setAlwaysFlattenRawResposne(boolean flattenRawResponses) {
+    //            this.flattenRawResponses = flattenRawResponses;
+    //            return this;
+    //        }
+            public YahooFinanceClient.Builder setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
+                this.httpClientAdapter = httpClientAdapter;
+                return this;
+            }
+
+            public YahooFinanceClient build() {
+                return new YahooFinanceClient(this);
+            }
+        }
+     */
+
 }
