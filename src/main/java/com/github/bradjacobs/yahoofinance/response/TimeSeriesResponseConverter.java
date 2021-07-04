@@ -23,7 +23,7 @@ import java.util.TreeMap;
       - better naming if possible
       - needs a lot of unit testing
       - need to decide on the 'expected' output format  (namely sorting on keys, etc)
-      - might want to 'lop off' the day portion of the date so don't have ""2021-06-25" "2021-06-26" as different map keys (though this "should" be rare)
+      - might want to 'lop off' the day portion of the date so don't have "2021-06-25" "2021-06-26" as different map keys (though this "should" be rare)
       = code clean up (was originally done just to see it work)
 
  */
