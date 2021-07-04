@@ -6,6 +6,7 @@ package com.github.bradjacobs.yahoofinance;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
+import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
 import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
@@ -41,6 +42,9 @@ public class YahooFinanceClient
     // httpClient is a simple interface around the 'true' httpClient.
     private final HttpClientAdapter httpClient;
     private final CrumbDataSource crumbDataSource;
+
+    // todo: for the moment this is always true.. to fix.
+    private final boolean throwExceptionOnHttpError = true;
 
     private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
 
@@ -115,19 +119,16 @@ public class YahooFinanceClient
         String url = buildRequestUrl(request);
 
         Response response = null;
-        if (request.isPost())
-        {
+        if (request.isPost()) {
             String postBody = request.getPostBody();
             response = httpClient.executePost(url, postBody, this.requestHeaderMap);
         }
-        else
-        {
+        else {
             response = httpClient.executeGet(url, this.requestHeaderMap);
         }
 
-        if (response.isError()) {
-            // TODO - come back and handle better
-            throw new RuntimeException("Error occurred during request: ");
+        if (response.isError() && this.throwExceptionOnHttpError) {
+            throw HttpExceptionFactory.createException(response);
         }
         return response;
     }
@@ -175,14 +176,24 @@ public class YahooFinanceClient
     }
 
 
-
+    /**
+     * Executes the request and sens the results to the given collector.
+     *  This is (primarily) used for when you want to do a bunch of batch requests to get 'all' results for a query request.
+     * @param request request
+     * @param responseCollector collector
+     * @throws IOException thrown if something goes wrong.(including 4xx and 5xx) regardless of the throwonexceptoin paraemter
+     *     b/c there isn't a good alternative in this case.
+     */
     protected void executeCollectionRequest(YahooFinanceRequest request, ResponseCollector responseCollector) throws IOException
     {
         BatchableRequestStrategy batchableRequestStrategy = request.getBatchableRequestStrategy();
         if (batchableRequestStrategy == null) {
             // normal single request
-            String responseJson = executeRequest(request);
-            responseCollector.constructObjectCollections(responseJson);
+            Response response = executeInternal(request);
+            if (response.isError()) {
+                throw HttpExceptionFactory.createException(response);
+            }
+            responseCollector.constructObjectCollections(response.getBody());
         }
         else
         {
@@ -191,8 +202,11 @@ public class YahooFinanceClient
             do {
                 YahooFinanceRequest batchRequest = batchableRequestStrategy.buildNewRequest();
 
-                String responseJson = executeRequest(batchRequest);
-                generatedObjectCount = responseCollector.constructObjectCollections(responseJson);
+                Response response = executeInternal(request);
+                if (response.isError()) {
+                    throw HttpExceptionFactory.createException(response);
+                }
+                generatedObjectCount = responseCollector.constructObjectCollections(response.getBody());
                 batchableRequestStrategy.incrementBatchOffset();
                 if (configuredBatchSize == generatedObjectCount) {
                     batchIterationSleep();

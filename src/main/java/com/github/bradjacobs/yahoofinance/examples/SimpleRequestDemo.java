@@ -5,6 +5,7 @@ package com.github.bradjacobs.yahoofinance.examples;
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
+import com.github.bradjacobs.yahoofinance.http.exception.HttpClientErrorException;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
@@ -24,7 +25,7 @@ public class SimpleRequestDemo
 {
     public static void main(String[] args)
     {
-        String testTicker = "MSFT";
+        String testTicker = "ABEDEES";
         String testTicker2 = "CAT";
 
         String queryString = "AA*";
@@ -34,9 +35,10 @@ public class SimpleRequestDemo
 
         try
         {
+            requestDemo.bogusBadRequest();
 //            requestDemo.simpleRequest(testTicker);
 //            requestDemo.multiModuleRequest(testTicker);
-            requestDemo.quoteRequest(testTicker);
+//            equestDemo.quoteRequest(testTicker);
 //            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
 //            requestDemo.priceHistory(testTicker);
 //            requestDemo.basicLookupQuery(queryString);
@@ -47,6 +49,34 @@ public class SimpleRequestDemo
             e.printStackTrace();
         }
     }
+
+
+
+    private void bogusBadRequest() throws IOException
+    {
+        YahooFinanceClient client = new YahooFinanceClient();
+
+        String ticker = "ABEDESEED";  //  <----  non-existent ticker
+
+        try
+        {
+            YahooFinanceRequest req = YahooRequestBuilder.api()
+                .quoteSummary()
+                .withModules(ASSET_PROFILE)
+                .withTicker(ticker)
+                .build();
+
+            String json = client.executeRequest(req);
+
+            System.out.println("--JSON RESPONSE--");
+            System.out.println(json);
+        }
+        catch (HttpClientErrorException.NotFoundException e) {
+            System.out.println("received a 404 eexception!");
+            e.printStackTrace();
+        }
+    }
+
 
 
     private void simpleRequest(String ticker) throws IOException
@@ -97,15 +127,22 @@ public class SimpleRequestDemo
         // this will evolve over time.
         YahooFinanceClient client = new YahooFinanceClient();
 
-        YahooFinanceRequest req = YahooRequestBuilder.api()
-            .quote()
-            .withTicker(ticker)
-            .build();
+        try
+        {
+            YahooFinanceRequest req = YahooRequestBuilder.api()
+                .quote()
+                .withTicker(ticker)
+                .build();
 
-        String json = client.executeRequest(req);
+            String json = client.executeRequest(req);
 
-        System.out.println("--JSON RESPONSE--");
-        System.out.println(json);
+            System.out.println("--JSON RESPONSE--");
+            System.out.println(json);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            int kjkj = 33333;
+        }
     }
 
     private void quoteRequestMultipleTicker(String ticker1, String ticker2) throws IOException
