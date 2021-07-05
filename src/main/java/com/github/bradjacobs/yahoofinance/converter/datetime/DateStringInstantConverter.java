@@ -11,8 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class DateStringInstantConverter
 {
     private static final String DATE_PATTERN = "yyyy-MM-dd";
-    private static final String TIMEZONE = "GMT";
-    private static final ZoneId ZONE_ID = ZoneId.of(TIMEZONE);
+    private static final ZoneId ZONE_ID = ZoneId.of("GMT");
 
     private static final DateTimeFormatter DATE_ONLY_FORMATTER =
             DateTimeFormatter.ofPattern(DATE_PATTERN).withZone(ZONE_ID);
@@ -32,5 +31,4 @@ public class DateStringInstantConverter
         }
         return DATE_ONLY_FORMATTER.format(instant);
     }
-
 }
