@@ -202,7 +202,7 @@ public class YahooFinanceClient
             do {
                 YahooFinanceRequest batchRequest = batchableRequestStrategy.buildNewRequest();
 
-                Response response = executeInternal(request);
+                Response response = executeInternal(batchRequest);
                 if (response.isError()) {
                     throw HttpExceptionFactory.createException(response);
                 }
