@@ -305,7 +305,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     @Override
     protected BatchableRequestStrategy getBatchableRequestStrategy() {
 
-        if (!requestBatchingEnabled || Boolean.TRUE.equals(this.totalOnly || size < MIN_BATCHABLE_SIZE)) {
+        if (!requestBatchingEnabled || Boolean.TRUE.equals(this.totalOnly) || size < MIN_BATCHABLE_SIZE) {
             return null;
         }
         return this;
