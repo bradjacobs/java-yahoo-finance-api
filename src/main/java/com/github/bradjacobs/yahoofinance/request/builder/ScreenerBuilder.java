@@ -23,7 +23,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     private static final int MIN_BATCHABLE_SIZE = 10;
 
     // __NOTE__: all variables are set to DEFAULT value
-    private int size = 100;
+    private int size = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
     private int offset = 0;
     private ScreenerField sortField = ScreenerField.INTRADAYMARKETCAP;
     private String sortType = SORT_DESC;
@@ -34,12 +34,20 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     private Boolean totalOnly = null; // return record count only
 
     // thse remain const until there's need otherwise.
+    //        side note:  it's possible to use 'entityIdType' instead of a quoteType, but is untested/unsupported for now
     private final Type quoteType = Type.EQUITY;
     private final String topOperator = Operator.AND.getValue();
     private final String userId = "";
     private final String userIdType = "guid";
 
-    // side note:  it's possible to use 'entityIdType' instead of a quoteType, but is untested/unsupported for now
+
+    // TODO - FIX... 'technically' if supply an industry w/o a sector then the sector could be 'auto-magicallly' added,
+    //    but for now explicitly require sector is set if an industry is set (b/c that's what the web does)
+    //      however this method of validation is kludgy.
+    //    it's important to do this check, or else the query can produce 'zero results' and might not realize there was a problem.
+    private boolean sectorIsSet = false;
+    private boolean industryIsSet = false;
+
 
     private ScreenerQueryBuilder queryBuilder = new ScreenerQueryBuilder();
 
@@ -118,11 +126,19 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     }
     public ScreenerBuilder in(ScreenerField field, String ... values)
     {
+        // see boolean declarations for info
+        this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
+        this.sectorIsSet |= ScreenerField.SECTOR.equals((field));
+
         return (values != null ? in(field, Arrays.asList(values)) : this);
     }
 
     public ScreenerBuilder in(ScreenerField field, CriteriaEnum ... values)
     {
+        // see boolean declarations for info
+        this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
+        this.sectorIsSet |= ScreenerField.SECTOR.equals((field));
+
         if (values != null) {
             List<String> criteriaValues = Arrays.stream(values).map(CriteriaEnum::getCriteriaValue).collect(Collectors.toList());
             return in(field, criteriaValues);
@@ -174,8 +190,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     @Override
     protected Object _buildRequestPostBody()
     {
-        validateSortField(sortField);
-
         ScreenerCriteria criteria = new ScreenerCriteria();
         criteria.setSize(size);
         criteria.setOffset(offset);
@@ -199,15 +213,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
 
 
 
-    // todo - should make run w/ common validation
-    private void validateSortField(ScreenerField sortField) {
-        if (sortField == null) {
-            throw new IllegalArgumentException("The sortField cannot be null.");
-        }
-        if (! sortField.isSortable()) {
-            throw new IllegalArgumentException(String.format("Cannnot sort by '%s'.  It is not a sortable field", sortField.toString()));
-        }
-    }
 
 
     private static class ScreenerQueryBuilder
@@ -310,4 +315,27 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
         }
         return this;
     }
+
+
+    // this will throw exception if request is invalid
+    @Override
+    protected void validateRequest(YahooFinanceRequest req)
+    {
+        super.validateRequest(req);
+
+        // to - fix
+        //     this validation is misleading b/c can validate other than just the method parameter
+
+        if (sortField == null) {
+            throw new IllegalArgumentException("The sortField cannot be null.");
+        }
+        if (! sortField.isSortable()) {
+            throw new IllegalArgumentException(String.format("Cannnot sort by '%s'.  It is not a sortable field", sortField.toString()));
+        }
+
+        if (this.industryIsSet && !this.sectorIsSet) {
+            throw new IllegalArgumentException("Must set a 'sector' before can set an 'industry'.");
+        }
+    }
+
 }

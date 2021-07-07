@@ -1,0 +1,36 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
+package com.github.bradjacobs.yahoofinance.types;
+
+import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
+
+import javax.annotation.Generated;
+import static com.github.bradjacobs.yahoofinance.types.Sector.*;
+
+{GENERATOR_LINE}
+public enum Industry implements CriteriaEnum
+{
+{ENUM_LIST}
+
+    private final String value;
+    private final Sector sector;
+
+    Industry(String value, Sector sector) {
+        this.value = value;
+        this.sector = sector;
+    }
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String getCriteriaValue() {
+        return value;
+    }
+}

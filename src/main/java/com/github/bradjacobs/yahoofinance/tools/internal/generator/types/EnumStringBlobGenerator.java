@@ -3,6 +3,8 @@
  */
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
+import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -36,7 +38,7 @@ abstract class EnumStringBlobGenerator
 
     public String regenerateEnumFileBody() throws IOException
     {
-        String template = readResourceTemplateFile(this.templateFilePath);
+        String template = ResourceUtil.readResourceFileAsString(this.templateFilePath);
         String json = fetchJson();
         List<EnumInfo> enumInfoList = convertJsonToEnumInfo(json);
         String enumStringBlob = convertToEnumStringBlob(enumInfoList);
@@ -52,13 +54,11 @@ abstract class EnumStringBlobGenerator
     {
         StringBuilder sb = new StringBuilder();
 
+        EnumInfo lastEnumInfo = enumInfoList.get(enumInfoList.size() - 1);
+
+
         for (EnumInfo enumInfo : enumInfoList)
         {
-            if (sb.length() > 0) {
-                sb.append(",");
-                sb.append(NEW_LINE);
-            }
-
             sb.append(INDENT);
             sb.append(enumInfo.getEnumName());
 
@@ -80,29 +80,22 @@ abstract class EnumStringBlobGenerator
                 sb.append("(");
                 sb.append( String.join(", ", quotedParamValues) );
                 sb.append(")");
+
+                if (enumInfo.equals(lastEnumInfo)) {
+                    sb.append(";");
+                }
+                else {
+                    sb.append(",");
+                }
             }
+            sb.append(NEW_LINE);
         }
 
         // finish off with a semi;
-        sb.append(";");
         sb.append(NEW_LINE);
 
         return sb.toString();
     }
 
-
-    protected String readResourceTemplateFile(String filePath)
-    {
-        try {
-            URL resource = getClass().getClassLoader().getResource(filePath);
-            if (resource == null) {
-                throw new RuntimeException(String.format("Unable to find resource file: %s", this.templateFilePath));
-            }
-            return new String ( Files.readAllBytes( Paths.get(resource.getPath()) ) );
-        }
-        catch (Exception e) {
-            throw new RuntimeException(String.format("Unable to read resource file: %s.  Reason: %s", this.templateFilePath, e.getMessage()), e);
-        }
-    }
 
 }

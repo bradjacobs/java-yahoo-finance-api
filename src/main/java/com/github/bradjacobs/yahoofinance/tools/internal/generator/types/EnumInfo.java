@@ -5,6 +5,7 @@ package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 class EnumInfo implements Comparable<EnumInfo>
 {
@@ -36,8 +37,19 @@ class EnumInfo implements Comparable<EnumInfo>
     public static String makeEnumStyleFriendly(String enumName)
     {
         enumName = enumName.toUpperCase();
+
+        enumName = enumName.replace(",", "");
+
+        // this special '&' case must come BEFORE the whitespace cleanup.
+        enumName = enumName.replace("&", " AND ");
+
+        // replace 2 or more adjacent spaces w/ a single space (i.e. "aaa   bbb" -> "aaa bbb")
+        enumName = enumName.replaceAll("\\s+", " ");
+
         enumName = enumName.replace(" ", "_");
-        enumName = enumName.replace("-", "_");
+        enumName = enumName.replace("-", "_");  // primary dash
+        enumName = enumName.replace("—", "_");  // the 'other' dash
+
         return enumName;
     }
 
@@ -45,6 +57,29 @@ class EnumInfo implements Comparable<EnumInfo>
     public int compareTo(EnumInfo o)
     {
         return this.enumName.compareTo(o.enumName);
+    }
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof EnumInfo))
+        {
+            return false;
+        }
+        EnumInfo enumInfo = (EnumInfo) o;
+        return enumName.equals(enumInfo.enumName) &&
+            Objects.equals(enumParamValues, enumInfo.enumParamValues);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(enumName, enumParamValues);
     }
 
     static class EnumParamInfo {
