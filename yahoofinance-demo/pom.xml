@@ -5,23 +5,25 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.bradjacobs</groupId>
-	<artifactId>yahoo-finance</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>yahoo-finance-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
-	<name>Java-Yahoo-Finance-Parent</name>
-	<description>Java API wrapper for Yahoo! Finance API</description>
+	<name>Java-Yahoo-Stock-Demo</name>
+	<description>Samples using yahoo api</description>
 
 	<properties>
 		<!-- java version _must_ be this value or newer -->
 		<java.version>1.8</java.version>
 	</properties>
 
-	<modules>
-		<module>yahoofinance-api</module>
-		<module>yahoofinance-demo</module>
-	</modules>
+	<dependencies>
 
+		<dependency>
+			<groupId>com.github.bradjacobs</groupId>
+			<artifactId>yahoo-finance-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -33,20 +35,6 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
