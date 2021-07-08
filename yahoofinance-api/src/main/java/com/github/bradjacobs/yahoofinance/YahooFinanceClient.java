@@ -175,6 +175,7 @@ public class YahooFinanceClient
         return builder.toString();
     }
 
+    // TODO -- redo/refactor below for handling 'batches'.  the more i look at it the less i li,e it.
 
     /**
      * Executes the request and sens the results to the given collector.
