@@ -25,10 +25,10 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     // __NOTE__: all variables are set to DEFAULT value
     private int size = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
     private int offset = 0;
+
     private ScreenerField sortField = ScreenerField.INTRADAYMARKETCAP;
     private String sortType = SORT_DESC;
     private Boolean formatted = null;
-    private boolean requestBatchingEnabled = false;
 
     private Boolean useRecordResponse = null;  // not sure what this actually does
     private Boolean totalOnly = null; // return record count only
@@ -56,14 +56,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     {
     }
 
-    public ScreenerBuilder enableRequestBatching() {
-        this.requestBatchingEnabled = true;
-        return this;
-    }
-    public ScreenerBuilder disableRequestBatching() {
-        this.requestBatchingEnabled = false;
-        return this;
-    }
 
     public ScreenerBuilder setFormatted(Boolean formatted) {
         this.formatted = formatted;
@@ -293,14 +285,15 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     }
 
     @Override
-    public int getCurrentOffset() {
+    public int getBatchOffset() {
         return offset;
     }
 
     @Override
-    public void incrementBatchOffset() {
-        this.setOffset(this.offset + this.size);
+    public void setBatchOffset(int offset) {
+        this.setOffset(offset);
     }
+
 
     @Override
     public YahooFinanceRequest buildNewRequest() {
@@ -310,7 +303,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     @Override
     protected BatchableRequestStrategy getBatchableRequestStrategy() {
 
-        if (!requestBatchingEnabled || Boolean.TRUE.equals(this.totalOnly) || size < MIN_BATCHABLE_SIZE) {
+        if (Boolean.TRUE.equals(this.totalOnly) || size < MIN_BATCHABLE_SIZE) {
             return null;
         }
         return this;
@@ -336,6 +329,13 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
         if (this.industryIsSet && !this.sectorIsSet) {
             throw new IllegalArgumentException("Must set a 'sector' before can set an 'industry'.");
         }
+    }
+
+
+    @Override
+    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker, Map<String, String> paramMap, Object postBody)
+    {
+        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, getBatchableRequestStrategy());
     }
 
 }

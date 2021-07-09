@@ -18,6 +18,7 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     private Type type;
     private int count = DEFAULT_COUNT;
     private int start = DEFAULT_START;
+
     private boolean includeTotalsOnly = false;
     private boolean requestBatchingEnabled = false;
 
@@ -105,13 +106,14 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     }
 
     @Override
-    public int getCurrentOffset() {
+    public int getBatchOffset() {
         return this.start;
     }
 
     @Override
-    public void incrementBatchOffset() {
-        this.withStart(this.start + this.count);
+    public void setBatchOffset(int offset)
+    {
+        this.withStart(offset);
     }
 
     @Override

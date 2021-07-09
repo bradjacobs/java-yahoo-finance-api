@@ -8,9 +8,10 @@ public class PrettyFormatter
 {
     private static final JsonMapper prettyMapper = JsonMapperSingleton.getPrettyInstance();
 
-
     private PrettyFormatter() { }
 
+    // todo - see if this is any better or worse...
+    //             String pretty = mapper.writeValueAsString(mapper.readValue(example, Object.class));
 
     public static String prettyJson(String json)
     {

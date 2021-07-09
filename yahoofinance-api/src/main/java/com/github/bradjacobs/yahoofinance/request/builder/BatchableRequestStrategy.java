@@ -6,8 +6,8 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 public interface BatchableRequestStrategy
 {
     int getBatchSize();
-    int getCurrentOffset();
-    void incrementBatchOffset();
+    int getBatchOffset();
+    void setBatchOffset(int offset);
 
     YahooFinanceRequest buildNewRequest();
 }

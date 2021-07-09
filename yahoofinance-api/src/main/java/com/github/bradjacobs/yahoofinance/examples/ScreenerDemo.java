@@ -1,13 +1,18 @@
 package com.github.bradjacobs.yahoofinance.examples;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.YahooFinanceObjectClient;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.model.ScreenerResult;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
+import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
+import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.jayway.jsonpath.JsonPath;
 
 import java.io.IOException;
@@ -22,8 +27,8 @@ public class ScreenerDemo
     {
         ScreenerDemo screenerDemo = new ScreenerDemo();
         //screenerDemo.screeenerRequest1();
-        screenerDemo.screeenerRequestTotalOnly();
-        //screenerDemo.screeenerRequest2();
+        //screenerDemo.screeenerRequestTotalOnly();
+        screenerDemo.screeenerRequest2();
         //screenerDemo.screeenerRequestMapClient();
         //screenerDemo.screeenerRequestObjectClient();
     }
@@ -74,7 +79,9 @@ public class ScreenerDemo
 
         YahooFinanceRequest req = YahooRequestBuilder.api()
             .screener()
-            .setSize(100)
+            .setSize(50)
+          //  .enableRequestBatching()
+           // .setOffset(90)
             .in(ScreenerField.REGION, Region.UNITED_STATES)
             .lt(ScreenerField.PERATIO, 20)
             .lt(ScreenerField.PRICEBOOKRATIO, 4)
@@ -86,6 +93,19 @@ public class ScreenerDemo
             .lt(ScreenerField.PEGRATIO_5Y, 1.1)
             .gt(ScreenerField.EODPRICE, 0.4)
             .build();
+
+        YahooFinanceBatchRequest batchRequest = (YahooFinanceBatchRequest) req;
+
+
+        YahooBatchResponse resp = client.executeBatch(req);
+        List<Map<String,Object>> listOfMapsBeta = resp.getAsListOfMaps();
+        Map<String, Map<String, Object>> mapOfMapsBeta = resp.getAsMapOfMaps();
+
+//        List<Map<String,Object>> listOfMapsA = client.executeBatchListRequest(batchRequest);
+
+
+        List<Map<String,Object>> listOfMapsB = client.executeListRequest(req);
+
 
         String json = client.executeRequest(req);
 

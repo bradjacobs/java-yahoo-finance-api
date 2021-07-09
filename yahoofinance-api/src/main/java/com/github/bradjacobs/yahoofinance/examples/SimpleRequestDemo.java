@@ -25,7 +25,7 @@ public class SimpleRequestDemo
 {
     public static void main(String[] args)
     {
-        String testTicker = "ABEDEES";
+        String testTicker = "MSFT";
         String testTicker2 = "CAT";
 
         String queryString = "AA*";
@@ -35,8 +35,8 @@ public class SimpleRequestDemo
 
         try
         {
-            requestDemo.bogusBadRequest();
-//            requestDemo.simpleRequest(testTicker);
+//            requestDemo.bogusBadRequest();
+            requestDemo.simpleRequest(testTicker);
 //            requestDemo.multiModuleRequest(testTicker);
 //            equestDemo.quoteRequest(testTicker);
 //            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);

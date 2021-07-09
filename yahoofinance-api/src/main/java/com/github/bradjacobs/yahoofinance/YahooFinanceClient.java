@@ -9,12 +9,16 @@ import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
 import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
+import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.response.ResponseConverterFactory;
+import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
+import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.HttpHeaders;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
@@ -47,6 +51,7 @@ public class YahooFinanceClient
     private final boolean throwExceptionOnHttpError = true;
 
     private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
+    private final BatchableRequestExecutor batchableRequestExecutor;
 
 
     public YahooFinanceClient()
@@ -64,6 +69,8 @@ public class YahooFinanceClient
         setUserAgent(DEFAULT_USER_AGENT);
         this.httpClient = httpClient;
         this.crumbDataSource = new CrumbDataSource(httpClient);
+
+        this.batchableRequestExecutor = new BatchableRequestExecutor(this);
     }
 
 
@@ -81,6 +88,31 @@ public class YahooFinanceClient
         return response.getBody();
     }
 
+
+    public YahooResponse execute(YahooFinanceRequest request) throws IOException
+    {
+        Response rawResponse = executeInternal(request);
+        return new YahooResponse(request.getEndpoint(), rawResponse);
+    }
+
+    public YahooBatchResponse executeBatch(YahooFinanceRequest request) throws IOException
+    {
+        // todo - come back to address this (a litle kludgy)
+        if (request instanceof YahooFinanceBatchRequest) {
+            return executeBatch((YahooFinanceBatchRequest)request);
+        }
+        else {
+            throw new IllegalArgumentException("Error: cannot execute batch request.  The request is not batchable.");
+        }
+    }
+
+    public YahooBatchResponse executeBatch(YahooFinanceBatchRequest request) throws IOException
+    {
+        List<Response> rawResponses = batchableRequestExecutor.executeRequest(request);
+        return new YahooBatchResponse(request.getEndpoint(), rawResponses);
+    }
+
+
     /**
      * Executes request and returns result in a custom list format
      * @param request
@@ -90,9 +122,8 @@ public class YahooFinanceClient
     // todo - fix terrible method name
     public List<Map<String,Object>> executeListRequest(YahooFinanceRequest request) throws IOException
     {
-        ListOfMapsResponseCollector listOfMapsResponseCollector = new ListOfMapsResponseCollector(request.getEndpoint());
-        executeCollectionRequest(request, listOfMapsResponseCollector);
-        return listOfMapsResponseCollector.getTotalResults();
+        Response response = executeInternal(request);
+        return convertToListOfMaps(response, request.getEndpoint());
     }
 
     /**
@@ -105,10 +136,68 @@ public class YahooFinanceClient
     // todo - may change key just to type 'object'   tbd.
     public Map<String,Map<String,Object>> executeMapRequest(YahooFinanceRequest request) throws IOException
     {
-        MapOfMapsResponseCollector mapOfMapsResponseCollector = new MapOfMapsResponseCollector(request.getEndpoint());
-        executeCollectionRequest(request, mapOfMapsResponseCollector);
-        return mapOfMapsResponseCollector.getTotalResults();
+        Response response = executeInternal(request);
+        return convertToMapOfMaps(response, request.getEndpoint());
     }
+
+
+
+
+
+    protected List<Map<String,Object>> convertToListOfMaps(Response response, YahooEndpoint endpoint) throws HttpResponseException
+    {
+        if (response.isError()) {
+            throw HttpExceptionFactory.createException(response);
+        }
+        YahooResponseConverter responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);
+        return responseConverter.convertToListOfMaps(response.getBody());
+    }
+
+    protected List<Map<String,Object>> convertToListOfMaps(List<Response> responseList, YahooEndpoint endpoint) throws HttpResponseException
+    {
+        if (responseList == null || responseList.isEmpty()) {
+            return Collections.emptyList();
+        }
+        else if (responseList.size() == 1) {
+            return convertToListOfMaps(responseList.get(0), endpoint);
+        }
+        else {
+            List<Map<String,Object>> totalResults = new ArrayList<>();
+            for (Response response : responseList) {
+                totalResults.addAll(convertToListOfMaps(response, endpoint));
+            }
+            return totalResults;
+        }
+    }
+
+
+    protected Map<String, Map<String, Object>> convertToMapOfMaps(Response response, YahooEndpoint endpoint) throws HttpResponseException
+    {
+        if (response.isError()) {
+            throw HttpExceptionFactory.createException(response);
+        }
+        YahooResponseConverter responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);
+        return responseConverter.convertToMapOfMaps(response.getBody());
+    }
+
+    protected Map<String, Map<String, Object>> convertToMapOfMaps(List<Response> responseList, YahooEndpoint endpoint) throws HttpResponseException
+    {
+        if (responseList == null || responseList.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        else if (responseList.size() == 1) {
+            return convertToMapOfMaps(responseList.get(0), endpoint);
+        }
+        else {
+            Map<String, Map<String, Object>> totalResults = new LinkedHashMap<>(); // todo - tbd which type of map to use
+            for (Response response : responseList) {
+                totalResults.putAll(convertToMapOfMaps(response, endpoint));
+            }
+            return totalResults;
+        }
+    }
+
+
 
 
     protected Response executeInternal(YahooFinanceRequest request) throws IOException
@@ -198,21 +287,8 @@ public class YahooFinanceClient
         }
         else
         {
-            int generatedObjectCount = -1;
-            int configuredBatchSize = batchableRequestStrategy.getBatchSize();
-            do {
-                YahooFinanceRequest batchRequest = batchableRequestStrategy.buildNewRequest();
-
-                Response response = executeInternal(batchRequest);
-                if (response.isError()) {
-                    throw HttpExceptionFactory.createException(response);
-                }
-                generatedObjectCount = responseCollector.constructObjectCollections(response.getBody());
-                batchableRequestStrategy.incrementBatchOffset();
-                if (configuredBatchSize == generatedObjectCount) {
-                    batchIterationSleep();
-                }
-            } while (configuredBatchSize == generatedObjectCount);
+            //   todo
+            // no longer implemented... to remove.
         }
     }
 
@@ -228,7 +304,7 @@ public class YahooFinanceClient
         protected final YahooResponseConverter responseConverter;
 
         protected ResponseCollector(YahooEndpoint endpoint) {
-            this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);;
+            this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);
         }
 
         public abstract int constructObjectCollections(String json);
