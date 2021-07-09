@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-abstract public class AbstractResponse implements YahooResult
+abstract public class AbstractResponse
 {
     private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
@@ -31,6 +31,7 @@ abstract public class AbstractResponse implements YahooResult
     }
 
     abstract protected List<Response> getListResponse();
+    abstract public boolean hasErrors();
 
 
     public YahooEndpoint getEndpoint()

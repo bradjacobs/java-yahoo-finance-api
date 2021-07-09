@@ -7,7 +7,7 @@ import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 import java.util.Collections;
 import java.util.List;
 
-public class YahooResponse extends AbstractResponse implements YahooResult
+public class YahooResponse extends AbstractResponse
 {
     private Response rawResponse;
 
