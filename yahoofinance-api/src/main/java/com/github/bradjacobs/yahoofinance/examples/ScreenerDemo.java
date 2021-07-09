@@ -46,7 +46,8 @@ public class ScreenerDemo
             .gt(ScreenerField.NETINCOME1YRGROWTH, 5)
             .build();
 
-        String json = client.executeRequest(req);
+        YahooResponse resp = client.execute(req);
+        String json = resp.getJson();
 
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
@@ -65,7 +66,8 @@ public class ScreenerDemo
             .setTotalOnly(true)
             .build();
 
-        String json = client.executeRequest(req);
+        YahooResponse resp = client.execute(req);
+        String json = resp.getJson();
 
         System.out.println("--JSON RESPONSE--");
         System.out.println(json);
@@ -96,19 +98,11 @@ public class ScreenerDemo
 
         YahooFinanceBatchRequest batchRequest = (YahooFinanceBatchRequest) req;
 
-
         YahooBatchResponse resp = client.executeBatch(req);
-        List<Map<String,Object>> listOfMapsBeta = resp.getAsListOfMaps();
-        Map<String, Map<String, Object>> mapOfMapsBeta = resp.getAsMapOfMaps();
-
-//        List<Map<String,Object>> listOfMapsA = client.executeBatchListRequest(batchRequest);
 
 
-        List<Map<String,Object>> listOfMapsB = client.executeListRequest(req);
-
-
-        String json = client.executeRequest(req);
-
+        List<String> jsonList = resp.getJson();
+        String json = jsonList.get(0);
 
         List<Map<String,Object>> listOfMaps = JsonPath.read(json, "$.finance.result[0].quotes");
 
@@ -148,7 +142,8 @@ public class ScreenerDemo
             .gt(ScreenerField.EODPRICE, 0.4)
             .build();
 
-        List<Map<String,Object>> listOfMaps = client.executeListRequest(req);
+        YahooResponse resp = client.execute(req);
+        List<Map<String,Object>> listOfMaps = resp.getAsListOfMaps();
 
         // print out results  --- PROOF OF CONCEPT ONLY ---
         for (Map<String, Object> entryMap : listOfMaps)
@@ -164,32 +159,33 @@ public class ScreenerDemo
         }
 
     }
-    private void screeenerRequestObjectClient() throws IOException
-    {
-        YahooFinanceClient baseClient = new YahooFinanceClient(HttpClientAdapterFactory.createDefaultOkHttpClient());
-        YahooFinanceObjectClient client = new YahooFinanceObjectClient(baseClient);
 
-        // still _VERY_ beta
-
-        YahooFinanceRequest req = YahooRequestBuilder.api()
-            .screener()
-            .setSize(100)
-            .in(ScreenerField.REGION, Region.UNITED_STATES)
-            .lt(ScreenerField.PERATIO, 22)
-            .lt(ScreenerField.PRICEBOOKRATIO, 3.5)
-            .gt(ScreenerField.ALTMANZSCOREUSINGTHEAVERAGESTOCKINFORMATIONFORAPERIOD, 3)
-            .lt(ScreenerField.TOTALDEBTEQUITY, 110)
-            .gt(ScreenerField.CURRENTRATIO, 1.5)
-            .gt(ScreenerField.RETURNONEQUITY, 3)
-            .gt(ScreenerField.NETINCOMEMARGIN, 1)
-            .lt(ScreenerField.PEGRATIO_5Y, 1.1)
-            .gt(ScreenerField.EODPRICE, 0.3)
-            .build();
-
-        //ScreenerResult[] arrayResult = client.executeRequest(req, ScreenerResult[].class);
-        List<ScreenerResult> listResult = client.fetchObjects(req, ScreenerResult.class);
-
-    }
+//    private void screeenerRequestObjectClient() throws IOException
+//    {
+//        YahooFinanceClient baseClient = new YahooFinanceClient(HttpClientAdapterFactory.createDefaultOkHttpClient());
+//        YahooFinanceObjectClient client = new YahooFinanceObjectClient(baseClient);
+//
+//        // still _VERY_ beta
+//
+//        YahooFinanceRequest req = YahooRequestBuilder.api()
+//            .screener()
+//            .setSize(100)
+//            .in(ScreenerField.REGION, Region.UNITED_STATES)
+//            .lt(ScreenerField.PERATIO, 22)
+//            .lt(ScreenerField.PRICEBOOKRATIO, 3.5)
+//            .gt(ScreenerField.ALTMANZSCOREUSINGTHEAVERAGESTOCKINFORMATIONFORAPERIOD, 3)
+//            .lt(ScreenerField.TOTALDEBTEQUITY, 110)
+//            .gt(ScreenerField.CURRENTRATIO, 1.5)
+//            .gt(ScreenerField.RETURNONEQUITY, 3)
+//            .gt(ScreenerField.NETINCOMEMARGIN, 1)
+//            .lt(ScreenerField.PEGRATIO_5Y, 1.1)
+//            .gt(ScreenerField.EODPRICE, 0.3)
+//            .build();
+//
+//        //ScreenerResult[] arrayResult = client.executeRequest(req, ScreenerResult[].class);
+//        //List<ScreenerResult> listResult = client.fetchObjects(req, ScreenerResult.class);
+//
+//    }
 
 
 }

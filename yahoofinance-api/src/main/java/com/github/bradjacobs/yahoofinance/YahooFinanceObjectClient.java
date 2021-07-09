@@ -41,21 +41,23 @@ public class YahooFinanceObjectClient
     @SuppressWarnings("unchecked")
     public <T> List<T> fetchObjects(YahooFinanceRequest request, Class<T> targetType) throws IOException
     {
-        validateSupportedEndpoint(request);
-        List<Map<String,Object>> listOfMaps = yahooClient.executeListRequest(request);
-        JavaType javaType = mapper.getTypeFactory().constructParametricType(List.class, targetType);
-        List<T> resultList = mapper.convertValue(listOfMaps, javaType);
-        return resultList;
+        throw new UnsupportedOperationException("this is going away");
+//        validateSupportedEndpoint(request);
+//        List<Map<String,Object>> listOfMaps = yahooClient.executeListRequest(request);
+//        JavaType javaType = mapper.getTypeFactory().constructParametricType(List.class, targetType);
+//        List<T> resultList = mapper.convertValue(listOfMaps, javaType);
+//        return resultList;
     }
 
     @SuppressWarnings("unchecked")
     public <T> Map<String,T> fetchMappedObjects(YahooFinanceRequest request, Class<T> targetType) throws IOException
     {
-        validateSupportedEndpoint(request);
-        Map<String, Map<String, Object>> mapOfMaps = yahooClient.executeMapRequest(request);
-        JavaType javaType = mapper.getTypeFactory().constructParametricType(Map.class, String.class, targetType);
-        Map<String,T> resultMap = mapper.convertValue(mapOfMaps, javaType);
-        return resultMap;
+        throw new UnsupportedOperationException("this is going away");
+//        validateSupportedEndpoint(request);
+//        Map<String, Map<String, Object>> mapOfMaps = yahooClient.executeMapRequest(request);
+//        JavaType javaType = mapper.getTypeFactory().constructParametricType(Map.class, String.class, targetType);
+//        Map<String,T> resultMap = mapper.convertValue(mapOfMaps, javaType);
+//        return resultMap;
     }
 
 

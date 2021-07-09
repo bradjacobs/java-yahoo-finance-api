@@ -82,12 +82,6 @@ public class YahooFinanceClient
         requestHeaderMap.put(HttpHeaders.USER_AGENT, userAgent);
     }
 
-    public String executeRequest(YahooFinanceRequest request) throws IOException
-    {
-        Response response = executeInternal(request);
-        return response.getBody();
-    }
-
 
     public YahooResponse execute(YahooFinanceRequest request) throws IOException
     {
@@ -111,92 +105,6 @@ public class YahooFinanceClient
         List<Response> rawResponses = batchableRequestExecutor.executeRequest(request);
         return new YahooBatchResponse(request.getEndpoint(), rawResponses);
     }
-
-
-    /**
-     * Executes request and returns result in a custom list format
-     * @param request
-     * @return
-     * @throws IOException
-     */
-    // todo - fix terrible method name
-    public List<Map<String,Object>> executeListRequest(YahooFinanceRequest request) throws IOException
-    {
-        Response response = executeInternal(request);
-        return convertToListOfMaps(response, request.getEndpoint());
-    }
-
-    /**
-     * Executes request and returns result in a custom map format
-     * @param request
-     * @return
-     * @throws IOException
-     */
-    // todo - fix terrible method name
-    // todo - may change key just to type 'object'   tbd.
-    public Map<String,Map<String,Object>> executeMapRequest(YahooFinanceRequest request) throws IOException
-    {
-        Response response = executeInternal(request);
-        return convertToMapOfMaps(response, request.getEndpoint());
-    }
-
-
-
-
-
-    protected List<Map<String,Object>> convertToListOfMaps(Response response, YahooEndpoint endpoint) throws HttpResponseException
-    {
-        if (response.isError()) {
-            throw HttpExceptionFactory.createException(response);
-        }
-        YahooResponseConverter responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);
-        return responseConverter.convertToListOfMaps(response.getBody());
-    }
-
-    protected List<Map<String,Object>> convertToListOfMaps(List<Response> responseList, YahooEndpoint endpoint) throws HttpResponseException
-    {
-        if (responseList == null || responseList.isEmpty()) {
-            return Collections.emptyList();
-        }
-        else if (responseList.size() == 1) {
-            return convertToListOfMaps(responseList.get(0), endpoint);
-        }
-        else {
-            List<Map<String,Object>> totalResults = new ArrayList<>();
-            for (Response response : responseList) {
-                totalResults.addAll(convertToListOfMaps(response, endpoint));
-            }
-            return totalResults;
-        }
-    }
-
-
-    protected Map<String, Map<String, Object>> convertToMapOfMaps(Response response, YahooEndpoint endpoint) throws HttpResponseException
-    {
-        if (response.isError()) {
-            throw HttpExceptionFactory.createException(response);
-        }
-        YahooResponseConverter responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);
-        return responseConverter.convertToMapOfMaps(response.getBody());
-    }
-
-    protected Map<String, Map<String, Object>> convertToMapOfMaps(List<Response> responseList, YahooEndpoint endpoint) throws HttpResponseException
-    {
-        if (responseList == null || responseList.isEmpty()) {
-            return Collections.emptyMap();
-        }
-        else if (responseList.size() == 1) {
-            return convertToMapOfMaps(responseList.get(0), endpoint);
-        }
-        else {
-            Map<String, Map<String, Object>> totalResults = new LinkedHashMap<>(); // todo - tbd which type of map to use
-            for (Response response : responseList) {
-                totalResults.putAll(convertToMapOfMaps(response, endpoint));
-            }
-            return totalResults;
-        }
-    }
-
 
 
 
@@ -262,90 +170,6 @@ public class YahooFinanceClient
         }
 
         return builder.toString();
-    }
-
-    // TODO -- redo/refactor below for handling 'batches'.  the more i look at it the less i li,e it.
-
-    /**
-     * Executes the request and sens the results to the given collector.
-     *  This is (primarily) used for when you want to do a bunch of batch requests to get 'all' results for a query request.
-     * @param request request
-     * @param responseCollector collector
-     * @throws IOException thrown if something goes wrong.(including 4xx and 5xx) regardless of the throwonexceptoin paraemter
-     *     b/c there isn't a good alternative in this case.
-     */
-    protected void executeCollectionRequest(YahooFinanceRequest request, ResponseCollector responseCollector) throws IOException
-    {
-        BatchableRequestStrategy batchableRequestStrategy = request.getBatchableRequestStrategy();
-        if (batchableRequestStrategy == null) {
-            // normal single request
-            Response response = executeInternal(request);
-            if (response.isError()) {
-                throw HttpExceptionFactory.createException(response);
-            }
-            responseCollector.constructObjectCollections(response.getBody());
-        }
-        else
-        {
-            //   todo
-            // no longer implemented... to remove.
-        }
-    }
-
-    private static void batchIterationSleep() {
-        try { Thread.sleep(SLEEP_TIME_BETWEEN_BATCH_REQUESTS); }
-        catch (InterruptedException e) {/* ignore */ }
-    }
-
-    // pseudo-observer to avoid redundant batching code.
-    //
-    private static abstract class ResponseCollector
-    {
-        protected final YahooResponseConverter responseConverter;
-
-        protected ResponseCollector(YahooEndpoint endpoint) {
-            this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);
-        }
-
-        public abstract int constructObjectCollections(String json);
-    }
-
-    private static class ListOfMapsResponseCollector extends ResponseCollector
-    {
-        private final List<Map<String, Object>> totalResults = new ArrayList<>();
-
-        public ListOfMapsResponseCollector(YahooEndpoint endpoint) {
-            super(endpoint);
-        }
-
-        public int constructObjectCollections(String json) {
-            List<Map<String, Object>> batchResponse = responseConverter.convertToListOfMaps(json);
-            this.totalResults.addAll(batchResponse);
-            return batchResponse.size();
-        }
-
-        public List<Map<String, Object>> getTotalResults() {
-            return totalResults;
-        }
-    }
-
-    private static class MapOfMapsResponseCollector extends ResponseCollector
-    {
-        private final Map<String,Map<String,Object>> totalResults = new LinkedHashMap<>();  // todo - which kind of map
-
-        public MapOfMapsResponseCollector(YahooEndpoint endpoint) {
-            super(endpoint);
-        }
-
-        public int constructObjectCollections(String json) {
-            Map<String,Map<String,Object>> batchResponse = responseConverter.convertToMapOfMaps(json);
-            this.totalResults.putAll(batchResponse);
-            return batchResponse.size();
-        }
-
-        public Map<String, Map<String, Object>> getTotalResults() {
-            return totalResults;
-        }
     }
 
 }

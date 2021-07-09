@@ -5,6 +5,7 @@ import com.github.bradjacobs.yahoofinance.YahooFinanceObjectClient;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,14 +35,12 @@ public class TimeSeriesDemo
             .withPadTimeSeries(true)
             .build();
 
-       String json = client.executeRequest(req);
+        YahooResponse resp = client.execute(req);
+        String json = resp.getJson();
+
 //        List<Map<String, Object>> listofMaps = client.executeListRequest(req);
 
         System.out.println("Done!");
     }
-
-
-    //   1609459200
-    //  1617235199
 
 }
