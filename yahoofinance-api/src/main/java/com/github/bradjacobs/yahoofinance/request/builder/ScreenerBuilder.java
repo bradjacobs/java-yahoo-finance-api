@@ -71,16 +71,14 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
         this.offset = Math.max(offset, 0); // no negative allowed
         return this;
     }
-    public ScreenerBuilder setSortField(ScreenerField sortField) {
+    public ScreenerBuilder setSortAscending(ScreenerField sortField) {
         this.sortField = sortField;
-        return this;
-    }
-    public ScreenerBuilder sortDecending() {
-        this.sortType = SORT_DESC;
-        return this;
-    }
-    public ScreenerBuilder sortAscending() {
         this.sortType = SORT_ASC;
+        return this;
+    }
+    public ScreenerBuilder setSortDescending(ScreenerField sortField) {
+        this.sortField = sortField;
+        this.sortType = SORT_DESC;
         return this;
     }
     public ScreenerBuilder setUseRecordResponse(Boolean useRecordResponse) {
