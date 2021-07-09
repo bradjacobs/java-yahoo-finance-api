@@ -1,10 +1,7 @@
 package com.github.bradjacobs.yahoofinance.examples;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
-import com.github.bradjacobs.yahoofinance.YahooFinanceObjectClient;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
-import com.github.bradjacobs.yahoofinance.model.ScreenerResult;
 import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
@@ -12,11 +9,9 @@ import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.jayway.jsonpath.JsonPath;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 

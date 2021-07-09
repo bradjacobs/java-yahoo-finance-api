@@ -5,27 +5,25 @@ import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ChartRequestDemoFactory
 {
     private ChartRequestDemoFactory() {}
 
-
-
-
+    // note: the numeric id value has no real meaning
     public static YahooFinanceRequest getRequest(int sampleRequestId)
     {
-        return REQUEST_MAP.get(sampleRequestId);
+        switch (sampleRequestId) {
+            case 1: return SIMPLE;
+            case 2: return EPOCH;
+            case 3: return LIMITED_FIELDS;
+            default: return SIMPLE;
+        }
     }
 
 
 
-
-
     /**
-     * Query all prices for AAPL in the last year (and include divident/split info)
+     * Query all prices for AAPL in the last year (and include dividend/split info)
      */
     private static final YahooFinanceRequest SIMPLE =
         YahooRequestBuilder.api()
@@ -59,15 +57,5 @@ public class ChartRequestDemoFactory
             .setTimeRange("2021-01-01", "2021-03-31")
             .withIndicatorCloseAdjCloseOnly()
             .build();
-
-
-
-
-    private static final Map<Integer, YahooFinanceRequest> REQUEST_MAP = new HashMap<Integer, YahooFinanceRequest>(){{
-        put(1, SIMPLE);
-        put(2, EPOCH);
-        put(3, LIMITED_FIELDS);
-    }};
-
 
 }

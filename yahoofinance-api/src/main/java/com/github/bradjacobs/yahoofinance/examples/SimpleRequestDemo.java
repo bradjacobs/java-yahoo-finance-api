@@ -36,12 +36,8 @@ public class SimpleRequestDemo
 
         try
         {
-//            requestDemo.bogusBadRequest();
-            requestDemo.simpleRequest(testTicker);
-//            requestDemo.multiModuleRequest(testTicker);
 //            equestDemo.quoteRequest(testTicker);
 //            requestDemo.quoteRequestMultipleTicker(testTicker, testTicker2);
-//            requestDemo.chart(testTicker);
 //            requestDemo.basicLookupQuery(queryString);
 //            requestDemo.regionRequest(region);
         }
@@ -52,79 +48,6 @@ public class SimpleRequestDemo
     }
 
 
-
-    private void bogusBadRequest() throws IOException
-    {
-        YahooFinanceClient client = new YahooFinanceClient();
-
-        String ticker = "ABEDESEED";  //  <----  non-existent ticker
-
-        try
-        {
-            YahooFinanceRequest req = YahooRequestBuilder.api()
-                .quoteSummary()
-                .withModules(ASSET_PROFILE)
-                .withTicker(ticker)
-                .build();
-
-            YahooResponse resp = client.execute(req);
-            String json = resp.getJson();
-
-            System.out.println("--JSON RESPONSE--");
-            System.out.println(json);
-        }
-        catch (HttpClientErrorException.NotFoundException e) {
-            System.out.println("received a 404 eexception!");
-            e.printStackTrace();
-        }
-    }
-
-
-
-    private void simpleRequest(String ticker) throws IOException
-    {
-        // Query for Profile
-        YahooFinanceClient client = new YahooFinanceClient(HttpClientAdapterFactory.createHttpClient(new OkHttpClient()));
-
-        YahooFinanceRequest req = YahooRequestBuilder.api()
-            .quoteSummary()
-            .withModules(ASSET_PROFILE)
-            .withTicker(ticker)
-            .build();
-
-        YahooResponse resp = client.execute(req);
-        String json = resp.getJson();
-
-        System.out.println("--JSON RESPONSE--");
-        System.out.println(json);
-    }
-
-    private void multiModuleRequest(String ticker) throws IOException
-    {
-        YahooFinanceClient client = new YahooFinanceClient();
-
-        YahooFinanceRequest req = YahooRequestBuilder.api()
-            .quoteSummary()
-            .withModules(ASSET_PROFILE)
-            .withModules(FINANCIAL_DATA)
-            .withModules(BALANCE_SHEET_HISTORY)
-            .withTicker(ticker)
-            .build();
-
-
-        //  ... OR ...
-        YahooFinanceRequest reqAlternative = YahooRequestBuilder.api()
-            .quoteSummary()
-            .withModules(ASSET_PROFILE, FINANCIAL_DATA, BALANCE_SHEET_HISTORY)
-            .withTicker(ticker)
-            .build();
-
-        YahooResponse resp = client.execute(req);
-        String json = resp.getJson();
-
-        System.out.println("--JSON RESPONSE--");
-        System.out.println(json);
-    }
 
     private void quoteRequest(String ticker) throws IOException
     {
@@ -196,30 +119,6 @@ public class SimpleRequestDemo
     }
 
 
-    private void priceHistory(String ticker) throws IOException
-    {
-        YahooFinanceClient client = new YahooFinanceClient();
-
-        YahooFinanceRequest req = YahooRequestBuilder.api()
-            .chart()
-            .withTicker(ticker)
-            //.withRange(Range.FIVE_DAYS)
-            .setTimeRange("2021-01-25", "2021-01-28")
-            //.setTimeRangeLastXMonths(6)
-            //.setTimeRange(1619481600999L, 1619827200999L)
-            .withInterval(Interval.ONE_DAY)
-            .build();
-
-        YahooResponse resp = client.execute(req);
-        String json = resp.getJson();
-
-        System.out.println("--JSON RESPONSE--");
-        System.out.println(json);
-
-        // additional notes:
-        //    &indicators=quote      (seems to do nothing?)
-        //    &indicators=adjclose   (perhaps a yahoo bug, can return adjclose twice in some cases)
-    }
 
 
     private void regionRequest(Region region) throws IOException

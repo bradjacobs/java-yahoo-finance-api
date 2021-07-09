@@ -8,21 +8,16 @@ import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
-import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
-import com.github.bradjacobs.yahoofinance.response.ResponseConverterFactory;
 import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
-import com.github.bradjacobs.yahoofinance.response.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.HttpHeaders;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,9 +34,6 @@ public class YahooFinanceClient
     private static final String CRUMB_KEY = "crumb";
 
     private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
-
-    // allow a very brief pause b/w each batch request for philanthropy.
-    private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
 
     // httpClient is a simple interface around the 'true' httpClient.
     private final HttpClientAdapter httpClient;
@@ -149,7 +141,6 @@ public class YahooFinanceClient
             paramMap = updatedParamMap;
         }
 
-
         URIBuilder builder = new URIBuilder();
         builder.setScheme(BASE_API_SCHEME);
         builder.setHost(BASE_API_HOST);
@@ -171,5 +162,4 @@ public class YahooFinanceClient
 
         return builder.toString();
     }
-
 }
