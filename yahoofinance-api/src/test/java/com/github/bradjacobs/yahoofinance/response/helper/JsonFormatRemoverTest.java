@@ -3,6 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.response.helper;
 
+import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
 import java.net.URL;
@@ -17,7 +18,7 @@ public class JsonFormatRemoverTest
     @Test
     public void testFlattenRawValueHappyPath() throws Exception
     {
-        String originalJson = readTestResourceFile("appl_balhistory_formated.json");
+        String originalJson = ResourceUtil.readResourceFileAsString("appl_balhistory_formated.json");
 
         String expectedSubstring1 = "\"cash\":38016000000";  // from first balSheet
         String expectedSubstring2 = "\"shortTermInvestments\":51713000000";  // from second balSheet
@@ -28,19 +29,6 @@ public class JsonFormatRemoverTest
         assertNotNull(updatedJson, "expeted a non-null value from JsonFormatRemover.");
         assertTrue(updatedJson.contains(expectedSubstring1), "Expected substring not found with JSON response: " + expectedSubstring1);
         assertTrue(updatedJson.contains(expectedSubstring1), "Expected substring not found with JSON response: " + expectedSubstring2);
-    }
-
-
-
-    private String readTestResourceFile(String fileName)
-    {
-        try {
-            URL resource = getClass().getClassLoader().getResource(fileName);
-            return new String ( Files.readAllBytes( Paths.get(resource.getPath()) ) );
-        }
-        catch (Exception e) {
-            throw new RuntimeException(String.format("Unable to read test resource file: %s.  Reason: %s", fileName, e.getMessage()), e);
-        }
     }
 
 }

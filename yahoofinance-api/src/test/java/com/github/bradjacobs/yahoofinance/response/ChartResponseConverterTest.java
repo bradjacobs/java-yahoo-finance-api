@@ -3,6 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.response;
 
+import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
 import java.net.URL;
@@ -26,7 +27,7 @@ public class ChartResponseConverterTest
     @Test
     public void testConvertToListOfMaps() throws Exception
     {
-        String originalJson = readTestResourceFile("aapl_chart_5d_formatted.json");
+        String originalJson = ResourceUtil.readResourceFileAsString("aapl_chart_5d_formatted.json");
         List<Map<String, Object>> listOfMapRecords = chartResponseConverter.convertToListOfMaps(originalJson);
 
         assertNotNull(listOfMapRecords);
@@ -76,7 +77,7 @@ public class ChartResponseConverterTest
     @Test
     public void testNoResultsResponse() throws Exception
     {
-        String originalJson = readTestResourceFile("aapl_chart_no_results.json");
+        String originalJson = ResourceUtil.readResourceFileAsString("aapl_chart_no_results.json");
         List<Map<String, Object>> listOfMaps = chartResponseConverter.convertToListOfMaps(originalJson);
 
         assertNotNull(listOfMaps, "expected non null response");
@@ -88,7 +89,7 @@ public class ChartResponseConverterTest
     @Test
     public void testCloseResponse() throws Exception
     {
-        String originalJson = readTestResourceFile("aapl_chart_5d_cl.json");
+        String originalJson = ResourceUtil.readResourceFileAsString("aapl_chart_5d_cl.json");
         List<Map<String, Object>> listOfMaps = chartResponseConverter.convertToListOfMaps(originalJson);
 
         assertNotNull(listOfMaps);
@@ -115,7 +116,7 @@ public class ChartResponseConverterTest
     @Test
     public void testCloseAdjCloseResponse() throws Exception
     {
-        String originalJson = readTestResourceFile("aapl_chart_5d_cl_adjcl.json");
+        String originalJson = ResourceUtil.readResourceFileAsString("aapl_chart_5d_cl_adjcl.json");
         List<Map<String, Object>> listOfMaps = chartResponseConverter.convertToListOfMaps(originalJson);
 
         assertNotNull(listOfMaps);
@@ -143,24 +144,11 @@ public class ChartResponseConverterTest
         expectedExceptionsMessageRegExp = "Cannot convert price history to map: Timestamps missing.")
     public void testMissingTimestamps() throws Exception
     {
-        String originalJson = readTestResourceFile("aapl_chart_5d_no_ts.json");
+        String originalJson = ResourceUtil.readResourceFileAsString("aapl_chart_5d_no_ts.json");
         List<Map<String, Object>> listOfMaps = chartResponseConverter.convertToListOfMaps(originalJson);
     }
 
-
     /////
-
-
-    private String readTestResourceFile(String fileName)
-    {
-        try {
-            URL resource = getClass().getClassLoader().getResource(fileName);
-            return new String ( Files.readAllBytes( Paths.get(resource.getPath()) ) );
-        }
-        catch (Exception e) {
-            throw new RuntimeException(String.format("Unable to read test resource file: %s.  Reason: %s", fileName, e.getMessage()), e);
-        }
-    }
 
 
     private static final Long[] expectedTimestamps = {1618839000L, 1618925400L, 1619011800L, 1619098200L, 1619184600L};
