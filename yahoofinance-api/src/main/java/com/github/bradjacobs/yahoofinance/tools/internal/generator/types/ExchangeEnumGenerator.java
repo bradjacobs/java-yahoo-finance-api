@@ -9,6 +9,7 @@ import okhttp3.Request;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +19,10 @@ class ExchangeEnumGenerator extends EnumStringBlobGenerator
     private static final String TEMPLATE_NAME = "exchange_template.txt";
 
     private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=profile";
+
+
+    // apparently legal exchange value, even though it's not returned from the query.  (add explicitly)
+    private static final List<String> EXTRA_EXCHANGES = Arrays.asList("PNK");
 
 
     @Override
@@ -50,6 +55,13 @@ class ExchangeEnumGenerator extends EnumStringBlobGenerator
 
             EnumInfo enumInfo = new EnumInfo( EnumInfo.makeEnumStyleFriendly(displayName) );
             enumInfo.addParamValue(codeName);
+            enumInfoList.add(enumInfo);
+        }
+
+        for (String extraExchange : EXTRA_EXCHANGES)
+        {
+            EnumInfo enumInfo = new EnumInfo( EnumInfo.makeEnumStyleFriendly(extraExchange) );
+            enumInfo.addParamValue(extraExchange);
             enumInfoList.add(enumInfo);
         }
 

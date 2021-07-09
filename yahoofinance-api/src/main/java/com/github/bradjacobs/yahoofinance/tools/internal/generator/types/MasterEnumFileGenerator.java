@@ -20,7 +20,7 @@ import java.util.Map;
 class MasterEnumFileGenerator
 {
     // note:   of course this only works if the 'current directoty' is the project root.
-    private static final String DESTINATION_DIR = "./src/main/java/com/github/bradjacobs/yahoofinance/types/";
+    private static final String DESTINATION_DIR = "./yahoofinance-api/src/main/java/com/github/bradjacobs/yahoofinance/types/";
 
     private static final List<EnumStringBlobGenerator> enumGenerators = new ArrayList<>();
 
