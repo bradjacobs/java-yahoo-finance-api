@@ -3,13 +3,9 @@ package com.github.bradjacobs.yahoofinance.response;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.http.Response;
-import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
-import org.apache.commons.lang3.NotImplementedException;
-import org.apache.http.client.HttpResponseException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
