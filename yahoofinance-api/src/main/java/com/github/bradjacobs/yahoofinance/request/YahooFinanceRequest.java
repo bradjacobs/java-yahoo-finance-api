@@ -1,7 +1,7 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package com.github.bradjacobs.yahoofinance.request.builder;
+package com.github.bradjacobs.yahoofinance.request;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,18 +19,16 @@ public class YahooFinanceRequest
     protected final String ticker;
     protected final Map<String,String> paramMap;
     protected final Object postBody;
-    protected BatchableRequestStrategy batchableRequestStrategy;
 
     private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
 
-    protected YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody, BatchableRequestStrategy batchableRequestStrategy)
+    public YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody)
     {
         this.endpoint = endpoint;
         this.ticker = ticker;
         this.paramMap = paramMap;
         this.postBody = postBody;
-        this.batchableRequestStrategy = batchableRequestStrategy;
     }
 
 
@@ -76,10 +74,5 @@ public class YahooFinanceRequest
                 throw new InternalError("Unable to create request postBody: " + e.getMessage(), e);
             }
         }
-    }
-
-    public BatchableRequestStrategy getBatchableRequestStrategy()
-    {
-        return batchableRequestStrategy;
     }
 }

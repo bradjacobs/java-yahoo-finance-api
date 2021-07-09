@@ -1,15 +1,9 @@
 package com.github.bradjacobs.yahoofinance.demo.timeseries;
 
-import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.StatementType;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
-
-import static com.github.bradjacobs.yahoofinance.types.YahooModule.ASSET_PROFILE;
-import static com.github.bradjacobs.yahoofinance.types.YahooModule.BALANCE_SHEET_HISTORY;
-import static com.github.bradjacobs.yahoofinance.types.YahooModule.CASH_FLOW_STMT_HISTORY;
-import static com.github.bradjacobs.yahoofinance.types.YahooModule.FINANCIAL_DATA;
-import static com.github.bradjacobs.yahoofinance.types.YahooModule.INCOME_STMT_HISTORY;
 
 /**
  * TODO ***********  IMPORTANT NOTES:

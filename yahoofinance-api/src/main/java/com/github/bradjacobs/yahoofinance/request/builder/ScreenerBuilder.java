@@ -1,5 +1,7 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
@@ -300,15 +302,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
         return this.build();
     }
 
-    @Override
-    protected BatchableRequestStrategy getBatchableRequestStrategy() {
-
-        if (Boolean.TRUE.equals(this.totalOnly) || size < MIN_BATCHABLE_SIZE) {
-            return null;
-        }
-        return this;
-    }
-
 
     // this will throw exception if request is invalid
     @Override
@@ -335,7 +328,13 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     @Override
     protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker, Map<String, String> paramMap, Object postBody)
     {
-        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, getBatchableRequestStrategy());
+        BatchableRequestStrategy batchableRequestStrategy = this;
+
+        if (Boolean.TRUE.equals(this.totalOnly) || size < MIN_BATCHABLE_SIZE) {
+            batchableRequestStrategy = null;
+        }
+
+        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, batchableRequestStrategy);
     }
 
 }

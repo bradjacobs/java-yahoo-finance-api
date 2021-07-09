@@ -1,12 +1,5 @@
-package com.github.bradjacobs.yahoofinance.request;
+package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.request.builder.EndpointBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.LookupBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.ChartBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.QuoteBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.QuoteSummaryBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.ScreenerBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.TimeSeriesBuilder;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 public class YahooRequestBuilder

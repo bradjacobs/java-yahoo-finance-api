@@ -1,7 +1,7 @@
 package com.github.bradjacobs.yahoofinance.demo.chart;
 
-import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
-import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
 

@@ -3,6 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
@@ -108,14 +109,9 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 
     protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker, Map<String, String> paramMap, Object postBody)
     {
-        return new YahooFinanceRequest(endpoint, ticker, paramMap, postBody, getBatchableRequestStrategy());
+        return new YahooFinanceRequest(endpoint, ticker, paramMap, postBody);
     }
 
-
-    protected BatchableRequestStrategy getBatchableRequestStrategy()
-    {
-        return null;
-    }
 
     /**
      * Will throw exception if request is invalid

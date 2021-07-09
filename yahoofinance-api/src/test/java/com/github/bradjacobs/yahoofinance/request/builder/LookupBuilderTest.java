@@ -1,6 +1,5 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.request.YahooRequestBuilder;
 import org.testng.annotations.Test;
 
 public class LookupBuilderTest

@@ -2,12 +2,11 @@ package com.github.bradjacobs.yahoofinance.demo.timeseries;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
-import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class TimeSeriesRequesterDemo

@@ -2,12 +2,13 @@ package com.github.bradjacobs.yahoofinance;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
-import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceBatchRequest;
-import com.github.bradjacobs.yahoofinance.request.builder.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class BatchableRequestExecutor
@@ -29,9 +30,14 @@ class BatchableRequestExecutor
 
     public List<Response> executeRequest(YahooFinanceBatchRequest batachableRequest) throws IOException
     {
+        BatchableRequestStrategy batchableRequestStrategy = batachableRequest.getBatchableRequestStrategy();
+
+        if (batchableRequestStrategy == null) {
+            return Collections.singletonList(client.executeInternal(batachableRequest));
+        }
+
         List<Response> responseList = new ArrayList<>();
 
-        BatchableRequestStrategy batchableRequestStrategy = batachableRequest.getBatchableRequestStrategy();
         int batchSize = batchableRequestStrategy.getBatchSize();
         int originalBatchOffset = batchableRequestStrategy.getBatchOffset();
         int currentBatchOffset = originalBatchOffset;
@@ -95,9 +101,16 @@ class BatchableRequestExecutor
             /* ignore (for now) */
         }
 
-        if (count == 0 || total == 0 || (count != batchSize) || (count == total)) {
+        if (count == 0 || total == 0 || (count != batchSize) || (count > total)) {
             return false;
         }
+
+        //  note:  "count == total" can mean done for screener, but not for lookup.   (use additional substring check to tell which one we have)
+        if (count == total && responseBodySubstring.contains("\"quotes\":["))
+        {
+            return false;
+        }
+
         return true;
     }
 
