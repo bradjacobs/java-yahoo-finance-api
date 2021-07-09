@@ -20,7 +20,6 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     private int start = DEFAULT_START;
 
     private boolean includeTotalsOnly = false;
-    private boolean requestBatchingEnabled = false;
 
 
     public LookupBuilder withQuery(String query) {
@@ -47,16 +46,6 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
         this.start = Math.max(start, 0); // no negative allowed
         return this;
     }
-
-    public LookupBuilder enableRequestBatching() {
-        this.requestBatchingEnabled = true;
-        return this;
-    }
-    public LookupBuilder disableRequestBatching() {
-        this.requestBatchingEnabled = false;
-        return this;
-    }
-
 
     @Override
     protected YahooEndpoint _getRequestEndpoiint()
@@ -124,7 +113,7 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     @Override
     protected BatchableRequestStrategy getBatchableRequestStrategy()
     {
-        if (!requestBatchingEnabled || includeTotalsOnly || count < MIN_BATCHABLE_SIZE) {
+        if (includeTotalsOnly || count < MIN_BATCHABLE_SIZE) {
             return null;
         }
         return this;
