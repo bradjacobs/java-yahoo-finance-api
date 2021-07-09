@@ -91,7 +91,6 @@ abstract public class AbstractResponse
         }
     }
 
-    @SuppressWarnings("unchecked")
     public <T> List<T> getAsListOfPojos(Class<T> targetType)
     {
         validateTargetClass(targetType);
@@ -105,7 +104,6 @@ abstract public class AbstractResponse
         return mapper.convertValue(listOfMaps, javaType);
     }
 
-    @SuppressWarnings("unchecked")
     public <T> Map<String,T> getAsMapOfPojos(Class<T> targetType)
     {
         validateTargetClass(targetType);
