@@ -6,8 +6,6 @@ import com.github.bradjacobs.yahoofinance.types.Exchange;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Sector;
-import com.github.bradjacobs.yahoofinance.types.StatementType;
-import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 
 /**
  */

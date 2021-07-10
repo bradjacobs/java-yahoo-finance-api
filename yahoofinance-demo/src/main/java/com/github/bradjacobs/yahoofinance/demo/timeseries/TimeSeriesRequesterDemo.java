@@ -35,7 +35,7 @@ public class TimeSeriesRequesterDemo
 
         Map<String, Map<String, Object>> mapsOfMaps = resp.getAsMapOfMaps();
 
-        int kjj = 3333;
+        System.out.println("Total Result Count: " + mapsOfMaps.size());
 
         //    NOTE..  one possible format for the mapOfMaps response.
         //
@@ -59,7 +59,6 @@ public class TimeSeriesRequesterDemo
         //           ...
         // "trailing"
         //    ...
-
     }
 
 }

@@ -10,8 +10,6 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class ScreenerRequesterDemo
 {
@@ -53,41 +51,8 @@ public class ScreenerRequesterDemo
         // get map results in form of predefined class (key is the ticker/symbol)
         Map<String, ScreenerResult> screenerResultMap = resp.getAsMapOfPojos(ScreenerResult.class);
 
-        Set<String> exchanges = new TreeSet<>();
-        for (ScreenerResult result : screenerResultList)
-        {
-            String ex = result.getExchange();
-            if (ex != null) {
-                exchanges.add(ex);
-            }
-        }
-
-        for (String exchange : exchanges)
-        {
-            System.out.println("EX -- " + exchange);
-        }
-
-
-//        EX -- NMS
-//        EX -- NYQ
-//        EX -- PNK
-
         System.out.println("Total Result Count: " + mapsOfMaps.size());
     }
-
-    /*
-
-    "PYTCF" -> {ScreenerResult@2504}
-"BMBLF" -> {ScreenerResult@2506}
-"AAPL" -> {ScreenerResult@2508}
-"MSFT" -> {ScreenerResult@2510}
-"AMZN" -> {ScreenerResult@2512}
-"GOOG" -> {ScreenerResult@2514}
-"GOOGL" -> {ScreenerResult@2516}
-"FB" -> {ScreenerResult@2518}
-"TCEHY" -> {ScreenerResult@2520}
-"TCTZF" -> {ScreenerResult@2522}
-     */
 
     /**
      * Prints out a few chosen values.
@@ -105,8 +70,6 @@ public class ScreenerRequesterDemo
             String formattedStr = String.format("|%-5s| %-35s| %-12s| %-12s|", symbol, name, pe, pb);
             System.out.println(formattedStr);
         }
-
     }
-
 
 }

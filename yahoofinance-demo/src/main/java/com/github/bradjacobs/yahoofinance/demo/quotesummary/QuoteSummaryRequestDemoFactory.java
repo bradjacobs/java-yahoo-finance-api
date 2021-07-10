@@ -1,9 +1,13 @@
 package com.github.bradjacobs.yahoofinance.demo.quotesummary;
 
-import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 
-import static com.github.bradjacobs.yahoofinance.types.YahooModule.*;
+import static com.github.bradjacobs.yahoofinance.types.YahooModule.ASSET_PROFILE;
+import static com.github.bradjacobs.yahoofinance.types.YahooModule.BALANCE_SHEET_HISTORY;
+import static com.github.bradjacobs.yahoofinance.types.YahooModule.CASH_FLOW_STMT_HISTORY;
+import static com.github.bradjacobs.yahoofinance.types.YahooModule.FINANCIAL_DATA;
+import static com.github.bradjacobs.yahoofinance.types.YahooModule.INCOME_STMT_HISTORY;
 
 public class QuoteSummaryRequestDemoFactory
 {

@@ -1,7 +1,7 @@
 package com.github.bradjacobs.yahoofinance.demo.timeseries;
 
-import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.types.StatementType;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 

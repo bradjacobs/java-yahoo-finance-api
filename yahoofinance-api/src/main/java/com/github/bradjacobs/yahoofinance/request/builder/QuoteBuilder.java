@@ -46,7 +46,7 @@ public class QuoteBuilder extends BaseRequestBuilder<QuoteBuilder>
         requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());
 
 
-        // todo: right now only focusing on equities.  obvilusly this needs to be fixed when consider other types.
+        // todo: right now only focusing on equities.  obviously this needs to be fixed when considering other types.
         List<String> fields = QuoteFieldFactory.getQuoteFields(Type.EQUITY);
         String fieldValueString = String.join(",", fields);
         requestParamMap.put(ParamKeys.FIELDS, fieldValueString);
