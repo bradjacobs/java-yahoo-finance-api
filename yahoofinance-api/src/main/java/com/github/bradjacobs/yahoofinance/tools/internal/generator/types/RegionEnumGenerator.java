@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 class RegionEnumGenerator extends EnumStringBlobGenerator
 {
@@ -31,24 +30,23 @@ class RegionEnumGenerator extends EnumStringBlobGenerator
     {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(URL).build();
-        return  client.newCall(request).execute().body().string();
+        return client.newCall(request).execute().body().string();
     }
 
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
-        List<Map<String, Object>> listOfMaps = JsonPath.read(json, "$.finance.result[0].fields.region.labels");
+        List<String> displayNameList = JsonPath.read(json, "$.finance.result[0].fields.region.labels[*].displayName");
+        List<String> criteriaValueList = JsonPath.read(json, "$.finance.result[0].fields.region.labels[*].criteria.operands[1]");
+
         List<EnumInfo> enumInfoList = new ArrayList<>();
 
-        for (Map<String, Object> entryMap : listOfMaps)
+        for (int i = 0; i < displayNameList.size(); i++)
         {
-            String displayName = (String) entryMap.get("displayName");
-            Map<String, List<String>> criteria = (Map<String, List<String>>) entryMap.get("criteria");
+            String displayName = displayNameList.get(i);
+            String value = criteriaValueList.get(i);
 
-            List<String> operandList = criteria.get("operands");
-            String value = operandList.get(1);
-
-            EnumInfo enumInfo = new EnumInfo( EnumInfo.makeEnumStyleFriendly(displayName) );
+            EnumInfo enumInfo = new EnumInfo(EnumInfo.makeEnumStyleFriendly(displayName));
             enumInfo.addParamValue(value.toUpperCase());
             enumInfo.addParamValue(displayName);
             enumInfoList.add(enumInfo);
@@ -57,5 +55,4 @@ class RegionEnumGenerator extends EnumStringBlobGenerator
         Collections.sort(enumInfoList);
         return enumInfoList;
     }
-
 }
