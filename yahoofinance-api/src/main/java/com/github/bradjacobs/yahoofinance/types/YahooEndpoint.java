@@ -31,7 +31,7 @@ import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_SU
  *  - "screener specific" endpoints (saved/predefined screens, etc)
  *  - "video" endpoints
  *  - anything that requires username/userId/login
- *  - other misc that was subjectively determined to not have much usefulness here.
+ *  - other misc endpoings that were subjectively determined not to have much usefulness here.
  *
  *
  *  Also the {@link YahooModule} types for QuoteSummary endpoint.
@@ -53,8 +53,9 @@ public enum YahooEndpoint
     //     1.  only returns "close" (and timestamps)
     //     2.  will support multiple tickers
     //     3.  response will have a different format
-    //   NOTE: noticeable difference is response format b/w v8 and v7
+    //   NOTE: noticeable difference in response format b/w v8 and v7
     SPARK("spark", 8, FLAG_SUPPORT_MULTI_TICKERS),
+
 
     VALIDATE("quote/validate", 6, FLAG_SUPPORT_MULTI_TICKERS),
     RECOMMENDATIONS_BY_SYMBOL("recommendationsbysymbol", 7),
@@ -65,13 +66,14 @@ public enum YahooEndpoint
     // Query endpoints  (NOT READY!)
     LOOKUP("lookup", 1, FLAG_IS_QUERY),
     LOOKUP_TOTALS("lookup/totals", 1, FLAG_IS_QUERY),
-    SEARCH("search", 1, FLAG_IS_QUERY),
     SCREENER("screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
     SCREENER_TOTALS("screener/total", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
 
     //  NOTE: 'visualization' correlates to the information that can be viewed at:  https://finance.yahoo.com/calendar
     //     implementing the functionality for this is currently a lower priority.
     //VISUALIZATION("visualization", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
+
+    //SEARCH("search", 1, FLAG_IS_QUERY),   // commented out b/c how it should work is semi-mysterious
 
 
     TIMESERIES("timeseries", 1, "ws/fundamentals-timeseries/"),
@@ -88,6 +90,10 @@ public enum YahooEndpoint
     //  Regional requests
     MARKET_SUMMARY("quote/marketSummary", 6, FLAG_IS_REGION),
     TRENDING("trending/", 1, FLAG_IS_REGION); // 'trending/US' or 'trending/?region=US'
+
+
+    //   NOTE: allegedly this is valid endpoint, but never seen it work
+    //NEWS("news", 2, FLAG_SUPPORT_MULTI_TICKERS),
 
 
     private final String name;
