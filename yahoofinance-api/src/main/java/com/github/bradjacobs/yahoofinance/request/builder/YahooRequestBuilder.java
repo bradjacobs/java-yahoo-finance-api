@@ -16,6 +16,11 @@ public class YahooRequestBuilder
     public ChartBuilder chart() {
         return new ChartBuilder();
     }
+
+    public SparkBuilder spark() {
+        return new SparkBuilder();
+    }
+
     public QuoteSummaryBuilder quoteSummary() {
         return new QuoteSummaryBuilder();
     }

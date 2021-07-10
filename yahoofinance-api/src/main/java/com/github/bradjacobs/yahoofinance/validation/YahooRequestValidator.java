@@ -31,7 +31,7 @@ public class YahooRequestValidator
         requiredParamsMap.put(LOOKUP_TOTALS, Collections.singletonList(ParamKeys.QUERY));
         requiredParamsMap.put(QUOTE, Collections.singletonList(ParamKeys.SYMBOLS));
         requiredParamsMap.put(QUOTE_SUMMARY, Collections.singletonList(ParamKeys.MODULES));
-        requiredParamsMap.put(SEARCH, Collections.singletonList(ParamKeys.Q));
+        //requiredParamsMap.put(SEARCH, Collections.singletonList(ParamKeys.Q));
         requiredParamsMap.put(SPARK, Collections.singletonList(ParamKeys.SYMBOLS));
         requiredParamsMap.put(TECHNICAL_EVENTS, Collections.singletonList(ParamKeys.SYMBOL));
         requiredParamsMap.put(TIMESERIES, Arrays.asList(ParamKeys.PERIOD1, ParamKeys.PERIOD2));

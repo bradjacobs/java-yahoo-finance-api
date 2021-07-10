@@ -24,6 +24,8 @@ public class ResponseConverterFactory
                 return new QuoteResponseConverter();
             case LOOKUP:
                 return new LookupResponseConverter();
+            case SPARK:
+                return new SparkResponseConverter();
             case TIMESERIES:
                 return new TimeSeriesResponseConverter(true, true); // todo: come back to the future of the boolean params
             default:
