@@ -2,6 +2,7 @@ package com.github.bradjacobs.yahoofinance.demo.quotesummary;
 
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
+import com.github.bradjacobs.yahoofinance.types.YahooModule;
 
 import static com.github.bradjacobs.yahoofinance.types.YahooModule.ASSET_PROFILE;
 import static com.github.bradjacobs.yahoofinance.types.YahooModule.BALANCE_SHEET_HISTORY;
@@ -21,6 +22,7 @@ public class QuoteSummaryRequestDemoFactory
             case 2: return MULTI_MODULES;
             case 3: return MULTI_MODULES_ALTERNATIVE;
             case 4: return BAD_TICKER;
+            case 5: return ALL_MODULES;
             default: return SIMPLE;
         }
     }
@@ -60,6 +62,15 @@ public class QuoteSummaryRequestDemoFactory
             .withTicker("MSFT")
             .build();
 
+    /**
+     * Grab _all_ information available to AAPL (all modules)
+     */
+    private static final YahooFinanceRequest ALL_MODULES =
+        YahooRequestBuilder.api()
+            .quoteSummary()
+            .withModules(YahooModule.values())
+            .withTicker("AAPL")
+            .build();
 
 
     /**

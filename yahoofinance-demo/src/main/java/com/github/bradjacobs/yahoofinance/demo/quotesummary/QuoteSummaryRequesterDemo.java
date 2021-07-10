@@ -33,7 +33,12 @@ public class QuoteSummaryRequesterDemo
 
         String rawJson = resp.getJson();
         String prettyJson = resp.getPrettyJson();
+
+
+        // note: the format of response is dependent on which modules were requested.
         List<Map<String,Object>> listOfMaps = resp.getAsListOfMaps();
+        Map<String, Map<String, Object>> mapOfMaps = resp.getAsMapOfMaps();
+
 
         System.out.println("QuoteSummary JSON Response (pretty form) ...");
         System.out.println(prettyJson);
