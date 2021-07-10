@@ -4,14 +4,10 @@
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.jayway.jsonpath.JsonPath;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.bradjacobs.yahoofinance.tools.internal.generator.types.TimeIntervalEnumInfoGenerator.generateEnumInfo;
 
 class RangeEnumGenerator extends EnumStringBlobGenerator
 {
@@ -25,13 +21,9 @@ class RangeEnumGenerator extends EnumStringBlobGenerator
         return TEMPLATE_NAME;
     }
 
-
     @Override
-    protected String fetchJson() throws IOException
-    {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(URL).build();
-        return  client.newCall(request).execute().body().string();
+    protected String getUrl() {
+        return URL;
     }
 
     @Override
@@ -42,7 +34,7 @@ class RangeEnumGenerator extends EnumStringBlobGenerator
         List<EnumInfo> enumInfoList = new ArrayList<>();
         for (String value : valueList)
         {
-            enumInfoList.add( generateEnumInfo(value) );
+            enumInfoList.add( TimeIntervalEnumInfoGenerator.generateEnumInfo(value) );
         }
         return enumInfoList;
     }

@@ -4,10 +4,7 @@
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.jayway.jsonpath.JsonPath;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +23,8 @@ class TypesEnumGenerator extends EnumStringBlobGenerator
     }
 
     @Override
-    protected String fetchJson() throws IOException
-    {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(URL).build();
-        return  client.newCall(request).execute().body().string();
+    protected String getUrl() {
+        return URL;
     }
 
     @Override

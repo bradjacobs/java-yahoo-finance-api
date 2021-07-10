@@ -4,11 +4,10 @@
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,20 @@ abstract class EnumStringBlobGenerator
     }
 
     protected abstract String getTemplateFileName();
-    protected abstract String fetchJson() throws IOException;
+    protected abstract String getUrl();
+
+    /**
+     * Makes Http Call to fetch the json for the value of the 'getUrl()' method.
+     * @return json response.
+     * @throws IOException
+     */
+    protected String fetchJson() throws IOException
+    {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(getUrl()).build();
+        return client.newCall(request).execute().body().string();
+    }
+
     protected abstract List<EnumInfo> convertJsonToEnumInfo(String json);
 
 
@@ -60,7 +72,9 @@ abstract class EnumStringBlobGenerator
         for (EnumInfo enumInfo : enumInfoList)
         {
             sb.append(INDENT);
-            sb.append(enumInfo.getEnumName());
+
+            String enunName = enumInfo.getEnumName();
+            sb.append(enunName);
 
             List<EnumInfo.EnumParamInfo> enumParamValues = enumInfo.getEnumParamValues();
 
@@ -81,6 +95,10 @@ abstract class EnumStringBlobGenerator
                 sb.append( String.join(", ", quotedParamValues) );
                 sb.append(")");
 
+            }
+
+            String trimmedEnunNameLine = enunName.trim();
+            if (trimmedEnunNameLine.length() > 0 && !trimmedEnunNameLine.startsWith("//")) {
                 if (enumInfo.equals(lastEnumInfo)) {
                     sb.append(";");
                 }
@@ -88,6 +106,7 @@ abstract class EnumStringBlobGenerator
                     sb.append(",");
                 }
             }
+
             sb.append(NEW_LINE);
         }
 

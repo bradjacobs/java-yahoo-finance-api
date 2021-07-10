@@ -4,10 +4,7 @@
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.jayway.jsonpath.JsonPath;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +14,6 @@ import java.util.List;
 class ExchangeEnumGenerator extends EnumStringBlobGenerator
 {
     private static final String TEMPLATE_NAME = "exchange_template.txt";
-
     private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=profile";
 
 
@@ -31,11 +27,8 @@ class ExchangeEnumGenerator extends EnumStringBlobGenerator
     }
 
     @Override
-    protected String fetchJson() throws IOException
-    {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(URL).build();
-        return  client.newCall(request).execute().body().string();
+    protected String getUrl() {
+        return URL;
     }
 
     @Override

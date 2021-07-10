@@ -5,20 +5,13 @@ package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 //  &dependentvalues=Utilities
 //  &dependentfield=sector&corsDomain=finance.yahoo.com
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,7 +19,6 @@ import java.util.TreeMap;
 public class IndustryEnumGenerator extends EnumStringBlobGenerator
 {
     private static final String TEMPLATE_NAME = "industry_template.txt";
-
     private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=sector_industry";
 
     private static final String EXTRA_URL_REQUEST_TEMPLATE = URL + "&dependentfield=sector&dependentvalues=%s";
@@ -43,17 +35,17 @@ public class IndustryEnumGenerator extends EnumStringBlobGenerator
     }
 
     @Override
-    protected String fetchJson() throws IOException
-    {
-        // NOTE: this is the "first" request
-        Request request = new Request.Builder().url(URL).build();
-        return client.newCall(request).execute().body().string();
+    protected String getUrl() {
+        return URL;
     }
 
+
+    /*
+        the passed in JSON is only the first  (this method will make addtional http requests.
+     */
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
-
         // use the 'original' json reponse to get all the sectors.
         Map<String,String> sectorEnumNameDisplayNameMap = getEnumDisplayNameMap(json, SECTOR_NAMES_JSON_PATH);
 
