@@ -62,8 +62,8 @@ public class ChartResponseConverter implements YahooResponseConverter
 
         Long[] timestampValues = jsonDoc.read(TIMESTAMP_PATH, Long[].class);
 
-        Double[] closeValues = jsonDoc.read(CLOSE_PATH, Double[].class);
-        Double[] adjCloseValues = jsonDoc.read(ADJ_CLOSE_PATH, Double[].class);
+        Number[] closeValues = jsonDoc.read(CLOSE_PATH, Number[].class);
+        Number[] adjCloseValues = jsonDoc.read(ADJ_CLOSE_PATH, Number[].class);
         boolean closeValuesExist = ArrayUtils.isNotEmpty(closeValues);
         boolean adjCloseValuesExist = ArrayUtils.isNotEmpty(adjCloseValues);
 
@@ -82,9 +82,9 @@ public class ChartResponseConverter implements YahooResponseConverter
         int entryCount = timestampValues.length;
 
         // assume that all of these exist for none
-        Double[] openValues = jsonDoc.read(OPEN_PATH, Double[].class);
-        Double[] lowValues = jsonDoc.read(LOW_PATH, Double[].class);
-        Double[] highValues = jsonDoc.read(HIGH_PATH, Double[].class);
+        Number[] openValues = jsonDoc.read(OPEN_PATH, Number[].class);
+        Number[] lowValues = jsonDoc.read(LOW_PATH, Number[].class);
+        Number[] highValues = jsonDoc.read(HIGH_PATH, Number[].class);
         Long[] volumeValues = jsonDoc.read(VOLUME_PATH, Long[].class);
 
         boolean openLowHighExists = ArrayUtils.isNotEmpty(openValues);
