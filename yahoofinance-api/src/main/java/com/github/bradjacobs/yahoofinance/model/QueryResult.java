@@ -6,14 +6,19 @@ package com.github.bradjacobs.yahoofinance.model;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.util.StdConverter;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract class QueryResult
+import static java.time.temporal.ChronoUnit.DAYS;
+
+abstract public class QueryResult
 {
     private String symbol;
-    private String displayName;
+    private String name;  // derived value.
+
 
     private String argusRating;
     private Double ask;
@@ -26,6 +31,7 @@ abstract class QueryResult
     private Long bidSize;
     private Double bookValue;
     private String currency;
+    private String displayName;
     private Long dividendDate;
     private Double dividendRate;
     private Double dividendYield;
@@ -128,9 +134,16 @@ abstract class QueryResult
         return symbol;
     }
 
-    public String getDisplayName()
+    /**
+     * Generically get most readable available 'name'
+     * @return name
+     */
+    public String getName()
     {
-        return displayName;
+        if (this.name != null) return this.name;
+        else if (this.displayName != null) return this.displayName;
+        else if (this.longName != null) return this.longName;
+        else return this.shortName;
     }
 
     public String getArgusRating()
@@ -186,6 +199,11 @@ abstract class QueryResult
     public String getCurrency()
     {
         return currency;
+    }
+
+    public String getDisplayName()
+    {
+        return displayName;
     }
 
     public Long getDividendDate()
@@ -664,4 +682,5 @@ abstract class QueryResult
     {
         this.additionalProperties.put(name, value);
     }
+
 }
