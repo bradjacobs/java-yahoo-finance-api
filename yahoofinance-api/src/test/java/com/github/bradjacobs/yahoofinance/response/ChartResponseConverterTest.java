@@ -6,9 +6,12 @@ package com.github.bradjacobs.yahoofinance.response;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +40,9 @@ public class ChartResponseConverterTest
         {
             Map<String, Object> entryMap = listOfMapRecords.get(i);
             assertNotNull(entryMap, "list contains a null entry map record!");
+
+            entryMap = adjustEntryMapResult(entryMap);
+
             assertEquals(entryMap.get("timestamp"), expectedTimestamps[i], "mismatch of expected timestamp");
             assertEquals(entryMap.get("volume"), expectedVolumes[i], "mismatch of expected volume");
 
@@ -99,15 +105,17 @@ public class ChartResponseConverterTest
         {
             Map<String, Object> entryMap = listOfMaps.get(i);
             assertNotNull(entryMap, "list contains a null entry map record!");
+            entryMap = adjustEntryMapResult(entryMap);
+
             assertEquals(entryMap.get("timestamp"), expectedTimestamps[i], "mismatch of expected timestamp");
 
             assertEquals((Double)entryMap.get("close"), expectedCloses[i], DELTA, "mismatch of expected close");
 
             assertNull(entryMap.get("volume"), "mismatch of expected volume");
-            assertNull((Double)entryMap.get("open"), "mismatch of expected open");
-            assertNull((Double)entryMap.get("high"), "mismatch of expected high");
-            assertNull((Double)entryMap.get("low"), "mismatch of expected low");
-            assertNull((Double)entryMap.get("adjclose"), "mismatch of expected adjclose");
+            assertNull(entryMap.get("open"), "mismatch of expected open");
+            assertNull(entryMap.get("high"), "mismatch of expected high");
+            assertNull(entryMap.get("low"), "mismatch of expected low");
+            assertNull(entryMap.get("adjclose"), "mismatch of expected adjclose");
         }
     }
 
@@ -126,15 +134,18 @@ public class ChartResponseConverterTest
         {
             Map<String, Object> entryMap = listOfMaps.get(i);
             assertNotNull(entryMap, "list contains a null entry map record!");
+
+            entryMap = adjustEntryMapResult(entryMap);
+
             assertEquals(entryMap.get("timestamp"), expectedTimestamps[i], "mismatch of expected timestamp");
 
             assertEquals((Double)entryMap.get("close"), expectedCloses[i], DELTA, "mismatch of expected close");
             assertEquals((Double)entryMap.get("adjclose"), expectedAdjCloses[i], DELTA, "mismatch of expected adjclose");
 
             assertNull(entryMap.get("volume"), "mismatch of expected volume");
-            assertNull((Double)entryMap.get("open"), "mismatch of expected open");
-            assertNull((Double)entryMap.get("high"), "mismatch of expected high");
-            assertNull((Double)entryMap.get("low"), "mismatch of expected low");
+            assertNull(entryMap.get("open"), "mismatch of expected open");
+            assertNull(entryMap.get("high"), "mismatch of expected high");
+            assertNull(entryMap.get("low"), "mismatch of expected low");
         }
     }
 
@@ -148,7 +159,31 @@ public class ChartResponseConverterTest
         List<Map<String, Object>> listOfMaps = chartResponseConverter.convertToListOfMaps(originalJson);
     }
 
+
+
     /////
+
+    /**
+     * Don't care if the actual price is of type 'BigDecimal' or 'Double' (as far as these tests are concered)
+     *   thus just ensure always the same time.
+     * @param inputMap
+     * @return
+     */
+    private Map<String, Object> adjustEntryMapResult(Map<String, Object> inputMap)
+    {
+        Map<String,Object> outputMap = new LinkedHashMap<>();
+        List<String> keyList = new ArrayList<>(inputMap.keySet());
+
+        for (String key : keyList)
+        {
+            Object objectValue = inputMap.get(key);
+            if ((objectValue instanceof Number) && !(objectValue instanceof Long)) {
+                objectValue = ((Number)objectValue).doubleValue();
+            }
+            outputMap.put(key, objectValue);
+        }
+        return outputMap;
+    }
 
 
     private static final Long[] expectedTimestamps = {1618839000L, 1618925400L, 1619011800L, 1619098200L, 1619184600L};
