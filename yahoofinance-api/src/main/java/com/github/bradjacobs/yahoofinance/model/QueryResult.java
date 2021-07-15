@@ -11,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-
 abstract public class QueryResult implements Comparable<QueryResult>
 {
     private String symbol;
