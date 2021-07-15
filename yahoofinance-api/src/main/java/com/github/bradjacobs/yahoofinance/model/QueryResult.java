@@ -6,15 +6,14 @@ package com.github.bradjacobs.yahoofinance.model;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.util.StdConverter;
+import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-abstract public class QueryResult
+abstract public class QueryResult implements Comparable<QueryResult>
 {
     private String symbol;
     private String name;  // derived value.
@@ -683,4 +682,10 @@ abstract public class QueryResult
         this.additionalProperties.put(name, value);
     }
 
+
+    @Override
+    public int compareTo(@NotNull QueryResult other)
+    {
+        return this.symbol.compareTo(other.symbol);
+    }
 }
