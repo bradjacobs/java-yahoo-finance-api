@@ -9,12 +9,20 @@ import com.github.bradjacobs.yahoofinance.http.Response;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Used to fetch a yahoo finance 'crumb' value.
  *
  *   Will Lazy Load crumb value and cache it for a limited period of time.
+ */
+/*
+  TO RESEARCH:
+     The following URL is available to directly get a crumb value:
+         https://query2.finance.yahoo.com/v1/test/getcrumb
+     However, when called via the API it will return a blank  (but will work in a browser)
+       there's probably a 'magic header' that makes it work.
  */
 public class CrumbDataSource
 {
@@ -51,7 +59,6 @@ public class CrumbDataSource
         }
         return crumbObject.getCrumb();
     }
-
 
 
 
