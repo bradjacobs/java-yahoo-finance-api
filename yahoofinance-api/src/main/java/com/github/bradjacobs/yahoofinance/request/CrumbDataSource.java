@@ -5,6 +5,7 @@ package com.github.bradjacobs.yahoofinance.request;
 
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.Response;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -78,11 +79,9 @@ public class CrumbDataSource
      * @param response http response body
      * @return crumb
      */
-    private String parseOutCrumb(String response) {
-        int crumbIndexStart = response.indexOf(CRUMB_REPSONSE_INTRO) + CRUMB_REPSONSE_INTRO.length();
-        int crumbIndexEnd = response.indexOf("\"", crumbIndexStart+1);
-        String crumbValue = response.substring(crumbIndexStart, crumbIndexEnd);
-
+    private String parseOutCrumb(String response)
+    {
+        String crumbValue = StringUtils.substringBetween(response, CRUMB_REPSONSE_INTRO, "\"");
 
         // sometimes the crumb will contain a LITERAL substring "\u002F"
         //   (instead of a slash).  Thus need minor cleanup for this scenario.
