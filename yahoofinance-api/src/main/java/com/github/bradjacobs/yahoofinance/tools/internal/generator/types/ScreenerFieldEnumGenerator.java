@@ -48,25 +48,52 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
         ScreenerFieldDefinition[] fields = mapper.convertValue(listOfMaps, ScreenerFieldDefinition[].class);
 
         // filter out fields want to ignore.
-        List<ScreenerFieldDefinition> filteredList = Arrays.stream(fields)
+        List<ScreenerFieldDefinition> basicFieldList = Arrays.stream(fields)
             .filter(sf -> !sf.getDeprecated())
             .filter(sf -> !sf.getIsPremium())
             .collect(Collectors.toList());
 
-        Map<Category, Set<ScreenerFieldDefinition>> categoryFieldMap = new TreeMap<>(); // treemap to keep key order consistent
+        List<ScreenerFieldDefinition> premiumFieldList = Arrays.stream(fields)
+            .filter(sf -> !sf.getDeprecated())
+            .filter(sf -> sf.getIsPremium())
+            .collect(Collectors.toList());
 
-        for (ScreenerFieldDefinition field : filteredList) {
-            Category category = field.getCategory();
-            Set<ScreenerFieldDefinition> categoryFields = categoryFieldMap.computeIfAbsent(category, k -> new TreeSet<>());
-            categoryFields.add(field);
-        }
+//        Map<Category, Set<ScreenerFieldDefinition>> categoryFieldMap = new TreeMap<>(); // treemap to keep key order consistent
+//
+//        for (ScreenerFieldDefinition field : filteredList) {
+//            Category category = field.getCategory();
+//            Set<ScreenerFieldDefinition> categoryFields = categoryFieldMap.computeIfAbsent(category, k -> new TreeSet<>());
+//            categoryFields.add(field);
+//        }
 
         List<EnumInfo> enumInfoList = new ArrayList<>();
 
-        for (ScreenerFieldDefinition field : filteredList) {
+        // note: entry below are for adding extra space/comment b/w enum entries
+        //    this soln is kludgy.  Will reconsider better soln if this becomes more important.
+        enumInfoList.add(new EnumInfo( "// Basic Fields"));  // comment line
+        enumInfoList.addAll( generateEnumList(basicFieldList) );
+
+
+        // note: 2 list entries below are for adding extra space/comment b/w enum entries
+        //    this soln is kludgy.  Will reconsider better soln if this becomes more important.
+        enumInfoList.add(new EnumInfo( ""));  // empty space line
+        enumInfoList.add(new EnumInfo( "// Premium Fields"));  // comment line
+        enumInfoList.addAll( generateEnumList(premiumFieldList) );
+
+
+        return enumInfoList;
+    }
+
+
+    private List<EnumInfo> generateEnumList(List<ScreenerFieldDefinition> fieldList)
+    {
+        List<EnumInfo> resultList = new ArrayList<>();
+
+        for (ScreenerFieldDefinition field : fieldList) {
             String fieldId = field.getFieldId();
             String sortable = field.getSortable().toString();
             String displayName = field.getDisplayName();
+            String isPremium = field.getIsPremium().toString();
 
             String shortFieldId = fieldId;
             int dotIndex = shortFieldId.indexOf('.');
@@ -78,11 +105,13 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
             enumInfo.addParamValue(fieldId);
             enumInfo.addParamValue(sortable, false);
             enumInfo.addParamValue(displayName);
-            enumInfoList.add(enumInfo);
+            enumInfo.addParamValue(isPremium, false);
+            resultList.add(enumInfo);
         }
 
-        return enumInfoList;
+        return resultList;
     }
+
 
 
 }

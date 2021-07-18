@@ -13,24 +13,28 @@ public enum ScreenerField
     private final String value;
     private final boolean sortable;
     private final String displayString;
+    private final boolean isPremium;
 
-    ScreenerField(String value, boolean sortable, String displayString) {
+    ScreenerField(String value, boolean sortable, String displayString, boolean isPremium) {
         this.value = value;
         this.sortable = sortable;
         this.displayString = displayString;
+        this.isPremium = isPremium;
     }
 
     public String getValue() {
         return value;
     }
 
-    public boolean isSortable()
-    {
+    public boolean isSortable() {
         return sortable;
     }
 
-    public String getDisplayString()
-    {
+    public String getDisplayString() {
         return displayString;
+    }
+
+    public boolean isPremium() {
+        return isPremium;
     }
 }
