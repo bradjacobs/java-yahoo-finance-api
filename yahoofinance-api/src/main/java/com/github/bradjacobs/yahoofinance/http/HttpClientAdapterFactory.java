@@ -67,7 +67,7 @@ public class HttpClientAdapterFactory
             .setDefaultRequestConfig(config)
             .setMaxConnPerRoute(MAX_CONNECTIONS_PER_HOST)
             .setMaxConnTotal(MAX_TOTAL_CONNECTIONS)
-            //.setRedirectStrategy(new LaxRedirectStrategy())   // todo research if this is needed
+            .setRedirectStrategy(new LaxRedirectStrategy())  // allow redirect for all primary method types
             .build();
 
         return httpClient;
@@ -104,8 +104,9 @@ public class HttpClientAdapterFactory
             String host = url.host();
             //   if asking for cookie for "query1.finance.yahoo.com", then give cookie for "finance.yahoo.com"
             // todo: make cleaner when time allows
-            host = host.replace("query1.", "");
-            host = host.replace("query2.", "");
+            if (host.endsWith(".yahoo.com")) {
+                host = "yahoo.com";
+            }
 
             List<Cookie> cookies = cookieStore.get(host);
             return cookies != null ? cookies : new ArrayList<Cookie>();

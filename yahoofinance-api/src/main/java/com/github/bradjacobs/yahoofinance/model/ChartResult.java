@@ -59,4 +59,44 @@ public class ChartResult
     {
         return volume;
     }
+
+    public void setDate(String date)
+    {
+        this.date = date;
+    }
+
+    public void setTimestamp(Long timestamp)
+    {
+        this.timestamp = timestamp;
+    }
+
+    public void setOpen(Double open)
+    {
+        this.open = open;
+    }
+
+    public void setClose(Double close)
+    {
+        this.close = close;
+    }
+
+    public void setAdjclose(Double adjclose)
+    {
+        this.adjclose = adjclose;
+    }
+
+    public void setLow(Double low)
+    {
+        this.low = low;
+    }
+
+    public void setHigh(Double high)
+    {
+        this.high = high;
+    }
+
+    public void setVolume(Long volume)
+    {
+        this.volume = volume;
+    }
 }
