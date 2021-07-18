@@ -1,15 +1,10 @@
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +15,7 @@ import java.util.TreeMap;
  */
 /*
    todo items:
-      - better naming if possible
       - needs a lot of unit testing
-      - need to decide on the 'expected' output format  (namely sorting on keys, etc)
       - might want to 'lop off' the day portion of the date so don't have "2021-06-25" "2021-06-26" as different map keys (though this "should" be rare)
       = code clean up (was originally done just to see it work)
 
@@ -33,8 +26,6 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
     private static final String ELEMENT_NAMES_PATH = ROOT_PATH + "[*].meta.type[0]";
     private static final String KEY_TIMESTAMP = "timestamp";
 
-    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
-
     private static final String ANNUAL_PREFIX = TimeSeriesUnit.ANNUAL.toString().toLowerCase();
     private static final String QUARTERLY_PREFIX = TimeSeriesUnit.QUARTERLY.toString().toLowerCase();
     private static final String TRAILING_PREFIX = TimeSeriesUnit.TRAILING.toString().toLowerCase();
@@ -42,14 +33,10 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
     private static final String UPPER_EBIT = "EBIT";
     private static final String LOWER_EBIT = "ebit";
 
-    private static final String TIMEFRAME_KEY = "timeType";  // todo - better name
-
-    private final boolean pruneEmptyEntries;
     private final boolean orgainizeByDate;
 
-    public TimeSeriesResponseConverter(boolean pruneEmptyEntries, boolean orgainizeByDate)
+    public TimeSeriesResponseConverter(boolean orgainizeByDate)
     {
-        this.pruneEmptyEntries = pruneEmptyEntries;
         this.orgainizeByDate = orgainizeByDate;
     }
 
@@ -57,194 +44,127 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json)
     {
-        if (orgainizeByDate) {
-            return convertToListOfMapsDateKey(json);
-        }
-        else {
-            return convertToListOfMapsAttributeKey(json);
-        }
+        throw new UnsupportedOperationException("Returning data in List format is not supported for timeseries data.");
     }
 
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
     {
-        if (orgainizeByDate) {
-            return createAlternateSignatureDateMap( convertToMapOfMapsDateKey(json) );
+        AttributeMapPojo attributeMapPojo = extractAttributeDataValueInfo(json);
+
+        // todo - this return format is TBD.   namely the resulting map has a different structure
+        //   if only request a single timeUnit vs multiple.
+        if (attributeMapPojo.hasMultipleTimeFrames())
+        {
+            // this case we have at least 2 of the following:
+            //     annual, quarterly, trailing
+            //
+            // thus to 'try' to keep them separate, create an uber map
+            Map<String,Map<String, Object>> metaMap = new LinkedHashMap<>();
+            metaMap.put(ANNUAL_PREFIX, createAltMapSignature( attributeMapPojo.getAnnualDataMap() ));
+            metaMap.put(QUARTERLY_PREFIX, createAltMapSignature( attributeMapPojo.getQuarterlyDataMap() ));
+            metaMap.put(TRAILING_PREFIX, createAltMapSignature( attributeMapPojo.getTrailingDataMap() ));
+            return metaMap;
         }
-        else {
-            return convertToMapOfMapsAttributeKey(json);
+        else
+        {
+            return attributeMapPojo.getSinglePopulatedMap();
         }
     }
 
 
 
-    public List<Map<String, Object>> convertToListOfMapsAttributeKey(String json)
+    public Map<String, Object> createAltMapSignature(Map<String, Map<String, Object>> origDateResultMap)
     {
-        Map<String, Map<String, Object>> mapOfMaps = convertToMapOfMapsAttributeKey(json);
-
-        List<Map<String, Object>> resultList = new ArrayList<>();
-        List<String> mapKeys = new ArrayList<>(mapOfMaps.keySet());
-
-        for (String mapKey : mapKeys)
-        {
-            Map<String, Object> mapData = mapOfMaps.get(mapKey);
-
-            Map<String, Object> updatedMapData = new LinkedHashMap<>(); // linkedhashmap b/c want to force first entry.
-            updatedMapData.put(TIMEFRAME_KEY, mapKey);
-            updatedMapData.putAll(mapData);
-            resultList.add(updatedMapData);
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Map<String, Object>> entry : origDateResultMap.entrySet()) {
+            resultMap.put(entry.getKey(), entry.getValue());
         }
-
-        return resultList;
-    }
-
-
-    public List<Map<String, Object>> convertToListOfMapsDateKey(String json)
-    {
-        Map<String, Map<String, Map<String, Number>>> mapOfMaps = convertToMapOfMapsDateKey(json);
-
-        List<Map<String, Object>> resultList = new ArrayList<>();
-        List<String> mapKeys = new ArrayList<>(mapOfMaps.keySet());
-
-        for (String mapKey : mapKeys)
-        {
-            Map<String, Map<String, Number>> mapData = mapOfMaps.get(mapKey);
-
-            Map<String, Object> updatedMapData = new LinkedHashMap<>(); // linkedhashmap b/c want to force first entry.
-            updatedMapData.put(TIMEFRAME_KEY, mapKey);
-            updatedMapData.putAll(mapData);
-            resultList.add(updatedMapData);
-        }
-
-        return resultList;
-    }
-
-
-
-    public Map<String, Map<String, Map<String, Number>>> convertToMapOfMapsDateKey(String json)
-    {
-        Map<String, Map<String, Object>> attributeMapOfMaps = convertToMapOfMapsAttributeKey(json);
-
-        Map<String, Map<String, Map<String, Number>>> resultMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Map<String, Object>> entry : attributeMapOfMaps.entrySet())
-        {
-            String timeunitString = entry.getKey();
-            Map<String, Object> timeunitDataMap = entry.getValue();
-
-            Map<String, Map<String, Number>> timeSeriesDataMap = convertToDateMap(timeunitDataMap);
-            resultMap.put(timeunitString, timeSeriesDataMap);
-        }
-
-        return resultMap;
-    }
-
-
-    private Map<String, Map<String, Number>> convertToDateMap(Map<String, Object> attributeDataMap)
-    {
-        if (attributeDataMap == null || attributeDataMap.size() == 0) {
-            return Collections.emptyMap();
-        }
-
-        Map<String, Map<String, Number>> resultMap = new TreeMap<>();
-
-        Map<String,List<TimeEntry>> mapOfTimeEntries = mapper.convertValue(attributeDataMap, new TypeReference<Map<String,List<TimeEntry>>>() {});
-
-        for (Map.Entry<String, List<TimeEntry>> entry : mapOfTimeEntries.entrySet())
-        {
-            String attributeName = entry.getKey();
-            List<TimeEntry> listOfTimeEntries = entry.getValue();
-
-            for (TimeEntry timeEntry : listOfTimeEntries)
-            {
-                String date = timeEntry.getAsOfDate();
-                Map<String, Number> dateAttributeMap = resultMap.computeIfAbsent(date, k -> new TreeMap<>());
-                dateAttributeMap.put(attributeName, timeEntry.getReportedValue());
-            }
-        }
-
         return resultMap;
     }
 
 
 
-    public Map<String, Map<String, Object>> convertToMapOfMapsAttributeKey(String json)
+    private AttributeMapPojo extractAttributeDataValueInfo(String json)
     {
-        Map<String, Object> annualDataMap = new TreeMap<>();
-        Map<String, Object> quarterlyDataMap = new TreeMap<>();
-        Map<String, Object> trailingDataMap = new TreeMap<>();
+        Map<String, Map<String,Object>> annualValuesMap = new TreeMap<>();
+        Map<String, Map<String,Object>> quarterlyValuesMap = new TreeMap<>();
+        Map<String, Map<String,Object>> trailingValuesMap = new TreeMap<>();
 
         json = JsonFormatRemover.removeFormats(json, true);
 
         DocumentContext jsonDoc = JsonPath.parse(json);
-        
+
         // first fetch all the names (aka types) (aka names of the fields that were returned)
         String[] elementNames = jsonDoc.read(ELEMENT_NAMES_PATH, String[].class);
 
         int entryCount = elementNames.length;
-
         for (int i = 0; i < entryCount; i++)
         {
             String elementName = elementNames[i];
             String prefix = null;
 
-            Map<String, Object> destinationMap = null;
+            Map<String, Map<String,Object>> destinationMap = null;
             if (elementName.startsWith(ANNUAL_PREFIX)) {
-                destinationMap = annualDataMap;
+                destinationMap = annualValuesMap;
                 prefix = ANNUAL_PREFIX;
             }
             else if (elementName.startsWith(QUARTERLY_PREFIX)) {
-                destinationMap = quarterlyDataMap;
+                destinationMap = quarterlyValuesMap;
                 prefix = QUARTERLY_PREFIX;
             }
             else if (elementName.startsWith(TRAILING_PREFIX)) {
-                destinationMap = trailingDataMap;
+                destinationMap = trailingValuesMap;
                 prefix = TRAILING_PREFIX;
             }
             else {
                 continue;
             }
 
-            List<Map<String,Object>> resultEntryList;
+            String attributeName = cleanAttributeName(elementName, prefix);
+
             try
             {
                 Long[] timeValues = jsonDoc.read(constructEntryPath(i, KEY_TIMESTAMP), Long[].class);
                 List<Map<String,Object>> existingEntryDataList = jsonDoc.read(constructEntryPath(i, elementName));
 
-                resultEntryList = new ArrayList<>();
                 for (int j = 0; j < timeValues.length; j++)
                 {
                     Long timestamp = timeValues[j];
                     Map<String,Object> dataMap = existingEntryDataList.get(j);
 
+                    // must be a value in BOTH the timeValues array and the dataList
                     if (timestamp == null || dataMap == null) {
                         continue;
                     }
-                    dataMap.put(KEY_TIMESTAMP, timestamp); // could be considered redundant b/c a string version of data is already in map
-                    resultEntryList.add(dataMap);
+
+                    String dateString = (String) dataMap.get("asOfDate");
+                    Number value = (Number) dataMap.get("reportedValue");
+
+                    if (this.orgainizeByDate)
+                    {
+                        // get map containing all the altributes for this given date.
+                        Map<String, Object> attributeMap = destinationMap.computeIfAbsent(dateString, k -> new TreeMap<>());
+                        attributeMap.put(attributeName, value);
+                    }
+                    else
+                    {
+                        // get map containing all the dates for this given attribute.
+                        Map<String, Object> dateMap = destinationMap.computeIfAbsent(attributeName, k -> new TreeMap<>());
+                        dateMap.put(dateString, value);
+                    }
                 }
             }
             catch (Exception e) {
                 // this exception will occur when trying to fetch timestamps on an entry with no data.
-                resultEntryList = Collections.emptyList();
             }
-
-            if (resultEntryList.size() == 0 && pruneEmptyEntries) {
-                continue;
-            }
-
-            String cleanAttributeName = cleanAttributeName(elementName, prefix);
-
-            destinationMap.put(cleanAttributeName, resultEntryList);
         }
 
+        AttributeMapPojo timeFramAttributeMapPojo = new AttributeMapPojo(annualValuesMap, quarterlyValuesMap, trailingValuesMap);
 
-        Map<String,Map<String, Object>> resultMap = new LinkedHashMap<>();
-        resultMap.put(ANNUAL_PREFIX, annualDataMap);
-        resultMap.put(QUARTERLY_PREFIX, quarterlyDataMap);
-        resultMap.put(TRAILING_PREFIX, trailingDataMap);
-
-        return resultMap;
+        return timeFramAttributeMapPojo;
     }
+
 
 
     private String constructEntryPath(int index, String pathSuffix)
@@ -278,61 +198,76 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
         return cleanName;
     }
 
+
+
+
     /**
-     * convert the next map value into a simple object
-     * @param origDateResultMap
-     * @return
+     *  Each map is either in the form
+     *    Attribute
+     *         Date1 -> Value1
+     *         Date2 -> Value2
+     *         Date3 -> Value3
+     *
+     *       OR
+     *
+     *    Date
+     *         Attribute1 -> Value1
+     *         Attribute2 -> Value2
+     *         Attribute3 -> Value3
      */
-    //  side:  I know there's a simpler way
-    private Map<String, Map<String, Object>> createAlternateSignatureDateMap(Map<String, Map<String, Map<String, Number>>> origDateResultMap)
+    private static class AttributeMapPojo
     {
-        Map<String, Map<String, Object>> resultMap = new LinkedHashMap<>();
+        private final Map<String, Map<String,Object>> annualDataMap;
+        private final Map<String, Map<String,Object>> quarterlyDataMap;
+        private final Map<String, Map<String,Object>> trailingDataMap;
+        private final boolean hasMultipleTimeFrames;
 
-        for (Map.Entry<String, Map<String, Map<String, Number>>> entry : origDateResultMap.entrySet())
+        public AttributeMapPojo(
+            Map<String, Map<String,Object>> annualDataMap,
+            Map<String, Map<String,Object>> quarterlyDataMap,
+            Map<String, Map<String,Object>> trailingDataMap)
         {
-            String key = entry.getKey();
-            Map<String, Map<String, Number>> map = entry.getValue();
+            this.annualDataMap = annualDataMap;
+            this.quarterlyDataMap = quarterlyDataMap;
+            this.trailingDataMap = trailingDataMap;
 
-            Map<String, Object> updatedMap = new LinkedHashMap<>(map);
-            resultMap.put(key, updatedMap);
+            int timeFrameCount = 0;
+            if (this.annualDataMap.size() > 0) { timeFrameCount++; }
+            if (this.quarterlyDataMap.size() > 0) { timeFrameCount++; }
+            if (this.trailingDataMap.size() > 0) { timeFrameCount++; }
+
+            this.hasMultipleTimeFrames = (timeFrameCount > 1);
         }
 
-        return resultMap;
-    }
-
-
-    // note: this class is really for convenience and may ultimately just get removed.
-    private static class TimeEntry
-    {
-        private Long timestamp;
-        private String dataId;
-        private String asOfDate;
-        private String periodType;
-        private String currencyCode;
-        private Number reportedValue;
-
-        public Long getTimestamp() {
-            return timestamp;
+        public Map<String, Map<String, Object>> getAnnualDataMap() {
+            return annualDataMap;
         }
 
-        public String getDataId() {
-            return dataId;
+        public Map<String, Map<String, Object>> getQuarterlyDataMap() {
+            return quarterlyDataMap;
         }
 
-        public String getAsOfDate() {
-            return asOfDate;
+        public Map<String, Map<String, Object>> getTrailingDataMap() {
+            return trailingDataMap;
         }
 
-        public String getPeriodType() {
-            return periodType;
+        public Map<String, Map<String, Object>> getSinglePopulatedMap() {
+            if (this.hasMultipleTimeFrames) {
+                return null;
+            }
+            if (this.annualDataMap.size() > 1) {
+                return this.annualDataMap;
+            }
+            else if (this.quarterlyDataMap.size() > 1) {
+                return this.quarterlyDataMap;
+            }
+            else {
+                return this.trailingDataMap;
+            }
         }
 
-        public String getCurrencyCode() {
-            return currencyCode;
-        }
-
-        public Number getReportedValue() {
-            return reportedValue;
+        public boolean hasMultipleTimeFrames() {
+            return hasMultipleTimeFrames;
         }
     }
 }

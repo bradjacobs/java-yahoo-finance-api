@@ -28,6 +28,7 @@ public class TimeSeriesRequestDemoFactory
         switch (sampleRequestId) {
             case 1: return SIMPLE;
             case 2: return ANNUAL;
+            case 3: return QUARTERLY;
             default: return SIMPLE;
         }
     }
@@ -59,6 +60,23 @@ public class TimeSeriesRequestDemoFactory
             .withStatement(StatementType.INC_STMT)
             .setStart("2017-12-31")
             .setEnd("2020-12-31")
+            .build();
+
+
+
+    /**
+     * Get 'quarterly' timeseries data for AAPL for the last couple years
+     *
+     * NOTE:  you may have to know when the annual reports are available for any given security
+     */
+    private static final YahooFinanceRequest QUARTERLY =
+        YahooRequestBuilder.api()
+            .timeSeries()
+            .withTicker("AAPL")
+            .withTimeFrame(TimeSeriesUnit.QUARTERLY, TimeSeriesUnit.ANNUAL)
+            .withStatement(StatementType.INC_STMT, StatementType.CASH_FLOW)
+            .setStart("2018-12-31")
+            .setEnd("2021-12-31")
             .build();
 
     // not yet available.

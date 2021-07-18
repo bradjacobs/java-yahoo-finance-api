@@ -4,6 +4,12 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 public class ResponseConverterFactory
 {
+
+    // when true the top level map keys of timeseries will be 'date'
+    //      false will be the 'attribute'
+    private static final boolean DATE_TIMESERIES_MAP_KEY = true;
+
+
     private ResponseConverterFactory() { }
 
     public static YahooResponseConverter getResponseConverter(YahooEndpoint endpoint)
@@ -27,7 +33,7 @@ public class ResponseConverterFactory
             case SPARK:
                 return new SparkResponseConverter();
             case TIMESERIES:
-                return new TimeSeriesResponseConverter(true, true); // todo: come back to the future of the boolean params
+                return new TimeSeriesResponseConverter(DATE_TIMESERIES_MAP_KEY); // todo: come back to the future of the boolean param
             default:
                 return new DefaultResponseConverter();
         }
