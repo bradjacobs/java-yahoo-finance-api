@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class SparkResponseConverter implements YahooResponseConverter
+public class SparkResponseConverter extends YahooResponseConverter
 {
     private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
     //private static final JsonMapper mapper = JsonMapperSingleton.getPrettyInstance();

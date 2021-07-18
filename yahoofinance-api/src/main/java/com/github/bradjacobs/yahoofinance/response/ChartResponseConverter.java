@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChartResponseConverter implements YahooResponseConverter
+public class ChartResponseConverter extends YahooResponseConverter
 {
     // key titles for the output map
     private static final String KEY_TIMESTAMP = "timestamp";

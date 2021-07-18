@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultResponseConverter implements YahooResponseConverter
+public class DefaultResponseConverter extends YahooResponseConverter
 {
     private static final String DEFAULT_LIST_PATH = "$.*.result[*]";
 

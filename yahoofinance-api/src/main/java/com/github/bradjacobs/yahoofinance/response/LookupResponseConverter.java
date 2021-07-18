@@ -7,7 +7,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.List;
 import java.util.Map;
 
-public class LookupResponseConverter implements YahooResponseConverter
+public class LookupResponseConverter extends YahooResponseConverter
 {
     private static final String DEFAULT_LIST_PATH = "$.finance.result[0].documents[*]";
     private static final String PRIMARY_MAP_KEY = "symbol";

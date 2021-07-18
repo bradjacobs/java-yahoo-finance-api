@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ScreenerResponseConverter implements YahooResponseConverter
+public class ScreenerResponseConverter extends YahooResponseConverter
 {
     private static final String PRIMARY_MAP_KEY = "symbol";
     private static final String RESPONSE_ROOT_PATH = "$.finance.result[0].quotes";

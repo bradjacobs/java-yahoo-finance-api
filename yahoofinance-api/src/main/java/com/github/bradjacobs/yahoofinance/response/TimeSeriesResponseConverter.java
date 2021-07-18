@@ -27,7 +27,7 @@ import java.util.TreeMap;
       = code clean up (was originally done just to see it work)
 
  */
-public class TimeSeriesResponseConverter implements YahooResponseConverter
+public class TimeSeriesResponseConverter extends YahooResponseConverter
 {
     private static final String ROOT_PATH = "$.timeseries.result";
     private static final String ELEMENT_NAMES_PATH = ROOT_PATH + "[*].meta.type[0]";

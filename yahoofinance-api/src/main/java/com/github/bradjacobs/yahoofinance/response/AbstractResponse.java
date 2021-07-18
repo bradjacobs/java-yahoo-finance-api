@@ -93,37 +93,14 @@ abstract public class AbstractResponse
 
     public <T> List<T> getAsListOfPojos(Class<T> targetType)
     {
-        validateTargetClass(targetType);
-
         List<Map<String, Object>> listOfMaps = getAsListOfMaps();
-        if (listOfMaps.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        JavaType javaType = mapper.getTypeFactory().constructParametricType(List.class, targetType);
-        return mapper.convertValue(listOfMaps, javaType);
+        return responseConverter.convertToListOfPojos(listOfMaps, targetType);
     }
 
     public <T> Map<String,T> getAsMapOfPojos(Class<T> targetType)
     {
-        validateTargetClass(targetType);
-
         Map<String, Map<String, Object>> mapOfMaps = getAsMapOfMaps();
-        if (mapOfMaps.isEmpty()) {
-            return Collections.emptyMap();
-        }
-
-        JavaType javaType = mapper.getTypeFactory().constructParametricType(Map.class, String.class, targetType);
-        return mapper.convertValue(mapOfMaps, javaType);
+        return responseConverter.convertToMapOfPojos(mapOfMaps, targetType);
     }
-
-    private <T> void validateTargetClass(Class<T> targetType)
-    {
-        // just null check (for now)
-        if (targetType == null) {
-            throw new IllegalArgumentException("Must provide a target class type.");
-        }
-    }
-
 
 }

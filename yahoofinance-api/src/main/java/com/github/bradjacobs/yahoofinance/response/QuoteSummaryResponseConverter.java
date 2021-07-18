@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuoteSummaryResponseConverter implements YahooResponseConverter
+public class QuoteSummaryResponseConverter extends YahooResponseConverter
 {
     private static final String DEFAULT_MAP_PATH = "$.quoteSummary.result[0]";
 

@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuoteResponseConverter implements YahooResponseConverter
+public class QuoteResponseConverter extends YahooResponseConverter
 {
     private static final String DEFAULT_LIST_PATH = "$.quoteResponse.result[*]";
     private static final String PRIMARY_MAP_KEY = "symbol";
