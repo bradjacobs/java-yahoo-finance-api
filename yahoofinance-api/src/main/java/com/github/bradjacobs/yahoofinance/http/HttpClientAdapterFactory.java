@@ -104,8 +104,8 @@ public class HttpClientAdapterFactory
             String host = url.host();
             //   if asking for cookie for "query1.finance.yahoo.com", then give cookie for "finance.yahoo.com"
             // todo: make cleaner when time allows
-            if (host.endsWith(".yahoo.com")) {
-                host = "yahoo.com";
+            if (host.endsWith(".finance.yahoo.com")) {
+                host = "finance.yahoo.com";
             }
 
             List<Cookie> cookies = cookieStore.get(host);
