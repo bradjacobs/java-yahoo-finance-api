@@ -29,7 +29,7 @@ public class ChartRequestDemoFactory
         YahooRequestBuilder.api()
             .chart()
             .withTicker("AAPL")
-            .withRange(Range.ONE_YEAR)
+            .withRange(Range.TWO_YEARS)
             .withInterval(Interval.ONE_DAY)
             .withDividends(true)
             .withSplits(true)

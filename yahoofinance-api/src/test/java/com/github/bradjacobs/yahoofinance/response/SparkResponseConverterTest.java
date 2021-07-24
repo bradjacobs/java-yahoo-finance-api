@@ -11,7 +11,8 @@ import static org.testng.Assert.assertNotNull;
 
 public class SparkResponseConverterTest
 {
-    private static final SparkResponseConverter sparkResponseConverter = new SparkResponseConverter();
+    // todo - add tests w/ true as well
+    private static final SparkResponseConverter sparkResponseConverter = new SparkResponseConverter(false);
 
     // need delta b/c Doubles might not be an 'exact' match
     private static final Double DELTA = 0.00001;
@@ -29,26 +30,6 @@ public class SparkResponseConverterTest
      *   }
      * }
      */
-//    @Test
-//    public void testConvertSingleTickerListOfMaps() throws Exception
-//    {
-//        List<Map<String, Object>> listOfMapRecords = sparkResponseConverter.convertToListOfMaps(TEST_JSON_RESPONSE);
-//
-//        assertNotNull(listOfMapRecords);
-//        assertEquals(listOfMapRecords.size(), 1);
-//
-//        for (int i = 0; i < listOfMapRecords.size(); i++)
-//        {
-//            Map<String, Object> entryMap = listOfMapRecords.get(i);
-//            assertNotNull(entryMap, "list contains a null entry map record!");
-//
-//            Object closeValue = entryMap.get(expectedDates[i]);
-//            assertNotNull(closeValue, "unable to find close value for date: " + expectedDates[i]);
-//
-//            Double closeValueDouble = ((Number)closeValue).doubleValue();
-//            assertEquals(closeValueDouble, expectedCloses[i], DELTA, "mismatch of expected close");
-//        }
-//    }
 
     @Test
     public void testConvertMultiTickerMapOfMaps() throws Exception
@@ -69,25 +50,7 @@ public class SparkResponseConverterTest
 
         // todo - fix and finish
     }
-    @Test
-    public void testConvertMultiTickerListOfMaps() throws Exception
-    {
-        List<Map<String, Object>> listOfMaps = sparkResponseConverter.convertToListOfMaps(TEST_TWO_TICKER_RESPONSE);
 
-        assertNotNull(listOfMaps);
-        assertEquals(listOfMaps.size(), 2, "expected map with 2 ticker values");
-
-        Map<String, Object> aaplDataMap = listOfMaps.get(0);
-        Map<String, Object> aalDataMap = listOfMaps.get(1);
-
-        assertNotNull(aaplDataMap);
-        assertNotNull(aalDataMap);
-
-        assertEquals(aaplDataMap.size(), 2);
-        assertEquals(aalDataMap.size(), 2);
-
-        // todo - fix and finish
-    }
 
 
 

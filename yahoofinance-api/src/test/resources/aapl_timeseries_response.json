@@ -1,1 +1,1080 @@
-{"timeseries":{"result":[{"meta":{"symbol":["AAPL"],"type":["annualNetIncomeContinuousOperations"]},"timestamp":[1506729600,1538265600,1569801600],"annualNetIncomeContinuousOperations":[{"dataId":20094,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":4.8351E10,"fmt":"48.35B"}},{"dataId":20094,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":5.9531E10,"fmt":"59.53B"}},{"dataId":20094,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":5.5256E10,"fmt":"55.26B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualTotalRevenue"]},"timestamp":[1506729600,1538265600,1569801600],"annualTotalRevenue":[{"dataId":20100,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.29234E11,"fmt":"229.23B"}},{"dataId":20100,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.65595E11,"fmt":"265.60B"}},{"dataId":20100,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.60174E11,"fmt":"260.17B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualResearchAndDevelopment"]},"timestamp":[1506729600,1538265600,1569801600],"annualResearchAndDevelopment":[{"dataId":20151,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.1581E10,"fmt":"11.58B"}},{"dataId":20151,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.4236E10,"fmt":"14.24B"}},{"dataId":20151,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.6217E10,"fmt":"16.22B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualCostOfRevenue"]},"timestamp":[1506729600,1538265600,1569801600],"annualCostOfRevenue":[{"dataId":20013,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.41048E11,"fmt":"141.05B"}},{"dataId":20013,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.63756E11,"fmt":"163.76B"}},{"dataId":20013,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.61782E11,"fmt":"161.78B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualBasicAverageShares"]},"timestamp":[1506729600,1538265600,1569801600],"annualBasicAverageShares":[{"dataId":29010,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.0868968E10,"fmt":"20.87B"}},{"dataId":29010,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.9821508E10,"fmt":"19.82B"}},{"dataId":29010,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.8471336E10,"fmt":"18.47B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualNetIncomeCommonStockholders"]},"timestamp":[1506729600,1538265600,1569801600],"annualNetIncomeCommonStockholders":[{"dataId":20093,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":4.8351E10,"fmt":"48.35B"}},{"dataId":20093,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":5.9531E10,"fmt":"59.53B"}},{"dataId":20093,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":5.5256E10,"fmt":"55.26B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualPretaxIncome"]},"timestamp":[1506729600,1538265600,1569801600],"annualPretaxIncome":[{"dataId":20136,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":6.4089E10,"fmt":"64.09B"}},{"dataId":20136,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":7.2903E10,"fmt":"72.90B"}},{"dataId":20136,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":6.5737E10,"fmt":"65.74B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualInterestExpense"]},"timestamp":[1506729600,1538265600,1569801600],"annualInterestExpense":[{"dataId":20057,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.323E9,"fmt":"2.32B"}},{"dataId":20057,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":3.24E9,"fmt":"3.24B"}},{"dataId":20057,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":3.576E9,"fmt":"3.58B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualDilutedAverageShares"]},"timestamp":[1506729600,1538265600,1569801600],"annualDilutedAverageShares":[{"dataId":29011,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.1006768E10,"fmt":"21.01B"}},{"dataId":29011,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.0000436E10,"fmt":"20.00B"}},{"dataId":29011,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.8595652E10,"fmt":"18.60B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualTaxProvision"]},"timestamp":[1506729600,1538265600,1569801600],"annualTaxProvision":[{"dataId":20145,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.5738E10,"fmt":"15.74B"}},{"dataId":20145,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.3372E10,"fmt":"13.37B"}},{"dataId":20145,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.0481E10,"fmt":"10.48B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualNetIncome"]},"timestamp":[1506729600,1538265600,1569801600],"annualNetIncome":[{"dataId":20091,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":4.8351E10,"fmt":"48.35B"}},{"dataId":20091,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":5.9531E10,"fmt":"59.53B"}},{"dataId":20091,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":5.5256E10,"fmt":"55.26B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualGrossProfit"]},"timestamp":[1506729600,1538265600,1569801600],"annualGrossProfit":[{"dataId":20046,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":8.8186E10,"fmt":"88.19B"}},{"dataId":20046,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.01839E11,"fmt":"101.84B"}},{"dataId":20046,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":9.8392E10,"fmt":"98.39B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualBasicEPS"]},"timestamp":[1506729600,1538265600,1569801600],"annualBasicEPS":[{"dataId":29004,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.3175,"fmt":"2.32"}},{"dataId":29004,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":3.0025,"fmt":"3.00"}},{"dataId":29004,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.9925,"fmt":"2.99"}}]},{"meta":{"symbol":["AAPL"],"type":["annualSellingGeneralAndAdministration"]},"timestamp":[1506729600,1538265600,1569801600],"annualSellingGeneralAndAdministration":[{"dataId":20159,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.5261E10,"fmt":"15.26B"}},{"dataId":20159,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.6705E10,"fmt":"16.70B"}},{"dataId":20159,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":1.8245E10,"fmt":"18.25B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualOtherIncomeExpense"]},"timestamp":[1506729600,1538265600,1569801600],"annualOtherIncomeExpense":[{"dataId":20117,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":-1.33E8,"fmt":"-133.00M"}},{"dataId":20117,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":-4.41E8,"fmt":"-441.00M"}},{"dataId":20117,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":4.22E8,"fmt":"422.00M"}}]},{"meta":{"symbol":["AAPL"],"type":["annualOperatingIncome"]},"timestamp":[1506729600,1538265600,1569801600],"annualOperatingIncome":[{"dataId":20109,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":6.1344E10,"fmt":"61.34B"}},{"dataId":20109,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":7.0898E10,"fmt":"70.90B"}},{"dataId":20109,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":6.393E10,"fmt":"63.93B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualEbitda"]},"timestamp":[1506729600,1538265600,1569801600],"annualEbitda":[{"dataId":20190,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":7.6569E10,"fmt":"76.57B"}},{"dataId":20190,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":8.7046E10,"fmt":"87.05B"}},{"dataId":20190,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":8.186E10,"fmt":"81.86B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualOperatingExpense"]},"timestamp":[1506729600,1538265600,1569801600],"annualOperatingExpense":[{"dataId":20108,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.6842E10,"fmt":"26.84B"}},{"dataId":20108,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":3.0941E10,"fmt":"30.94B"}},{"dataId":20108,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":3.4462E10,"fmt":"34.46B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualDilutedEPS"]},"timestamp":[1506729600,1538265600,1569801600],"annualDilutedEPS":[{"dataId":29009,"asOfDate":"2017-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.3025,"fmt":"2.30"}},{"dataId":29009,"asOfDate":"2018-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.9775,"fmt":"2.98"}},{"dataId":29009,"asOfDate":"2019-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":2.9725,"fmt":"2.97"}}]},{"meta":{"symbol":["AAPL"],"type":["trailingDilutedAverageShares"]}},{"meta":{"symbol":["AAPL"],"type":["trailingOperatingExpense"]}},{"meta":{"symbol":["AAPL"],"type":["trailingNetIncomeCommonStockholders"]}},{"meta":{"symbol":["AAPL"],"type":["trailingTaxProvision"]}},{"meta":{"symbol":["AAPL"],"type":["trailingNetIncomeContinuousOperations"]}},{"meta":{"symbol":["AAPL"],"type":["trailingResearchAndDevelopment"]}},{"meta":{"symbol":["AAPL"],"type":["trailingGrossProfit"]}},{"meta":{"symbol":["AAPL"],"type":["trailingInterestExpense"]}},{"meta":{"symbol":["AAPL"],"type":["trailingPretaxIncome"]}},{"meta":{"symbol":["AAPL"],"type":["trailingCostOfRevenue"]}},{"meta":{"symbol":["AAPL"],"type":["trailingDilutedEPS"]}},{"meta":{"symbol":["AAPL"],"type":["trailingSellingGeneralAndAdministration"]}},{"meta":{"symbol":["AAPL"],"type":["trailingNetIncome"]}},{"meta":{"symbol":["AAPL"],"type":["trailingBasicAverageShares"]}},{"meta":{"symbol":["AAPL"],"type":["trailingTotalRevenue"]}},{"meta":{"symbol":["AAPL"],"type":["trailingOperatingIncome"]}},{"meta":{"symbol":["AAPL"],"type":["trailingBasicEPS"]}},{"meta":{"symbol":["AAPL"],"type":["trailingOtherIncomeExpense"]}}],"error":null}}
+{
+  "timeseries": {
+    "result": [
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualNetIncomeContinuousOperations"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualNetIncomeContinuousOperations": [
+          {
+            "dataId": 20094,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 4.8351E10,
+              "fmt": "48.35B"
+            }
+          },
+          {
+            "dataId": 20094,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 5.9531E10,
+              "fmt": "59.53B"
+            }
+          },
+          {
+            "dataId": 20094,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 5.5256E10,
+              "fmt": "55.26B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualTotalRevenue"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualTotalRevenue": [
+          {
+            "dataId": 20100,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.29234E11,
+              "fmt": "229.23B"
+            }
+          },
+          {
+            "dataId": 20100,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.65595E11,
+              "fmt": "265.60B"
+            }
+          },
+          {
+            "dataId": 20100,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.60174E11,
+              "fmt": "260.17B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualResearchAndDevelopment"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualResearchAndDevelopment": [
+          {
+            "dataId": 20151,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.1581E10,
+              "fmt": "11.58B"
+            }
+          },
+          {
+            "dataId": 20151,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.4236E10,
+              "fmt": "14.24B"
+            }
+          },
+          {
+            "dataId": 20151,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.6217E10,
+              "fmt": "16.22B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualCostOfRevenue"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualCostOfRevenue": [
+          {
+            "dataId": 20013,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.41048E11,
+              "fmt": "141.05B"
+            }
+          },
+          {
+            "dataId": 20013,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.63756E11,
+              "fmt": "163.76B"
+            }
+          },
+          {
+            "dataId": 20013,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.61782E11,
+              "fmt": "161.78B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualBasicAverageShares"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualBasicAverageShares": [
+          {
+            "dataId": 29010,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.0868968E10,
+              "fmt": "20.87B"
+            }
+          },
+          {
+            "dataId": 29010,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.9821508E10,
+              "fmt": "19.82B"
+            }
+          },
+          {
+            "dataId": 29010,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.8471336E10,
+              "fmt": "18.47B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualNetIncomeCommonStockholders"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualNetIncomeCommonStockholders": [
+          {
+            "dataId": 20093,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 4.8351E10,
+              "fmt": "48.35B"
+            }
+          },
+          {
+            "dataId": 20093,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 5.9531E10,
+              "fmt": "59.53B"
+            }
+          },
+          {
+            "dataId": 20093,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 5.5256E10,
+              "fmt": "55.26B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualPretaxIncome"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualPretaxIncome": [
+          {
+            "dataId": 20136,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 6.4089E10,
+              "fmt": "64.09B"
+            }
+          },
+          {
+            "dataId": 20136,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 7.2903E10,
+              "fmt": "72.90B"
+            }
+          },
+          {
+            "dataId": 20136,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 6.5737E10,
+              "fmt": "65.74B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualInterestExpense"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualInterestExpense": [
+          {
+            "dataId": 20057,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.323E9,
+              "fmt": "2.32B"
+            }
+          },
+          {
+            "dataId": 20057,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 3.24E9,
+              "fmt": "3.24B"
+            }
+          },
+          {
+            "dataId": 20057,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 3.576E9,
+              "fmt": "3.58B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualDilutedAverageShares"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualDilutedAverageShares": [
+          {
+            "dataId": 29011,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.1006768E10,
+              "fmt": "21.01B"
+            }
+          },
+          {
+            "dataId": 29011,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.0000436E10,
+              "fmt": "20.00B"
+            }
+          },
+          {
+            "dataId": 29011,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.8595652E10,
+              "fmt": "18.60B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualTaxProvision"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualTaxProvision": [
+          {
+            "dataId": 20145,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.5738E10,
+              "fmt": "15.74B"
+            }
+          },
+          {
+            "dataId": 20145,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.3372E10,
+              "fmt": "13.37B"
+            }
+          },
+          {
+            "dataId": 20145,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.0481E10,
+              "fmt": "10.48B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualNetIncome"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualNetIncome": [
+          {
+            "dataId": 20091,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 4.8351E10,
+              "fmt": "48.35B"
+            }
+          },
+          {
+            "dataId": 20091,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 5.9531E10,
+              "fmt": "59.53B"
+            }
+          },
+          {
+            "dataId": 20091,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 5.5256E10,
+              "fmt": "55.26B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualGrossProfit"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualGrossProfit": [
+          {
+            "dataId": 20046,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 8.8186E10,
+              "fmt": "88.19B"
+            }
+          },
+          {
+            "dataId": 20046,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.01839E11,
+              "fmt": "101.84B"
+            }
+          },
+          {
+            "dataId": 20046,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 9.8392E10,
+              "fmt": "98.39B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualBasicEPS"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualBasicEPS": [
+          {
+            "dataId": 29004,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.3175,
+              "fmt": "2.32"
+            }
+          },
+          {
+            "dataId": 29004,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 3.0025,
+              "fmt": "3.00"
+            }
+          },
+          {
+            "dataId": 29004,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.9925,
+              "fmt": "2.99"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualSellingGeneralAndAdministration"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualSellingGeneralAndAdministration": [
+          {
+            "dataId": 20159,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.5261E10,
+              "fmt": "15.26B"
+            }
+          },
+          {
+            "dataId": 20159,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.6705E10,
+              "fmt": "16.70B"
+            }
+          },
+          {
+            "dataId": 20159,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 1.8245E10,
+              "fmt": "18.25B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualOtherIncomeExpense"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualOtherIncomeExpense": [
+          {
+            "dataId": 20117,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": -1.33E8,
+              "fmt": "-133.00M"
+            }
+          },
+          {
+            "dataId": 20117,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": -4.41E8,
+              "fmt": "-441.00M"
+            }
+          },
+          {
+            "dataId": 20117,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 4.22E8,
+              "fmt": "422.00M"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualOperatingIncome"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualOperatingIncome": [
+          {
+            "dataId": 20109,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 6.1344E10,
+              "fmt": "61.34B"
+            }
+          },
+          {
+            "dataId": 20109,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 7.0898E10,
+              "fmt": "70.90B"
+            }
+          },
+          {
+            "dataId": 20109,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 6.393E10,
+              "fmt": "63.93B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualEbitda"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualEbitda": [
+          {
+            "dataId": 20190,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 7.6569E10,
+              "fmt": "76.57B"
+            }
+          },
+          {
+            "dataId": 20190,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 8.7046E10,
+              "fmt": "87.05B"
+            }
+          },
+          {
+            "dataId": 20190,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 8.186E10,
+              "fmt": "81.86B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualOperatingExpense"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualOperatingExpense": [
+          {
+            "dataId": 20108,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.6842E10,
+              "fmt": "26.84B"
+            }
+          },
+          {
+            "dataId": 20108,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 3.0941E10,
+              "fmt": "30.94B"
+            }
+          },
+          {
+            "dataId": 20108,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 3.4462E10,
+              "fmt": "34.46B"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "annualDilutedEPS"
+          ]
+        },
+        "timestamp": [
+          1506729600,
+          1538265600,
+          1569801600
+        ],
+        "annualDilutedEPS": [
+          {
+            "dataId": 29009,
+            "asOfDate": "2017-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.3025,
+              "fmt": "2.30"
+            }
+          },
+          {
+            "dataId": 29009,
+            "asOfDate": "2018-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.9775,
+              "fmt": "2.98"
+            }
+          },
+          {
+            "dataId": 29009,
+            "asOfDate": "2019-09-30",
+            "periodType": "12M",
+            "currencyCode": "USD",
+            "reportedValue": {
+              "raw": 2.9725,
+              "fmt": "2.97"
+            }
+          }
+        ]
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingDilutedAverageShares"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingOperatingExpense"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingNetIncomeCommonStockholders"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingTaxProvision"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingNetIncomeContinuousOperations"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingResearchAndDevelopment"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingGrossProfit"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingInterestExpense"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingPretaxIncome"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingCostOfRevenue"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingDilutedEPS"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingSellingGeneralAndAdministration"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingNetIncome"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingBasicAverageShares"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingTotalRevenue"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingOperatingIncome"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingBasicEPS"
+          ]
+        }
+      },
+      {
+        "meta": {
+          "symbol": [
+            "AAPL"
+          ],
+          "type": [
+            "trailingOtherIncomeExpense"
+          ]
+        }
+      }
+    ],
+    "error": null
+  }
+}

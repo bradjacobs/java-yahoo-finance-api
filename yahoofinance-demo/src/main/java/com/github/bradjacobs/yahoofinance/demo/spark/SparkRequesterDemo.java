@@ -15,7 +15,7 @@ public class SparkRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        int exampleRequestId = 1;
+        int exampleRequestId = 2;
 
         YahooFinanceRequest req = SparkRequestDemoFactory.getRequest(exampleRequestId);
 
@@ -37,10 +37,7 @@ public class SparkRequesterDemo
 
         // get original json response (in pretty format)
         String prettyJson = resp.getPrettyJson();
-
-        // results as list of key/value pairs
-        List<Map<String, Object>> listOfMaps = resp.getAsListOfMaps();
-
+        
         // same result as listOfMaps, but in a map where the 'key' is the ticker/symbol value.
         Map<String, Map<String, Object>> mapsOfMaps = resp.getAsMapOfMaps();
 

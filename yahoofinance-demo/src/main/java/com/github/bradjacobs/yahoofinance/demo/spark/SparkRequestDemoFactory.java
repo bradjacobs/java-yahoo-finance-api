@@ -18,6 +18,7 @@ public class SparkRequestDemoFactory
     {
         switch (sampleRequestId) {
             case 1: return SIMPLE;
+            case 2: return MULTI;
             default: return SIMPLE;
         }
     }
@@ -31,6 +32,15 @@ public class SparkRequestDemoFactory
         YahooRequestBuilder.api()
             .spark()
             .withTicker("AAPL")
+            .withRange(Range.FIVE_DAYS)
+            .withInterval(Interval.ONE_DAY)
+            .build();
+
+
+    private static final YahooFinanceRequest MULTI =
+        YahooRequestBuilder.api()
+            .spark()
+            .withTicker("AAPL", "MSFT", "AMZN")
             .withRange(Range.FIVE_DAYS)
             .withInterval(Interval.ONE_DAY)
             .build();

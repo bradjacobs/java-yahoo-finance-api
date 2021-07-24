@@ -38,6 +38,7 @@ public class ChartRequesterDemo
         String rawJson = resp.getJson();
         String prettyJson = resp.getPrettyJson();
         List<Map<String,Object>> listOfMaps = resp.getAsListOfMaps();
+        Map<String, Map<String, Object>> mapOfMaps = resp.getAsMapOfMaps();
 
         // convert into special custom class type
         List<ChartResult> listofChartResults = resp.getAsListOfPojos(ChartResult.class);
