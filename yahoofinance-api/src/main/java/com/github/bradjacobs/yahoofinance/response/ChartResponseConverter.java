@@ -81,13 +81,23 @@ public class ChartResponseConverter extends YahooResponseConverter
         // _ASSERT_ all lists are same length
         int entryCount = timestampValues.length;
 
-        // assume that all of these exist for none
+        // assume that all (open/high/low/volume) exist or none of them do.
         Number[] openValues = jsonDoc.read(OPEN_PATH, Number[].class);
-        Number[] lowValues = jsonDoc.read(LOW_PATH, Number[].class);
-        Number[] highValues = jsonDoc.read(HIGH_PATH, Number[].class);
-        Long[] volumeValues = jsonDoc.read(VOLUME_PATH, Long[].class);
 
         boolean openLowHighExists = ArrayUtils.isNotEmpty(openValues);
+
+        // if there are no 'open' values, then assume there are no low/high/volume values either
+        //   thus don't waste the time to attempt to parse & load.
+        Number[] lowValues = null;
+        Number[] highValues = null;
+        Long[] volumeValues = null;
+
+        if (openLowHighExists) {
+            lowValues = jsonDoc.read(LOW_PATH, Number[].class);
+            highValues = jsonDoc.read(HIGH_PATH, Number[].class);
+            volumeValues = jsonDoc.read(VOLUME_PATH, Long[].class);
+        }
+
 
         List<Map<String, Object>> resultKeyValueList = new ArrayList<>();
 
