@@ -15,7 +15,6 @@ public class HttpClientErrorException extends YahooHttpResponseException
         super(response);
     }
 
-    //  400, 401, 403, 404, 409, 422: throw MyBusinessException, which contains a message that
     public static HttpClientErrorException createHttpException(Response httpResponse) {
 
         int statusCode = httpResponse.getCode();
