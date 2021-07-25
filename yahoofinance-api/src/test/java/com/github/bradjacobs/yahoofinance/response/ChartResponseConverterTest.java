@@ -3,13 +3,10 @@
  */
 package com.github.bradjacobs.yahoofinance.response;
 
+import com.github.bradjacobs.yahoofinance.response.converter.ChartResponseConverter;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
-import java.math.BigDecimal;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;

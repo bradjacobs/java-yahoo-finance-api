@@ -1,25 +1,21 @@
-package com.github.bradjacobs.yahoofinance.response;
+package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
 import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
 import java.util.Map;
 
-public class LookupResponseConverter extends YahooResponseConverter
+public class QuoteResponseConverter extends YahooResponseConverter
 {
-    private static final String DEFAULT_LIST_PATH = "$.finance.result[0].documents[*]";
+    private static final String DEFAULT_LIST_PATH = "$.quoteResponse.result[*]";
     private static final String PRIMARY_MAP_KEY = "symbol";
 
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json)
     {
-        // remove all of the 'raw', 'fmt' stuff (if exists)
-        String updatedJson = JsonFormatRemover.removeFormats(json, false);
-
         // todo - this won't work if get an 'error response'
-        return JsonPath.read(updatedJson, DEFAULT_LIST_PATH);
+        return JsonPath.read(json, DEFAULT_LIST_PATH);
     }
 
     @Override

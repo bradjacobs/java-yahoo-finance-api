@@ -1,9 +1,8 @@
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
+import com.github.bradjacobs.yahoofinance.response.converter.SparkResponseConverter;
 import org.testng.annotations.Test;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.assertEquals;
@@ -12,7 +11,7 @@ import static org.testng.Assert.assertNotNull;
 public class SparkResponseConverterTest
 {
     // todo - add tests w/ true as well
-    private static final SparkResponseConverter sparkResponseConverter = new SparkResponseConverter(false);
+    private static final SparkResponseConverter sparkResponseConverter = new SparkResponseConverter( new ResponseConverterConfig(false, false));
 
     // need delta b/c Doubles might not be an 'exact' match
     private static final Double DELTA = 0.00001;

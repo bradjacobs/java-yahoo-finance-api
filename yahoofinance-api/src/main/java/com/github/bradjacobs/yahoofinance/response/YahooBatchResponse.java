@@ -17,6 +17,13 @@ public class YahooBatchResponse extends AbstractResponse
         this.rawResponseList = rawResponseList;
     }
 
+    public YahooBatchResponse(YahooEndpoint endpoint, ResponseConverterConfig converterConfig, List<Response> rawResponseList)
+    {
+        super(endpoint, converterConfig);
+        this.rawResponseList = rawResponseList;
+    }
+
+
     @Override
     protected List<Response> getListResponse()
     {

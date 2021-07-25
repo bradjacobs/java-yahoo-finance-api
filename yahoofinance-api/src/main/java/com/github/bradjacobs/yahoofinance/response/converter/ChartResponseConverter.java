@@ -1,6 +1,9 @@
-package com.github.bradjacobs.yahoofinance.response;
+package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsDateStrConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsDateTimeStrConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
+import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
@@ -40,7 +43,8 @@ public class ChartResponseConverter extends YahooResponseConverter
     private static final String ADJ_CLOSE_PATH = BASE_PATH + ".indicators.adjclose[0]." + KEY_ADJ_CLOSE;
 
 
-    private static final EpochSecondsDateStrConverter epochSecondsToStringConverter = new EpochSecondsDateStrConverter();
+    private static final EpochStrConverter epochSecondsToDateStringConverter = new EpochSecondsDateStrConverter();
+    private static final EpochStrConverter epochSecondsToDateTimeStringConverter = new EpochSecondsDateTimeStrConverter();
 
     // configure to return NULL (instead of Exception) if the _LEAF_ is missing
     //   b/c the field might not always be there.
@@ -48,6 +52,24 @@ public class ChartResponseConverter extends YahooResponseConverter
         Configuration.defaultConfiguration()
             .addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
             .addOptions(Option.SUPPRESS_EXCEPTIONS);
+
+
+    private final EpochStrConverter epochStringConverter;
+
+    public ChartResponseConverter() {
+        this(null);
+    }
+
+
+    public ChartResponseConverter(ResponseConverterConfig config) {
+        if (config != null && config.isUseDateTime()) {
+            this.epochStringConverter = epochSecondsToDateTimeStringConverter;
+        }
+        else
+        {
+            this.epochStringConverter = epochSecondsToDateStringConverter;
+        }
+    }
 
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
@@ -107,7 +129,7 @@ public class ChartResponseConverter extends YahooResponseConverter
 
             // will refactor iff slow performance is shown
             Long timestamp = timestampValues[i];
-            entryMap.put(KEY_DATE, epochSecondsToStringConverter.convertToString(timestamp));
+            entryMap.put(KEY_DATE, epochStringConverter.convertToString(timestamp));
             entryMap.put(KEY_TIMESTAMP, timestamp);
 
             if (openLowHighExists) {

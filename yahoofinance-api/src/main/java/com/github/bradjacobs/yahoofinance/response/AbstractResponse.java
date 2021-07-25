@@ -1,10 +1,8 @@
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.http.Response;
+import com.github.bradjacobs.yahoofinance.response.converter.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,20 +12,21 @@ import java.util.Map;
 
 abstract public class AbstractResponse
 {
-    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
-
-
     protected final YahooEndpoint endpoint;
     protected final YahooResponseConverter responseConverter;
 
 
-    public AbstractResponse(YahooEndpoint endpoint)
+    public AbstractResponse(YahooEndpoint endpoint) {
+        this(endpoint, null);
+    }
+
+    public AbstractResponse(YahooEndpoint endpoint, ResponseConverterConfig converterConfig)
     {
         if (endpoint == null) {
             throw new IllegalArgumentException("Must provide an endpoint parameter.");
         }
         this.endpoint = endpoint;
-        this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);;
+        this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint, converterConfig);;
     }
 
     abstract protected List<Response> getListResponse();

@@ -1,9 +1,10 @@
-package com.github.bradjacobs.yahoofinance.response;
+package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsDateStrConverter;
+import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 
 import java.util.List;
@@ -25,9 +26,12 @@ public class SparkResponseConverter extends YahooResponseConverter
 
     private final boolean orgainizeByDate;
 
-    public SparkResponseConverter(boolean orgainizeByDate)
-    {
-        this.orgainizeByDate = orgainizeByDate;
+    public SparkResponseConverter() {
+        this(null);
+    }
+
+    public SparkResponseConverter(ResponseConverterConfig config) {
+        this.orgainizeByDate = (config == null || config.isUseDateAsMapKey());
     }
 
     @Override

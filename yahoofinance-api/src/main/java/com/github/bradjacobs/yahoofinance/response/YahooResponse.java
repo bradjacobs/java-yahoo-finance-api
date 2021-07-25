@@ -1,6 +1,7 @@
 package com.github.bradjacobs.yahoofinance.response;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
+import com.github.bradjacobs.yahoofinance.response.converter.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 
@@ -14,6 +15,12 @@ public class YahooResponse extends AbstractResponse
     public YahooResponse(YahooEndpoint yahooEndpoint, Response rawResponse)
     {
         super(yahooEndpoint);
+        this.rawResponse = rawResponse;
+    }
+
+    public YahooResponse(YahooEndpoint endpoint, ResponseConverterConfig converterConfig, Response rawResponse)
+    {
+        super(endpoint, converterConfig);
         this.rawResponse = rawResponse;
     }
 

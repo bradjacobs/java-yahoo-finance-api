@@ -1,5 +1,6 @@
-package com.github.bradjacobs.yahoofinance.response;
+package com.github.bradjacobs.yahoofinance.response.converter;
 
+import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 import com.jayway.jsonpath.DocumentContext;
@@ -35,9 +36,12 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
 
     private final boolean orgainizeByDate;
 
-    public TimeSeriesResponseConverter(boolean orgainizeByDate)
-    {
-        this.orgainizeByDate = orgainizeByDate;
+    public TimeSeriesResponseConverter() {
+        this(null);
+    }
+
+    public TimeSeriesResponseConverter(ResponseConverterConfig config) {
+        this.orgainizeByDate = (config == null || config.isUseDateAsMapKey());
     }
 
 

@@ -1,4 +1,4 @@
-package com.github.bradjacobs.yahoofinance.response;
+package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 import com.jayway.jsonpath.JsonPath;

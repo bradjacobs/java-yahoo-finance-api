@@ -1,9 +1,9 @@
 package com.github.bradjacobs.yahoofinance.response;
 
+import com.github.bradjacobs.yahoofinance.response.converter.TimeSeriesResponseConverter;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.*;
@@ -17,7 +17,7 @@ public class TimeSeriesResponseConverterTest
     {
         String originalJson = ResourceUtil.readResourceFileAsString("aapl_timeseries_response.json");
 
-        TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter(true);
+        TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter();
 
         Map<String, Map<String, Object>> annualValueMap = timeseriesResponseConverter.convertToMapOfMaps(originalJson);
 

@@ -16,6 +16,7 @@ public class ChartRequestDemoFactory
             case 1: return SIMPLE;
             case 2: return EPOCH;
             case 3: return LIMITED_FIELDS;
+            case 4: return SMALL_INTERVAL;
             default: return SIMPLE;
         }
     }
@@ -57,5 +58,14 @@ public class ChartRequestDemoFactory
             .setTimeRange("2021-01-01", "2021-03-31")
             .withIndicatorCloseAdjCloseOnly()
             .build();
+
+    private static final YahooFinanceRequest SMALL_INTERVAL =
+        YahooRequestBuilder.api()
+            .chart()
+            .withTicker("AAPL")
+            .withRange(Range.FIVE_DAYS)
+            .withInterval(Interval.FIVE_MIN)
+            .build();
+
 
 }

@@ -12,6 +12,7 @@ import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
+import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.HttpHeaders;
@@ -44,6 +45,7 @@ public class YahooFinanceClient
 
     private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
     private final BatchableRequestExecutor batchableRequestExecutor;
+    private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
 
 
     public YahooFinanceClient()
@@ -78,7 +80,7 @@ public class YahooFinanceClient
     public YahooResponse execute(YahooFinanceRequest request) throws IOException
     {
         Response rawResponse = executeInternal(request);
-        return new YahooResponse(request.getEndpoint(), rawResponse);
+        return yahooResponseGenerator.makeResposne(request, rawResponse);
     }
 
     public YahooBatchResponse executeBatch(YahooFinanceRequest request) throws IOException
@@ -95,7 +97,7 @@ public class YahooFinanceClient
     public YahooBatchResponse executeBatch(YahooFinanceBatchRequest request) throws IOException
     {
         List<Response> rawResponses = batchableRequestExecutor.executeRequest(request);
-        return new YahooBatchResponse(request.getEndpoint(), rawResponses);
+        return yahooResponseGenerator.makeBatchResponse(request, rawResponses);
     }
 
 
