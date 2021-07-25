@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
+/*
+TODO - entire class needs overhaul
+ */
 public class JsonMapperSingletonTest
 {
 
@@ -20,39 +20,8 @@ public class JsonMapperSingletonTest
         mapper = mapper.setNodeFactory(JsonNodeFactory.withExactBigDecimals(true));
     while this is not working for me
         mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
-
      */
 
-    @Test
-    public void testFoo() throws Exception
-    {
-        JsonMapper mapper = JsonMapperSingleton.getPrettyInstance();
-
-        File file = new File("/Users/bjacob101/git/github.com/bradjacobs/sec-data-loader/src/test/resources/aapl_timeseries_respoinse.json");
-
-        Map<String,Object> map = mapper.readValue(file, new TypeReference<Map<String,Object>>() {});
-
-        Map<String,Object> resultMap = (Map<String,Object>)map.get("timeseries");
-        List<Map<String,Object>> entryList = (List<Map<String, Object>>) resultMap.get("result");
-        Map<String,Object> firstEntryMap = entryList.get(0);
-        List<Map<String,Object>> attributeEntryList = (List<Map<String, Object>>) firstEntryMap.get("annualNetIncomeContinuousOperations");
-        Map<String,Object> firstAttributeEntryMap = attributeEntryList.get(0);
-        Map<String,Object> reportedValueMap = (Map<String, Object>) firstAttributeEntryMap.get("reportedValue");
-        Object rawValue = reportedValueMap.get("raw");
-
-        System.out.println("RAW VALUE CLASS: " + rawValue.getClass());
-
-        Map<String,Object> tempMap = new LinkedHashMap<>();
-        tempMap.put("key", rawValue);
-
-        String json = mapper.writeValueAsString(tempMap);
-
-
-       // Object inner = map.get("quoteSummary");
-
-        int kjkj = 333333;
-
-    }
 
     @Test
     public void testWrite() throws Exception
@@ -89,9 +58,38 @@ public class JsonMapperSingletonTest
         Map<String,Object> readMap3 = mapper.readValue(jsonStr, new TypeReference<Map<String,Object>>() {});
 
 
-        int kjkj = 333333;
-
     }
+
+
+    //   todo - fix this test or jut remove it!
+
+    // this was a random test to check numeric values turning into ..E10 form and checking Double vs BigDecimal
+//    @Test
+//    public void testAdHoc() throws Exception
+//    {
+//        JsonMapper mapper = JsonMapperSingleton.getPrettyInstance();
+//
+//        String originalJson = ResourceUtil.readResourceFileAsString("aapl_timeseries_response.json");
+//
+//        Map<String,Object> map = mapper.readValue(originalJson, new TypeReference<Map<String,Object>>() {});
+//
+//        Map<String,Object> resultMap = (Map<String,Object>)map.get("timeseries");
+//        List<Map<String,Object>> entryList = (List<Map<String, Object>>) resultMap.get("result");
+//        Map<String,Object> firstEntryMap = entryList.get(0);
+//        List<Map<String,Object>> attributeEntryList = (List<Map<String, Object>>) firstEntryMap.get("annualNetIncomeContinuousOperations");
+//        Map<String,Object> firstAttributeEntryMap = attributeEntryList.get(0);
+//        Map<String,Object> reportedValueMap = (Map<String, Object>) firstAttributeEntryMap.get("reportedValue");
+//        Object rawValue = reportedValueMap.get("raw");
+//
+//        System.out.println("RAW VALUE CLASS: " + rawValue.getClass());
+//
+//        Map<String,Object> tempMap = new LinkedHashMap<>();
+//        tempMap.put("key", rawValue);
+//
+//        String json = mapper.writeValueAsString(tempMap);
+//        System.out.println("JSON: " + json);
+//    }
+
 
 
 
