@@ -43,8 +43,30 @@ public class ChartRequesterDemo
         // convert into special custom class type
         List<ChartResult> listofChartResults = resp.getAsListOfPojos(ChartResult.class);
 
-        printListOfMaps(listOfMaps);
+        //printListOfMaps(listOfMaps);
+        printChartResults(listofChartResults);
     }
+
+    private static void printChartResults(List<ChartResult> chartResults)
+    {
+        EpochSecondsConverter epochConverter = new EpochSecondsConverter();
+        for (ChartResult chartResult : chartResults)
+        {
+            String date = chartResult.getDate();
+            Double close = chartResult.getClose();
+            Double adjclose = chartResult.getAdjclose();
+
+            String formattedStr = null;
+            if (adjclose != null) {
+                formattedStr = String.format("| %-11s| %-8.2f| %-8.2f|", date, close, adjclose);
+            }
+            else {
+                formattedStr = String.format("| %-11s| %-8.2f|", date, close);
+            }
+            System.out.println(formattedStr);
+        }
+    }
+
 
     private static void printListOfMaps(List<Map<String,Object>> listOfMaps)
     {
@@ -57,7 +79,13 @@ public class ChartRequesterDemo
             Object close = entryMap.get("close");
             Object adjclose = entryMap.get("adjclose");
 
-            String formattedStr = String.format("| %-11s| %-8.2f| %-8.2f|", epochConverter.convertToString((Long)timestamp), (Double)close, (Double)adjclose);
+            String formattedStr = null;
+            if (adjclose != null) {
+                formattedStr = String.format("| %-11s| %-8.2f| %-8.2f|", epochConverter.convertToString((Long)timestamp), (Double)close, (Double)adjclose);
+            }
+            else {
+                formattedStr = String.format("| %-11s| %-8.2f|", epochConverter.convertToString((Long)timestamp), (Double)close);
+            }
             System.out.println(formattedStr);
         }
     }

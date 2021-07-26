@@ -17,6 +17,7 @@ public class ChartRequestDemoFactory
             case 2: return EPOCH;
             case 3: return LIMITED_FIELDS;
             case 4: return SMALL_INTERVAL;
+            case 5: return WITH_PRE_POST;
             default: return SIMPLE;
         }
     }
@@ -65,6 +66,15 @@ public class ChartRequestDemoFactory
             .withTicker("AAPL")
             .withRange(Range.FIVE_DAYS)
             .withInterval(Interval.FIVE_MIN)
+            .build();
+
+    private static final YahooFinanceRequest WITH_PRE_POST =
+        YahooRequestBuilder.api()
+            .chart()
+            .withTicker("AAPL")
+            .withRange(Range.FIVE_DAYS)
+            .withInterval(Interval.FIFTEEN_MIN)
+            .withPrePost(true)
             .build();
 
 
