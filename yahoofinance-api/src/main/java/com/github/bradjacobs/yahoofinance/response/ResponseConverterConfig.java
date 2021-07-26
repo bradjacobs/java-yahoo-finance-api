@@ -3,20 +3,25 @@ package com.github.bradjacobs.yahoofinance.response;
 public class ResponseConverterConfig
 {
     private static final boolean DEFAULT_USE_DATE_MAP_KEY = true;
-    private static final boolean DEFAULT_USE_DATE_TIME = false;
+
+    private static final boolean DEFAULT_AUTO_DETECT_DATE_TIME = true;
 
     private final boolean useDateAsMapKey;
-    private final boolean useDateTime;
+    private final boolean autoDetechDateTime;
+
+
+    public static final ResponseConverterConfig DEFAULT_INSTANCE = new ResponseConverterConfig();
+
 
     public ResponseConverterConfig()
     {
-        this(DEFAULT_USE_DATE_MAP_KEY, DEFAULT_USE_DATE_TIME);
+        this(DEFAULT_USE_DATE_MAP_KEY, DEFAULT_AUTO_DETECT_DATE_TIME);
     }
 
-    public ResponseConverterConfig(boolean useDateAsMapKey, boolean useDateTime)
+    public ResponseConverterConfig(boolean useDateAsMapKey, boolean autoDetechDateTime)
     {
         this.useDateAsMapKey = useDateAsMapKey;
-        this.useDateTime = useDateTime;
+        this.autoDetechDateTime = autoDetechDateTime;
     }
 
     public boolean isUseDateAsMapKey()
@@ -24,8 +29,8 @@ public class ResponseConverterConfig
         return useDateAsMapKey;
     }
 
-    public boolean isUseDateTime()
+    public boolean isAutoDetechDateTime()
     {
-        return useDateTime;
+        return autoDetechDateTime;
     }
 }

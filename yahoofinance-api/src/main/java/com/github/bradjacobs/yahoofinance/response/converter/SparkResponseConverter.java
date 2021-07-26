@@ -4,9 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsDateStrConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsDateTimeStrConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
 import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,17 +24,27 @@ public class SparkResponseConverter extends YahooResponseConverter
     private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
 
 
+    // if 2 adjacent timestamps are within this interval threshold, then consider it 'small interval'
+    //   and use 'datetime' instead of 'date' for string representation.
+    private static final long SMALL_TIMESTAMP_INTERVAL_SECONDS = 60 * 60 * 23; // (23 hours in seconds)
 
-    private static final EpochSecondsDateStrConverter epochSecondsToStringConverter = new EpochSecondsDateStrConverter();
 
-    private final boolean orgainizeByDate;
+    private static final EpochStrConverter epochSecondsToDateStringConverter = new EpochSecondsDateStrConverter();
+    private static final EpochStrConverter epochSecondsToDateTimeStringConverter = new EpochSecondsDateTimeStrConverter();
+    private static final ResponseConverterConfig defaultResponseConverterConfig = ResponseConverterConfig.DEFAULT_INSTANCE;
+
+
+    private final ResponseConverterConfig config;
 
     public SparkResponseConverter() {
         this(null);
     }
 
     public SparkResponseConverter(ResponseConverterConfig config) {
-        this.orgainizeByDate = (config == null || config.isUseDateAsMapKey());
+        if (config == null) {
+            config = defaultResponseConverterConfig; // if null, use instance w/ default values.
+        }
+        this.config = config;
     }
 
     @Override
@@ -66,6 +79,10 @@ public class SparkResponseConverter extends YahooResponseConverter
             Map<String, Map<String, Object>> originalMapOfMaps =
                 mapper.readValue(json, new TypeReference<Map<String, Map<String, Object>>>() {});
 
+            EpochStrConverter epochStrConverter = selectDateConverter(originalMapOfMaps);
+
+            boolean orgainizeByDate = this.config.isUseDateAsMapKey();
+
             for (Map.Entry<String, Map<String, Object>> entry : originalMapOfMaps.entrySet())
             {
                 String ticker = entry.getKey();
@@ -74,14 +91,13 @@ public class SparkResponseConverter extends YahooResponseConverter
                 List<Long> timestamps = (List<Long>) dataMap.get(KEY_TIMESTAMP);
                 List<Number> closeValues = (List<Number>) dataMap.get(KEY_CLOSE);
 
-
                 for (int i = 0; i < timestamps.size(); i++)
                 {
                     Long timestamp = timestamps.get(i);
                     Number closeValue = closeValues.get(i);
-                    String date = epochSecondsToStringConverter.convertToString(timestamp);
+                    String date = epochStrConverter.convertToString(timestamp);
 
-                    if (this.orgainizeByDate)
+                    if (orgainizeByDate)
                     {
                         Map<String, Object> internalTickerCloseMap = resultMap.computeIfAbsent(date, k -> new TreeMap<>());
                         internalTickerCloseMap.put(ticker, closeValue);
@@ -98,6 +114,32 @@ public class SparkResponseConverter extends YahooResponseConverter
         catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Unable to parse json: " + e.getMessage(), e);
         }
+    }
+
+    private EpochStrConverter selectDateConverter(Map<String, Map<String, Object>> mapOfMaps)
+    {
+        if (this.config.isAutoDetechDateTime()) {
+            String firstTickerKey = new ArrayList<>(mapOfMaps.keySet()).get(0);
+            Map<String, Object> tickerDataMap = mapOfMaps.get(firstTickerKey);
+
+            if (tickerDataMap != null && tickerDataMap.size() > 0)
+            {
+                List<Long> timestamps = (List<Long>) tickerDataMap.get(KEY_TIMESTAMP);
+                if (timestamps != null && timestamps.size() > 1)
+                {
+                    Long timestamp1 = timestamps.get(0);
+                    Long timestamp2 = timestamps.get(1);
+                    if (timestamp1 != null && timestamp2 != null)
+                    {
+                        if (Math.abs(timestamp1 - timestamp2) < SMALL_TIMESTAMP_INTERVAL_SECONDS) {
+                            return epochSecondsToDateTimeStringConverter;
+                        }
+                    }
+                }
+            }
+        }
+
+        return epochSecondsToDateStringConverter;
     }
 
 

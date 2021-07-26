@@ -43,8 +43,16 @@ public class ChartResponseConverter extends YahooResponseConverter
     private static final String ADJ_CLOSE_PATH = BASE_PATH + ".indicators.adjclose[0]." + KEY_ADJ_CLOSE;
 
 
+    // if 2 adjacent timestamps are within this interval threshold, then consider it 'small interval'
+    //   and use 'datetime' instead of 'date' for string representation.
+    private static final long SMALL_TIMESTAMP_INTERVAL_SECONDS = 60 * 60 * 23; // (23 hours in seconds)
+
+
     private static final EpochStrConverter epochSecondsToDateStringConverter = new EpochSecondsDateStrConverter();
     private static final EpochStrConverter epochSecondsToDateTimeStringConverter = new EpochSecondsDateTimeStrConverter();
+    private static final ResponseConverterConfig defaultResponseConverterConfig = ResponseConverterConfig.DEFAULT_INSTANCE;
+
+
 
     // configure to return NULL (instead of Exception) if the _LEAF_ is missing
     //   b/c the field might not always be there.
@@ -54,21 +62,18 @@ public class ChartResponseConverter extends YahooResponseConverter
             .addOptions(Option.SUPPRESS_EXCEPTIONS);
 
 
-    private final EpochStrConverter epochStringConverter;
+    private final ResponseConverterConfig config;
+
 
     public ChartResponseConverter() {
         this(null);
     }
 
-
     public ChartResponseConverter(ResponseConverterConfig config) {
-        if (config != null && config.isUseDateTime()) {
-            this.epochStringConverter = epochSecondsToDateTimeStringConverter;
+        if (config == null) {
+            config = defaultResponseConverterConfig; // if null, use instance w/ default values.
         }
-        else
-        {
-            this.epochStringConverter = epochSecondsToDateStringConverter;
-        }
+        this.config = config;
     }
 
     @Override
@@ -100,6 +105,8 @@ public class ChartResponseConverter extends YahooResponseConverter
             return Collections.emptyList();
         }
 
+        EpochStrConverter epochStrConverter = selectDateConverter(timestampValues);
+
         // _ASSERT_ all lists are same length
         int entryCount = timestampValues.length;
 
@@ -129,7 +136,7 @@ public class ChartResponseConverter extends YahooResponseConverter
 
             // will refactor iff slow performance is shown
             Long timestamp = timestampValues[i];
-            entryMap.put(KEY_DATE, epochStringConverter.convertToString(timestamp));
+            entryMap.put(KEY_DATE, epochStrConverter.convertToString(timestamp));
             entryMap.put(KEY_TIMESTAMP, timestamp);
 
             if (openLowHighExists) {
@@ -149,4 +156,26 @@ public class ChartResponseConverter extends YahooResponseConverter
 
         return resultKeyValueList;
     }
+
+
+    private EpochStrConverter selectDateConverter(Long[] timestampValues)
+    {
+        if (this.config.isAutoDetechDateTime())
+        {
+            if (timestampValues != null && timestampValues.length > 1)
+            {
+                Long timestamp1 = timestampValues[0];
+                Long timestamp2 = timestampValues[1];
+                if (timestamp1 != null && timestamp2 != null)
+                {
+                    if (Math.abs(timestamp1 - timestamp2) < SMALL_TIMESTAMP_INTERVAL_SECONDS) {
+                        return epochSecondsToDateTimeStringConverter;
+                    }
+                }
+            }
+        }
+
+        return epochSecondsToDateStringConverter;
+    }
+
 }

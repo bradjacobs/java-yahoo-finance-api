@@ -14,7 +14,7 @@ public class ResponseConverterFactory
     private static final boolean DEFAULT_SPARK_USE_DATE_MAP_KEY = true;
 
 
-    private static final ResponseConverterConfig DEFAULT_CONFIG = new ResponseConverterConfig();
+    private static final ResponseConverterConfig DEFAULT_CONFIG = ResponseConverterConfig.DEFAULT_INSTANCE;
 
 
     private ResponseConverterFactory() { }
