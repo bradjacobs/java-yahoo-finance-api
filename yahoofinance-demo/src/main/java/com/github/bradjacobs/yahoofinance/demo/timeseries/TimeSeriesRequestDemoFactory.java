@@ -29,6 +29,9 @@ public class TimeSeriesRequestDemoFactory
             case 1: return SIMPLE;
             case 2: return ANNUAL;
             case 3: return QUARTERLY;
+            case 4: return MISC;
+            case 5: return CUSTOM_FIELDS;
+            case 6: return CUSTOM_FIELDS_EXPLICIT;
             default: return SIMPLE;
         }
     }
@@ -72,20 +75,43 @@ public class TimeSeriesRequestDemoFactory
     private static final YahooFinanceRequest QUARTERLY =
         YahooRequestBuilder.api()
             .timeSeries()
-            .withTicker("AAPL")
-            .withTimeFrame(TimeSeriesUnit.QUARTERLY, TimeSeriesUnit.ANNUAL)
-            .withStatement(StatementType.INC_STMT, StatementType.CASH_FLOW)
+            .withTicker("CAT")
+            .withTimeFrame(TimeSeriesUnit.QUARTERLY)
+            .withStatement(StatementType.VALUE)
             .setStart("2018-12-31")
             .setEnd("2021-12-31")
             .build();
 
-    // not yet available.
-//    private static final YahooFinanceRequest SPECIFIC_FIELDS =
-//        YahooRequestBuilder.api()
-//            .timeSeries()
-//            .withTicker("AAPL")
-//            .withTimeFrame(TimeSeriesUnit.QUARTERLY)
-//            .withStatement(StatementType.INC_STMT)
 
+    private static final YahooFinanceRequest MISC =
+        YahooRequestBuilder.api()
+            .timeSeries()
+            .withTicker("AAPL")
+            .withTimeFrame(TimeSeriesUnit.QUARTERLY)
+            .withStatement(StatementType.VALUE)
+            .setStart("2019-12-31")
+            .setEnd("2021-12-31")
+            .build();
+
+    // set explicity fields.  Requires caller to 'know' the exact names
+    private static final YahooFinanceRequest CUSTOM_FIELDS =
+        YahooRequestBuilder.api()
+            .timeSeries()
+            .withTicker("AAPL")
+            .withTimeFrame(TimeSeriesUnit.QUARTERLY)
+            .withCustomFields("TotalRevenue", "TotalDebt", "PeRatio")
+            .setStart(1546300800000L)
+            .setEnd(1609459200000L)
+            .build();
+
+
+    private static final YahooFinanceRequest CUSTOM_FIELDS_EXPLICIT =
+        YahooRequestBuilder.api()
+            .timeSeries()
+            .withTicker("AAPL")
+            .withCustomFields("quarterlyTotalRevenue", "quarterlyTotalDebt", "annualPeRatio")
+            .setStart(1546300800000L)
+            .setEnd(1609459200000L)
+            .build();
 
 }

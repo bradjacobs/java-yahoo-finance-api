@@ -68,6 +68,10 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
         return this;
     }
 
+    public TimeSeriesBuilder withCustomFields(String ... fieldNames) {
+        fieldBuilder.withCustomFields(fieldNames);
+        return this;
+    }
 
 
     @Override
@@ -151,6 +155,9 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
 
         private Set<TimeSeriesUnit> timeFrames = new LinkedHashSet<>();
 
+        private Set<String> customFields = new LinkedHashSet<>();
+
+
         public FieldBuilder withStatement(StatementType ... statements) {
             if (statements != null) {
                 statementTypes.addAll(Arrays.asList(statements));
@@ -177,12 +184,23 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
             return withTimeframes(TimeSeriesUnit.values());
         }
 
+        public FieldBuilder withCustomFields(String ... fieldNames) {
+            if (fieldNames != null && fieldNames.length > 0) {
+                customFields.addAll(Arrays.asList(fieldNames));
+            }
+            return this;
+        }
+
         public List<String> build() {
             if (statementTypes.isEmpty()) {
                 withAllStatements();
             }
             if (timeFrames.isEmpty()) {
                 withAllTimeframes();
+            }
+
+            if (customFields.size() > 0) {
+                return buildCustomFields();
             }
 
             List<String> resultList = new ArrayList<>();
@@ -195,22 +213,64 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
                         continue;
                     }
 
-                    String prefix = timeFrame.name().toLowerCase();
                     for (String field : rawFields) {
-
-                        // discovered a weird bug that Yahoo wants a different case for EBITDA for annual/quarterly (vs trailing)
-                        // todo: this is a _PERFECT_ example of a terrible HACK nested in middle of code that should be handled better
-                        if (field.equals("EBITDA") && !timeFrame.equals(TimeSeriesUnit.TRAILING)) {
-                            field = "Ebitda";
-                        }
-
-                        resultList.add(prefix + field);
+                        //  note: nested method causes redundant calls of 'timeFrame.name().toLowerCase()', but presently low priority concern.
+                        resultList.add( constructFullFieldName(timeFrame, field) );
                     }
                 }
             }
 
             return resultList;
         }
+
+
+        private List<String> buildCustomFields()
+        {
+            List<String> resultList = new ArrayList<>();
+
+            for (String customField : customFields)
+            {
+                if (hasTimePrefix(customField)) {
+                    resultList.add(customField);
+                }
+                else
+                {
+                    for (TimeSeriesUnit timeFrame : timeFrames) {
+                        resultList.add( constructFullFieldName(timeFrame, customField) );
+                    }
+                }
+            }
+
+            return resultList;
+        }
+
+        private String constructFullFieldName(TimeSeriesUnit timeFrame, String baseFieldName)
+        {
+            String prefix = timeFrame.name().toLowerCase();
+
+            // discovered a weird bug that Yahoo wants a different case for EBITDA for annual/quarterly (vs trailing)
+            // todo: this is a _PERFECT_ example of a terrible HACK nested in middle of code that should be handled better
+            if (baseFieldName.equals("EBITDA") && !timeFrame.equals(TimeSeriesUnit.TRAILING))
+            {
+                baseFieldName = "Ebitda";
+            }
+
+            return prefix + baseFieldName.substring(0, 1).toUpperCase() + baseFieldName.substring(1);
+        }
+
+
+        private boolean hasTimePrefix(String fieldName)
+        {
+            for (TimeSeriesUnit timeSeriesUnit : TimeSeriesUnit.values()) {
+                String prefix = timeSeriesUnit.name().toLowerCase();
+                if (fieldName.startsWith(prefix)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
 
 
         //////////////////////////////////////////////////
