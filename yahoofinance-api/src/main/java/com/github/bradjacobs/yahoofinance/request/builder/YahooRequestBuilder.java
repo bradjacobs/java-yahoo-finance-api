@@ -41,7 +41,7 @@ public class YahooRequestBuilder
         return new LookupBuilder();
     }
 
-    // a generic builder for less common endponts (i.e. "everything else"
+    // a generic builder for less common endpoints (i.e. "everything else"
     public EndpointBuilder endpointRequest(YahooEndpoint endpoint){
         return new EndpointBuilder(endpoint);
     }

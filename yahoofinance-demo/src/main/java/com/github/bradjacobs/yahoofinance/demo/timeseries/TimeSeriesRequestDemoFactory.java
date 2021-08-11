@@ -32,6 +32,7 @@ public class TimeSeriesRequestDemoFactory
             case 4: return MISC;
             case 5: return CUSTOM_FIELDS;
             case 6: return CUSTOM_FIELDS_EXPLICIT;
+            case 7: return PREMIUM_REQUEST_1;
             default: return SIMPLE;
         }
     }
@@ -113,5 +114,17 @@ public class TimeSeriesRequestDemoFactory
             .setStart(1546300800000L)
             .setEnd(1609459200000L)
             .build();
+
+    private static final YahooFinanceRequest PREMIUM_REQUEST_1  =
+        YahooRequestBuilder.api()
+            .timeSeries()
+            .withTicker("AAPL")
+            .withTimeFrame(TimeSeriesUnit.QUARTERLY)
+            .withStatement(StatementType.INC_STMT)
+            .setPremium(true)
+            .setStart(1531268938L)
+            .setEnd(1625963338L)
+            .build();
+
 
 }

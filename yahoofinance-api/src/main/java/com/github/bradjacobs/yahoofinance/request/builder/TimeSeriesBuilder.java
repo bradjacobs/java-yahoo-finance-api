@@ -28,6 +28,8 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
     private boolean merge = false;
     private boolean padTimeSeries = true;
 
+    private boolean usePremium = false;
+
     private FieldBuilder fieldBuilder = new FieldBuilder();
 
 
@@ -73,6 +75,11 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
         return this;
     }
 
+    public TimeSeriesBuilder setPremium(boolean premium) {
+        this.usePremium = premium;
+        return this;
+    }
+
 
     @Override
     protected String _getRequestTicker()
@@ -115,7 +122,12 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
     @Override
     protected YahooEndpoint _getRequestEndpoiint()
     {
-        return YahooEndpoint.TIMESERIES;
+        if (this.usePremium) {
+            return YahooEndpoint.PREMIUM_TIMESERIES;
+        }
+        else {
+            return YahooEndpoint.TIMESERIES;
+        }
     }
 
 

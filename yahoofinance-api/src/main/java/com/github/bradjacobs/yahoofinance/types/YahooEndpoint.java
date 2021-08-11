@@ -89,7 +89,18 @@ public enum YahooEndpoint
 
     //  Regional requests
     MARKET_SUMMARY("quote/marketSummary", 6, FLAG_IS_REGION),
-    TRENDING("trending/", 1, FLAG_IS_REGION); // 'trending/US' or 'trending/?region=US'
+    TRENDING("trending/", 1, FLAG_IS_REGION), // 'trending/US' or 'trending/?region=US'
+
+
+
+    // NOTE: ----
+    //    intro attempt of supporting 'premium' endpoints.  Must have a valid Yahoo username/password
+    //      and be signed up for the premium service.
+
+    PREMIUM_TIMESERIES("premium/timeseries", 1, "ws/fundamentals-timeseries/");
+
+
+
 
 
     //   NOTE: allegedly this is valid endpoint, but never seen it work

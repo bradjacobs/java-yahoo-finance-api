@@ -6,6 +6,7 @@ package com.github.bradjacobs.yahoofinance;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
+import com.github.bradjacobs.yahoofinance.http.exception.HttpClientErrorException;
 import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
@@ -15,10 +16,13 @@ import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
 
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,11 +57,35 @@ public class YahooFinanceClient
         this(HttpClientAdapterFactory.createDefaultClient());
     }
 
+    public YahooFinanceClient(String userName, String password)
+    {
+        this(HttpClientAdapterFactory.createDefaultClient(), userName, password);
+    }
+
     public YahooFinanceClient(HttpClientAdapter httpClient)
+    {
+        this(httpClient, null, null);
+    }
+
+
+    public YahooFinanceClient(HttpClientAdapter httpClient, String userName, String password)
     {
         if (httpClient == null) {
             throw new IllegalArgumentException("httpClient cannot be null.");
         }
+
+        if (StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(password))
+        {
+            // todo - do smarter exception handling!!
+            YahooLoginExecutor yahooLoginExecutor = new YahooLoginExecutor(httpClient);
+            try {
+                yahooLoginExecutor.doLogin(userName, password);
+            }
+            catch (Exception e) {
+                throw new RuntimeException("Unable to login: " + e.getMessage(), e);  // todo better exception needed!!
+            }
+        }
+
 
         setContentType(DEFAULT_CONTENT_TYPE);
         setUserAgent(DEFAULT_USER_AGENT);

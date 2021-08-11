@@ -5,6 +5,7 @@ import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -23,11 +24,23 @@ public class TimeSeriesRequesterDemo
 
     private static void timeSeriesRequestRunner(YahooFinanceRequest req) throws IOException
     {
-        if (req == null || !req.getEndpoint().equals(YahooEndpoint.TIMESERIES)) {
+        if (req == null || !(req.getEndpoint().equals(YahooEndpoint.TIMESERIES) || req.getEndpoint().equals(YahooEndpoint.PREMIUM_TIMESERIES))) {
             throw new IllegalArgumentException("Must supply a timeseries-type request");
         }
 
-        YahooFinanceClient client = new YahooFinanceClient();
+        String userName = null;
+        String password = null;
+
+        YahooFinanceClient client;
+
+        if (StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(password)) {
+            client = new YahooFinanceClient(userName, password);
+        }
+        else {
+            client = new YahooFinanceClient();
+        }
+
+
         YahooResponse resp = client.execute(req);
 
         String rawJson = resp.getJson();

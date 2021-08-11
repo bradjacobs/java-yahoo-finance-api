@@ -62,6 +62,7 @@ public class ResponseConverterFactory
             case SPARK:
                 return new SparkResponseConverter(config);  // todo: come back to the future of the config param
             case TIMESERIES:
+            case PREMIUM_TIMESERIES:
                 return new TimeSeriesResponseConverter(config); // todo: come back to the future of the config param
             default:
                 return new DefaultResponseConverter();
