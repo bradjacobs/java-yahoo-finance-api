@@ -50,11 +50,12 @@ public class YahooFinanceClient
     private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
     private final BatchableRequestExecutor batchableRequestExecutor;
     private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
+    private final YahooLoginExecutor yahooLoginExecutor;
 
 
     public YahooFinanceClient()
     {
-        this(HttpClientAdapterFactory.createDefaultClient());
+        this(null, null);
     }
 
     public YahooFinanceClient(String userName, String password)
@@ -67,25 +68,18 @@ public class YahooFinanceClient
         this(httpClient, null, null);
     }
 
-
     public YahooFinanceClient(HttpClientAdapter httpClient, String userName, String password)
     {
         if (httpClient == null) {
             throw new IllegalArgumentException("httpClient cannot be null.");
         }
 
-        if (StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(password))
-        {
-            // todo - do smarter exception handling!!
-            YahooLoginExecutor yahooLoginExecutor = new YahooLoginExecutor(httpClient);
-            try {
-                yahooLoginExecutor.doLogin(userName, password);
-            }
-            catch (Exception e) {
-                throw new RuntimeException("Unable to login: " + e.getMessage(), e);  // todo better exception needed!!
-            }
+        if (StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(password)) {
+            yahooLoginExecutor = new YahooLoginExecutor(httpClient, userName, password);
         }
-
+        else {
+            yahooLoginExecutor = null;
+        }
 
         setContentType(DEFAULT_CONTENT_TYPE);
         setUserAgent(DEFAULT_USER_AGENT);
@@ -134,6 +128,25 @@ public class YahooFinanceClient
     {
         // validation will throw an exception if invalid request is detected
         requestValidator.validationRequest(request);
+
+
+        // if premium endpoint, ensure logged in
+        YahooEndpoint endpoint = request.getEndpoint();
+        if (endpoint.isPremiumRequest()) {
+            if (this.yahooLoginExecutor != null) {
+                if (! this.yahooLoginExecutor.isLoggedIn()) {
+                    try {
+                        yahooLoginExecutor.doLogin();
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException("Unable to login: " + e.getMessage(), e);  // todo better exception needed!!
+                    }
+                }
+            }
+            else {
+                throw new IllegalStateException("Unable to execute premium endpoint request: no credentials were supplied.");
+            }
+        }
 
         String url = buildRequestUrl(request);
 

@@ -44,21 +44,36 @@ public class YahooLoginExecutor
 
 
 
-    private final HttpClientAdapter httpClient;
 
-    public YahooLoginExecutor(HttpClientAdapter httpClient)
+    private final HttpClientAdapter httpClient;
+    private final String userName;
+    private final String password;
+
+    private boolean isLoggedIn = false;
+
+
+    public YahooLoginExecutor(HttpClientAdapter httpClient, String userName, String password)
     {
         if (httpClient == null) {
             throw new IllegalArgumentException("Must provide an httpClientAdapter.");
+        }
+        if (StringUtils.isEmpty(userName)) {
+            throw new IllegalArgumentException("Must provide a username.");
+        }
+        if (StringUtils.isEmpty(password)) {
+            throw new IllegalArgumentException("Must provide a password.");
         }
         if (! (httpClient instanceof HttpCommonsClientAdapter)) {
             throw new NotImplementedException("Only Apache Commons is supported for login (at present)");
         }
 
+
         this.httpClient = httpClient;
+        this.userName = userName;
+        this.password = password;
     }
 
-    public void doLogin(String userName, String password) throws Exception
+    public void doLogin() throws Exception
     {
         // REQUEST #1...
         //    loads in required Cookies + need to grab some crumb/session values from the response.
@@ -114,10 +129,15 @@ public class YahooLoginExecutor
             throw new LoginException("Unable to Login!!");
         }
 
-
+        
         // if made it here, then login succeeded!
+        this.isLoggedIn = true;
     }
 
+    public boolean isLoggedIn()
+    {
+        return isLoggedIn;
+    }
 
     private HiddenSessionValues extractHiddenSessionInfo(String responseBody)
     {

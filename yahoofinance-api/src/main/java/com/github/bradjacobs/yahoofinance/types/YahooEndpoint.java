@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_IS_PREMIUM;
 import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_IS_QUERY;
 import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_IS_REGION;
 import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_REQUIRES_CRUMB;
@@ -97,7 +98,7 @@ public enum YahooEndpoint
     //    intro attempt of supporting 'premium' endpoints.  Must have a valid Yahoo username/password
     //      and be signed up for the premium service.
 
-    PREMIUM_TIMESERIES("premium/timeseries", 1, "ws/fundamentals-timeseries/");
+    PREMIUM_TIMESERIES("premium/timeseries", 1, "ws/fundamentals-timeseries/", FLAG_IS_PREMIUM);
 
 
 
@@ -161,6 +162,10 @@ public enum YahooEndpoint
 
     private boolean isRegionRequest() {
         return flags.contains(FLAG_IS_REGION);
+    }
+
+    public boolean isPremiumRequest() {
+        return flags.contains(FLAG_IS_PREMIUM);
     }
 
 

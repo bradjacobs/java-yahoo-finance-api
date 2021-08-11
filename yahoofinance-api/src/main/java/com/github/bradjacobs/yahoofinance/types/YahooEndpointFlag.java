@@ -23,4 +23,7 @@ public enum YahooEndpointFlag
 
     // endpoint requires POST method (instead of GET)
     FLAG_REQUIRES_POST,
+
+    // if endpoint is premium (i.e. requires a login to access)
+    FLAG_IS_PREMIUM,
 }
