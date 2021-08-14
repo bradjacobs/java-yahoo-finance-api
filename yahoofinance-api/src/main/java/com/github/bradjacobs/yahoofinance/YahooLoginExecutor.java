@@ -14,10 +14,17 @@ import java.util.TreeMap;
 
 /**
  * Helper method to "Login" to yahoo.  Namely to allow use of extra functionilty if you have a 'premium' membership.
+ *   The 'login' will essentially add a cookie to the client to represent the client is logged in.
+ *   It is assumed that the nested httpClient is configured to handle '302/Redirects'.
  *
- * The 'login' will essentially add a cookie to the client to represent the client is logged in.
+ *  ***********************
+ *  *****   UPDATE   ******
+ *  ***********************
+ *  This will not always work!  Namely yahoo may prompt for a 'capcha' to prove not a robot.
+ *    Capchas were not encountered during the initial implementation of this code, however it's not surprising that yahoo wants
+ *    to have limits on robot automation.
  *
- * It is assumed that the nested httpClient is configured to handle '302/Redirects'.
+ *  Alternatives will be researched when time allows.
  *
  */
 public class YahooLoginExecutor
@@ -129,7 +136,7 @@ public class YahooLoginExecutor
             throw new LoginException("Unable to Login!!");
         }
 
-        
+
         // if made it here, then login succeeded!
         this.isLoggedIn = true;
     }
