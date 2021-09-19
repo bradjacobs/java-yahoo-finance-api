@@ -5,21 +5,21 @@ package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
 import java.util.Date;
 
-public class EpochSecondsDateConverter
+public class EpochSecondsDateConverter implements EpochSecondsConverte<Date>
 {
-    public Date convertToDate(Long timestamp) {
-        if (timestamp == null) {
+    @Override
+    public Date convertFromEpochSeconds(Long epochSeconds) {
+        if (epochSeconds == null) {
             return null;
         }
-
-        timestamp *= 1000L;
-        return new Date(timestamp);
+        return new Date(epochSeconds * 1000L);
     }
 
-    public Long convertToEpoch(Date date) {
-        if (date == null) {
+    @Override
+    public Long convertFromObject(Date o) {
+        if (o == null) {
             return null;
         }
-        return date.getTime() / 1000L;
+        return o.getTime() / 1000L;
     }
 }

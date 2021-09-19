@@ -2,7 +2,7 @@ package com.github.bradjacobs.yahoofinance.demo.chart;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
-import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.model.ChartResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
@@ -69,7 +69,7 @@ public class ChartRequesterDemo
 
     private static void printListOfMaps(List<Map<String,Object>> listOfMaps)
     {
-        EpochSecondsConverter epochConverter = EpochSecondsConverter.getInstance();
+        MetaEpochSecondsConverter epochConverter = MetaEpochSecondsConverter.getInstance();
 
         // print out results  --- PROOF OF CONCEPT ONLY ---
         for (Map<String, Object> entryMap : listOfMaps)
@@ -80,10 +80,10 @@ public class ChartRequesterDemo
 
             String formattedStr = null;
             if (adjclose != null) {
-                formattedStr = String.format("| %-11s| %-8.2f| %-8.2f|", epochConverter.convertToDateString((Long)timestamp), (Double)close, (Double)adjclose);
+                formattedStr = String.format("| %-11s| %-8.2f| %-8.2f|", epochConverter.fromLong((Long)timestamp), (Double)close, (Double)adjclose);
             }
             else {
-                formattedStr = String.format("| %-11s| %-8.2f|", epochConverter.convertToDateString((Long)timestamp), (Double)close);
+                formattedStr = String.format("| %-11s| %-8.2f|", epochConverter.fromLong((Long)timestamp), (Double)close);
             }
             System.out.println(formattedStr);
         }

@@ -1,6 +1,5 @@
 package com.github.bradjacobs.yahoofinance.converter.datetime;
 
-import java.time.Instant;
 
 public interface EpochStrConverter
 {

@@ -1,7 +1,7 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 import com.jayway.jsonpath.Configuration;
@@ -166,13 +166,13 @@ public class ChartResponseConverter extends YahooResponseConverter
                 if (timestamp1 != null && timestamp2 != null)
                 {
                     if (Math.abs(timestamp1 - timestamp2) < SMALL_TIMESTAMP_INTERVAL_SECONDS) {
-                        return EpochSecondsConverter.getInstance().getDateTimeStringConverter();
+                        return MetaEpochSecondsConverter.getDateTimeStringConverter();
                     }
                 }
             }
         }
 
-        return EpochSecondsConverter.getInstance().getDateStringConverter();
+        return MetaEpochSecondsConverter.getDateStringConverter();
     }
 
 }

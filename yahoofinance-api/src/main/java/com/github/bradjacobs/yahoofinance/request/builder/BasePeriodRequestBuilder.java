@@ -3,7 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ import java.util.Date;
  */
 abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilder<T>> extends BaseRequestBuilder<T>
 {
-    private static final EpochSecondsConverter epochSecondsConverter = EpochSecondsConverter.getInstance();
+    private static final MetaEpochSecondsConverter epochSecondsConverter = MetaEpochSecondsConverter.getInstance();
     private static final ZoneId GMT_ZONE = ZoneId.of("GMT");
 
     protected Long startPeriod;
@@ -60,36 +60,36 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
     // methods below as being considered for removal (or no longer public)  TBD.
 
     public T setStart(String startDate) {
-        this.startPeriod = epochSecondsConverter.convertToEpochSeconds(startDate);
+        this.startPeriod = epochSecondsConverter.fromString(startDate);
         return getThis();
     }
     public T setStart(Instant start) {
-        this.startPeriod = epochSecondsConverter.convertToEpochSeconds(start);
+        this.startPeriod = epochSecondsConverter.fromInstant(start);
         return getThis();
     }
     public T setStart(Date start) {
-        this.startPeriod = epochSecondsConverter.convertToEpochSeconds(start);
+        this.startPeriod = epochSecondsConverter.fromDate(start);
         return getThis();
     }
     public T setStart(Long start) {
-        this.startPeriod = epochSecondsConverter.convertToEpochSeconds(start);
+        this.startPeriod = epochSecondsConverter.fromLong(start);
         return getThis();
     }
 
     public T setEnd(String endDate) {
-        this.endPeriod = epochSecondsConverter.convertToEpochSeconds(endDate);
+        this.endPeriod = epochSecondsConverter.fromString(endDate);
         return getThis();
     }
     public T setEnd(Instant end) {
-        this.endPeriod = epochSecondsConverter.convertToEpochSeconds(end);
+        this.endPeriod = epochSecondsConverter.fromInstant(end);
         return getThis();
     }
     public T setEnd(Date end) {
-        this.endPeriod = epochSecondsConverter.convertToEpochSeconds(end);
+        this.endPeriod = epochSecondsConverter.fromDate(end);
         return getThis();
     }
     public T setEnd(Long end) {
-        this.endPeriod = epochSecondsConverter.convertToEpochSeconds(end);
+        this.endPeriod = epochSecondsConverter.fromLong(end);
         return getThis();
     }
 

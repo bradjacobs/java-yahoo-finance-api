@@ -3,7 +3,6 @@
  */
 package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
-import com.github.bradjacobs.yahoofinance.converter.datetime.helper.EpochSecondsDateConverter;
 import org.testng.annotations.Test;
 
 import java.util.Date;
@@ -20,7 +19,7 @@ public class EpochSecondsDateConverterTest
     {
         Date d = new Date();
         Long expected = d.getTime() / 1000;
-        assertEquals(converter.convertToEpoch(d), expected);
+        assertEquals(converter.convertFromObject(d), expected);
     }
 
     @Test
@@ -28,18 +27,18 @@ public class EpochSecondsDateConverterTest
     {
         Long inputSeconds = 1602077748L;
         Date expectedDate = new Date(inputSeconds * 1000);
-        assertEquals(converter.convertToDate(inputSeconds), expectedDate);
+        assertEquals(converter.convertFromEpochSeconds(inputSeconds), expectedDate);
     }
 
     @Test
     public void testNullDate() throws Exception
     {
-        assertNull(converter.convertToEpoch(null));
+        assertNull(converter.convertFromObject(null));
     }
 
     @Test
     public void testNullEpoch() throws Exception
     {
-        assertNull(converter.convertToDate(null));
+        assertNull(converter.convertFromEpochSeconds(null));
     }
 }

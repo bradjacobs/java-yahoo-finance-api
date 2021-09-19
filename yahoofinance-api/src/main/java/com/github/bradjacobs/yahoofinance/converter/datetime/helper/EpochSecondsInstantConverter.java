@@ -5,19 +5,21 @@ package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
 import java.time.Instant;
 
-public class EpochSecondsInstantConverter
+public class EpochSecondsInstantConverter implements EpochSecondsConverte<Instant>
 {
-    public Instant convertToInstant(Long timestamp) {
-        if (timestamp == null) {
+    @Override
+    public Instant convertFromEpochSeconds(Long epochSeconds) {
+        if (epochSeconds == null) {
             return null;
         }
-        return Instant.ofEpochSecond(timestamp);
+        return Instant.ofEpochSecond(epochSeconds);
     }
 
-    public Long convertToEpoch(Instant instant) {
-        if (instant == null) {
+    @Override
+    public Long convertFromObject(Instant o) {
+        if (o == null) {
             return null;
         }
-        return instant.getEpochSecond();
+        return o.getEpochSecond();
     }
 }

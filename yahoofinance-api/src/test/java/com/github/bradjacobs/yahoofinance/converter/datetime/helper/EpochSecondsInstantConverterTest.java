@@ -3,7 +3,6 @@
  */
 package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
-import com.github.bradjacobs.yahoofinance.converter.datetime.helper.EpochSecondsInstantConverter;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
@@ -20,26 +19,26 @@ public class EpochSecondsInstantConverterTest
     {
         Instant instant = Instant.now();
         Long expected = instant.getEpochSecond();
-        assertEquals(converter.convertToEpoch(instant), expected);
+        assertEquals(converter.convertFromObject(instant), expected);
     }
 
     @Test
     public void testEpochSecondsToInstant() throws Exception
     {
         Long inputSeconds = 1602077748L;
-        Instant result = converter.convertToInstant(inputSeconds);
+        Instant result = converter.convertFromEpochSeconds(inputSeconds);
         assertEquals((Long)result.getEpochSecond(), inputSeconds);
     }
 
     @Test
     public void testNullInstant() throws Exception
     {
-        assertNull(converter.convertToEpoch(null));
+        assertNull(converter.convertFromObject(null));
     }
 
     @Test
     public void testNullEpoch() throws Exception
     {
-        assertNull(converter.convertToInstant(null));
+        assertNull(converter.convertFromEpochSeconds(null));
     }
 }

@@ -2,6 +2,7 @@ package com.github.bradjacobs.yahoofinance.demo.quote;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
+import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.model.QuoteResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
@@ -29,7 +30,11 @@ public class QuoteRequesterDemo
             throw new IllegalArgumentException("Must supply a quote-type request");
         }
 
-        YahooFinanceClient client = new YahooFinanceClient();
+        //YahooFinanceClient client = new YahooFinanceClient();
+        YahooFinanceClient client = new YahooFinanceClient(HttpClientAdapterFactory.createDefaultOkHttpClient());
+
+
+
         YahooResponse resp = client.execute(req);
 
         // get original json response
