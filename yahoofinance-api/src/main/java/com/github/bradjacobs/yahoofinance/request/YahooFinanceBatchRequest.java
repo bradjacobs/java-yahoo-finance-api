@@ -13,10 +13,11 @@ public class YahooFinanceBatchRequest extends YahooFinanceRequest
 {
     private final BatchableRequestStrategy batchableRequestStrategy;
 
-    public YahooFinanceBatchRequest(YahooEndpoint endpoint, String ticker, Map<String, String> paramMap, Object postBody,
+    public YahooFinanceBatchRequest(YahooEndpoint endpoint, String ticker,
+                                    Map<String, String> paramMap, Object postBody, Map<String,String> headerMap,
         BatchableRequestStrategy batchableRequestStrategy)
     {
-        super(endpoint, ticker, paramMap, postBody);
+        super(endpoint, ticker, paramMap, postBody, headerMap);
         this.batchableRequestStrategy = batchableRequestStrategy;
     }
 

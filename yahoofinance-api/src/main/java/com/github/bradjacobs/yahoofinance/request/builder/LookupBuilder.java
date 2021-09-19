@@ -14,7 +14,6 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     private static final int DEFAULT_START = 0;
     private static final int MIN_BATCHABLE_SIZE = 10;
 
-
     private String query;
     private Boolean formatted;
     private Type type;
@@ -113,7 +112,8 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     }
 
     @Override
-    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker, Map<String, String> paramMap, Object postBody)
+    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker,
+                                                  Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         BatchableRequestStrategy batchableRequestStrategy = this;
 
@@ -121,6 +121,6 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
             batchableRequestStrategy = null;
         }
 
-        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, batchableRequestStrategy);
+        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, headerMap, batchableRequestStrategy);
     }
 }

@@ -47,7 +47,7 @@ public class YahooFinanceClient
     // todo: for the moment this is always true.. to fix.
     private final boolean throwExceptionOnHttpError = true;
 
-    private Map<String,String> requestHeaderMap = new LinkedHashMap<>();
+    private final Map<String,String> defaultRequestHeaderMap = new LinkedHashMap<>();
     private final BatchableRequestExecutor batchableRequestExecutor;
     private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
     private final YahooLoginExecutor yahooLoginExecutor;
@@ -81,22 +81,19 @@ public class YahooFinanceClient
             yahooLoginExecutor = null;
         }
 
-        setContentType(DEFAULT_CONTENT_TYPE);
-        setUserAgent(DEFAULT_USER_AGENT);
         this.httpClient = httpClient;
         this.crumbDataSource = new CrumbDataSource(httpClient);
-
         this.batchableRequestExecutor = new BatchableRequestExecutor(this);
+
+        this.initializeDefaultHeaderMap();
+    }
+
+    private void initializeDefaultHeaderMap() {
+        defaultRequestHeaderMap.put(HttpHeaders.CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
+        defaultRequestHeaderMap.put(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT);
     }
 
 
-    public void setContentType(String contentType) {
-        requestHeaderMap.put(HttpHeaders.CONTENT_TYPE, contentType);
-    }
-
-    public void setUserAgent(String userAgent) {
-        requestHeaderMap.put(HttpHeaders.USER_AGENT, userAgent);
-    }
 
 
     public YahooResponse execute(YahooFinanceRequest request) throws IOException
@@ -123,46 +120,54 @@ public class YahooFinanceClient
     }
 
 
-
     protected Response executeInternal(YahooFinanceRequest request) throws IOException
     {
         // validation will throw an exception if invalid request is detected
         requestValidator.validationRequest(request);
 
-
         // if premium endpoint, ensure logged in
         YahooEndpoint endpoint = request.getEndpoint();
-        if (endpoint.isPremiumRequest()) {
-            if (this.yahooLoginExecutor != null) {
-                if (! this.yahooLoginExecutor.isLoggedIn()) {
-                    try {
-                        yahooLoginExecutor.doLogin();
-                    }
-                    catch (Exception e) {
-                        throw new RuntimeException("Unable to login: " + e.getMessage(), e);  // todo better exception needed!!
-                    }
-                }
-            }
-            else {
-                throw new IllegalStateException("Unable to execute premium endpoint request: no credentials were supplied.");
-            }
-        }
+
+        // TODO - disabled for now... can run into CAPCHA issues
+//        if (endpoint.isPremiumRequest()) {
+//            if (this.yahooLoginExecutor != null) {
+//                if (! this.yahooLoginExecutor.isLoggedIn()) {
+//                    try {
+//                        yahooLoginExecutor.doLogin();
+//                    }
+//                    catch (Exception e) {
+//                        throw new RuntimeException("Unable to login: " + e.getMessage(), e);  // todo better exception needed!!
+//                    }
+//                }
+//            }
+//            else {
+//                throw new IllegalStateException("Unable to execute premium endpoint request: no credentials were supplied.");
+//            }
+//        }
 
         String url = buildRequestUrl(request);
+        Map<String,String> headerMap = createRequestHeaderMap(request);
 
         Response response = null;
         if (request.isPost()) {
             String postBody = request.getPostBody();
-            response = httpClient.executePost(url, postBody, this.requestHeaderMap);
+            response = httpClient.executePost(url, postBody, headerMap);
         }
         else {
-            response = httpClient.executeGet(url, this.requestHeaderMap);
+            response = httpClient.executeGet(url, headerMap);
         }
 
         if (response.isError() && this.throwExceptionOnHttpError) {
             throw HttpExceptionFactory.createException(response);
         }
         return response;
+    }
+
+    private Map<String,String> createRequestHeaderMap(YahooFinanceRequest request)
+    {
+        Map<String,String> headerMap = new LinkedHashMap<>(defaultRequestHeaderMap);
+        headerMap.putAll(request.getHeaderMap());
+        return headerMap;
     }
 
 

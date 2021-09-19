@@ -27,6 +27,7 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
     // for any other misc params
     private Map<String,String> extraParametersMap = new LinkedHashMap<>();
 
+    private Map<String,String> additionalHeaderMap = new LinkedHashMap<>();
 
 
     protected abstract T getThis();
@@ -74,6 +75,29 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         return getThis();
     }
 
+    public T addHeader(String key, String value) {
+        if (key != null) {
+            key = key.trim();
+            if (value != null) {
+                this.additionalHeaderMap.put(key, value.trim());
+            }
+            else {
+                this.additionalHeaderMap.remove(key);
+            }
+        }
+        return getThis();
+    }
+
+    public T addHeaders(Map<String,String> headerMap) {
+        if (headerMap != null) {
+            for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                addHeader(entry.getKey(), entry.getValue());
+            }
+        }
+        return getThis();
+    }
+
+
     protected Map<String,String> buildParamMap() {
 
         Map<String, String> paramMap = _buildParamMap();
@@ -102,14 +126,15 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         Map<String, String> paramMap = buildParamMap();
         Object postBody = _buildRequestPostBody();
 
-        YahooFinanceRequest req = generateRequest(endpoint, ticker, paramMap, postBody);
+        YahooFinanceRequest req = generateRequest(endpoint, ticker, paramMap, postBody, additionalHeaderMap);
         validateRequest(req);
         return req;
     }
 
-    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker, Map<String, String> paramMap, Object postBody)
+    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker,
+                                                  Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
-        return new YahooFinanceRequest(endpoint, ticker, paramMap, postBody);
+        return new YahooFinanceRequest(endpoint, ticker, paramMap, postBody, headerMap);
     }
 
 
@@ -122,5 +147,4 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         // this will throw exception if request is invalid
         requestValidator.validationRequest(req);
     }
-
 }

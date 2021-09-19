@@ -19,18 +19,19 @@ public class YahooFinanceRequest
     protected final String ticker;
     protected final Map<String,String> paramMap;
     protected final Object postBody;
+    protected final Map<String,String> headerMap;
 
     private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
 
-    public YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody)
+    public YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         this.endpoint = endpoint;
         this.ticker = ticker;
         this.paramMap = paramMap;
         this.postBody = postBody;
+        this.headerMap = headerMap;
     }
-
 
     public String getTicker() {
         return ticker;
@@ -42,6 +43,12 @@ public class YahooFinanceRequest
 
     public Map<String, String> getParamMap() {
         return Collections.unmodifiableMap(this.paramMap);
+    }
+    public Map<String, String> getHeaderMap() {
+        if (this.headerMap == null) {
+            return Collections.emptyMap();
+        }
+        return Collections.unmodifiableMap(this.headerMap);
     }
 
     public String getParam(String key) {

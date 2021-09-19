@@ -45,7 +45,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
 
     // TODO - FIX... 'technically' if supply an industry w/o a sector then the sector could be 'auto-magicallly' added,
     //    but for now explicitly require sector is set if an industry is set (b/c that's what the web does)
-    //      however this method of validation is kludgy.
+    //      however the method of validation is kludgy.
     //    it's important to do this check, or else the query can produce 'zero results' and might not realize there was a problem.
     private boolean sectorIsSet = false;
     private boolean industryIsSet = false;
@@ -57,7 +57,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     public ScreenerBuilder()
     {
     }
-
 
     public ScreenerBuilder setFormatted(Boolean formatted) {
         this.formatted = formatted;
@@ -89,7 +88,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
         this.totalOnly = totalOnly;
         return this;
     }
-
 
     public ScreenerBuilder eq(ScreenerField field, Long value)
     {
@@ -137,8 +135,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
         }
         return this;
     }
-
-
 
     @Override
     protected YahooEndpoint _getRequestEndpoiint()
@@ -202,9 +198,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     {
         return this;
     }
-
-
-
 
 
     private static class ScreenerQueryBuilder
@@ -324,7 +317,8 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
 
 
     @Override
-    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker, Map<String, String> paramMap, Object postBody)
+    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker,
+                                                  Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         BatchableRequestStrategy batchableRequestStrategy = this;
 
@@ -332,7 +326,6 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
             batchableRequestStrategy = null;
         }
 
-        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, batchableRequestStrategy);
+        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, headerMap, batchableRequestStrategy);
     }
-
 }
