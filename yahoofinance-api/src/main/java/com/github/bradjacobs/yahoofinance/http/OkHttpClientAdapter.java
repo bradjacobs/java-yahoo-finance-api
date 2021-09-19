@@ -71,7 +71,7 @@ public class OkHttpClientAdapter implements HttpClientAdapter
     {
         Request.Builder builder = new Request.Builder().url(url);
         if (postBody != null) {
-            builder.post(RequestBody.create(JSON_TYPE, postBody));
+            builder.post(RequestBody.create(postBody, JSON_TYPE));
         }
         if (headerMap != null) {
             for (Map.Entry<String, String> entry : headerMap.entrySet()) {
