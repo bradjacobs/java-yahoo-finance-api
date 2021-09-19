@@ -31,6 +31,8 @@ import static com.github.bradjacobs.yahoofinance.types.YahooModule.DEFAULT_KEY_S
  *   Find the top 50 biggest stocks (via marketcap) in the NYSE/NASDAQ,
  *     Then find out which of these had most recent stock split
  *
+ *     TODO -- need to update example... KeyStatistics no longer returning split date
+ *
  */
 public class BigCompanyRecentStockSplit
 {
@@ -68,10 +70,6 @@ public class BigCompanyRecentStockSplit
         Map<String, Map<String, Object>> screenerMapOfMaps = screenerResponse.getAsMapOfMaps();
 
         List<String> tickerList = new ArrayList<>(screenerMapOfMaps.keySet());
-
-
-
-
 
         // builder to make requests for the quoteSummary endpoint
         QuoteSummaryBuilder quoteSummaryRequestBuilder =
