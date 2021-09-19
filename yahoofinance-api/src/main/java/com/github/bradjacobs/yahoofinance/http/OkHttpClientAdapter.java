@@ -43,8 +43,10 @@ public class OkHttpClientAdapter implements HttpClientAdapter
 
     protected Response executeRequest(Request request) throws IOException
     {
-        okhttp3.Response okResponse = httpClient.newCall(request).execute();
-        return createGenericResponse(okResponse);
+        try (okhttp3.Response okResponse = httpClient.newCall(request).execute())
+        {
+            return createGenericResponse(okResponse);
+        }
     }
 
     private Response createGenericResponse(okhttp3.Response okResponse) throws IOException
@@ -64,8 +66,6 @@ public class OkHttpClientAdapter implements HttpClientAdapter
 
         return builder.build();
     }
-
-
 
     private Request createRequest(String url, Map<String,String> headerMap, String postBody)
     {
