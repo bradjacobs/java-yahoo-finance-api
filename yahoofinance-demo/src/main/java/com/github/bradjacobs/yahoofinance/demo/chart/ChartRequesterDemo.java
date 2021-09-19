@@ -49,7 +49,6 @@ public class ChartRequesterDemo
 
     private static void printChartResults(List<ChartResult> chartResults)
     {
-        EpochSecondsConverter epochConverter = new EpochSecondsConverter();
         for (ChartResult chartResult : chartResults)
         {
             String date = chartResult.getDate();
@@ -70,7 +69,7 @@ public class ChartRequesterDemo
 
     private static void printListOfMaps(List<Map<String,Object>> listOfMaps)
     {
-        EpochSecondsConverter epochConverter = new EpochSecondsConverter();
+        EpochSecondsConverter epochConverter = EpochSecondsConverter.getInstance();
 
         // print out results  --- PROOF OF CONCEPT ONLY ---
         for (Map<String, Object> entryMap : listOfMaps)
@@ -81,10 +80,10 @@ public class ChartRequesterDemo
 
             String formattedStr = null;
             if (adjclose != null) {
-                formattedStr = String.format("| %-11s| %-8.2f| %-8.2f|", epochConverter.convertToString((Long)timestamp), (Double)close, (Double)adjclose);
+                formattedStr = String.format("| %-11s| %-8.2f| %-8.2f|", epochConverter.convertToDateString((Long)timestamp), (Double)close, (Double)adjclose);
             }
             else {
-                formattedStr = String.format("| %-11s| %-8.2f|", epochConverter.convertToString((Long)timestamp), (Double)close);
+                formattedStr = String.format("| %-11s| %-8.2f|", epochConverter.convertToDateString((Long)timestamp), (Double)close);
             }
             System.out.println(formattedStr);
         }

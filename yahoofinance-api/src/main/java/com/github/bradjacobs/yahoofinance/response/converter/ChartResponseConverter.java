@@ -1,7 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsDateStrConverter;
-import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsDateTimeStrConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
 import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
@@ -48,8 +47,6 @@ public class ChartResponseConverter extends YahooResponseConverter
     private static final long SMALL_TIMESTAMP_INTERVAL_SECONDS = 60 * 60 * 23; // (23 hours in seconds)
 
 
-    private static final EpochStrConverter epochSecondsToDateStringConverter = new EpochSecondsDateStrConverter();
-    private static final EpochStrConverter epochSecondsToDateTimeStringConverter = new EpochSecondsDateTimeStrConverter();
     private static final ResponseConverterConfig defaultResponseConverterConfig = ResponseConverterConfig.DEFAULT_INSTANCE;
 
 
@@ -169,13 +166,13 @@ public class ChartResponseConverter extends YahooResponseConverter
                 if (timestamp1 != null && timestamp2 != null)
                 {
                     if (Math.abs(timestamp1 - timestamp2) < SMALL_TIMESTAMP_INTERVAL_SECONDS) {
-                        return epochSecondsToDateTimeStringConverter;
+                        return EpochSecondsConverter.getInstance().getDateTimeStringConverter();
                     }
                 }
             }
         }
 
-        return epochSecondsToDateStringConverter;
+        return EpochSecondsConverter.getInstance().getDateStringConverter();
     }
 
 }

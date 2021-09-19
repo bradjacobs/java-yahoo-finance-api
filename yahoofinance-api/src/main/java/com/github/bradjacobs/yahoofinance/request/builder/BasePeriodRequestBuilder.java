@@ -19,7 +19,7 @@ import java.util.Date;
  */
 abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilder<T>> extends BaseRequestBuilder<T>
 {
-    private static final EpochSecondsConverter epochSecondsConverter = new EpochSecondsConverter();
+    private static final EpochSecondsConverter epochSecondsConverter = EpochSecondsConverter.getInstance();
     private static final ZoneId GMT_ZONE = ZoneId.of("GMT");
 
     protected Long startPeriod;

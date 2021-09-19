@@ -3,6 +3,11 @@
  */
 package com.github.bradjacobs.yahoofinance.converter.datetime;
 
+import com.github.bradjacobs.yahoofinance.converter.datetime.helper.EpochSecondsDateConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.helper.EpochSecondsDateStrConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.helper.EpochSecondsDateTimeStrConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.helper.EpochSecondsInstantConverter;
+
 import java.time.Instant;
 import java.util.Date;
 
@@ -14,9 +19,26 @@ public class EpochSecondsConverter
     private static final EpochSecondsInstantConverter EPOCH_SECONDS_INSTANT_CONVERTER = new EpochSecondsInstantConverter();
     private static final EpochSecondsDateConverter EPOCH_SECONDS_DATE_CONVERTER = new EpochSecondsDateConverter();
     private static final EpochSecondsDateStrConverter EPOCH_SECONDS_DATE_STR_CONVERTER = new EpochSecondsDateStrConverter();
+    private static final EpochSecondsDateTimeStrConverter EPOCH_SECONDS_DATE_TIME_STR_CONVERTER = new EpochSecondsDateTimeStrConverter();
 
     // if a Long value is greater than this, then assume it's in Milliseconds
     private static final long EPOCH_MILLI_THRESHOLD = 4000000000L;
+
+
+    private static final EpochSecondsConverter instance = new EpochSecondsConverter();
+
+    private EpochSecondsConverter() { }
+
+    public static EpochSecondsConverter getInstance() {
+        return instance;
+    }
+
+    public EpochStrConverter getDateStringConverter() {
+        return EPOCH_SECONDS_DATE_STR_CONVERTER;
+    }
+    public EpochStrConverter getDateTimeStringConverter() {
+        return EPOCH_SECONDS_DATE_TIME_STR_CONVERTER;
+    }
 
 
     /**
@@ -64,11 +86,12 @@ public class EpochSecondsConverter
     public Date convertToDate(Long timestamp) {
         return EPOCH_SECONDS_DATE_CONVERTER.convertToDate(ensureSeconds(timestamp));
     }
-    public String convertToString(Long timestamp) {
+    public String convertToDateString(Long timestamp) {
         return EPOCH_SECONDS_DATE_STR_CONVERTER.convertToString(ensureSeconds(timestamp));
     }
-
-
+    public String convertToDateTimeString(Long timestamp) {
+        return EPOCH_SECONDS_DATE_TIME_STR_CONVERTER.convertToString(ensureSeconds(timestamp));
+    }
 
 
     /**

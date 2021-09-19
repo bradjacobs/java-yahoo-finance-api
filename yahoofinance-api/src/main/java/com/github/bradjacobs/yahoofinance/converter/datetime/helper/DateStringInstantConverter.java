@@ -1,7 +1,7 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package com.github.bradjacobs.yahoofinance.converter.datetime;
+package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ public class DateStringInstantConverter
             return null;
         }
 
-        LocalDate ld = LocalDate.parse(date);
+        LocalDate ld = LocalDate.parse(date, DATE_ONLY_FORMATTER);
         return ld.atStartOfDay(ZONE_ID).toInstant();
     }
 

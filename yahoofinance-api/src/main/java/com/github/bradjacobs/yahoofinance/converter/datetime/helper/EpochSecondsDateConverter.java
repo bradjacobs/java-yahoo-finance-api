@@ -1,13 +1,12 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package com.github.bradjacobs.yahoofinance.converter.datetime;
+package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
 import java.util.Date;
 
 public class EpochSecondsDateConverter
 {
-
     public Date convertToDate(Long timestamp) {
         if (timestamp == null) {
             return null;
@@ -23,5 +22,4 @@ public class EpochSecondsDateConverter
         }
         return date.getTime() / 1000L;
     }
-
 }

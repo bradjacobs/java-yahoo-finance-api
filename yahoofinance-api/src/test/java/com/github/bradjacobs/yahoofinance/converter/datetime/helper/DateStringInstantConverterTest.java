@@ -1,8 +1,9 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package com.github.bradjacobs.yahoofinance.converter.datetime;
+package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
+import com.github.bradjacobs.yahoofinance.converter.datetime.helper.DateStringInstantConverter;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
@@ -11,7 +12,7 @@ import static org.testng.Assert.*;
 
 public class DateStringInstantConverterTest
 {
-    private DateStringInstantConverter converter = new DateStringInstantConverter();
+    private final DateStringInstantConverter converter = new DateStringInstantConverter();
 
     @Test
     public void testBackAndForthConversion() throws Exception
@@ -21,6 +22,18 @@ public class DateStringInstantConverterTest
         String convertedDateString = converter.convertToString(instant);
 
         assertEquals(convertedDateString, startDate, "mismatch expected date string");
+    }
+
+    @Test
+    public void testNullDateString() throws Exception
+    {
+        assertNull(converter.convertToInstant(null));
+    }
+
+    @Test
+    public void testNullInstant() throws Exception
+    {
+        assertNull(converter.convertToString(null));
     }
 
 }
