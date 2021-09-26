@@ -22,13 +22,8 @@ public class SparkResponseConverter extends YahooResponseConverter
     private static final String KEY_CLOSE = "close";
     private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
 
-
-    // if 2 adjacent timestamps are within this interval threshold, then consider it 'small interval'
-    //   and use 'datetime' instead of 'date' for string representation.
-    private static final long SMALL_TIMESTAMP_INTERVAL_SECONDS = 60 * 60 * 23; // (23 hours in seconds)
-
+    
     private static final ResponseConverterConfig defaultResponseConverterConfig = ResponseConverterConfig.DEFAULT_INSTANCE;
-
 
     private final ResponseConverterConfig config;
 
