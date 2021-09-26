@@ -75,7 +75,7 @@ public class SparkResponseConverter extends YahooResponseConverter
             Map<String, Map<String, Object>> originalMapOfMaps =
                 mapper.readValue(json, new TypeReference<Map<String, Map<String, Object>>>() {});
 
-            EpochStrConverter epochStrConverter = selectDateConverter(originalMapOfMaps);
+            EpochStrConverter epochStrConverter = null;
 
             boolean orgainizeByDate = this.config.isUseDateAsMapKey();
 
@@ -86,6 +86,11 @@ public class SparkResponseConverter extends YahooResponseConverter
                 Map<String, Object> dataMap = entry.getValue();
                 List<Long> timestamps = (List<Long>) dataMap.get(KEY_TIMESTAMP);
                 List<Number> closeValues = (List<Number>) dataMap.get(KEY_CLOSE);
+
+                if (epochStrConverter == null) {
+                    // todo - fix... moved method to a common location, but it is still ugly
+                    epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestamps.toArray(new Long[0]), this.config.isAutoDetechDateTime());
+                }
 
                 for (int i = 0; i < timestamps.size(); i++)
                 {
@@ -110,33 +115,6 @@ public class SparkResponseConverter extends YahooResponseConverter
         catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Unable to parse json: " + e.getMessage(), e);
         }
-    }
-
-    //  TODO - fix -  'almost' redundant method (from ChartResponseConverter)
-    private EpochStrConverter selectDateConverter(Map<String, Map<String, Object>> mapOfMaps)
-    {
-        if (this.config.isAutoDetechDateTime()) {
-            String firstTickerKey = new ArrayList<>(mapOfMaps.keySet()).get(0);
-            Map<String, Object> tickerDataMap = mapOfMaps.get(firstTickerKey);
-
-            if (tickerDataMap != null && tickerDataMap.size() > 0)
-            {
-                List<Long> timestamps = (List<Long>) tickerDataMap.get(KEY_TIMESTAMP);
-                if (timestamps != null && timestamps.size() > 1)
-                {
-                    Long timestamp1 = timestamps.get(0);
-                    Long timestamp2 = timestamps.get(1);
-                    if (timestamp1 != null && timestamp2 != null)
-                    {
-                        if (Math.abs(timestamp1 - timestamp2) < SMALL_TIMESTAMP_INTERVAL_SECONDS) {
-                            return MetaEpochSecondsConverter.getDateTimeStringConverter();
-                        }
-                    }
-                }
-            }
-        }
-
-        return MetaEpochSecondsConverter.getDateStringConverter();
     }
 
 

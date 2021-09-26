@@ -105,4 +105,37 @@ public class MetaEpochSecondsConverter
         }
         return timestamp;
     }
+
+
+
+    // if 2 adjacent timestamps are within this interval threshold, then consider it 'small interval'
+    //   and use 'datetime' instead of 'date' for string representation.
+    private static final long SMALL_TIMESTAMP_INTERVAL_SECONDS = 60 * 60 * 23; // (23 hours in seconds)
+
+
+    public static EpochStrConverter selectDateStrConverter(Long[] timestampValues)
+    {
+        return selectDateStrConverter(timestampValues, true);
+    }
+
+    public static EpochStrConverter selectDateStrConverter(Long[] timestampValues, boolean autoDetect)
+    {
+        if (autoDetect)
+        {
+            if (timestampValues != null && timestampValues.length > 1)
+            {
+                Long timestamp1 = timestampValues[0];
+                Long timestamp2 = timestampValues[1];
+                if (timestamp1 != null && timestamp2 != null)
+                {
+                    if (Math.abs(timestamp1 - timestamp2) < SMALL_TIMESTAMP_INTERVAL_SECONDS) {
+                        return MetaEpochSecondsConverter.getDateTimeStringConverter();
+                    }
+                }
+            }
+        }
+
+        return MetaEpochSecondsConverter.getDateStringConverter();
+    }
+
 }

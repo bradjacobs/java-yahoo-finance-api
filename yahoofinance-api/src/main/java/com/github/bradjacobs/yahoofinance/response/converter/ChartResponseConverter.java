@@ -27,7 +27,7 @@ public class ChartResponseConverter extends YahooResponseConverter
     private static final String KEY_VOLUME = "volume";
     private static final String KEY_ADJ_CLOSE = "adjclose";
 
-    //   todo: for now date does NOT have any hh/mm/ss, but that would probably be desired if querying on in-day values.
+
     private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
 
 
@@ -40,11 +40,6 @@ public class ChartResponseConverter extends YahooResponseConverter
     private static final String CLOSE_PATH     = BASE_PATH + ".indicators.quote[0]." + KEY_CLOSE;
     private static final String VOLUME_PATH    = BASE_PATH + ".indicators.quote[0]." + KEY_VOLUME;
     private static final String ADJ_CLOSE_PATH = BASE_PATH + ".indicators.adjclose[0]." + KEY_ADJ_CLOSE;
-
-
-    // if 2 adjacent timestamps are within this interval threshold, then consider it 'small interval'
-    //   and use 'datetime' instead of 'date' for string representation.
-    private static final long SMALL_TIMESTAMP_INTERVAL_SECONDS = 60 * 60 * 23; // (23 hours in seconds)
 
 
     private static final ResponseConverterConfig defaultResponseConverterConfig = ResponseConverterConfig.DEFAULT_INSTANCE;
@@ -102,7 +97,7 @@ public class ChartResponseConverter extends YahooResponseConverter
             return Collections.emptyList();
         }
 
-        EpochStrConverter epochStrConverter = selectDateConverter(timestampValues);
+        EpochStrConverter epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestampValues, this.config.isAutoDetechDateTime());
 
         // _ASSERT_ all lists are same length
         int entryCount = timestampValues.length;
@@ -123,7 +118,6 @@ public class ChartResponseConverter extends YahooResponseConverter
             highValues = jsonDoc.read(HIGH_PATH, Number[].class);
             volumeValues = jsonDoc.read(VOLUME_PATH, Long[].class);
         }
-
 
         List<Map<String, Object>> resultKeyValueList = new ArrayList<>();
 
@@ -153,26 +147,4 @@ public class ChartResponseConverter extends YahooResponseConverter
 
         return resultKeyValueList;
     }
-
-
-    private EpochStrConverter selectDateConverter(Long[] timestampValues)
-    {
-        if (this.config.isAutoDetechDateTime())
-        {
-            if (timestampValues != null && timestampValues.length > 1)
-            {
-                Long timestamp1 = timestampValues[0];
-                Long timestamp2 = timestampValues[1];
-                if (timestamp1 != null && timestamp2 != null)
-                {
-                    if (Math.abs(timestamp1 - timestamp2) < SMALL_TIMESTAMP_INTERVAL_SECONDS) {
-                        return MetaEpochSecondsConverter.getDateTimeStringConverter();
-                    }
-                }
-            }
-        }
-
-        return MetaEpochSecondsConverter.getDateStringConverter();
-    }
-
 }
