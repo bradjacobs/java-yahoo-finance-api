@@ -22,8 +22,6 @@ public class SparkResponseConverter extends YahooResponseConverter
     private static final String KEY_CLOSE = "close";
     private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
 
-    
-    private static final ResponseConverterConfig defaultResponseConverterConfig = ResponseConverterConfig.DEFAULT_INSTANCE;
 
     private final ResponseConverterConfig config;
 
@@ -33,7 +31,7 @@ public class SparkResponseConverter extends YahooResponseConverter
 
     public SparkResponseConverter(ResponseConverterConfig config) {
         if (config == null) {
-            config = defaultResponseConverterConfig; // if null, use instance w/ default values.
+            config = ResponseConverterConfig.DEFAULT_INSTANCE; // if null, use instance w/ default values.
         }
         this.config = config;
     }

@@ -42,9 +42,6 @@ public class ChartResponseConverter extends YahooResponseConverter
     private static final String ADJ_CLOSE_PATH = BASE_PATH + ".indicators.adjclose[0]." + KEY_ADJ_CLOSE;
 
 
-    private static final ResponseConverterConfig defaultResponseConverterConfig = ResponseConverterConfig.DEFAULT_INSTANCE;
-
-
 
     // configure to return NULL (instead of Exception) if the _LEAF_ is missing
     //   b/c the field might not always be there.
@@ -63,7 +60,7 @@ public class ChartResponseConverter extends YahooResponseConverter
 
     public ChartResponseConverter(ResponseConverterConfig config) {
         if (config == null) {
-            config = defaultResponseConverterConfig; // if null, use instance w/ default values.
+            config = ResponseConverterConfig.DEFAULT_INSTANCE; // if null, use instance w/ default values.
         }
         this.config = config;
     }
