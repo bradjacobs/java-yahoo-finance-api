@@ -19,7 +19,7 @@ public class LookupResponseConverter extends YahooResponseConverter
         String updatedJson = JsonFormatRemover.removeFormats(json, false);
 
         // todo - this won't work if get an 'error response'
-        return JsonPath.read(updatedJson, DEFAULT_LIST_PATH);
+        return convertToListOfMapsFromPath(updatedJson, DEFAULT_LIST_PATH);
     }
 
     @Override

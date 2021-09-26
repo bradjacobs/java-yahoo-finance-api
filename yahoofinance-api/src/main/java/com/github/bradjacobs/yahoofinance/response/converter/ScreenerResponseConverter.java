@@ -15,7 +15,7 @@ public class ScreenerResponseConverter extends YahooResponseConverter
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json)
     {
-        return JsonPath.read(json, RESPONSE_ROOT_PATH);
+        return convertToListOfMapsFromPath(json, RESPONSE_ROOT_PATH);
     }
 
     @Override

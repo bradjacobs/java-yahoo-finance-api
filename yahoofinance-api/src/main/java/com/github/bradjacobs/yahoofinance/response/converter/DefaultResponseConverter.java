@@ -16,7 +16,7 @@ public class DefaultResponseConverter extends YahooResponseConverter
     {
         // see if payload has a array of 'results' that can return
         try {
-            return JsonPath.read(json, DEFAULT_LIST_PATH);
+            return convertToListOfMapsFromPath(json, DEFAULT_LIST_PATH);
         }
         catch (Exception e)
         {
@@ -30,13 +30,6 @@ public class DefaultResponseConverter extends YahooResponseConverter
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
     {
-        if (json == null) {
-            throw new IllegalArgumentException("Must provide json");
-        }
-        if (json.isEmpty()) {
-            return Collections.emptyMap();
-        }
-
-        return JsonPath.read(json, "$");
+       return convertToMapOfMapsFromPath(json, "$");
     }
 }

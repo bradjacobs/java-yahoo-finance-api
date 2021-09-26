@@ -15,7 +15,7 @@ public class QuoteResponseConverter extends YahooResponseConverter
     public List<Map<String, Object>> convertToListOfMaps(String json)
     {
         // todo - this won't work if get an 'error response'
-        return JsonPath.read(json, DEFAULT_LIST_PATH);
+        return convertToListOfMapsFromPath(json, DEFAULT_LIST_PATH);
     }
 
     @Override
