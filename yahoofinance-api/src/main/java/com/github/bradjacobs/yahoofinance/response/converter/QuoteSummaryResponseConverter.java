@@ -1,7 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
-import com.jayway.jsonpath.JsonPath;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

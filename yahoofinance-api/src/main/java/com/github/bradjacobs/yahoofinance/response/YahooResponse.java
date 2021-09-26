@@ -1,7 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
-import com.github.bradjacobs.yahoofinance.response.converter.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 

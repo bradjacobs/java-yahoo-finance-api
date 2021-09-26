@@ -147,7 +147,7 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
 
                     if (this.orgainizeByDate)
                     {
-                        // get map containing all the altributes for this given date.
+                        // get map containing all the attributes for this given date.
                         Map<String, Object> attributeMap = destinationMap.computeIfAbsent(dateString, k -> new TreeMap<>());
                         attributeMap.put(attributeName, value);
                     }
@@ -259,6 +259,8 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
             if (this.hasMultipleTimeFrames) {
                 return null;
             }
+
+            // todo -- revisit....weird logic
             if (this.annualDataMap.size() > 1) {
                 return this.annualDataMap;
             }

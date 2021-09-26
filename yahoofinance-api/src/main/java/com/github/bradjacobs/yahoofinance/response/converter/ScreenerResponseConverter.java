@@ -1,7 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
-import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
 import java.util.Map;

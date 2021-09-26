@@ -1,9 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.jayway.jsonpath.JsonPath;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
