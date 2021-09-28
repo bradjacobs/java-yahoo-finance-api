@@ -1,9 +1,9 @@
 package com.github.bradjacobs.yahoofinance;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
-import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;

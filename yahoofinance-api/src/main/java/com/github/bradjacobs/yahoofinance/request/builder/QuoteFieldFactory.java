@@ -6,12 +6,7 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Simple class to read in fields stored in plain text file.

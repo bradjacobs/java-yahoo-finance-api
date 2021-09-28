@@ -7,13 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_IS_PREMIUM;
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_IS_QUERY;
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_IS_REGION;
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_REQUIRES_CRUMB;
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_REQUIRES_POST;
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_REQUIRES_SYMBOL_PARAM;
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.FLAG_SUPPORT_MULTI_TICKERS;
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.*;
 
 /**
  * YahooEndpoints are an enumeration of the Yahoo! Finance API methods available.

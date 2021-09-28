@@ -6,6 +6,7 @@ package com.github.bradjacobs.yahoofinance.types;
 import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
 
 import javax.annotation.Generated;
+
 import static com.github.bradjacobs.yahoofinance.types.Sector.*;
 
 @Generated(value="yahoo-finance-api-internal-tools", date="2021-07-06")

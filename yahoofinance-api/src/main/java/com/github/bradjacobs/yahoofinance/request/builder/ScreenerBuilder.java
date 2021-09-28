@@ -5,17 +5,9 @@ import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
-import com.github.bradjacobs.yahoofinance.types.screener.Operand;
-import com.github.bradjacobs.yahoofinance.types.screener.Operator;
-import com.github.bradjacobs.yahoofinance.types.screener.Query;
-import com.github.bradjacobs.yahoofinance.types.screener.ScreenerCriteria;
+import com.github.bradjacobs.yahoofinance.types.screener.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> implements BatchableRequestStrategy

@@ -4,11 +4,7 @@ import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.response.converter.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 abstract public class AbstractResponse
 {

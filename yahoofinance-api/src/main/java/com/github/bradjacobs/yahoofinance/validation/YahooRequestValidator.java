@@ -3,16 +3,12 @@
  */
 package com.github.bradjacobs.yahoofinance.validation;
 
-import com.github.bradjacobs.yahoofinance.request.builder.ParamKeys;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.ParamKeys;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.bradjacobs.yahoofinance.types.YahooEndpoint.*;
 

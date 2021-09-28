@@ -1,10 +1,6 @@
 package com.github.bradjacobs.yahoofinance.http;
 
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import okhttp3.*;
 
 import java.io.IOException;
 import java.util.Map;

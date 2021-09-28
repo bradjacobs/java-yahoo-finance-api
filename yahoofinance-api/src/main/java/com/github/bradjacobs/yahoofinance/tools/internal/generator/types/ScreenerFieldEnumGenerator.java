@@ -4,21 +4,14 @@
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.Category;
 import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.jayway.jsonpath.JsonPath;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator

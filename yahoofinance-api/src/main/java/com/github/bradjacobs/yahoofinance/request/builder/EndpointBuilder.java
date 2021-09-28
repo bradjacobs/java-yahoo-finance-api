@@ -2,12 +2,7 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
 {

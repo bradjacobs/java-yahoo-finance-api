@@ -4,12 +4,7 @@ import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SparkBuilder extends BaseRequestBuilder<SparkBuilder>
 {
