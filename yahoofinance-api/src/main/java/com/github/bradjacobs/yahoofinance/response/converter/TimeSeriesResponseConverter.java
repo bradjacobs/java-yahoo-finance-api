@@ -256,10 +256,10 @@ public class TimeSeriesResponseConverter implements ResponseConverter
             }
 
             // todo -- revisit....weird logic
-            if (this.annualDataMap.size() > 1) {
+            if (this.annualDataMap.size() > 0) {
                 return this.annualDataMap;
             }
-            else if (this.quarterlyDataMap.size() > 1) {
+            else if (this.quarterlyDataMap.size() > 0) {
                 return this.quarterlyDataMap;
             }
             else {

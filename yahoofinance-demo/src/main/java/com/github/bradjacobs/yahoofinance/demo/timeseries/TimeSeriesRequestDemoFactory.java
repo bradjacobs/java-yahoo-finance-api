@@ -26,14 +26,15 @@ public class TimeSeriesRequestDemoFactory
     public static YahooFinanceRequest getRequest(int sampleRequestId)
     {
         switch (sampleRequestId) {
-            case 1: return SIMPLE;
-            case 2: return ANNUAL;
-            case 3: return QUARTERLY;
-            case 4: return MISC;
-            case 5: return CUSTOM_FIELDS;
-            case 6: return CUSTOM_FIELDS_EXPLICIT;
-            case 7: return PREMIUM_REQUEST_1;
-            default: return SIMPLE;
+            case 1: return SIMPLE_A;
+            case 2: return SIMPLE_B;
+            case 3: return ANNUAL;
+            case 4: return QUARTERLY;
+            case 5: return MISC;
+            case 6: return CUSTOM_FIELDS;
+            case 7: return CUSTOM_FIELDS_EXPLICIT;
+            case 8: return PREMIUM_REQUEST_1;
+            default: return SIMPLE_A;
         }
     }
 
@@ -42,7 +43,18 @@ public class TimeSeriesRequestDemoFactory
     /**
      * Get all available timeseries data for AAPL for years 2019 and 2020
      */
-    private static final YahooFinanceRequest SIMPLE =
+
+    private static final YahooFinanceRequest SIMPLE_A =
+            YahooRequestBuilder.api()
+                    .timeSeries()
+                    .withTicker("AAPL")
+                    .withTimeFrame(TimeSeriesUnit.ANNUAL)
+                    .setStart("2019-12-31")
+                    .setEnd("2021-12-31")
+                    .build();
+
+
+    private static final YahooFinanceRequest SIMPLE_B =
         YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("AAPL")

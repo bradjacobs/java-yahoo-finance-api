@@ -2,19 +2,21 @@ package com.github.bradjacobs.yahoofinance.demo.timeseries;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
+import com.github.bradjacobs.yahoofinance.model.beta.BaseTimeSeriesResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class TimeSeriesRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        int exampleRequestId = 2;
+        int exampleRequestId = 1;
 
         YahooFinanceRequest req = TimeSeriesRequestDemoFactory.getRequest(exampleRequestId);
 
@@ -36,6 +38,12 @@ public class TimeSeriesRequesterDemo
         String prettyJson = resp.getPrettyJson();
 
         Map<String, Map<String, Object>> mapsOfMaps = resp.getAsMapOfMaps();
+
+        // NOTE: this currently _only_ works if ask for exactly 1 timeframe  (i.e. ANNUAL or QUARTERLY or TRAILING)
+//        Map<String, BaseTimeSeriesResult> mapOfPojos = resp.getAsMapOfPojos(BaseTimeSeriesResult.class);
+//        List<BaseTimeSeriesResult> pojoValueList = new ArrayList<>(mapOfPojos.values());
+//        BaseTimeSeriesResult mostRecentResult = pojoValueList.get(pojoValueList.size()-1);
+
 
         System.out.println("Total Result Count: " + mapsOfMaps.size());
     }
