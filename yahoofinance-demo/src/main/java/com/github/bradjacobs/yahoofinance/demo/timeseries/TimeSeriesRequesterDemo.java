@@ -28,18 +28,7 @@ public class TimeSeriesRequesterDemo
             throw new IllegalArgumentException("Must supply a timeseries-type request");
         }
 
-        String userName = null;
-        String password = null;
-
-        YahooFinanceClient client;
-
-        if (StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(password)) {
-            client = new YahooFinanceClient(userName, password);
-        }
-        else {
-            client = new YahooFinanceClient();
-        }
-
+        YahooFinanceClient client = new YahooFinanceClient();
 
         YahooResponse resp = client.execute(req);
 

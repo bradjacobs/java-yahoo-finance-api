@@ -17,7 +17,7 @@ import java.util.Map;
 /*
   TODO - Post can cause a Warning like the following:
      WARNING: Invalid cookie header: ....
-  which probably just means a client configuartion tweak, but it's a lower priority at present.
+  which probably just means a client configuration tweak, but it's a lower priority at present.
  */
 public class HttpCommonsClientAdapter implements HttpClientAdapter
 {

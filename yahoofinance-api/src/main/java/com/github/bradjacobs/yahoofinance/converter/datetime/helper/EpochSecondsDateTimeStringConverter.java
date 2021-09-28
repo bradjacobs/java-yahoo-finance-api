@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-public class EpochSecondsDateTimeStringConverter implements EpochSecondsConverte<String>, EpochStrConverter
+public class EpochSecondsDateTimeStringConverter implements EpochSecondsConverter<String>, EpochStrConverter
 {
     // NOTE: no seconds b/c haven't seen any non-zero second values
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm";

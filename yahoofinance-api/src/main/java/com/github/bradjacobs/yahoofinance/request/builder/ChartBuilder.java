@@ -26,7 +26,7 @@ public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
     private Range range;
     private Interval interval = Interval.ONE_DAY;  // default
     private Boolean formatted; // this seems only applicable when response includes div or splits
-    private Set<String> eventValues = new LinkedHashSet<>();
+    private final Set<String> eventValues = new LinkedHashSet<>();
     private Boolean includeAdjustedClose = Boolean.TRUE;
     private IndicatorFieldSelection indicatorFieldSelection;
     private Boolean includeTimestamps;

@@ -161,7 +161,7 @@ public class ChartResponseConverterTest
     /////
 
     /**
-     * Don't care if the actual price is of type 'BigDecimal' or 'Double' (as far as these tests are concered)
+     * Don't care if the actual price is of type 'BigDecimal' or 'Double' (as far as these tests are concerned)
      *   thus just ensure always the same time.
      * @param inputMap
      * @return
