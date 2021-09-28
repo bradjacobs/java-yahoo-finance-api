@@ -1,22 +1,18 @@
-package com.github.bradjacobs.yahoofinance.response.helper;
+package com.github.bradjacobs.yahoofinance.response.converter.util;
 
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
-public class ListToMapConverterTest
+public class SimpleMapOfMapsGeneratorTest
 {
     private static final String DATE_KEY = "date";
     private static final String INT_KEY = "intValue";
     private static final String STRING_KEY = "stringValue";
+
 
     @Test
     public void testSortedMapHappyPath() throws Exception
@@ -32,7 +28,8 @@ public class ListToMapConverterTest
 
         List<Map<String, Object>> inputList = Arrays.asList(map1, map2, map3);
 
-        Map<String, Map<String, Object>> resultMap = ListToMapConverter.convertToMap(DATE_KEY, inputList, true);
+        SimpleMapOfMapsGenerator mapGenerator = new SimpleMapOfMapsGenerator(DATE_KEY, true);
+        Map<String, Map<String, Object>> resultMap = mapGenerator.convertToMap(inputList);
         assertNotNull(resultMap);
         assertEquals(resultMap.size(), 3, "mismatch expected map size");
 
@@ -59,7 +56,9 @@ public class ListToMapConverterTest
 
         List<Map<String, Object>> inputList = Arrays.asList(map1, map2, map3);
 
-        Map<String, Map<String, Object>> resultMap = ListToMapConverter.convertToMap(DATE_KEY, inputList, false);
+        SimpleMapOfMapsGenerator mapGenerator = new SimpleMapOfMapsGenerator(DATE_KEY, false);
+
+        Map<String, Map<String, Object>> resultMap = mapGenerator.convertToMap(inputList);
         assertNotNull(resultMap);
         assertEquals(resultMap.size(), 3, "mismatch expected map size");
 

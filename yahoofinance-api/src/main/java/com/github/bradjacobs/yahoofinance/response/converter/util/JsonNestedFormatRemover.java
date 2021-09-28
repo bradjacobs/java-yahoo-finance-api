@@ -1,7 +1,4 @@
-/*
- * This file is subject to the terms and conditions defined in 'LICENSE' file.
- */
-package com.github.bradjacobs.yahoofinance.response.helper;
+package com.github.bradjacobs.yahoofinance.response.converter.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -43,23 +40,28 @@ import java.util.Map;
  *     "totalAssets": null,
  *     "forwardPE": 24.466228,
  */
-public class JsonFormatRemover
+public class JsonNestedFormatRemover
 {
     private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
     private static final String RAW_KEY = "raw";
 
+    private boolean removeEmptyEntries = false;
+
+    public JsonNestedFormatRemover(boolean removeEmptyEntries) {
+        this.removeEmptyEntries = removeEmptyEntries;
+    }
+
     /**
      * Removes the special Yahoo fmt sub-fields and replaces with 'raw' value.
      *   Behaves like "&formatted=false"
      * @param json json
-     * @param removeEmptyEntries  (true = remove empty entries, false = reassign value to 'null')
      * @return the modified json
      */
-    public static String removeFormats(String json, boolean removeEmptyEntries)
+    public String removeFormats(String json)
     {
         JsonNode node = covertToNode(json);
-        removeFormats(node, removeEmptyEntries);
+        removeFormats(node);
 
         try {
             return mapper.writeValueAsString(node);
@@ -73,14 +75,13 @@ public class JsonFormatRemover
     /**
      * Side-effect the node removing format sections (if applicable)
      * @param node node
-     * @param removeEmptyEntries (true = remove empty entries, false = reassign value to 'null')
      */
-    public static void removeFormats(JsonNode node, boolean removeEmptyEntries)
+    public void removeFormats(JsonNode node)
     {
         // recurse thru entire node tree, updating as needed.
         if (node.isArray()) {
             for (JsonNode childNode : node) {
-                removeFormats(childNode, removeEmptyEntries);
+                removeFormats(childNode);
             }
         }
         else if (node.isObject())
@@ -109,7 +110,7 @@ public class JsonFormatRemover
                 }
                 else {
                     // if not found, continue the recursion.
-                    removeFormats(childNode, removeEmptyEntries);
+                    removeFormats(childNode);
                 }
             }
 
@@ -130,7 +131,7 @@ public class JsonFormatRemover
         }
     }
 
-    private static JsonNode covertToNode(String json)
+    private JsonNode covertToNode(String json)
     {
         if (StringUtils.isEmpty(json)) {
             throw new IllegalArgumentException("Must provide json data");

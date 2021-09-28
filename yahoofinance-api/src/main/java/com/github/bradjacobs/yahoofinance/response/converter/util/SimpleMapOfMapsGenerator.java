@@ -1,27 +1,30 @@
-package com.github.bradjacobs.yahoofinance.response.helper;
+package com.github.bradjacobs.yahoofinance.response.converter.util;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
-public class ListToMapConverter
+
+/**
+ * Using to construct a "map of maps" with a given listOfMaps plus the name of attribute to be used as the map key.
+ */
+public class SimpleMapOfMapsGenerator
 {
-    private ListToMapConverter() {}
+    private final String keyName;
+    private final boolean sortMapKeys;
 
-    public static Map<String, Map<String,Object>> convertToMap(String keyName, List<Map<String, Object>> listData)
-    {
-        return convertToMap(keyName, listData, false);
+    public SimpleMapOfMapsGenerator(String keyName, boolean sortMapKeys) {
+        if (StringUtils.isEmpty(keyName)) {
+            throw new IllegalArgumentException("Must provide a key name.");
+        }
+
+        this.keyName = keyName;
+        this.sortMapKeys = sortMapKeys;
     }
 
-    public static Map<String, Map<String,Object>> convertToMap(String keyName, List<Map<String, Object>> listData, boolean sortMapKeys)
+
+    public Map<String, Map<String,Object>> convertToMap(List<Map<String, Object>> listData)
     {
-        if (StringUtils.isEmpty(keyName)) {
-            throw new IllegalArgumentException("Must provide a keyName");
-        }
         if (listData == null) {
             return null;
         }

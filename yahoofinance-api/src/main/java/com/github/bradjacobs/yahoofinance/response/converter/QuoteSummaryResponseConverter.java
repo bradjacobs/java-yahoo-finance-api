@@ -1,15 +1,28 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
+import com.github.bradjacobs.yahoofinance.response.converter.adapter.JsonNestedFormatRemoverAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuoteSummaryResponseConverter extends YahooResponseConverter
+public class QuoteSummaryResponseConverter extends AbstractWrappedResposneConverter implements ResponseConverter
 {
     private static final String DEFAULT_MAP_PATH = "$.quoteSummary.result[0]";
+
+
+    public QuoteSummaryResponseConverter() {
+        super(generateNestedResponseConverter());
+    }
+
+    private static ResponseConverter generateNestedResponseConverter() {
+        ResponseConverter converter = new JsonPathCollectionConverter(null, DEFAULT_MAP_PATH);
+        converter = new JsonNestedFormatRemoverAdapter(converter, false);
+        return converter;
+    }
+
+
 
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json)
@@ -32,15 +45,5 @@ public class QuoteSummaryResponseConverter extends YahooResponseConverter
             resultList.add(resultEntryMap);
         }
         return resultList;
-    }
-
-    @Override
-    public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
-    {
-        // remove all of the 'raw', 'fmt' stuff (if exists)
-        String updatedJson = JsonFormatRemover.removeFormats(json, false);
-
-        // todo - this won't work if get an 'error response'
-        return convertToMapOfMapsFromPath(updatedJson, DEFAULT_MAP_PATH);
     }
 }

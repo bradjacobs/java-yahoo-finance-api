@@ -5,17 +5,7 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 public class ResponseConverterFactory
 {
-    // when true the top level map keys of timeseries will be 'date'
-    //      false will be the 'attribute'
-    private static final boolean DEFAULT_TIMESERIES_USE_DATE_MAP_KEY = true;
-
-    // when true the top level map keys of spark will be 'date'
-    //      false will be the 'ticker'
-    private static final boolean DEFAULT_SPARK_USE_DATE_MAP_KEY = true;
-
-
     private static final ResponseConverterConfig DEFAULT_CONFIG = ResponseConverterConfig.DEFAULT_INSTANCE;
-
 
     private ResponseConverterFactory() { }
 
@@ -47,25 +37,38 @@ public class ResponseConverterFactory
             config = DEFAULT_CONFIG;
         }
 
+        ResponseConverter baseResponseConverter = null;
+
         switch (endpoint)
         {
             case CHART:
-                return new ChartResponseConverter(config);
+                baseResponseConverter = new ChartResponseConverter(config);
+                break;
             case SCREENER:
-                return new ScreenerResponseConverter();
+                baseResponseConverter = new ScreenerResponseConverter();
+                break;
             case QUOTE_SUMMARY:
-                return new QuoteSummaryResponseConverter();
+                baseResponseConverter = new QuoteSummaryResponseConverter();
+                break;
             case QUOTE:
-                return new QuoteResponseConverter();
+                baseResponseConverter = new QuoteResponseConverter();
+                break;
             case LOOKUP:
-                return new LookupResponseConverter();
+                baseResponseConverter = new LookupResponseConverter();
+                break;
             case SPARK:
-                return new SparkResponseConverter(config);  // todo: come back to the future of the config param
+                baseResponseConverter = new SparkResponseConverter(config);  // todo: come back to the future of the config param
+                break;
             case TIMESERIES:
             case PREMIUM_TIMESERIES:
-                return new TimeSeriesResponseConverter(config); // todo: come back to the future of the config param
+                baseResponseConverter = new TimeSeriesResponseConverter(config); // todo: come back to the future of the config param
+                break;
             default:
-                return new DefaultResponseConverter();
+                baseResponseConverter = new DefaultResponseConverter();
         }
+
+        ResponsePojoConverter pojoResponseConverter = new DefaultResponsePojoConverter(baseResponseConverter);
+
+        return new YahooResponseConverter(baseResponseConverter, pojoResponseConverter);
     }
 }
