@@ -5,7 +5,7 @@ package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
 import java.util.Date;
 
-public class EpochSecondsDateConverter implements EpochSecondsConverte<Date>
+public class EpochSecondsDateConverter implements EpochSecondsConverter<Date>
 {
     @Override
     public Date convertFromEpochSeconds(Long epochSeconds) {

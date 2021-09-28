@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-public class EpochSecondsDateStringConverter implements EpochSecondsConverte<String>, EpochStrConverter
+public class EpochSecondsDateStringConverter implements EpochSecondsConverter<String>, EpochStrConverter
 {
     private static final String DATE_PATTERN = "yyyy-MM-dd";
     private static final ZoneId ZONE_ID = ZoneId.of("GMT");

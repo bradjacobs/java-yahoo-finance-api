@@ -1,6 +1,6 @@
 package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
-public interface EpochSecondsConverte<U>
+public interface EpochSecondsConverter<U>
 {
     U convertFromEpochSeconds(final Long epochSeconds);
 

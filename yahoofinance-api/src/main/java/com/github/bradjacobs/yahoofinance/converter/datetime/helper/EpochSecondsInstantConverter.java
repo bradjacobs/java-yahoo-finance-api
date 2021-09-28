@@ -5,7 +5,7 @@ package com.github.bradjacobs.yahoofinance.converter.datetime.helper;
 
 import java.time.Instant;
 
-public class EpochSecondsInstantConverter implements EpochSecondsConverte<Instant>
+public class EpochSecondsInstantConverter implements EpochSecondsConverter<Instant>
 {
     @Override
     public Instant convertFromEpochSeconds(Long epochSeconds) {
