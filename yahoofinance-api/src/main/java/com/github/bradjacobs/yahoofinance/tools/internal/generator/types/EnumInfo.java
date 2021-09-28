@@ -9,8 +9,8 @@ import java.util.Objects;
 
 class EnumInfo implements Comparable<EnumInfo>
 {
-    private String enumName;
-    private List<EnumParamInfo> enumParamValues = new ArrayList<>();
+    private final String enumName;
+    private final List<EnumParamInfo> enumParamValues = new ArrayList<>();
 
     public EnumInfo(String enumName)
     {

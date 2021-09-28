@@ -124,7 +124,7 @@ abstract public class QueryResult implements Comparable<QueryResult>
     private String uuid;
 
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     public String getSymbol()
     {

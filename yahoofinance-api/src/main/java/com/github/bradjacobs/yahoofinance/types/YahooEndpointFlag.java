@@ -11,7 +11,7 @@ public enum YahooEndpointFlag
     // is query endpoint  (might not be any ticker symbol on the request)
     FLAG_IS_QUERY,
 
-    // endpoint that queires for general region information
+    // endpoint that queries for general region information
     //  (i.e.  not data for tickers and not a query)
     FLAG_IS_REGION,
 

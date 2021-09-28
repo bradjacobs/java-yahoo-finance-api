@@ -72,7 +72,7 @@ public class YahooFinanceRequest
             return (String)postBody;
         }
         else {
-            // todo - this code belongs in differen spot
+            // todo - this code belongs in different spot
             try {
                 return mapper.writeValueAsString(postBody);
             }

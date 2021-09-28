@@ -34,7 +34,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
     private static final String UPPER_EBIT = "EBIT";
     private static final String LOWER_EBIT = "ebit";
 
-    private final boolean orgainizeByDate;
+    private final boolean organizeByDate;
     private final JsonNestedFormatRemover jsonNestedFormatRemover = new JsonNestedFormatRemover(true);
 
     public TimeSeriesResponseConverter() {
@@ -42,7 +42,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
     }
 
     public TimeSeriesResponseConverter(ResponseConverterConfig config) {
-        this.orgainizeByDate = (config == null || config.isUseDateAsMapKey());
+        this.organizeByDate = (config == null || config.isUseDateAsMapKey());
     }
 
 
@@ -103,7 +103,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
         for (int i = 0; i < entryCount; i++)
         {
             String elementName = elementNames[i];
-            String prefix = null;
+            String prefix;
 
             Map<String, Map<String,Object>> destinationMap = null;
             if (elementName.startsWith(ANNUAL_PREFIX)) {
@@ -142,7 +142,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
                     String dateString = (String) dataMap.get("asOfDate");
                     Number value = (Number) dataMap.get("reportedValue");
 
-                    if (this.orgainizeByDate)
+                    if (this.organizeByDate)
                     {
                         // get map containing all the attributes for this given date.
                         Map<String, Object> attributeMap = destinationMap.computeIfAbsent(dateString, k -> new TreeMap<>());
@@ -161,9 +161,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
             }
         }
 
-        AttributeMapPojo timeFramAttributeMapPojo = new AttributeMapPojo(annualValuesMap, quarterlyValuesMap, trailingValuesMap);
-
-        return timeFramAttributeMapPojo;
+        return new AttributeMapPojo(annualValuesMap, quarterlyValuesMap, trailingValuesMap);
     }
 
 

@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * HOWEVER
  *    the need for this arose b/c the 'formatted' yahoo param does _NOT_ work in all cases.
- *       (i.e.  ".../quoteSummary/__ticker__?modules=balanceSheetHistory&formatted=false"
+ *       i.e.  ".../quoteSummary/__ticker__?modules=balanceSheetHistory&formatted=false"
  *
  * Behavior Example:
  *   INPUT
@@ -46,7 +46,7 @@ public class JsonNestedFormatRemover
 
     private static final String RAW_KEY = "raw";
 
-    private boolean removeEmptyEntries = false;
+    private boolean removeEmptyEntries;
 
     public JsonNestedFormatRemover(boolean removeEmptyEntries) {
         this.removeEmptyEntries = removeEmptyEntries;

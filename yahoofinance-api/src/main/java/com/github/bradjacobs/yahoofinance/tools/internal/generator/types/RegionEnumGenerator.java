@@ -13,7 +13,7 @@ class RegionEnumGenerator extends EnumStringBlobGenerator
 {
     private static final String TEMPLATE_NAME = "region_template.txt";
 
-    // grab avaialable regions from Yahoo's sereender defn fields.
+    // grab available regions from Yahoo's screener definition fields.
     private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=keystats";
 
     @Override

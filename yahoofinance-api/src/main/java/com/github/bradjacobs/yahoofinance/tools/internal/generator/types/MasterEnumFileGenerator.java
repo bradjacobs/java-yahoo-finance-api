@@ -13,20 +13,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Internal tool that does webrequests for data to generate some of the "enumeration / types" files.
+ * Internal tool that does web requests for data in order to generate some of the "enumeration / types" files.
  *
  * (bit clunky, but does the job)
  */
 class MasterEnumFileGenerator
 {
-    // note:   of course this only works if the 'current directoty' is the project root.
+    // note:   of course this only works if the 'current directory' is the project root.
     private static final String DESTINATION_DIR = "./yahoofinance-api/src/main/java/com/github/bradjacobs/yahoofinance/types/";
 
     private static final List<EnumStringBlobGenerator> enumGenerators = new ArrayList<>();
 
     private static final Map<String,EnumStringBlobGenerator> enumGeneratorMap = new LinkedHashMap<>();
 
-    // comment out lines below according if only want to run idividual ones.
+    // comment out lines below according if only want to run individual ones.
     static {
         enumGeneratorMap.put("Interval.java", new IntervalEnumGenerator());
         enumGeneratorMap.put("Range.java", new RangeEnumGenerator());

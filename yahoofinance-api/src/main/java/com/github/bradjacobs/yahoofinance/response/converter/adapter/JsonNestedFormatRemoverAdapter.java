@@ -39,33 +39,33 @@ import java.util.Map;
  */
 public class JsonNestedFormatRemoverAdapter implements ResponseConverter
 {
-    private final ResponseConverter targetConveter;
+    private final ResponseConverter targetConverter;
     private final JsonNestedFormatRemover jsonNestedFormatRemover;
 
     /**
      *
-     * @param targetConveter nested converter
+     * @param targetConverter nested converter
      * @param removeEmptyEntries (true = remove empty entries, false = reassign value to 'null')
      */
-    public JsonNestedFormatRemoverAdapter(ResponseConverter targetConveter, boolean removeEmptyEntries)
+    public JsonNestedFormatRemoverAdapter(ResponseConverter targetConverter, boolean removeEmptyEntries)
     {
-        if (targetConveter == null) {
-            throw new IllegalArgumentException("Must provide a target resposne convergter.");
+        if (targetConverter == null) {
+            throw new IllegalArgumentException("Must provide a target response converter.");
         }
 
-        this.targetConveter = targetConveter;
+        this.targetConverter = targetConverter;
         this.jsonNestedFormatRemover = new JsonNestedFormatRemover(removeEmptyEntries);
     }
 
 
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json) {
-        return targetConveter.convertToListOfMaps( jsonNestedFormatRemover.removeFormats(json) );
+        return targetConverter.convertToListOfMaps( jsonNestedFormatRemover.removeFormats(json) );
     }
 
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json) {
-        return targetConveter.convertToMapOfMaps( jsonNestedFormatRemover.removeFormats(json) );
+        return targetConverter.convertToMapOfMaps( jsonNestedFormatRemover.removeFormats(json) );
     }
 
 }

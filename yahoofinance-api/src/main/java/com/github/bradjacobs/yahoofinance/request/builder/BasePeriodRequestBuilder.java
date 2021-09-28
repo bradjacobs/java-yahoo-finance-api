@@ -96,7 +96,7 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
 
     protected T setTimeRangeLastXUnits(int value, ChronoUnit unit) {
         Instant instantNow = Instant.now();
-        Instant instantStart = null;
+        Instant instantStart;
 
         // note: would be simpler to always just do this:
         //     Instant instantStart = instantNow.minus(value, unit);

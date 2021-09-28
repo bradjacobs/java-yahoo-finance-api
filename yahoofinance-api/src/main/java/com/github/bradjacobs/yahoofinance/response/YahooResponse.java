@@ -9,7 +9,7 @@ import java.util.List;
 
 public class YahooResponse extends AbstractResponse
 {
-    private Response rawResponse;
+    private final Response rawResponse;
 
     public YahooResponse(YahooEndpoint yahooEndpoint, Response rawResponse)
     {

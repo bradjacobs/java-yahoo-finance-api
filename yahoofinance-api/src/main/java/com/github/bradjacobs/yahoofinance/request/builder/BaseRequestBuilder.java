@@ -25,9 +25,9 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
     private String region = Locale.getDefault().getCountry();
 
     // for any other misc params
-    private Map<String,String> extraParametersMap = new LinkedHashMap<>();
+    private final Map<String,String> extraParametersMap = new LinkedHashMap<>();
 
-    private Map<String,String> additionalHeaderMap = new LinkedHashMap<>();
+    private final Map<String,String> additionalHeaderMap = new LinkedHashMap<>();
 
 
     protected abstract T getThis();
@@ -112,7 +112,7 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 
 
     abstract protected Map<String,String> _buildParamMap();
-    abstract protected YahooEndpoint _getRequestEndpoiint();
+    abstract protected YahooEndpoint _getRequestEndpoint();
     abstract protected String _getRequestTicker();
 
     protected Object _buildRequestPostBody() {
@@ -121,7 +121,7 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 
     public YahooFinanceRequest build() {
 
-        YahooEndpoint endpoint = _getRequestEndpoiint();
+        YahooEndpoint endpoint = _getRequestEndpoint();
         String ticker = _getRequestTicker();
         Map<String, String> paramMap = buildParamMap();
         Object postBody = _buildRequestPostBody();

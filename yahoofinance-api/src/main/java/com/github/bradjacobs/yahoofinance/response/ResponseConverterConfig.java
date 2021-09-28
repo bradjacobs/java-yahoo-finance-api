@@ -7,7 +7,7 @@ public class ResponseConverterConfig
     private static final boolean DEFAULT_AUTO_DETECT_DATE_TIME = true;
 
     private final boolean useDateAsMapKey;
-    private final boolean autoDetechDateTime;
+    private final boolean autoDetectDateTime;
 
 
     public static final ResponseConverterConfig DEFAULT_INSTANCE = new ResponseConverterConfig();
@@ -18,10 +18,10 @@ public class ResponseConverterConfig
         this(DEFAULT_USE_DATE_MAP_KEY, DEFAULT_AUTO_DETECT_DATE_TIME);
     }
 
-    public ResponseConverterConfig(boolean useDateAsMapKey, boolean autoDetechDateTime)
+    public ResponseConverterConfig(boolean useDateAsMapKey, boolean autoDetectDateTime)
     {
         this.useDateAsMapKey = useDateAsMapKey;
-        this.autoDetechDateTime = autoDetechDateTime;
+        this.autoDetectDateTime = autoDetectDateTime;
     }
 
     public boolean isUseDateAsMapKey()
@@ -29,8 +29,8 @@ public class ResponseConverterConfig
         return useDateAsMapKey;
     }
 
-    public boolean isAutoDetechDateTime()
+    public boolean isAutoDetectDateTime()
     {
-        return autoDetechDateTime;
+        return autoDetectDateTime;
     }
 }

@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.request.builder.helper.MultiTickerParamSet;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.util.*;
@@ -9,7 +10,7 @@ public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
     private YahooEndpoint endpoint;
 
     // use collection to allow for case where some endpoints allow multiple ticker values
-    private Set<String> tickerSet = new LinkedHashSet<>();  // preserve insertion order
+    private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
 
 
     public EndpointBuilder(YahooEndpoint endpoint)
@@ -19,14 +20,7 @@ public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
 
 
     public EndpointBuilder withTicker(String... tickers) {
-        if (tickers != null && tickers.length > 0) {
-            List<String> tickerList = Arrays.asList(tickers);
-            tickerList.replaceAll(String::toUpperCase);  // make them all UPPERCASE
-            this.tickerSet.addAll(tickerList);
-        }
-        else {
-            tickerSet.clear();
-        }
+        tickerSet.updateTickers(tickers);
         return this;
     }
 
@@ -38,7 +32,7 @@ public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
 
 
     @Override
-    protected YahooEndpoint _getRequestEndpoiint()
+    protected YahooEndpoint _getRequestEndpoint()
     {
         return this.endpoint;
     }
@@ -74,15 +68,7 @@ public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
 
 
     private String generateTickerString() {
-        if (this.tickerSet.size() > 0 && this.endpoint != null) {
-            if (endpoint.isMultiTickerSupported()) {
-                return String.join(",", this.tickerSet);
-            }
-            else {
-                return this.tickerSet.iterator().next();
-            }
-        }
-        return "";
+        return this.tickerSet.generateTickerString();
     }
 
 }

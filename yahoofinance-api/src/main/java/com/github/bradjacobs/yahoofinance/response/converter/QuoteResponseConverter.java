@@ -2,7 +2,7 @@ package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.github.bradjacobs.yahoofinance.response.converter.adapter.MapKeyFromListAdapter;
 
-public class QuoteResponseConverter extends AbstractWrappedResposneConverter implements ResponseConverter
+public class QuoteResponseConverter extends AbstractWrappedResponseConverter implements ResponseConverter
 {
     private static final String DEFAULT_LIST_PATH = "$.quoteResponse.result[*]";
     private static final String PRIMARY_MAP_KEY = "symbol";

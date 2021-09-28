@@ -41,17 +41,17 @@ public class IndustryEnumGenerator extends EnumStringBlobGenerator
 
 
     /*
-        the passed in JSON is only the first  (this method will make addtional http requests.
+        the passed in JSON is only the first  (this method will make additional http requests).
      */
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
-        // use the 'original' json reponse to get all the sectors.
+        // use the 'original' json response to get all the sectors.
         Map<String,String> sectorEnumNameDisplayNameMap = getEnumDisplayNameMap(json, SECTOR_NAMES_JSON_PATH);
 
         List<EnumInfo> enumInfoList = new ArrayList<>();
 
-        // now do seperate requests in order to figure out which industries map to which sectors.
+        // now do separate requests in order to figure out which industries map to which sectors.
         //
         for (Map.Entry<String, String> sectorEntry : sectorEnumNameDisplayNameMap.entrySet())
         {

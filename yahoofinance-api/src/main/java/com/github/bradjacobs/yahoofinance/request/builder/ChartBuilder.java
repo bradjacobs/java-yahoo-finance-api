@@ -49,8 +49,8 @@ public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
         return this;
     }
 
-    public ChartBuilder withInterval(Interval inverval) {
-        this.interval = inverval;
+    public ChartBuilder withInterval(Interval interval) {
+        this.interval = interval;
         return this;
     }
     public ChartBuilder withFormatted(Boolean formatted) {
@@ -116,7 +116,7 @@ public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
 
 
     @Override
-    protected YahooEndpoint _getRequestEndpoiint()
+    protected YahooEndpoint _getRequestEndpoint()
     {
         return YahooEndpoint.CHART;
     }

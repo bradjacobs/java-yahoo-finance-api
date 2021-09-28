@@ -13,7 +13,7 @@ import java.util.TreeMap;
 
 
 /**
- * Helper method to "Login" to yahoo.  Namely to allow use of extra functionilty if you have a 'premium' membership.
+ * Helper method to "Login" to yahoo.  Namely to allow use of extra functionality if you have a 'premium' membership.
  *   The 'login' will essentially add a cookie to the client to represent the client is logged in.
  *   It is assumed that the nested httpClient is configured to handle '302/Redirects'.
  *
@@ -32,6 +32,8 @@ public class YahooLoginExecutor
     private static final String LOGIN_BASE_URL = "https://login.yahoo.com";
 
     private static final String PAYLOAD_TEMPLATE_1 = "crumb=%s&acrumb=%s&sessionIndex=%s&username=%s&passwd=&signin=Next&persistent=y";
+
+    // todo: string below with "nornaml" a type or did that on purpose?
     private static final String PAYLOAD_TEMPLATE_2 = "crumb=%s&acrumb=%s&sessionIndex=%s&username=%s&passwordContext=nornaml&password=%s&verifyPassword=Next";
 
     private static final Map<String,String> DEFAULT_HEADER_MAP = new TreeMap<String,String>() {{
@@ -131,7 +133,7 @@ public class YahooLoginExecutor
         String responseStringC = responseC.getBody();
 
 
-        // if the login succeeded thenn the response page will contain the username and a message to manage accounts.
+        // if the login succeeded then the response page will contain the username and a message to manage accounts.
         if (!responseStringC.contains("Manage your Yahoo accounts")   ||  !responseStringC.contains(userName)) {
             throw new LoginException("Unable to Login!!");
         }
@@ -192,6 +194,7 @@ public class YahooLoginExecutor
         if (responseBody.contains("Uh-oh...")) {
             return true;
         }
+        // todo - examine weird whitespace in string
         if (responseBody.contains("Please try again")) {
             return true;
         }

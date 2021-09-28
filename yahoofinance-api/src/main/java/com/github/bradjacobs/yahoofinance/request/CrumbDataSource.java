@@ -34,7 +34,7 @@ public class CrumbDataSource
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 4; // (4 hours) - max time to cache a crumb value
 
     // look for this string in the response body to 'locate' the crumb value.
-    private static final String CRUMB_REPSONSE_INTRO = "\"CrumbStore\":{\"crumb\":\"";
+    private static final String CRUMB_RESPONSE_INTRO = "\"CrumbStore\":{\"crumb\":\"";
 
 
     private CrumbObject crumbObject = null;
@@ -80,7 +80,7 @@ public class CrumbDataSource
      */
     private String parseOutCrumb(String response)
     {
-        String crumbValue = StringUtils.substringBetween(response, CRUMB_REPSONSE_INTRO, "\"");
+        String crumbValue = StringUtils.substringBetween(response, CRUMB_RESPONSE_INTRO, "\"");
 
         // sometimes the crumb will contain a LITERAL substring "\u002F"
         //   (instead of a slash).  Thus need minor cleanup for this scenario.

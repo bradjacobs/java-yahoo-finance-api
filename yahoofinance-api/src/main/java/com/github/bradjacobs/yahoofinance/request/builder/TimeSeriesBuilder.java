@@ -24,7 +24,7 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
 
     private boolean usePremium = false;
 
-    private FieldBuilder fieldBuilder = new FieldBuilder();
+    private final FieldBuilder fieldBuilder = new FieldBuilder();
 
 
     public TimeSeriesBuilder()
@@ -35,10 +35,7 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
         this.ticker = ticker;
         return this;
     }
-//    public TimeSeriesBuilder withMerge(boolean merge) {
-//        this.merge = merge;
-//        return this;
-//    }
+
     public TimeSeriesBuilder withPadTimeSeries(boolean padTimeSeries) {
         this.padTimeSeries = padTimeSeries;
         return this;
@@ -114,7 +111,7 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
     }
 
     @Override
-    protected YahooEndpoint _getRequestEndpoiint()
+    protected YahooEndpoint _getRequestEndpoint()
     {
         if (this.usePremium) {
             return YahooEndpoint.PREMIUM_TIMESERIES;
@@ -157,11 +154,11 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
         private static final Map<String, List<String>> dataMap = readTimeseriesTypeMap();
 
 
-        private Set<StatementType> statementTypes = new LinkedHashSet<>();
+        private final Set<StatementType> statementTypes = new LinkedHashSet<>();
 
-        private Set<TimeSeriesUnit> timeFrames = new LinkedHashSet<>();
+        private final Set<TimeSeriesUnit> timeFrames = new LinkedHashSet<>();
 
-        private Set<String> customFields = new LinkedHashSet<>();
+        private final Set<String> customFields = new LinkedHashSet<>();
 
 
         public FieldBuilder withStatement(StatementType ... statements) {

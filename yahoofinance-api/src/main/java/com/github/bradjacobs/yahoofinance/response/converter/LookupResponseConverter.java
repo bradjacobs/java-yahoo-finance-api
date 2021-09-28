@@ -4,7 +4,7 @@ package com.github.bradjacobs.yahoofinance.response.converter;
 import com.github.bradjacobs.yahoofinance.response.converter.adapter.JsonNestedFormatRemoverAdapter;
 import com.github.bradjacobs.yahoofinance.response.converter.adapter.MapKeyFromListAdapter;
 
-public class LookupResponseConverter extends AbstractWrappedResposneConverter implements ResponseConverter
+public class LookupResponseConverter extends AbstractWrappedResponseConverter implements ResponseConverter
 {
     private static final String DEFAULT_LIST_PATH = "$.finance.result[0].documents[*]";
     private static final String PRIMARY_MAP_KEY = "symbol";

@@ -8,7 +8,7 @@ import java.util.*;
 public class QuoteSummaryBuilder extends BaseRequestBuilder<QuoteSummaryBuilder>
 {
     private String ticker;
-    private Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
+    private final Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
 
 
     public QuoteSummaryBuilder withTicker(String ticker) {
@@ -29,7 +29,7 @@ public class QuoteSummaryBuilder extends BaseRequestBuilder<QuoteSummaryBuilder>
 
 
     @Override
-    protected YahooEndpoint _getRequestEndpoiint()
+    protected YahooEndpoint _getRequestEndpoint()
     {
         return YahooEndpoint.QUOTE_SUMMARY;
     }

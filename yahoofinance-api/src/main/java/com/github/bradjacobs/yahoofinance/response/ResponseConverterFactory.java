@@ -30,14 +30,14 @@ public class ResponseConverterFactory
     public static YahooResponseConverter getResponseConverter(YahooEndpoint endpoint, ResponseConverterConfig config)
     {
         if (endpoint == null) {
-            throw new IllegalArgumentException("Must provide an enpoint");
+            throw new IllegalArgumentException("Must provide an endpoint");
         }
 
         if (config == null) {
             config = DEFAULT_CONFIG;
         }
 
-        ResponseConverter baseResponseConverter = null;
+        ResponseConverter baseResponseConverter;
 
         switch (endpoint)
         {

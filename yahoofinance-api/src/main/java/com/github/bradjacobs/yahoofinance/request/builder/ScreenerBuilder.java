@@ -27,7 +27,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     private Boolean useRecordResponse = null;  // not sure what this actually does
     private Boolean totalOnly = null; // return record count only
 
-    // thse remain const until there's need otherwise.
+    // these remain const until there's need otherwise.
     //        side note:  it's possible to use 'entityIdType' instead of a quoteType, but is untested/unsupported for now
     private final Type quoteType = Type.EQUITY;
     private final String topOperator = Operator.AND.getValue();
@@ -35,7 +35,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     private final String userIdType = "guid";
 
 
-    // TODO - FIX... 'technically' if supply an industry w/o a sector then the sector could be 'auto-magicallly' added,
+    // TODO - FIX... 'technically' if supply an industry w/o a sector then the sector could be 'auto-magically' added,
     //    but for now explicitly require sector is set if an industry is set (b/c that's what the web does)
     //      however the method of validation is kludgy.
     //    it's important to do this check, or else the query can produce 'zero results' and might not realize there was a problem.
@@ -43,7 +43,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     private boolean industryIsSet = false;
 
 
-    private ScreenerQueryBuilder queryBuilder = new ScreenerQueryBuilder();
+    private final ScreenerQueryBuilder queryBuilder = new ScreenerQueryBuilder();
 
 
     public ScreenerBuilder()
@@ -129,7 +129,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     }
 
     @Override
-    protected YahooEndpoint _getRequestEndpoiint()
+    protected YahooEndpoint _getRequestEndpoint()
     {
         if (Boolean.TRUE.equals(this.totalOnly)) {
             return YahooEndpoint.SCREENER_TOTALS;
@@ -194,10 +194,10 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
 
     private static class ScreenerQueryBuilder
     {
-        private static final Operator op = Operator.AND;  // unchangable (for now)
+        private static final Operator op = Operator.AND;  // unchangeable (for now)
 
 
-        private Map<ScreenerField, Operand> fieldOperandMap = new LinkedHashMap<>();  // preserving creation order.
+        private final Map<ScreenerField, Operand> fieldOperandMap = new LinkedHashMap<>();  // preserving creation order.
 
         public ScreenerQueryBuilder eq(ScreenerField field, Long value)
         {
@@ -299,7 +299,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
             throw new IllegalArgumentException("The sortField cannot be null.");
         }
         if (! sortField.isSortable()) {
-            throw new IllegalArgumentException(String.format("Cannnot sort by '%s'.  It is not a sortable field", sortField.toString()));
+            throw new IllegalArgumentException(String.format("Cannot sort by '%s'.  It is not a sortable field", sortField));
         }
 
         if (this.industryIsSet && !this.sectorIsSet) {

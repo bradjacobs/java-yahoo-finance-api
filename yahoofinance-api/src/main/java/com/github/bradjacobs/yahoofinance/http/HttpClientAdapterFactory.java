@@ -31,9 +31,9 @@ public class HttpClientAdapterFactory
 
 
 
-    public static HttpClientAdapter createHttpClient(CloseableHttpClient apacheClientj)
+    public static HttpClientAdapter createHttpClient(CloseableHttpClient apacheClient)
     {
-        return new HttpCommonsClientAdapter(apacheClientj);
+        return new HttpCommonsClientAdapter(apacheClient);
     }
 
     public static HttpClientAdapter createHttpClient(OkHttpClient okHttpClient)
@@ -107,7 +107,7 @@ public class HttpClientAdapterFactory
             }
 
             List<Cookie> cookies = cookieStore.get(host);
-            return cookies != null ? cookies : new ArrayList<Cookie>();
+            return cookies != null ? cookies : new ArrayList<>();
         }
     }
 

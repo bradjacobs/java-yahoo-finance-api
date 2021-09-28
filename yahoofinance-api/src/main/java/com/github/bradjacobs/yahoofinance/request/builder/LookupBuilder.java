@@ -49,7 +49,7 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     }
 
     @Override
-    protected YahooEndpoint _getRequestEndpoiint()
+    protected YahooEndpoint _getRequestEndpoint()
     {
         if (includeTotalsOnly) {
             return YahooEndpoint.LOOKUP_TOTALS;

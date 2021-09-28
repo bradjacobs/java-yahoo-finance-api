@@ -10,7 +10,7 @@ import java.util.List;
 public class YahooResponseGenerator
 {
 
-    public YahooResponse makeResposne(YahooFinanceRequest request, Response rawResponse)
+    public YahooResponse makeRessponse(YahooFinanceRequest request, Response rawResponse)
     {
         return new YahooResponse(request.getEndpoint(), rawResponse);
     }

@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.request.builder.helper.MultiTickerParamSet;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
@@ -8,7 +9,7 @@ import java.util.*;
 
 public class SparkBuilder extends BaseRequestBuilder<SparkBuilder>
 {
-    private Set<String> tickerSet = new LinkedHashSet<>();  // preserve insertion order
+    private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
     private Range range;
     private Interval interval = Interval.ONE_DAY;  // default
 
@@ -19,14 +20,7 @@ public class SparkBuilder extends BaseRequestBuilder<SparkBuilder>
 
 
     public SparkBuilder withTicker(String... tickers) {
-        if (tickers != null && tickers.length > 0) {
-            List<String> tickerList = Arrays.asList(tickers);
-            tickerList.replaceAll(String::toUpperCase);  // make them all UPPERCASE
-            this.tickerSet.addAll(tickerList);
-        }
-        else {
-            tickerSet.clear();
-        }
+        tickerSet.updateTickers(tickers);
         return this;
     }
 
@@ -35,13 +29,13 @@ public class SparkBuilder extends BaseRequestBuilder<SparkBuilder>
         return this;
     }
 
-    public SparkBuilder withInterval(Interval inverval) {
-        this.interval = inverval;
+    public SparkBuilder withInterval(Interval interval) {
+        this.interval = interval;
         return this;
     }
 
     @Override
-    protected YahooEndpoint _getRequestEndpoiint()
+    protected YahooEndpoint _getRequestEndpoint()
     {
         return YahooEndpoint.SPARK;
     }
@@ -75,10 +69,7 @@ public class SparkBuilder extends BaseRequestBuilder<SparkBuilder>
 
 
     private String generateTickerString() {
-        if (this.tickerSet.size() > 0) {
-            return String.join(",", this.tickerSet);
-        }
-        return "";
+        return this.tickerSet.generateTickerString();
     }
 
 }

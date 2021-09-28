@@ -5,43 +5,43 @@ import java.util.Map;
 
 public class YahooResponseConverter implements ResponseConverter, ResponsePojoConverter
 {
-    private final ResponseConverter innerResposneConverter;
-    private final ResponsePojoConverter innerResposnePojoConverter;
+    private final ResponseConverter innerResponseConverter;
+    private final ResponsePojoConverter innerResponsePojoConverter;
 
-    public YahooResponseConverter(ResponseConverter innerResposneConverter, ResponsePojoConverter innerResposnePojoConverter)
+    public YahooResponseConverter(ResponseConverter innerResponseConverter, ResponsePojoConverter innerResponsePojoConverter)
     {
-        this.innerResposneConverter = innerResposneConverter;
-        this.innerResposnePojoConverter = innerResposnePojoConverter;
+        this.innerResponseConverter = innerResponseConverter;
+        this.innerResponsePojoConverter = innerResponsePojoConverter;
     }
 
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json) {
-        return innerResposneConverter.convertToListOfMaps(json);
+        return innerResponseConverter.convertToListOfMaps(json);
     }
 
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json) {
-        return innerResposneConverter.convertToMapOfMaps(json);
+        return innerResponseConverter.convertToMapOfMaps(json);
     }
 
     @Override
     public <T> List<T> convertToListOfPojos(String json, Class<T> targetType) {
-        return innerResposnePojoConverter.convertToListOfPojos(json, targetType);
+        return innerResponsePojoConverter.convertToListOfPojos(json, targetType);
     }
 
     @Override
     public <T> List<T> convertToListOfPojos(List<Map<String, Object>> listOfMaps, Class<T> targetType) {
-        return innerResposnePojoConverter.convertToListOfPojos(listOfMaps, targetType);
+        return innerResponsePojoConverter.convertToListOfPojos(listOfMaps, targetType);
     }
 
     @Override
     public <T> Map<String, T> convertToMapOfPojos(String json, Class<T> targetType) {
-        return innerResposnePojoConverter.convertToMapOfPojos(json, targetType);
+        return innerResponsePojoConverter.convertToMapOfPojos(json, targetType);
     }
 
     @Override
     public <T> Map<String, T> convertToMapOfPojos(Map<String, Map<String, Object>> mapOfMaps, Class<T> targetType) {
-        return innerResposnePojoConverter.convertToMapOfPojos(mapOfMaps, targetType);
+        return innerResponsePojoConverter.convertToMapOfPojos(mapOfMaps, targetType);
     }
 
 }

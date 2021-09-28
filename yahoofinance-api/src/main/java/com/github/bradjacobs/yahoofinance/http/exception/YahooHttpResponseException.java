@@ -9,7 +9,7 @@ import org.apache.http.client.HttpResponseException;
 import java.util.Map;
 
 /**
- * exception class that holds all useful information from an http error response (i.e. 4xx and 5xx)
+ * exception class that holds all useful information from any http error response (i.e. 4xx and 5xx)
  */
 /*
   note:  spring also hase some similar classes, but not sure want to pull in spring dependency just for that reason.

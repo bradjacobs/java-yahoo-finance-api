@@ -60,7 +60,7 @@ public class SparkResponseConverter implements ResponseConverter
         Map<String, Map<String, Object>> originalMapOfMaps = defaultConverter.convertToMapOfMaps(json);
 
         EpochStrConverter epochStrConverter = null;
-        boolean orgainizeByDate = this.config.isUseDateAsMapKey();
+        boolean organizeByDate = this.config.isUseDateAsMapKey();
 
         for (Map.Entry<String, Map<String, Object>> entry : originalMapOfMaps.entrySet())
         {
@@ -72,7 +72,7 @@ public class SparkResponseConverter implements ResponseConverter
 
             if (epochStrConverter == null) {
                 // todo - fix... moved method to a common location, but it is still ugly
-                epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestamps.toArray(new Long[0]), this.config.isAutoDetechDateTime());
+                epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestamps.toArray(new Long[0]), this.config.isAutoDetectDateTime());
             }
 
             for (int i = 0; i < timestamps.size(); i++)
@@ -81,7 +81,7 @@ public class SparkResponseConverter implements ResponseConverter
                 Number closeValue = closeValues.get(i);
                 String date = epochStrConverter.convertToString(timestamp);
 
-                if (orgainizeByDate)
+                if (organizeByDate)
                 {
                     Map<String, Object> internalTickerCloseMap = resultMap.computeIfAbsent(date, k -> new TreeMap<>());
                     internalTickerCloseMap.put(ticker, closeValue);

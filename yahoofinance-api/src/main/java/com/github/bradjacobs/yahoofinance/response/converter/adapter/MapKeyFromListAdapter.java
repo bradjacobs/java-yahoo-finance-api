@@ -12,20 +12,20 @@ import java.util.Map;
  */
 public class MapKeyFromListAdapter implements ResponseConverter
 {
-    private final ResponseConverter targetConveter;
+    private final ResponseConverter targetConverter;
     private final SimpleMapOfMapsGenerator simpleMapOfMapsGenerator;
 
-    public MapKeyFromListAdapter(ResponseConverter targetResponseConveter, String keyName, boolean sortMapKeys) {
-        if (targetResponseConveter == null) {
-            throw new IllegalArgumentException("Must provide a target resposne converter.");
+    public MapKeyFromListAdapter(ResponseConverter targetResponseConverter, String keyName, boolean sortMapKeys) {
+        if (targetResponseConverter == null) {
+            throw new IllegalArgumentException("Must provide a target response converter.");
         }
-        this.targetConveter = targetResponseConveter;
+        this.targetConverter = targetResponseConverter;
         this.simpleMapOfMapsGenerator = new SimpleMapOfMapsGenerator(keyName, sortMapKeys);
     }
 
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json) {
-        return targetConveter.convertToListOfMaps(json);
+        return targetConverter.convertToListOfMaps(json);
     }
 
     @Override

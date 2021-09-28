@@ -73,8 +73,8 @@ abstract class EnumStringBlobGenerator
         {
             sb.append(INDENT);
 
-            String enunName = enumInfo.getEnumName();
-            sb.append(enunName);
+            String enumName = enumInfo.getEnumName();
+            sb.append(enumName);
 
             List<EnumInfo.EnumParamInfo> enumParamValues = enumInfo.getEnumParamValues();
 
@@ -97,8 +97,8 @@ abstract class EnumStringBlobGenerator
 
             }
 
-            String trimmedEnunNameLine = enunName.trim();
-            if (trimmedEnunNameLine.length() > 0 && !trimmedEnunNameLine.startsWith("//")) {
+            String trimmedEnumNameLine = enumName.trim();
+            if (trimmedEnumNameLine.length() > 0 && !trimmedEnumNameLine.startsWith("//")) {
                 if (enumInfo.equals(lastEnumInfo)) {
                     sb.append(";");
                 }

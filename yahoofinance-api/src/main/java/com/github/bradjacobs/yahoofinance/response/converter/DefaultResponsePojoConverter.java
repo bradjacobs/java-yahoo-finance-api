@@ -16,7 +16,7 @@ public class DefaultResponsePojoConverter implements ResponsePojoConverter
     public DefaultResponsePojoConverter(ResponseConverter targetConverter)
     {
         if (targetConverter == null) {
-            throw new IllegalArgumentException("Must provider a target resposne convergter.");
+            throw new IllegalArgumentException("Must provider a target response converter.");
         }
         this.targetConverter = targetConverter;
     }

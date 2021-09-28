@@ -58,7 +58,7 @@ public class Response
         private int code;
         private String message;
         private String body;
-        private Map<String,String> headerMap = new TreeMap<>();
+        private final Map<String,String> headerMap = new TreeMap<>();
 
         public Builder code(int code) {
             this.code = code;

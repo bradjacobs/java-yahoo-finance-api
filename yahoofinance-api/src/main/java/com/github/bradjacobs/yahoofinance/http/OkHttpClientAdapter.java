@@ -22,9 +22,9 @@ public class OkHttpClientAdapter implements HttpClientAdapter
     }
 
     @Override
-    public Response executeGet(String url, Map<String, String> requestheaders) throws IOException
+    public Response executeGet(String url, Map<String, String> requestHeaders) throws IOException
     {
-        Request request = createRequest(url, requestheaders, null);
+        Request request = createRequest(url, requestHeaders, null);
         return executeRequest(request);
     }
 

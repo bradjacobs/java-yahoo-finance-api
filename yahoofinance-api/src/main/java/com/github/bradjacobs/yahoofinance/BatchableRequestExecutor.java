@@ -42,7 +42,7 @@ class BatchableRequestExecutor
         int originalBatchOffset = batchableRequestStrategy.getBatchOffset();
         int currentBatchOffset = originalBatchOffset;
 
-        Response response = null;
+        Response response;
         boolean continueBatchRequesting = true;
 
         try
@@ -106,8 +106,7 @@ class BatchableRequestExecutor
         }
 
         //  note:  "count == total" can mean done for screener, but not for lookup.   (use additional substring check to tell which one we have)
-        if (count == total && responseBodySubstring.contains("\"quotes\":["))
-        {
+        if (count == total && responseBodySubstring.contains("\"quotes\":[")) {
             return false;
         }
 

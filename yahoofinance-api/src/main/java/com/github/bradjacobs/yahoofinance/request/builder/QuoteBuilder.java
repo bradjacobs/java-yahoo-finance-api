@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.request.builder.helper.MultiTickerParamSet;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -8,22 +9,15 @@ import java.util.*;
 public class QuoteBuilder extends BaseRequestBuilder<QuoteBuilder>
 {
     // use collection to allow for case where some endpoints allow multiple ticker values
-    private Set<String> tickerSet = new LinkedHashSet<>();  // preserve insertion order
+    private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
 
     public QuoteBuilder withTicker(String... tickers) {
-        if (tickers != null && tickers.length > 0) {
-            List<String> tickerList = Arrays.asList(tickers);
-            tickerList.replaceAll(String::toUpperCase);  // make them all UPPERCASE
-            this.tickerSet.addAll(tickerList);
-        }
-        else {
-            tickerSet.clear();
-        }
+        this.tickerSet.updateTickers(tickers);
         return this;
     }
 
     @Override
-    protected YahooEndpoint _getRequestEndpoiint()
+    protected YahooEndpoint _getRequestEndpoint()
     {
         return YahooEndpoint.QUOTE;
     }
@@ -55,11 +49,7 @@ public class QuoteBuilder extends BaseRequestBuilder<QuoteBuilder>
         return this;
     }
 
-
     private String generateTickerString() {
-        if (this.tickerSet.size() > 0) {
-            return String.join(",", this.tickerSet);
-        }
-        return "";
+        return this.tickerSet.generateTickerString();
     }
 }

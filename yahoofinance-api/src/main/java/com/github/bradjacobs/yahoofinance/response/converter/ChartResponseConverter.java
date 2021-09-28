@@ -80,7 +80,7 @@ public class ChartResponseConverter implements ResponseConverter
         boolean closeValuesExist = ArrayUtils.isNotEmpty(closeValues);
         boolean adjCloseValuesExist = ArrayUtils.isNotEmpty(adjCloseValues);
 
-        // check if have minimal data
+        // check if have the minimal data
         if (ArrayUtils.isEmpty(timestampValues)) {
             // Two scenarios for this case:
             //   1. response has no data whatsoever (i.e. a date range w/ no data) === > return empty collection
@@ -91,7 +91,7 @@ public class ChartResponseConverter implements ResponseConverter
             return Collections.emptyList();
         }
 
-        EpochStrConverter epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestampValues, this.config.isAutoDetechDateTime());
+        EpochStrConverter epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestampValues, this.config.isAutoDetectDateTime());
 
         // _ASSERT_ all lists are same length
         int entryCount = timestampValues.length;

@@ -50,7 +50,7 @@ class TimeIntervalEnumInfoGenerator
                     String numberString = value.replace(suffix, "");
 
                     try {
-                        Integer numberVal = Integer.parseInt(numberString);
+                        int numberVal = Integer.parseInt(numberString);
                         String numberName = numberNameMap.get(numberVal);
                         String suffixUnitName = entry.getValue();
                         if (numberName != null)

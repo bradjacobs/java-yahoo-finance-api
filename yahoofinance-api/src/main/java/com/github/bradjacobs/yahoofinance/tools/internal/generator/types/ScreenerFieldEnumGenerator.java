@@ -51,24 +51,16 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
             .filter(sf -> sf.getIsPremium())
             .collect(Collectors.toList());
 
-//        Map<Category, Set<ScreenerFieldDefinition>> categoryFieldMap = new TreeMap<>(); // treemap to keep key order consistent
-//
-//        for (ScreenerFieldDefinition field : filteredList) {
-//            Category category = field.getCategory();
-//            Set<ScreenerFieldDefinition> categoryFields = categoryFieldMap.computeIfAbsent(category, k -> new TreeSet<>());
-//            categoryFields.add(field);
-//        }
-
         List<EnumInfo> enumInfoList = new ArrayList<>();
 
         // note: entry below are for adding extra space/comment b/w enum entries
-        //    this soln is kludgy.  Will reconsider better soln if this becomes more important.
+        //    this solution is kludgy.  Will reconsider better soln if this becomes more important.
         enumInfoList.add(new EnumInfo( "// Basic Fields"));  // comment line
         enumInfoList.addAll( generateEnumList(basicFieldList) );
 
 
         // note: 2 list entries below are for adding extra space/comment b/w enum entries
-        //    this soln is kludgy.  Will reconsider better soln if this becomes more important.
+        //    this solution is kludgy.  Will reconsider better soln if this becomes more important.
         enumInfoList.add(new EnumInfo( ""));  // empty space line
         enumInfoList.add(new EnumInfo( "// Premium Fields"));  // comment line
         enumInfoList.addAll( generateEnumList(premiumFieldList) );

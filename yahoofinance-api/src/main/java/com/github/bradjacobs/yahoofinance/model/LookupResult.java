@@ -21,7 +21,7 @@ public class LookupResult
     private Integer rank;
 
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new TreeMap<String, Object>(); // holds any extra unrecognized entries.
+    private final Map<String, Object> additionalProperties = new TreeMap<>(); // holds any extra unrecognized entries.
 
 
     public String getSymbol()

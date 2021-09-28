@@ -22,7 +22,7 @@ abstract public class AbstractResponse
             throw new IllegalArgumentException("Must provide an endpoint parameter.");
         }
         this.endpoint = endpoint;
-        this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint, converterConfig);;
+        this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint, converterConfig);
     }
 
     abstract protected List<Response> getListResponse();

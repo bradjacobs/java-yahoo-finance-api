@@ -33,16 +33,16 @@ public class HttpCommonsClientAdapter implements HttpClientAdapter
     }
 
     @Override
-    public Response executeGet(String url, Map<String, String> requestheaders) throws IOException
+    public Response executeGet(String url, Map<String, String> requestHeaders) throws IOException
     {
-        return executeRequest( createGetMethod(url, requestheaders) );
+        return executeRequest( createGetMethod(url, requestHeaders) );
     }
 
 
     @Override
-    public Response executePost(String url, String postBody, Map<String, String> requestheaders) throws IOException
+    public Response executePost(String url, String postBody, Map<String, String> requestHeaders) throws IOException
     {
-        return executeRequest( createPostMethod(url, postBody, requestheaders) );
+        return executeRequest( createPostMethod(url, postBody, requestHeaders) );
     }
 
 

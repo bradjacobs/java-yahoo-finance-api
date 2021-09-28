@@ -76,12 +76,12 @@ public class YahooFinanceClient
     public YahooResponse execute(YahooFinanceRequest request) throws IOException
     {
         Response rawResponse = executeInternal(request);
-        return yahooResponseGenerator.makeResposne(request, rawResponse);
+        return yahooResponseGenerator.makeRessponse(request, rawResponse);
     }
 
     public YahooBatchResponse executeBatch(YahooFinanceRequest request) throws IOException
     {
-        // todo - come back to address this (a litle kludgy)
+        // todo - come back to address this (a little kludgy)
         if (request instanceof YahooFinanceBatchRequest) {
             return executeBatch((YahooFinanceBatchRequest)request);
         }
@@ -106,7 +106,7 @@ public class YahooFinanceClient
         String url = buildRequestUrl(request);
         Map<String,String> headerMap = createRequestHeaderMap(request);
 
-        Response response = null;
+        Response response;
         if (request.isPost()) {
             String postBody = request.getPostBody();
             response = httpClient.executePost(url, postBody, headerMap);

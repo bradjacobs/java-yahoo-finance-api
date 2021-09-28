@@ -16,7 +16,7 @@ public class QuoteRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        int exampleRequestId = 1;
+        int exampleRequestId = 2;
 
         YahooFinanceRequest req = QuoteRequestDemoFactory.getRequest(exampleRequestId);
 

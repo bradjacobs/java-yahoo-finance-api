@@ -52,7 +52,7 @@ public class QuoteFieldFactory
 
 
     // todo: don't know which fields map to types exactly, for now just focus on equity vs "non-equity"
-    //  (list was derrived from observations and could be (probably) incorrect/incomplete
+    //  (list was derived from observations and could be (probably) incorrect/incomplete
     private static final List<String> NON_EQUITY_FIELDS = Arrays.asList(
         "circulatingSupply", "coinImageUrl", "contractSymbol", "expireDate", "expireIsoDate", "fromCurrency",
         "fromExchange", "lastMarket", "openInterest", "startDate", "strike", "toCurrency", "toExchange",

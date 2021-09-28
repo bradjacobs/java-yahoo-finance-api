@@ -26,7 +26,7 @@ import static com.github.bradjacobs.yahoofinance.types.YahooEndpointFlag.*;
  *  - "screener specific" endpoints (saved/predefined screens, etc)
  *  - "video" endpoints
  *  - anything that requires username/userId/login
- *  - other misc endpoings that were subjectively determined not to have much usefulness here.
+ *  - other misc endpoints that were subjectively determined not to have much usefulness here.
  *
  *
  *  Also the {@link YahooModule} types for QuoteSummary endpoint.
