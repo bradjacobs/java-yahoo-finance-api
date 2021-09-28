@@ -1,7 +1,7 @@
 package com.github.bradjacobs.yahoofinance.response.converter.experiment.decorator;
 
 
-public class QuoteResponseConverterNew extends AbstractWrappedResposneConverter
+public class QuoteResponseConverterNew extends AbstractWrappedResposneConverter implements ResponseConverter
 {
     private static final String DEFAULT_LIST_PATH = "$.quoteResponse.result[*]";
     private static final String PRIMARY_MAP_KEY = "symbol";

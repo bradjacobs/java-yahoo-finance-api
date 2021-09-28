@@ -50,10 +50,13 @@ public class JsonNestedFormatRemoverDecorator implements ResponseConverter
     private static final String RAW_KEY = "raw";
 
     private final ResponseConverter targetConveter;
-
-    //      * @param removeEmptyEntries  (true = remove empty entries, false = reassign value to 'null')
     private final boolean removeEmptyEntries;
 
+    /**
+     *
+     * @param targetResponseConveter nested converter
+     * @param removeEmptyEntries (true = remove empty entries, false = reassign value to 'null')
+     */
     public JsonNestedFormatRemoverDecorator(ResponseConverter targetResponseConveter, boolean removeEmptyEntries) {
         if (targetResponseConveter == null) {
             throw new IllegalArgumentException("Must provide a target resposne convergter.");

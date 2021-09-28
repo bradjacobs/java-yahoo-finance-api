@@ -1,8 +1,5 @@
 package com.github.bradjacobs.yahoofinance.response.converter.experiment.decorator;
 
-import com.github.bradjacobs.yahoofinance.response.converter.experiment.decorator.ResponseConverter;
-import com.github.bradjacobs.yahoofinance.response.converter.experiment.decorator.ResponsePojoConverter;
-
 import java.util.List;
 import java.util.Map;
 

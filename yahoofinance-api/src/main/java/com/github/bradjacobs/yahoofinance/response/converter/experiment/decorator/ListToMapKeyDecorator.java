@@ -4,6 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
+
+/**
+ * Using to construct a "map of maps" with a given listOfMaps plus the name of attribute to be used as the map key.
+ */
 public class ListToMapKeyDecorator implements ResponseConverter
 {
     private final ResponseConverter targetConveter;

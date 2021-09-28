@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuoteSummaryResponseConverterNew extends AbstractWrappedResposneConverter
+public class QuoteSummaryResponseConverterNew extends AbstractWrappedResposneConverter implements ResponseConverter
 {
     private static final String DEFAULT_MAP_PATH = "$.quoteSummary.result[0]";
 
