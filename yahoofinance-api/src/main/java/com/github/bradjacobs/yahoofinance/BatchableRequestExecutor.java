@@ -94,8 +94,8 @@ class BatchableRequestExecutor
         int total = 0;
 
         try {
-            count = Integer.valueOf( StringUtils.substringBetween(responseBodySubstring, COUNT_PREFIX, ",") );
-            total = Integer.valueOf( StringUtils.substringBetween(responseBodySubstring, TOTAL_PREFIX, ",") );
+            count = Integer.parseInt( StringUtils.substringBetween(responseBodySubstring, COUNT_PREFIX, ",") );
+            total = Integer.parseInt( StringUtils.substringBetween(responseBodySubstring, TOTAL_PREFIX, ",") );
         }
         catch (Exception e) {
             /* ignore (for now) */
