@@ -50,35 +50,18 @@ public class YahooFinanceClient
     private final Map<String,String> defaultRequestHeaderMap = new LinkedHashMap<>();
     private final BatchableRequestExecutor batchableRequestExecutor;
     private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
-    private final YahooLoginExecutor yahooLoginExecutor;
+
 
 
     public YahooFinanceClient()
     {
-        this(null, null);
-    }
-
-    public YahooFinanceClient(String userName, String password)
-    {
-        this(HttpClientAdapterFactory.createDefaultClient(), userName, password);
+        this(HttpClientAdapterFactory.createDefaultClient());
     }
 
     public YahooFinanceClient(HttpClientAdapter httpClient)
     {
-        this(httpClient, null, null);
-    }
-
-    public YahooFinanceClient(HttpClientAdapter httpClient, String userName, String password)
-    {
         if (httpClient == null) {
             throw new IllegalArgumentException("httpClient cannot be null.");
-        }
-
-        if (StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(password)) {
-            yahooLoginExecutor = new YahooLoginExecutor(httpClient, userName, password);
-        }
-        else {
-            yahooLoginExecutor = null;
         }
 
         this.httpClient = httpClient;
@@ -92,8 +75,6 @@ public class YahooFinanceClient
         defaultRequestHeaderMap.put(HttpHeaders.CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
         defaultRequestHeaderMap.put(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT);
     }
-
-
 
 
     public YahooResponse execute(YahooFinanceRequest request) throws IOException
@@ -125,25 +106,6 @@ public class YahooFinanceClient
         // validation will throw an exception if invalid request is detected
         requestValidator.validationRequest(request);
 
-        // if premium endpoint, ensure logged in
-        YahooEndpoint endpoint = request.getEndpoint();
-
-        // TODO - disabled for now... can run into CAPCHA issues
-//        if (endpoint.isPremiumRequest()) {
-//            if (this.yahooLoginExecutor != null) {
-//                if (! this.yahooLoginExecutor.isLoggedIn()) {
-//                    try {
-//                        yahooLoginExecutor.doLogin();
-//                    }
-//                    catch (Exception e) {
-//                        throw new RuntimeException("Unable to login: " + e.getMessage(), e);  // todo better exception needed!!
-//                    }
-//                }
-//            }
-//            else {
-//                throw new IllegalStateException("Unable to execute premium endpoint request: no credentials were supplied.");
-//            }
-//        }
 
         String url = buildRequestUrl(request);
         Map<String,String> headerMap = createRequestHeaderMap(request);
