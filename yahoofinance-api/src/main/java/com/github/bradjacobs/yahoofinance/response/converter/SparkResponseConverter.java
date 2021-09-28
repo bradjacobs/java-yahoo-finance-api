@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class SparkResponseConverter extends YahooResponseConverter
+public class SparkResponseConverter implements ResponseConverter
 {
     private static final String KEY_TIMESTAMP = "timestamp";
     private static final String KEY_CLOSE = "close";

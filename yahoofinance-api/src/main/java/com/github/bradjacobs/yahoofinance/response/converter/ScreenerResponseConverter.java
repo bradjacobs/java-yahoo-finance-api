@@ -1,25 +1,21 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
 
-import java.util.List;
-import java.util.Map;
+import com.github.bradjacobs.yahoofinance.response.converter.adapter.MapKeyFromListAdapter;
 
-
-public class ScreenerResponseConverter extends YahooResponseConverter
+public class ScreenerResponseConverter extends AbstractWrappedResposneConverter implements ResponseConverter
 {
     private static final String PRIMARY_MAP_KEY = "symbol";
-    private static final String RESPONSE_ROOT_PATH = "$.finance.result[0].quotes";
+    private static final String DEFAULT_LIST_PATH = "$.finance.result[0].quotes";
 
-    @Override
-    public List<Map<String, Object>> convertToListOfMaps(String json)
-    {
-        return convertToListOfMapsFromPath(json, RESPONSE_ROOT_PATH);
+    public ScreenerResponseConverter() {
+        super(generateNestedResponseConverter());
     }
 
-    @Override
-    public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
-    {
-        return ListToMapConverter.convertToMap(PRIMARY_MAP_KEY, convertToListOfMaps(json));
+    private static ResponseConverter generateNestedResponseConverter() {
+        ResponseConverter converter = new JsonPathCollectionConverter(DEFAULT_LIST_PATH, null);
+        converter = new MapKeyFromListAdapter(converter, PRIMARY_MAP_KEY, true);
+        return converter;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
-import com.github.bradjacobs.yahoofinance.response.helper.JsonFormatRemover;
+import com.github.bradjacobs.yahoofinance.response.converter.util.JsonNestedFormatRemover;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -21,7 +21,7 @@ import java.util.TreeMap;
       = code clean up (was originally done just to see it work)
 
  */
-public class TimeSeriesResponseConverter extends YahooResponseConverter
+public class TimeSeriesResponseConverter implements ResponseConverter
 {
     private static final String ROOT_PATH = "$.timeseries.result";
     private static final String ELEMENT_NAMES_PATH = ROOT_PATH + "[*].meta.type[0]";
@@ -35,6 +35,7 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
     private static final String LOWER_EBIT = "ebit";
 
     private final boolean orgainizeByDate;
+    private final JsonNestedFormatRemover jsonNestedFormatRemover = new JsonNestedFormatRemover(true);
 
     public TimeSeriesResponseConverter() {
         this(null);
@@ -80,11 +81,7 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
 
     public Map<String, Object> createAltMapSignature(Map<String, Map<String, Object>> origDateResultMap)
     {
-        Map<String, Object> resultMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Map<String, Object>> entry : origDateResultMap.entrySet()) {
-            resultMap.put(entry.getKey(), entry.getValue());
-        }
-        return resultMap;
+        return new LinkedHashMap<>(origDateResultMap);
     }
 
 
@@ -95,7 +92,7 @@ public class TimeSeriesResponseConverter extends YahooResponseConverter
         Map<String, Map<String,Object>> quarterlyValuesMap = new TreeMap<>();
         Map<String, Map<String,Object>> trailingValuesMap = new TreeMap<>();
 
-        json = JsonFormatRemover.removeFormats(json, true);
+        json = jsonNestedFormatRemover.removeFormats(json);
 
         DocumentContext jsonDoc = JsonPath.parse(json);
 

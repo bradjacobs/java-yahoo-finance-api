@@ -1,7 +1,4 @@
-/*
- * This file is subject to the terms and conditions defined in 'LICENSE' file.
- */
-package com.github.bradjacobs.yahoofinance.response.converter.experiment.decorator;
+package com.github.bradjacobs.yahoofinance.response.converter.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -43,41 +40,17 @@ import java.util.Map;
  *     "totalAssets": null,
  *     "forwardPE": 24.466228,
  */
-public class JsonNestedFormatRemoverDecorator implements ResponseConverter
+public class JsonNestedFormatRemover
 {
     private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
     private static final String RAW_KEY = "raw";
 
-    private final ResponseConverter targetConveter;
-    private final boolean removeEmptyEntries;
+    private boolean removeEmptyEntries = false;
 
-    /**
-     *
-     * @param targetResponseConveter nested converter
-     * @param removeEmptyEntries (true = remove empty entries, false = reassign value to 'null')
-     */
-    public JsonNestedFormatRemoverDecorator(ResponseConverter targetResponseConveter, boolean removeEmptyEntries) {
-        if (targetResponseConveter == null) {
-            throw new IllegalArgumentException("Must provide a target resposne convergter.");
-        }
-
-        this.targetConveter = targetResponseConveter;
+    public JsonNestedFormatRemover(boolean removeEmptyEntries) {
         this.removeEmptyEntries = removeEmptyEntries;
     }
-
-
-    @Override
-    public List<Map<String, Object>> convertToListOfMaps(String json) {
-        return targetConveter.convertToListOfMaps( removeFormats(json) );
-    }
-
-    @Override
-    public Map<String, Map<String, Object>> convertToMapOfMaps(String json) {
-        return targetConveter.convertToMapOfMaps( removeFormats(json) );
-    }
-
-
 
     /**
      * Removes the special Yahoo fmt sub-fields and replaces with 'raw' value.
@@ -171,5 +144,4 @@ public class JsonNestedFormatRemoverDecorator implements ResponseConverter
             throw new IllegalArgumentException("Invalid JSON string: " + e.getMessage(), e);
         }
     }
-
 }

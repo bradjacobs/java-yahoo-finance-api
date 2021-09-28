@@ -3,7 +3,7 @@ package com.github.bradjacobs.yahoofinance.response.converter;
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
-import com.github.bradjacobs.yahoofinance.response.helper.ListToMapConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.util.SimpleMapOfMapsGenerator;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -12,7 +12,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 
-public class ChartResponseConverter extends YahooResponseConverter
+public class ChartResponseConverter implements ResponseConverter
 {
     // key titles for the output map
     private static final String KEY_TIMESTAMP = "timestamp";
@@ -48,6 +48,7 @@ public class ChartResponseConverter extends YahooResponseConverter
 
 
     private final ResponseConverterConfig config;
+    private final SimpleMapOfMapsGenerator mapOfMapsGenerator = new SimpleMapOfMapsGenerator(KEY_DATE, false);
 
 
     public ChartResponseConverter() {
@@ -64,7 +65,7 @@ public class ChartResponseConverter extends YahooResponseConverter
     @Override
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json)
     {
-        return ListToMapConverter.convertToMap(KEY_DATE, convertToListOfMaps(json));
+        return mapOfMapsGenerator.convertToMap( this.convertToListOfMaps(json) );
     }
 
     @Override

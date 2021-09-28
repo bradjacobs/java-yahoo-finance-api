@@ -1,4 +1,4 @@
-package com.github.bradjacobs.yahoofinance.response.converter.experiment.decorator;
+package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.jayway.jsonpath.DocumentContext;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +21,7 @@ public class JsonPathCollectionConverter extends AbstractJsonPathCollectionConve
     public List<Map<String, Object>> convertToListOfMaps(String json) {
 
         if (StringUtils.isEmpty(this.listOfObjectsPath)) {
-            throw new IllegalStateException("Path for List of Maps is not configired.");
+            throw new IllegalStateException("Path for List of Maps is not configured.");
         }
         DocumentContext jsonDoc = createJsonPathDocContext(json);
         if (jsonDoc == null) {
@@ -34,7 +34,7 @@ public class JsonPathCollectionConverter extends AbstractJsonPathCollectionConve
     public Map<String, Map<String, Object>> convertToMapOfMaps(String json) {
 
         if (StringUtils.isEmpty(this.mapOfObjectsPath)) {
-            throw new IllegalStateException("Path for Map of Maps is not configired.");
+            throw new IllegalStateException("Path for Map of Maps is not configured.");
         }
 
         DocumentContext jsonDoc = createJsonPathDocContext(json);

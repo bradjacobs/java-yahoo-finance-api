@@ -1,4 +1,4 @@
-package com.github.bradjacobs.yahoofinance.response.converter.experiment.decorator;
+package com.github.bradjacobs.yahoofinance.response.converter.util;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,45 +8,22 @@ import java.util.*;
 /**
  * Using to construct a "map of maps" with a given listOfMaps plus the name of attribute to be used as the map key.
  */
-public class ListToMapKeyDecorator implements ResponseConverter
+public class SimpleMapOfMapsGenerator
 {
-    private final ResponseConverter targetConveter;
     private final String keyName;
     private final boolean sortMapKeys;
 
-    private static final boolean DEFAULT_SORT_MAP_KEYS = false;
-
-    public ListToMapKeyDecorator(ResponseConverter targetResponseConveter, String keyName) {
-        this(targetResponseConveter, keyName, DEFAULT_SORT_MAP_KEYS);
-    }
-
-    public ListToMapKeyDecorator(ResponseConverter targetResponseConveter, String keyName, boolean sortMapKeys) {
-        if (targetResponseConveter == null) {
-            throw new IllegalArgumentException("Must provide a target resposne converter.");
-        }
+    public SimpleMapOfMapsGenerator(String keyName, boolean sortMapKeys) {
         if (StringUtils.isEmpty(keyName)) {
             throw new IllegalArgumentException("Must provide a key name.");
         }
 
-        this.targetConveter = targetResponseConveter;
         this.keyName = keyName;
         this.sortMapKeys = sortMapKeys;
     }
 
-    @Override
-    public List<Map<String, Object>> convertToListOfMaps(String json) {
-        return targetConveter.convertToListOfMaps(json);
-    }
 
-    @Override
-    public Map<String, Map<String, Object>> convertToMapOfMaps(String json) {
-
-        List<Map<String, Object>> listOfMaps = convertToListOfMaps(json);
-        return convertToMap(listOfMaps);
-    }
-
-
-    protected Map<String, Map<String,Object>> convertToMap(List<Map<String, Object>> listData)
+    public Map<String, Map<String,Object>> convertToMap(List<Map<String, Object>> listData)
     {
         if (listData == null) {
             return null;

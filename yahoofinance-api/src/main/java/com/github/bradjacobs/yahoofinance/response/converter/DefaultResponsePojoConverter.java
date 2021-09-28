@@ -1,4 +1,4 @@
-package com.github.bradjacobs.yahoofinance.response.converter.experiment.decorator;
+package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.json.JsonMapper;
