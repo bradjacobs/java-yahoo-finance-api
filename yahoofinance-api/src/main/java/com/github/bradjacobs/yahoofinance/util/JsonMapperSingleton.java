@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.util;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,8 +14,9 @@ public class JsonMapperSingleton
 
     static {
         instance = JsonMapper.builder()
-            //.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS) // avoid big numbers as scientific notation
-            //.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN)   // avoid big numbers as scientific notation
+                // note: commenting out 'either' of the first 2 below can result in most numbers always being Double.
+            .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS) // avoid big numbers as scientific notation
+            .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN)   // avoid big numbers as scientific notation
             .enable(DeserializationFeature.USE_LONG_FOR_INTS)
             //.nodeFactory(JsonNodeFactory.withExactBigDecimals(true))  // todo - test what affect this line has.
             .build();
