@@ -5,18 +5,18 @@ import com.github.bradjacobs.yahoofinance.types.YahooModule;
 
 import java.util.*;
 
-public class QuoteSummaryBuilder extends BaseRequestBuilder<QuoteSummaryBuilder>
+public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryRequestBuilder>
 {
     private String ticker;
     private final Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
 
 
-    public QuoteSummaryBuilder withTicker(String ticker) {
+    public QuoteSummaryRequestBuilder withTicker(String ticker) {
         this.ticker = ticker;
         return this;
     }
 
-    public QuoteSummaryBuilder withModules(YahooModule... modules) {
+    public QuoteSummaryRequestBuilder withModules(YahooModule... modules) {
         if (modules != null && modules.length > 0) {
 
             this.modules.addAll(Arrays.asList(modules));
@@ -53,7 +53,7 @@ public class QuoteSummaryBuilder extends BaseRequestBuilder<QuoteSummaryBuilder>
     }
 
     @Override
-    protected QuoteSummaryBuilder getThis()
+    protected QuoteSummaryRequestBuilder getThis()
     {
         return this;
     }

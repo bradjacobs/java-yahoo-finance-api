@@ -11,7 +11,7 @@ import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
  *      (for example:  if you can only see the last 4 quarters of a income statement on the website, it will be true here as well)
  *  .
  *    2. It's possible that the list of fields in the request becomes "too big" and will result in a error.
- *       (i.e. it's not possible to specific "every possbile conceivable field value" for this reason)
+ *       (i.e. it's NOT possible to specify "every possbile conceivable field value" for this reason)
  *  .
  *    3. Not all values are available for all tickers
  *      (for example: many tickers will return 'null' for GrossProfit, even though the company DID have a gross profit)
@@ -37,7 +37,6 @@ public class TimeSeriesRequestDemoFactory
             default: return SIMPLE_A;
         }
     }
-
 
 
     /**
@@ -137,6 +136,4 @@ public class TimeSeriesRequestDemoFactory
             .setStart(1531268938L)
             .setEnd(1625963338L)
             .build();
-
-
 }

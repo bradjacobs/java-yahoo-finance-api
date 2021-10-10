@@ -12,12 +12,12 @@ import java.util.*;
  * Simple class to read in fields stored in plain text file.
  *
  */
-public class QuoteFieldFactory
+public class QuoteRequestFieldFactory
 {
     private static final String FILE_NAME = "quote_fields.txt";
     private static final Map<Type, List<String>> TYPE_FIELD_MAP = new HashMap<>(); // (initialized below)
 
-    private QuoteFieldFactory() { }
+    private QuoteRequestFieldFactory() { }
 
 
     public static List<String> getQuoteFields(Type type)

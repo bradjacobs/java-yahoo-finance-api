@@ -11,7 +11,7 @@ import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 
 import java.util.*;
 
-public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilder>
+public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSeriesRequestBuilder>
 {
     private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
@@ -27,46 +27,46 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
     private final FieldBuilder fieldBuilder = new FieldBuilder();
 
 
-    public TimeSeriesBuilder()
+    public TimeSeriesRequestBuilder()
     {
     }
 
-    public TimeSeriesBuilder withTicker(String ticker) {
+    public TimeSeriesRequestBuilder withTicker(String ticker) {
         this.ticker = ticker;
         return this;
     }
 
-    public TimeSeriesBuilder withPadTimeSeries(boolean padTimeSeries) {
+    public TimeSeriesRequestBuilder withPadTimeSeries(boolean padTimeSeries) {
         this.padTimeSeries = padTimeSeries;
         return this;
     }
 
-    public TimeSeriesBuilder withStatement(StatementType... statements) {
+    public TimeSeriesRequestBuilder withStatement(StatementType... statements) {
         fieldBuilder.withStatement(statements);
         return this;
     }
 
-    public TimeSeriesBuilder withAllStatements() {
+    public TimeSeriesRequestBuilder withAllStatements() {
         fieldBuilder.withAllStatements();
         return this;
     }
 
-    public TimeSeriesBuilder withTimeFrame(TimeSeriesUnit... timeFrames) {
+    public TimeSeriesRequestBuilder withTimeFrame(TimeSeriesUnit... timeFrames) {
         fieldBuilder.withTimeframes(timeFrames);
         return this;
     }
 
-    public TimeSeriesBuilder withAllTimeFrame() {
+    public TimeSeriesRequestBuilder withAllTimeFrame() {
         fieldBuilder.withAllTimeframes();
         return this;
     }
 
-    public TimeSeriesBuilder withCustomFields(String ... fieldNames) {
+    public TimeSeriesRequestBuilder withCustomFields(String ... fieldNames) {
         fieldBuilder.withCustomFields(fieldNames);
         return this;
     }
 
-    public TimeSeriesBuilder setPremium(boolean premium) {
+    public TimeSeriesRequestBuilder setPremium(boolean premium) {
         this.usePremium = premium;
         return this;
     }
@@ -79,7 +79,7 @@ public class TimeSeriesBuilder extends BasePeriodRequestBuilder<TimeSeriesBuilde
     }
 
     @Override
-    protected TimeSeriesBuilder getThis()
+    protected TimeSeriesRequestBuilder getThis()
     {
         return this;
     }

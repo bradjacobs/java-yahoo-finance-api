@@ -33,7 +33,7 @@ public class YahooLoginExecutor
 
     private static final String PAYLOAD_TEMPLATE_1 = "crumb=%s&acrumb=%s&sessionIndex=%s&username=%s&passwd=&signin=Next&persistent=y";
 
-    // todo: string below with "nornaml" a type or did that on purpose?
+    // todo: string below with "nornaml" a typo or did that on purpose?
     private static final String PAYLOAD_TEMPLATE_2 = "crumb=%s&acrumb=%s&sessionIndex=%s&username=%s&passwordContext=nornaml&password=%s&verifyPassword=Next";
 
     private static final Map<String,String> DEFAULT_HEADER_MAP = new TreeMap<String,String>() {{

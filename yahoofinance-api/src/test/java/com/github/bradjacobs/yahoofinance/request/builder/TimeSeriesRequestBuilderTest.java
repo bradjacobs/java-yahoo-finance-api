@@ -1,6 +1,6 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-public class TimeSeriesBuilderTest
+public class TimeSeriesRequestBuilderTest
 {
 
     // todo - implement

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.demo.misc.objects.KeyStatistics;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
-import com.github.bradjacobs.yahoofinance.request.builder.QuoteSummaryBuilder;
+import com.github.bradjacobs.yahoofinance.request.builder.QuoteSummaryRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.Exchange;
@@ -72,7 +72,7 @@ public class BigCompanyRecentStockSplit
         List<String> tickerList = new ArrayList<>(screenerMapOfMaps.keySet());
 
         // builder to make requests for the quoteSummary endpoint
-        QuoteSummaryBuilder quoteSummaryRequestBuilder =
+        QuoteSummaryRequestBuilder quoteSummaryRequestBuilder =
             YahooRequestBuilder.api()
                 .quoteSummary()
                 .withModules(DEFAULT_KEY_STATISTICS);

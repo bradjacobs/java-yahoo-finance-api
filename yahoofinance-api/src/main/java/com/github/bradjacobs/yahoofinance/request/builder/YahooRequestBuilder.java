@@ -13,37 +13,37 @@ public class YahooRequestBuilder
         return INSTANCE;
     }
 
-    public ChartBuilder chart() {
-        return new ChartBuilder();
+    public ChartRequestBuilder chart() {
+        return new ChartRequestBuilder();
     }
 
-    public SparkBuilder spark() {
-        return new SparkBuilder();
+    public SparkRequestBuilder spark() {
+        return new SparkRequestBuilder();
     }
 
-    public QuoteSummaryBuilder quoteSummary() {
-        return new QuoteSummaryBuilder();
+    public QuoteSummaryRequestBuilder quoteSummary() {
+        return new QuoteSummaryRequestBuilder();
     }
 
-    public QuoteBuilder quote(){
-        return new QuoteBuilder();
+    public QuoteRequestBuilder quote(){
+        return new QuoteRequestBuilder();
     }
 
-    public TimeSeriesBuilder timeSeries(){
-        return new TimeSeriesBuilder();
+    public TimeSeriesRequestBuilder timeSeries(){
+        return new TimeSeriesRequestBuilder();
     }
 
-    public ScreenerBuilder screener(){
-        return new ScreenerBuilder();
+    public ScreenerRequestBuilder screener(){
+        return new ScreenerRequestBuilder();
     }
 
-    public LookupBuilder lookup(){
-        return new LookupBuilder();
+    public LookupRequestBuilder lookup(){
+        return new LookupRequestBuilder();
     }
 
     // a generic builder for less common endpoints (i.e. "everything else"
-    public EndpointBuilder endpointRequest(YahooEndpoint endpoint){
-        return new EndpointBuilder(endpoint);
+    public EndpointRequestBuilder endpointRequest(YahooEndpoint endpoint){
+        return new EndpointRequestBuilder(endpoint);
     }
 
 }

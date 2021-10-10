@@ -2,7 +2,7 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 
 import org.testng.annotations.Test;
 
-public class LookupBuilderTest
+public class LookupRequestBuilderTest
 {
     // todo: lots more tests.
 
@@ -15,7 +15,7 @@ public class LookupBuilderTest
     {
         String testQuery = "myQuery";
 
-        LookupBuilder builder =
+        LookupRequestBuilder builder =
             YahooRequestBuilder.api()
                 .lookup()
                 .withQuery(testQuery)

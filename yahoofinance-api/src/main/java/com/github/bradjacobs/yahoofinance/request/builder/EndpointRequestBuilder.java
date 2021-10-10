@@ -5,7 +5,7 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.util.*;
 
-public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
+public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBuilder>
 {
     private YahooEndpoint endpoint;
 
@@ -13,18 +13,18 @@ public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
 
 
-    public EndpointBuilder(YahooEndpoint endpoint)
+    public EndpointRequestBuilder(YahooEndpoint endpoint)
     {
         this.endpoint = endpoint;
     }
 
 
-    public EndpointBuilder withTicker(String... tickers) {
+    public EndpointRequestBuilder withTicker(String... tickers) {
         tickerSet.updateTickers(tickers);
         return this;
     }
 
-    public EndpointBuilder withEndpoint(YahooEndpoint endpoint) {
+    public EndpointRequestBuilder withEndpoint(YahooEndpoint endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -61,7 +61,7 @@ public class EndpointBuilder extends BaseRequestBuilder<EndpointBuilder>
     }
 
     @Override
-    protected EndpointBuilder getThis()
+    protected EndpointRequestBuilder getThis()
     {
         return this;
     }

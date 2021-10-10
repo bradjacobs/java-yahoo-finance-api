@@ -8,7 +8,7 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements BatchableRequestStrategy
+public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilder> implements BatchableRequestStrategy
 {
     private static final int DEFAULT_COUNT = 100;
     private static final int DEFAULT_START = 0;
@@ -23,27 +23,27 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     private boolean includeTotalsOnly = false;
 
 
-    public LookupBuilder withQuery(String query) {
+    public LookupRequestBuilder withQuery(String query) {
         this.query = query;
         return this;
     }
-    public LookupBuilder withTotalsOnly(boolean includeTotalsOnly) {
+    public LookupRequestBuilder withTotalsOnly(boolean includeTotalsOnly) {
         this.includeTotalsOnly = includeTotalsOnly;
         return this;
     }
-    public LookupBuilder withFormatted(Boolean formatted) {
+    public LookupRequestBuilder withFormatted(Boolean formatted) {
         this.formatted = formatted;
         return this;
     }
-    public LookupBuilder withType(Type type) {
+    public LookupRequestBuilder withType(Type type) {
         this.type = type;
         return this;
     }
-    public LookupBuilder withCount(int count) {
+    public LookupRequestBuilder withCount(int count) {
         this.count = Math.max(count, 0); // no negative allowed
         return this;
     }
-    public LookupBuilder withStart(int start) {
+    public LookupRequestBuilder withStart(int start) {
         this.start = Math.max(start, 0); // no negative allowed
         return this;
     }
@@ -86,7 +86,7 @@ public class LookupBuilder extends BaseRequestBuilder<LookupBuilder> implements 
     }
 
     @Override
-    protected LookupBuilder getThis() {
+    protected LookupRequestBuilder getThis() {
         return this;
     }
 

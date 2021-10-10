@@ -6,12 +6,12 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.util.*;
 
-public class QuoteBuilder extends BaseRequestBuilder<QuoteBuilder>
+public class QuoteRequestBuilder extends BaseRequestBuilder<QuoteRequestBuilder>
 {
     // use collection to allow for case where some endpoints allow multiple ticker values
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
 
-    public QuoteBuilder withTicker(String... tickers) {
+    public QuoteRequestBuilder withTicker(String... tickers) {
         this.tickerSet.updateTickers(tickers);
         return this;
     }
@@ -36,7 +36,7 @@ public class QuoteBuilder extends BaseRequestBuilder<QuoteBuilder>
 
 
         // todo: right now only focusing on equities.  obviously this needs to be fixed when considering other types.
-        List<String> fields = QuoteFieldFactory.getQuoteFields(Type.EQUITY);
+        List<String> fields = QuoteRequestFieldFactory.getQuoteFields(Type.EQUITY);
         String fieldValueString = String.join(",", fields);
         requestParamMap.put(ParamKeys.FIELDS, fieldValueString);
 
@@ -44,7 +44,7 @@ public class QuoteBuilder extends BaseRequestBuilder<QuoteBuilder>
     }
 
     @Override
-    protected QuoteBuilder getThis()
+    protected QuoteRequestBuilder getThis()
     {
         return this;
     }

@@ -7,7 +7,7 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.util.*;
 
-public class SparkBuilder extends BaseRequestBuilder<SparkBuilder>
+public class SparkRequestBuilder extends BaseRequestBuilder<SparkRequestBuilder>
 {
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
     private Range range;
@@ -19,17 +19,17 @@ public class SparkBuilder extends BaseRequestBuilder<SparkBuilder>
     //  private Boolean includePrePost;
 
 
-    public SparkBuilder withTicker(String... tickers) {
+    public SparkRequestBuilder withTicker(String... tickers) {
         tickerSet.updateTickers(tickers);
         return this;
     }
 
-    public SparkBuilder withRange(Range range) {
+    public SparkRequestBuilder withRange(Range range) {
         this.range = range;
         return this;
     }
 
-    public SparkBuilder withInterval(Interval interval) {
+    public SparkRequestBuilder withInterval(Interval interval) {
         this.interval = interval;
         return this;
     }
@@ -63,7 +63,7 @@ public class SparkBuilder extends BaseRequestBuilder<SparkBuilder>
     }
 
     @Override
-    protected SparkBuilder getThis() {
+    protected SparkRequestBuilder getThis() {
         return this;
     }
 

@@ -9,9 +9,9 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.bradjacobs.yahoofinance.request.builder.ChartBuilder.IndicatorFieldSelection.*;
+import static com.github.bradjacobs.yahoofinance.request.builder.ChartRequestBuilder.IndicatorFieldSelection.*;
 
-public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
+public class ChartRequestBuilder extends BasePeriodRequestBuilder<ChartRequestBuilder>
 {
     private static final String EVENT_VALUE_DIV = "div";
     private static final String EVENT_VALUE_SPLITS = "split";
@@ -30,34 +30,31 @@ public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
     private Boolean includePrePost;
     private Integer numberOfPoints;
 
-    enum IndicatorFieldSelection
-    {
+    enum IndicatorFieldSelection {
         ALL,
         CLOSE_ADJCLOSE,
         CLOSE_ONLY,
         ADJ_CLOSE_ONLY
     }
 
-
-
-    public ChartBuilder withTicker(String ticker) {
+    public ChartRequestBuilder withTicker(String ticker) {
         this.ticker = ticker;
         return this;
     }
-    public ChartBuilder withRange(Range range) {
+    public ChartRequestBuilder withRange(Range range) {
         this.range = range;
         return this;
     }
 
-    public ChartBuilder withInterval(Interval interval) {
+    public ChartRequestBuilder withInterval(Interval interval) {
         this.interval = interval;
         return this;
     }
-    public ChartBuilder withFormatted(Boolean formatted) {
+    public ChartRequestBuilder withFormatted(Boolean formatted) {
         this.formatted = formatted;
         return this;
     }
-    public ChartBuilder withDividends(Boolean dividends) {
+    public ChartRequestBuilder withDividends(Boolean dividends) {
         if (Boolean.TRUE.equals(dividends)) {
             this.eventValues.add(EVENT_VALUE_DIV);
         }
@@ -66,7 +63,7 @@ public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
         }
         return this;
     }
-    public ChartBuilder withSplits(Boolean splits) {
+    public ChartRequestBuilder withSplits(Boolean splits) {
         if (Boolean.TRUE.equals(splits)) {
             this.eventValues.add(EVENT_VALUE_SPLITS);
         }
@@ -75,7 +72,7 @@ public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
         }
         return this;
     }
-    public ChartBuilder withAdjClose(Boolean adjClose) {
+    public ChartRequestBuilder withAdjClose(Boolean adjClose) {
         this.includeAdjustedClose = adjClose;
         return this;
     }
@@ -83,33 +80,33 @@ public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
 
     //  convenience methods for when response is to only return certain fields
     //   (b/c not very intuitive)
-    public ChartBuilder withIndicatorCloseAdjCloseOnly() {
+    public ChartRequestBuilder withIndicatorCloseAdjCloseOnly() {
         this.indicatorFieldSelection = CLOSE_ADJCLOSE;
         return this;
     }
-    public ChartBuilder withIndicatorCloseOnly() {
+    public ChartRequestBuilder withIndicatorCloseOnly() {
         this.indicatorFieldSelection = CLOSE_ONLY;
         return this;
     }
-    public ChartBuilder withIndicatorAdjCloseOnly() {
+    public ChartRequestBuilder withIndicatorAdjCloseOnly() {
         this.indicatorFieldSelection = ADJ_CLOSE_ONLY;
         return this;
     }
-    public ChartBuilder withIndicatorAllFields() {
+    public ChartRequestBuilder withIndicatorAllFields() {
         this.indicatorFieldSelection = ALL;
         return this;
     }
 
-    public ChartBuilder withTimestamps(Boolean includeTimestamps) {
+    public ChartRequestBuilder withTimestamps(Boolean includeTimestamps) {
         this.includeTimestamps = includeTimestamps;
         return this;
     }
 
-    public ChartBuilder withPrePost(Boolean includePrePost) {
+    public ChartRequestBuilder withPrePost(Boolean includePrePost) {
         this.includePrePost = includePrePost;
         return this;
     }
-    public ChartBuilder withNumberOfPoints(Integer numberOfPoints) {
+    public ChartRequestBuilder withNumberOfPoints(Integer numberOfPoints) {
         this.numberOfPoints = numberOfPoints;
         return this;
     }
@@ -185,15 +182,14 @@ public class ChartBuilder extends BasePeriodRequestBuilder<ChartBuilder>
         }
 
         if (this.numberOfPoints != null) {
-            map.put(ParamKeys.KEY_NUMBER_OF_POINTS, this.numberOfPoints.toString());
+            map.put(ParamKeys.NUMBER_OF_POINTS, this.numberOfPoints.toString());
         }
 
         return map;
     }
 
     @Override
-    protected ChartBuilder getThis() {
+    protected ChartRequestBuilder getThis() {
         return this;
     }
-
 }

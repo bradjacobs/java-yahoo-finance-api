@@ -10,7 +10,7 @@ import com.github.bradjacobs.yahoofinance.types.screener.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> implements BatchableRequestStrategy
+public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder> implements BatchableRequestStrategy
 {
     private static final String SORT_DESC = "DESC";
     private static final String SORT_ASC = "ASC";
@@ -46,67 +46,67 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     private final ScreenerQueryBuilder queryBuilder = new ScreenerQueryBuilder();
 
 
-    public ScreenerBuilder()
+    public ScreenerRequestBuilder()
     {
     }
 
-    public ScreenerBuilder setFormatted(Boolean formatted) {
+    public ScreenerRequestBuilder setFormatted(Boolean formatted) {
         this.formatted = formatted;
         return this;
     }
-    public ScreenerBuilder setSize(int size) {
+    public ScreenerRequestBuilder setSize(int size) {
         this.size = Math.max(size, 0); // no negative allowed
         return this;
     }
-    public ScreenerBuilder setOffset(int offset) {
+    public ScreenerRequestBuilder setOffset(int offset) {
         this.offset = Math.max(offset, 0); // no negative allowed
         return this;
     }
-    public ScreenerBuilder setSortAscending(ScreenerField sortField) {
+    public ScreenerRequestBuilder setSortAscending(ScreenerField sortField) {
         this.sortField = sortField;
         this.sortType = SORT_ASC;
         return this;
     }
-    public ScreenerBuilder setSortDescending(ScreenerField sortField) {
+    public ScreenerRequestBuilder setSortDescending(ScreenerField sortField) {
         this.sortField = sortField;
         this.sortType = SORT_DESC;
         return this;
     }
-    public ScreenerBuilder setUseRecordResponse(Boolean useRecordResponse) {
+    public ScreenerRequestBuilder setUseRecordResponse(Boolean useRecordResponse) {
         this.useRecordResponse = useRecordResponse;
         return this;
     }
-    public ScreenerBuilder setTotalOnly(Boolean totalOnly) {
+    public ScreenerRequestBuilder setTotalOnly(Boolean totalOnly) {
         this.totalOnly = totalOnly;
         return this;
     }
 
-    public ScreenerBuilder eq(ScreenerField field, Long value)
+    public ScreenerRequestBuilder eq(ScreenerField field, Long value)
     {
         this.queryBuilder.eq(field, value);
         return this;
     }
-    public ScreenerBuilder lt(ScreenerField field, Number value)
+    public ScreenerRequestBuilder lt(ScreenerField field, Number value)
     {
         this.queryBuilder.lt(field, value);
         return this;
     }
-    public ScreenerBuilder gt(ScreenerField field, Number value)
+    public ScreenerRequestBuilder gt(ScreenerField field, Number value)
     {
         this.queryBuilder.gt(field, value);
         return this;
     }
-    public ScreenerBuilder btwn(ScreenerField field, Number value1, Number value2)
+    public ScreenerRequestBuilder btwn(ScreenerField field, Number value1, Number value2)
     {
         this.queryBuilder.between(field, value1, value2);
         return this;
     }
-    public ScreenerBuilder in(ScreenerField field, List<String> values)
+    public ScreenerRequestBuilder in(ScreenerField field, List<String> values)
     {
         this.queryBuilder.in(field, values);
         return this;
     }
-    public ScreenerBuilder in(ScreenerField field, String ... values)
+    public ScreenerRequestBuilder in(ScreenerField field, String ... values)
     {
         // see boolean declarations for info
         this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
@@ -115,7 +115,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
         return (values != null ? in(field, Arrays.asList(values)) : this);
     }
 
-    public ScreenerBuilder in(ScreenerField field, CriteriaEnum ... values)
+    public ScreenerRequestBuilder in(ScreenerField field, CriteriaEnum ... values)
     {
         // see boolean declarations for info
         this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
@@ -159,7 +159,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
             }
 
             // note: apparently you can add 'fields' parameter on screener similar to quote endpoint.
-            List<String> fieldList = QuoteFieldFactory.getQuoteFields(this.quoteType);
+            List<String> fieldList = QuoteRequestFieldFactory.getQuoteFields(this.quoteType);
             String fieldValueString = String.join(",", fieldList);
             map.put(ParamKeys.FIELDS, fieldValueString);
         }
@@ -186,7 +186,7 @@ public class ScreenerBuilder extends BaseRequestBuilder<ScreenerBuilder> impleme
     }
 
     @Override
-    protected ScreenerBuilder getThis()
+    protected ScreenerRequestBuilder getThis()
     {
         return this;
     }
