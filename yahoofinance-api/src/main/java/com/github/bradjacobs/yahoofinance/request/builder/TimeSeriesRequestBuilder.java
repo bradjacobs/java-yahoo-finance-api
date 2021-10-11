@@ -26,10 +26,7 @@ public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSerie
 
     private final FieldBuilder fieldBuilder = new FieldBuilder();
 
-
-    public TimeSeriesRequestBuilder()
-    {
-    }
+    public TimeSeriesRequestBuilder() { }
 
     public TimeSeriesRequestBuilder withTicker(String ticker) {
         this.ticker = ticker;
@@ -70,7 +67,6 @@ public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSerie
         this.usePremium = premium;
         return this;
     }
-
 
     @Override
     protected String _getRequestTicker()

@@ -3,7 +3,6 @@
  */
 package com.github.bradjacobs.yahoofinance.request;
 
-
 import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 

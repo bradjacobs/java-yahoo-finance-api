@@ -5,6 +5,7 @@ package com.github.bradjacobs.yahoofinance.request;
 
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.Response;
+import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -14,15 +15,14 @@ import java.util.Map;
 
 /**
  * Used to fetch a yahoo finance 'crumb' value.
- *
- *   Will Lazy Load crumb value and cache it for a limited period of time.
+ * Will Lazy Load crumb value and cache it for a limited period of time.
  */
 /*
   TO RESEARCH:
      The following URL is available to directly get a crumb value:
          https://query2.finance.yahoo.com/v1/test/getcrumb
-     However, when called via the API it will return a blank  (but will work in a browser)
-       there's probably a 'magic header' that makes it work.
+     But have only seen work in browser.  Believe that an existing 'Cookie'
+     header is required on the request, but not yet confirmed.
  */
 public class CrumbDataSource
 {
@@ -36,10 +36,7 @@ public class CrumbDataSource
     // look for this string in the response body to 'locate' the crumb value.
     private static final String CRUMB_RESPONSE_INTRO = "\"CrumbStore\":{\"crumb\":\"";
 
-
     private CrumbObject crumbObject = null;
-
-
 
     public CrumbDataSource(HttpClientAdapter httpClient)
     {
@@ -48,7 +45,6 @@ public class CrumbDataSource
         }
         this.httpClient = httpClient;
     }
-
 
     public String getCrumb() throws IOException
     {
@@ -60,17 +56,18 @@ public class CrumbDataSource
         return crumbObject.getCrumb();
     }
 
-
-
-
+    /**
+     * Makes a network call to get (or reload) a crumb value.
+     * @return crumb string
+     * @throws IOException exception
+     */
     private String reloadCrumb() throws IOException
     {
         Response response = httpClient.executeGet(URL, requestHeaders);
-        if (response.getCode() == 200) {
-            return parseOutCrumb(response.getBody());
+        if (response.isError()) {
+            throw HttpExceptionFactory.createException(response);
         }
-
-        throw new RuntimeException("TODO: implement error handling + retry logic");
+        return parseOutCrumb(response.getBody());
     }
 
     /**
@@ -96,8 +93,7 @@ public class CrumbDataSource
         private final Date creationTime;
         private Date lastAccessTime;
 
-        public CrumbObject(String crumb)
-        {
+        public CrumbObject(String crumb) {
             this.crumb = crumb;
             this.creationTime = new Date();
             this.lastAccessTime = new Date();
@@ -119,5 +115,4 @@ public class CrumbDataSource
             return false;
         }
     }
-
 }

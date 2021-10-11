@@ -23,5 +23,4 @@ public class HttpExceptionFactory
             throw new IllegalArgumentException("Unable to create HttpStatusCodeException: Unhandled status code: " + statusCode);
         }
     }
-
 }

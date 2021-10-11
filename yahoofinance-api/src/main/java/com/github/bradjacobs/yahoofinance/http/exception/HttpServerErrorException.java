@@ -15,7 +15,6 @@ public class HttpServerErrorException extends YahooHttpResponseException
         super(response);
     }
 
-
     public static HttpServerErrorException createHttpException(Response httpResponse)
     {
         int statusCode = httpResponse.getCode();

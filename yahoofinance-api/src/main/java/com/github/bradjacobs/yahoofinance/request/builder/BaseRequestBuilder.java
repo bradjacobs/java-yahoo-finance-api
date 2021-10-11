@@ -29,7 +29,6 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 
     private final Map<String,String> additionalHeaderMap = new LinkedHashMap<>();
 
-
     protected abstract T getThis();
 
 
@@ -63,15 +62,18 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
     }
 
     public T addParam(String key, String value) {
-        if (key != null) {
-            key = key.trim();
-            if (value != null) {
+        key = (key != null ? key.trim() : "");
+        value = (value != null ? value.trim() : "");
+
+        if (key.length() > 0) {
+            if (value.length() > 0) {
                 this.extraParametersMap.put(key, value.trim());
             }
             else {
                 this.extraParametersMap.remove(key);
             }
         }
+
         return getThis();
     }
 
@@ -97,7 +99,6 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         return getThis();
     }
 
-
     protected Map<String,String> buildParamMap() {
 
         Map<String, String> paramMap = _buildParamMap();
@@ -108,8 +109,6 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         }
         return paramMap;
     }
-
-
 
     abstract protected Map<String,String> _buildParamMap();
     abstract protected YahooEndpoint _getRequestEndpoint();
@@ -131,8 +130,9 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         return req;
     }
 
-    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker,
-                                                  Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
+    protected YahooFinanceRequest generateRequest(
+            YahooEndpoint endpoint, String ticker,
+            Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         return new YahooFinanceRequest(endpoint, ticker, paramMap, postBody, headerMap);
     }

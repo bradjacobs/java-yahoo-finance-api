@@ -45,5 +45,4 @@ public class YahooRequestBuilder
     public EndpointRequestBuilder endpointRequest(YahooEndpoint endpoint){
         return new EndpointRequestBuilder(endpoint);
     }
-
 }

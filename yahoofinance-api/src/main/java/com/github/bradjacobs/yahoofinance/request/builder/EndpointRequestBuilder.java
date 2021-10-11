@@ -12,7 +12,6 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
     // use collection to allow for case where some endpoints allow multiple ticker values
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
 
-
     public EndpointRequestBuilder(YahooEndpoint endpoint)
     {
         this.endpoint = endpoint;
@@ -28,8 +27,6 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
         this.endpoint = endpoint;
         return this;
     }
-
-
 
     @Override
     protected YahooEndpoint _getRequestEndpoint()
@@ -66,9 +63,7 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
         return this;
     }
 
-
     private String generateTickerString() {
         return this.tickerSet.generateTickerString();
     }
-
 }

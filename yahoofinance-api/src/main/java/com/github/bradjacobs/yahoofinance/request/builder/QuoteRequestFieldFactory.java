@@ -50,7 +50,6 @@ public class QuoteRequestFieldFactory
     }
 
 
-
     // todo: don't know which fields map to types exactly, for now just focus on equity vs "non-equity"
     //  (list was derived from observations and could be (probably) incorrect/incomplete
     private static final List<String> NON_EQUITY_FIELDS = Arrays.asList(
@@ -69,5 +68,4 @@ public class QuoteRequestFieldFactory
         equityFields.removeAll(NON_EQUITY_FIELDS);
         TYPE_FIELD_MAP.put(Type.EQUITY, Collections.unmodifiableList(equityFields));
     }
-
 }

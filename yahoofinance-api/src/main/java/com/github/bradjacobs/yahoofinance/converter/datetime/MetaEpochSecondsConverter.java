@@ -33,7 +33,6 @@ public class MetaEpochSecondsConverter
 
     private MetaEpochSecondsConverter() { }
 
-
     public static EpochStrConverter getDateStringConverter() {
         return EPOCH_SECONDS_DATE_STR_CONVERTER;
     }
@@ -78,7 +77,6 @@ public class MetaEpochSecondsConverter
         return EPOCH_SECONDS_DATE_STR_CONVERTER.convertFromObject(dateString);
     }
 
-
     public Instant toInstant(Long epochSeconds) {
         return EPOCH_SECONDS_INSTANT_CONVERTER.convertFromEpochSeconds(ensureSeconds(epochSeconds));
     }
@@ -92,7 +90,6 @@ public class MetaEpochSecondsConverter
         return EPOCH_SECONDS_DATE_TIME_STR_CONVERTER.convertFromEpochSeconds(ensureSeconds(epochSeconds));
     }
 
-
     /**
      * If the timestamp appears "too big" then assume we are given MilliSeconds, and convert it to seconds.
      * @param timestamp
@@ -105,7 +102,6 @@ public class MetaEpochSecondsConverter
         }
         return timestamp;
     }
-
 
 
     // if 2 adjacent timestamps are within this interval threshold, then consider it 'small interval'
@@ -137,5 +133,4 @@ public class MetaEpochSecondsConverter
 
         return MetaEpochSecondsConverter.getDateStringConverter();
     }
-
 }

@@ -69,6 +69,4 @@ public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryR
         }
         return sb.toString();
     }
-
-
 }

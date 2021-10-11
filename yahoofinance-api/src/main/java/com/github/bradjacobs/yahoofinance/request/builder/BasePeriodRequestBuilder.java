@@ -43,7 +43,6 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
         return setTimeRangeLastXUnits(years, ChronoUnit.YEARS);
     }
 
-
     public T setTimeRange(String startDate, String endDate) {
         return setStart(startDate).setEnd(endDate);
     }
@@ -93,12 +92,11 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
         return getThis();
     }
 
-
     protected T setTimeRangeLastXUnits(int value, ChronoUnit unit) {
         Instant instantNow = Instant.now();
         Instant instantStart;
 
-        // note: would be simpler to always just do this:
+        // Note: would be simpler to always do:
         //     Instant instantStart = instantNow.minus(value, unit);
         // HOWEVER.. Instant doesn't support 'bigger' units (WEEKS,MONTHS,YEARS) for this operation.
 
@@ -128,5 +126,4 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
         this.endPeriod = instantNow.getEpochSecond();
         return getThis();
     }
-
 }

@@ -307,10 +307,10 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         }
     }
 
-
     @Override
-    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker,
-                                                  Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
+    protected YahooFinanceRequest generateRequest(
+            YahooEndpoint endpoint, String ticker,
+            Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         BatchableRequestStrategy batchableRequestStrategy = this;
 

@@ -19,5 +19,4 @@ public class YahooResponseGenerator
     {
         return new YahooBatchResponse(request.getEndpoint(), rawResponses);
     }
-
 }
