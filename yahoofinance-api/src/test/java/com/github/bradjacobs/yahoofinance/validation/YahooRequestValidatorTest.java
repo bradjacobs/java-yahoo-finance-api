@@ -42,18 +42,18 @@ public class YahooRequestValidatorTest
         validator.validationRequest(req);
     }
 
-
-    @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_BLANK_PARAM_KEY_MSG)
-    public void testBlankKeyParam() throws Exception {
-
-        YahooFinanceRequest req = YahooRequestBuilder.api()
-            .chart()
-            .withTicker("AAPL")
-            .addParam("", "some_value")
-            .build();
-
-        validator.validationRequest(req);
-    }
+    // todo - revisit... latest update will now just 'ignore' a param set like this.
+//    @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_BLANK_PARAM_KEY_MSG)
+//    public void testBlankKeyParam() throws Exception {
+//
+//        YahooFinanceRequest req = YahooRequestBuilder.api()
+//            .chart()
+//            .withTicker("AAPL")
+//            .addParam("", "some_value")
+//            .build();
+//
+//        validator.validationRequest(req);
+//    }
 
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_MODULES_MSG)
     public void testMissingModules() throws Exception {
