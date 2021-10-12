@@ -3,14 +3,12 @@ package com.github.bradjacobs.yahoofinance.response.converter.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Given a JSON structure, return JSON with the "raw" values flattened.
@@ -102,11 +100,23 @@ public class JsonNestedFormatRemover
                     emptyObjectFieldNames.add(fieldName);
                 }
 
-                JsonNode rawValueNode = childNode.get(RAW_KEY);
-                if (rawValueNode != null) {
-                    // if found a 'raw' value, the reassign the parent to the true value
+                List<JsonNode> rawChildValues = getRawChildValues(childNode);
+                if (rawChildValues.size() > 0) {
+
+                    // if found a 'raw' value, then reassign the parent to the true value
                     rawValuesFound = true;
-                    objNode.set(fieldName, rawValueNode);
+
+                    // note: there must be an easier way!
+                    if (childNode.isArray()) {
+                        ArrayNode arrayChildNode = (ArrayNode) childNode;
+                        arrayChildNode.removeAll();
+                        for (JsonNode rawChildValue : rawChildValues) {
+                            arrayChildNode.add(rawChildValue);
+                        }
+                    }
+                    else {
+                        objNode.set(fieldName, rawChildValues.get(0));
+                    }
                 }
                 else {
                     // if not found, continue the recursion.
@@ -129,6 +139,37 @@ public class JsonNestedFormatRemover
                 }
             }
         }
+    }
+
+    private List<JsonNode> getRawChildValues(JsonNode node)
+    {
+        if (node.isArray()) {
+            if (node.size() > 0)
+            {
+                JsonNode firstChildNode = node.get(0);
+                JsonNode elementRawValue = firstChildNode.get(RAW_KEY);
+                if (elementRawValue != null)
+                {
+                    List<JsonNode> resultList = new LinkedList<>();
+                    resultList.add(elementRawValue);
+                    for (int i = 1; i < node.size(); i++)
+                    {
+                        JsonNode childNode = node.get(i);
+                        elementRawValue = childNode.get(RAW_KEY);
+                        resultList.add(elementRawValue);
+                    }
+                    return resultList;
+                }
+            }
+        }
+        else if (node.isObject()) {
+            JsonNode elementRawValue = node.get(RAW_KEY);
+            if (elementRawValue != null) {
+                return Collections.singletonList(elementRawValue);
+            }
+        }
+
+        return Collections.emptyList();
     }
 
     private JsonNode covertToNode(String json)

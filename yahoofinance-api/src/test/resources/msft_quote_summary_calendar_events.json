@@ -1,0 +1,59 @@
+{
+  "quoteSummary": {
+    "result": [
+      {
+        "calendarEvents": {
+          "maxAge": 1,
+          "earnings": {
+            "earningsDate": [
+              {
+                "raw": 1635159540,
+                "fmt": "2021-10-25"
+              },
+              {
+                "raw": 1635508800,
+                "fmt": "2021-10-29"
+              }
+            ],
+            "earningsAverage": {
+              "raw": 2.07,
+              "fmt": "2.07"
+            },
+            "earningsLow": {
+              "raw": 2.03,
+              "fmt": "2.03"
+            },
+            "earningsHigh": {
+              "raw": 2.17,
+              "fmt": "2.17"
+            },
+            "revenueAverage": {
+              "raw": 43981200000,
+              "fmt": "43.98B",
+              "longFmt": "43,981,200,000"
+            },
+            "revenueLow": {
+              "raw": 43658900000,
+              "fmt": "43.66B",
+              "longFmt": "43,658,900,000"
+            },
+            "revenueHigh": {
+              "raw": 44767000000,
+              "fmt": "44.77B",
+              "longFmt": "44,767,000,000"
+            }
+          },
+          "exDividendDate": {
+            "raw": 1637107200,
+            "fmt": "2021-11-17"
+          },
+          "dividendDate": {
+            "raw": 1639008000,
+            "fmt": "2021-12-09"
+          }
+        }
+      }
+    ],
+    "error": null
+  }
+}
