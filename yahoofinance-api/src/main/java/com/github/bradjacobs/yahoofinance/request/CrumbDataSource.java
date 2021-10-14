@@ -29,7 +29,7 @@ public class CrumbDataSource
     private final HttpClientAdapter httpClient;
 
     // url to use to get a 'crumb' value from the response.
-    private static final String URL = "https://finance.yahoo.com/quote/AAPL/history?p=AAPL";
+    private static final String URL = "https://finance.yahoo.com/quote/AAPL/profile?p=AAPL";
     private static final Map<String,String> requestHeaders = Collections.singletonMap("Content-Type", "application/x-www-form-urlencoded");
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 4; // (4 hours) - max time to cache a crumb value
 
