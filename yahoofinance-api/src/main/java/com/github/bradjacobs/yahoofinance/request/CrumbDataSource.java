@@ -4,6 +4,7 @@
 package com.github.bradjacobs.yahoofinance.request;
 
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
+import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Used to fetch a yahoo finance 'crumb' value.
@@ -29,7 +31,9 @@ public class CrumbDataSource
     private final HttpClientAdapter httpClient;
 
     // url to use to get a 'crumb' value from the response.
-    private static final String URL = "https://finance.yahoo.com/quote/AAPL/profile?p=AAPL";
+    private static final String YAHOO_PAGE_URL = "https://finance.yahoo.com/quote/AAPL/profile?p=AAPL";
+    private static final String DIRECT_JSON_URL = "https://query2.finance.yahoo.com/v1/test/getcrumb";
+
     private static final Map<String,String> requestHeaders = Collections.singletonMap("Content-Type", "application/x-www-form-urlencoded");
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 4; // (4 hours) - max time to cache a crumb value
 
@@ -46,11 +50,11 @@ public class CrumbDataSource
         this.httpClient = httpClient;
     }
 
-    public String getCrumb() throws IOException
+    public String getCrumb(YahooFinanceRequest request) throws IOException
     {
         //  not thread safe!
         if (crumbObject == null || crumbObject.isExpired()) {
-            String crumbValue = reloadCrumb();
+            String crumbValue = reloadCrumb(request);
             crumbObject = new CrumbObject(crumbValue);
         }
         return crumbObject.getCrumb();
@@ -61,13 +65,34 @@ public class CrumbDataSource
      * @return crumb string
      * @throws IOException exception
      */
-    private String reloadCrumb() throws IOException
+    private String reloadCrumb(YahooFinanceRequest request) throws IOException
     {
-        Response response = httpClient.executeGet(URL, requestHeaders);
-        if (response.isError()) {
-            throw HttpExceptionFactory.createException(response);
+        // TODO -- FIX  -- research is required what changed that started this.
+        // starting recently these kind of calls can cause 'request timeouts'
+        //   as a temp workaround, will make an alternate way to get the crumb IFF a 'cookie'
+        //   header is available.
+
+        Map<String, String> requestHeaderMap = request.getHeaderMap();
+        if (requestHeaderMap != null && requestHeaderMap.containsKey("Cookie")) {
+
+            Map<String,String> headerMap = new TreeMap<>();
+            headerMap.put("Content-Type", "application/json");
+            headerMap.put("Cookie", requestHeaderMap.get("Cookie"));
+
+            Response response = httpClient.executeGet(DIRECT_JSON_URL, headerMap);
+            if (response.isError()) {
+                throw HttpExceptionFactory.createException(response);
+            }
+            return response.getBody();
         }
-        return parseOutCrumb(response.getBody());
+        else {
+            Response response = httpClient.executeGet(YAHOO_PAGE_URL, requestHeaders);
+            if (response.isError()) {
+                throw HttpExceptionFactory.createException(response);
+            }
+            return parseOutCrumb(response.getBody());
+        }
+
     }
 
     /**

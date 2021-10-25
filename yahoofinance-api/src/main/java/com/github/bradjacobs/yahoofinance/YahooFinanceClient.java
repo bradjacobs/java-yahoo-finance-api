@@ -141,7 +141,7 @@ public class YahooFinanceClient
 
         if (endpoint.isCrumbRequest())
         {
-            String crumb = crumbDataSource.getCrumb();
+            String crumb = crumbDataSource.getCrumb(request);
             Map<String,String> updatedParamMap = new LinkedHashMap<>(paramMap);
             updatedParamMap.put(CRUMB_KEY, crumb);
             paramMap = updatedParamMap;
