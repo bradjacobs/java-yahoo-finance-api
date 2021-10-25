@@ -41,6 +41,15 @@ public class EpochSecondsDateStringConverterTest
         assertEquals(converter.convertFromEpochSeconds(inputDate), expected);
     }
 
+    @Test
+    public void testDateStringToEpoch() throws Exception
+    {
+        // 1608595200  -- > GMT: Tuesday, December 22, 2020 12:00:00 AM
+        String inputString = "2020-12-22";
+        Long expected = 1608595200L;
+        assertEquals(converter.convertToEpoch(inputString), expected);
+    }
+
 
     @Test
     public void testNullDateString() throws Exception
