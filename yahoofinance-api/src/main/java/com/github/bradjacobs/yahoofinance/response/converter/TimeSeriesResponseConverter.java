@@ -145,7 +145,13 @@ public class TimeSeriesResponseConverter implements ResponseConverter
                     if (this.organizeByDate)
                     {
                         // get map containing all the attributes for this given date.
-                        Map<String, Object> attributeMap = destinationMap.computeIfAbsent(dateString, k -> new TreeMap<>());
+                        Map<String, Object> attributeMap = destinationMap.get(dateString);
+                        if (attributeMap == null) {
+                            attributeMap = new TreeMap<>();
+                            attributeMap.put("date", dateString);  // very convenient to have date in this location as well.
+                            destinationMap.put(dateString, attributeMap);
+                        }
+
                         attributeMap.put(attributeName, value);
                     }
                     else

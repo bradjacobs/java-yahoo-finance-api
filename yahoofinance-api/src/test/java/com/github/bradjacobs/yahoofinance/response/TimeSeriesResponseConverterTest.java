@@ -11,13 +11,16 @@ import static org.testng.Assert.*;
 
 public class TimeSeriesResponseConverterTest
 {
-
     @Test
     public void testConvertAnnualToMapOfMaps() throws Exception
     {
         String originalJson = ResourceUtil.readResourceFileAsString("aapl_timeseries_response.json");
 
-        TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter();
+        boolean useDateAsMapKey = true;
+        boolean autoDetectDateTime = true;
+        ResponseConverterConfig config = new ResponseConverterConfig(useDateAsMapKey, autoDetectDateTime);
+
+        TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter(config);
 
         Map<String, Map<String, Object>> annualValueMap = timeseriesResponseConverter.convertToMapOfMaps(originalJson);
 
@@ -29,7 +32,6 @@ public class TimeSeriesResponseConverterTest
         assertTrue(annualValueMap.containsKey("2019-09-30"));
 
         // TODO -- this is (obviously) only partially done.
-
     }
 
 }
