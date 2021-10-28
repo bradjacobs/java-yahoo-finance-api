@@ -88,7 +88,6 @@ public class JsonNestedFormatRemover
 
             // keep track if there are any object fields that don't have a value
             List<String> emptyObjectFieldNames = new ArrayList<>();
-            boolean rawValuesFound = false;
 
             for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); )
             {
@@ -103,19 +102,17 @@ public class JsonNestedFormatRemover
                 List<JsonNode> rawChildValues = getRawChildValues(childNode);
                 if (rawChildValues.size() > 0) {
 
-                    // if found a 'raw' value, then reassign the parent to the true value
-                    rawValuesFound = true;
-
-                    // note: there must be an easier way!
-                    if (childNode.isArray()) {
+                    if (! childNode.isArray()) {
+                        // if found a 'raw' value, then reassign the parent to the true value
+                        objNode.set(fieldName, rawChildValues.get(0));
+                    }
+                    else {
+                        // note: there must be an easier way!
                         ArrayNode arrayChildNode = (ArrayNode) childNode;
                         arrayChildNode.removeAll();
                         for (JsonNode rawChildValue : rawChildValues) {
                             arrayChildNode.add(rawChildValue);
                         }
-                    }
-                    else {
-                        objNode.set(fieldName, rawChildValues.get(0));
                     }
                 }
                 else {
@@ -124,11 +121,9 @@ public class JsonNestedFormatRemover
                 }
             }
 
-            // if any raw fields were found
-            //   _AND_
             // if there were any empty sibling fields,
             //   then update the empty siblings accordingly
-            if (rawValuesFound && emptyObjectFieldNames.size() > 0) {
+            if (emptyObjectFieldNames.size() > 0) {
                 for (String fieldName : emptyObjectFieldNames) {
                     if (removeEmptyEntries) {
                         objNode.remove(fieldName); // remove entirely
