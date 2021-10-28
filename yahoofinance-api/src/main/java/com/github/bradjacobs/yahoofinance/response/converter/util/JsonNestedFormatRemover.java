@@ -95,7 +95,7 @@ public class JsonNestedFormatRemover
                 String fieldName = entry.getKey();
                 JsonNode childNode = entry.getValue();
 
-                if (childNode.isObject() && childNode.size() == 0) {
+                if ((childNode.isObject() && childNode.size() == 0) || childNode.isNull()) {
                     emptyObjectFieldNames.add(fieldName);
                 }
 
