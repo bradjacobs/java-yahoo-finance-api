@@ -4,7 +4,6 @@
 package com.github.bradjacobs.yahoofinance.request;
 
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
-import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -19,26 +18,20 @@ import java.util.TreeMap;
  * Used to fetch a yahoo finance 'crumb' value.
  * Will Lazy Load crumb value and cache it for a limited period of time.
  */
-/*
-  TO RESEARCH:
-     The following URL is available to directly get a crumb value:
-         https://query2.finance.yahoo.com/v1/test/getcrumb
-     But have only seen work in browser.  Believe that an existing 'Cookie'
-     header is required on the request, but not yet confirmed.
- */
 public class CrumbDataSource
 {
     private final HttpClientAdapter httpClient;
 
     // url to use to get a 'crumb' value from the response.
     private static final String YAHOO_PAGE_URL = "https://finance.yahoo.com/quote/AAPL/profile?p=AAPL";
-    private static final String DIRECT_JSON_URL = "https://query2.finance.yahoo.com/v1/test/getcrumb";
+    private static final String DIRECT_JSON_URL = "https://query2.finance.yahoo.com/v1/test/getcrumb";  // only works if there is a cookie header
 
     private static final Map<String,String> requestHeaders = Collections.singletonMap("Content-Type", "application/x-www-form-urlencoded");
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 4; // (4 hours) - max time to cache a crumb value
 
     // look for this string in the response body to 'locate' the crumb value.
     private static final String CRUMB_RESPONSE_INTRO = "\"CrumbStore\":{\"crumb\":\"";
+    private static final String COOKIE_HEADER_NAME = "Cookie";
 
     private CrumbObject crumbObject = null;
 
@@ -67,17 +60,15 @@ public class CrumbDataSource
      */
     private String reloadCrumb(YahooFinanceRequest request) throws IOException
     {
-        // TODO -- FIX  -- research is required what changed that started this.
-        // starting recently these kind of calls can cause 'request timeouts'
-        //   as a temp workaround, will make an alternate way to get the crumb IFF a 'cookie'
-        //   header is available.
-
+        // if the request has an explicit cookie set, then use the cookie
+        //   and make an 'api' call to grab the crumb value.  (tends to be more reliable)
+        // otherwise make a coll to a generic yahoo finance page and parse out the crumb from the response.
         Map<String, String> requestHeaderMap = request.getHeaderMap();
-        if (requestHeaderMap != null && requestHeaderMap.containsKey("Cookie")) {
+        if (requestHeaderMap != null && requestHeaderMap.containsKey(COOKIE_HEADER_NAME)) {
 
             Map<String,String> headerMap = new TreeMap<>();
             headerMap.put("Content-Type", "application/json");
-            headerMap.put("Cookie", requestHeaderMap.get("Cookie"));
+            headerMap.put(COOKIE_HEADER_NAME, requestHeaderMap.get(COOKIE_HEADER_NAME));
 
             Response response = httpClient.executeGet(DIRECT_JSON_URL, headerMap);
             if (response.isError()) {
@@ -92,7 +83,6 @@ public class CrumbDataSource
             }
             return parseOutCrumb(response.getBody());
         }
-
     }
 
     /**
@@ -136,7 +126,6 @@ public class CrumbDataSource
             if (createTime + EXPIRATION_TIME < timeNow) {
                 return true;
             }
-
             return false;
         }
     }
