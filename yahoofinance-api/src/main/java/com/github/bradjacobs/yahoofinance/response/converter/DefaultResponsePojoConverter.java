@@ -2,7 +2,7 @@ package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class DefaultResponsePojoConverter implements ResponsePojoConverter
 {
-    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
+    private static final JsonMapper mapper = JsonMapperFactory.getMapper();
     private final ResponseConverter targetConverter;
 
     public DefaultResponsePojoConverter(ResponseConverter targetConverter)

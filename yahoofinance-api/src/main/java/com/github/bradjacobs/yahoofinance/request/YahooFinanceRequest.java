@@ -7,7 +7,7 @@ package com.github.bradjacobs.yahoofinance.request;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 
 import java.util.Collections;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class YahooFinanceRequest
     protected final Object postBody;
     protected final Map<String,String> headerMap;
 
-    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
+    private static final JsonMapper mapper = JsonMapperFactory.getMapper();
 
 
     public YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody, Map<String,String> headerMap)

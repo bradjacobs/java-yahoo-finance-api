@@ -18,7 +18,12 @@ public class TimeSeriesResponseConverterTest
 
         boolean useDateAsMapKey = true;
         boolean autoDetectDateTime = true;
-        ResponseConverterConfig config = new ResponseConverterConfig(useDateAsMapKey, autoDetectDateTime);
+        boolean useBigDecimals = false;
+        ResponseConverterConfig config = ResponseConverterConfig.builder()
+                .useDateAsMapKey(useDateAsMapKey)
+                .autoDetectDateTime(autoDetectDateTime)
+                .useBigDecimals(useBigDecimals)
+                .build();
 
         TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter(config);
 

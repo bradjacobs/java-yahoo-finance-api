@@ -1,7 +1,7 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
+import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
@@ -48,14 +48,19 @@ public class QuoteSummaryResponseConverterTest
         assertNotNull(summaryDetailMap);
         assertNotNull(industryTrendMap);
 
-        // check that industryTrendMap does have a peRatio, but with a 'null' value
+        // 'currently' quoteSummary will leave fields w/ null values
+        //    check that industryTrendMap does have a peRatio, but with a 'null' value
         assertTrue(industryTrendMap.containsKey("peRatio"));
         Object peRatioValue = industryTrendMap.get("peRatio");
         assertNull(peRatioValue);
 
+        Object volumeObj = summaryDetailMap.get("volume");
+        assertNotNull(volumeObj);
+        assertEquals(volumeObj.getClass().getSimpleName(), "Long","expected volume value to be of type 'Long'");
+        assertEquals(Long.valueOf(volumeObj.toString()).longValue(), 18055730L);
 
-        JsonMapper prettyMapper = JsonMapperSingleton.getPrettyInstance();
-        String pJson = prettyMapper.writeValueAsString(moduleMaps);
+        String pJson = PrettyFormatter.prettyJson(moduleMaps);
+        int kjkj = 333;
     }
 
 }

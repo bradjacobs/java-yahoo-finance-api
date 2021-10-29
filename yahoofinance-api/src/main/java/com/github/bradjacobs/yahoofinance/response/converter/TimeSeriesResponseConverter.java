@@ -3,6 +3,7 @@ package com.github.bradjacobs.yahoofinance.response.converter;
 import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.response.converter.util.JsonNestedFormatRemover;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
+import com.github.bradjacobs.yahoofinance.util.JsonPathDocContextCreator;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
@@ -36,13 +37,18 @@ public class TimeSeriesResponseConverter implements ResponseConverter
 
     private final boolean organizeByDate;
     private final JsonNestedFormatRemover jsonNestedFormatRemover = new JsonNestedFormatRemover(true);
+    private final JsonPathDocContextCreator jsonPathDocContextCreator;
 
     public TimeSeriesResponseConverter() {
         this(null);
     }
 
     public TimeSeriesResponseConverter(ResponseConverterConfig config) {
-        this.organizeByDate = (config == null || config.isUseDateAsMapKey());
+        if (config == null) {
+            config = ResponseConverterConfig.DEFAULT_INSTANCE;
+        }
+        this.organizeByDate = (config.isUseDateAsMapKey());
+        this.jsonPathDocContextCreator = new JsonPathDocContextCreator(false, config.isUseBigDecimals());
     }
 
 
@@ -78,12 +84,10 @@ public class TimeSeriesResponseConverter implements ResponseConverter
     }
 
 
-
     public Map<String, Object> createAltMapSignature(Map<String, Map<String, Object>> origDateResultMap)
     {
         return new LinkedHashMap<>(origDateResultMap);
     }
-
 
 
     private AttributeMapPojo extractAttributeDataValueInfo(String json)
@@ -94,7 +98,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
 
         json = jsonNestedFormatRemover.removeFormats(json);
 
-        DocumentContext jsonDoc = JsonPath.parse(json);
+        DocumentContext jsonDoc = jsonPathDocContextCreator.createDocContext(json);
 
         // first fetch all the names (aka types) (aka names of the fields that were returned)
         String[] elementNames = jsonDoc.read(ELEMENT_NAMES_PATH, String[].class);

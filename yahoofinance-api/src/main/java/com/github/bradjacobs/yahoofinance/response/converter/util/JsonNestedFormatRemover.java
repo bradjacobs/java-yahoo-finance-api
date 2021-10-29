@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -40,7 +40,7 @@ import java.util.*;
  */
 public class JsonNestedFormatRemover
 {
-    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
+    private static final JsonMapper mapper = JsonMapperFactory.getMapper();
 
     private static final String RAW_KEY = "raw";
 

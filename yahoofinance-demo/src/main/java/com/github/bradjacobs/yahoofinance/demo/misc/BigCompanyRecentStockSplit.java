@@ -11,7 +11,7 @@ import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.Exchange;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -124,7 +124,7 @@ public class BigCompanyRecentStockSplit
         }
 
         // use a JsonMapper as a convenient way to convert the data to pojos
-        JsonMapper mapper = JsonMapperSingleton.getInstance();
+        JsonMapper mapper = JsonMapperFactory.getMapper();
 
         // convert the list of 'key/value maps' to a list of 'KeyStatistics' objects
         //   the class 'KeyStatistics' is just a simple made up pojo class.

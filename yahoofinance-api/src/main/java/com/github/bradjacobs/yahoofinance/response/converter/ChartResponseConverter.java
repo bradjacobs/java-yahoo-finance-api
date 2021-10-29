@@ -71,6 +71,8 @@ public class ChartResponseConverter implements ResponseConverter
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json)
     {
+        // todo - using own special way of creating docContext.
+        //     tbd if even worrying about this...(to ponder)
         DocumentContext jsonDoc = JsonPath.using(JSON_PATH_CONFIG).parse(json);
 
         Long[] timestampValues = jsonDoc.read(TIMESTAMP_PATH, Long[].class);
