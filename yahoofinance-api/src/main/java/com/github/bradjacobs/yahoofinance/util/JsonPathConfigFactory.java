@@ -7,47 +7,59 @@ import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
-// todo - fix..  this is all clunky
-public class JsonPathConfigFactory
-{
-    private static final Map<JsonConfigKey, Configuration> jsonConfigCache = new HashMap<>();
-
+/**
+ * VERY Simplistic Factory when you want a 'basic' JsonPath Configuration
+ *   with default configs set.
+ */
+public class JsonPathConfigFactory {
     public static Configuration getConfig() {
-        return getConfig(JsonConfigKey.getDefaultConfigKey());
+        return builder().build();
     }
 
-    public static Configuration getConfig(boolean pretty, boolean useBigDecimal) {
-        return getConfig(new JsonConfigKey(pretty, useBigDecimal));
+    public static Configuration getPrettyConfig() {
+        return builder().usePretty(true).build();
     }
 
-    private static Configuration getConfig(JsonConfigKey jsonConfigKey)
-    {
-        Configuration config = jsonConfigCache.get(jsonConfigKey);
-        if (config == null) {
-            config = createNewConfig(jsonConfigKey);
-        }
-        return config;
+    public static JsonPathConfigFactory.Builder builder() {
+        return new JsonPathConfigFactory.Builder();
     }
 
 
-    private synchronized static Configuration createNewConfig(JsonConfigKey jsonConfigKey)
-    {
-        Configuration config = jsonConfigCache.get(jsonConfigKey);
-        if (config != null) {
-            return config;
+    public static class Builder {
+        private boolean pretty = false;
+        private boolean useBigDecimal = false;
+        private JsonMapper customJsonMapper = null;
+
+        public JsonPathConfigFactory.Builder usePretty(boolean pretty) {
+            this.pretty = pretty;
+            return this;
         }
 
-        JsonMapper mapper = JsonMapperFactory.getMapper(jsonConfigKey);
-        config = Configuration.builder()
-                        .jsonProvider(new JacksonJsonProvider(mapper))
-                        .mappingProvider(new JacksonMappingProvider(mapper))
-                        .options(EnumSet.noneOf(Option.class))
-                        .build();
+        public JsonPathConfigFactory.Builder useBigDecimals(boolean useBigDecimal) {
+            this.useBigDecimal = useBigDecimal;
+            return this;
+        }
 
-        jsonConfigCache.put(jsonConfigKey, config);
-        return config;
+        public JsonPathConfigFactory.Builder withMapper(JsonMapper jsonMapper) {
+            this.customJsonMapper = jsonMapper;
+            return this;
+        }
+
+        public Configuration build() {
+
+            JsonMapper mapper = this.customJsonMapper;
+            if (mapper == null) {
+                mapper = JsonMapperFactory.builder().usePretty(pretty).useBigDecimals(useBigDecimal).build();
+            }
+
+            return Configuration.builder()
+                    .jsonProvider(new JacksonJsonProvider(mapper))
+                    .mappingProvider(new JacksonMappingProvider(mapper))
+                    .options(EnumSet.noneOf(Option.class))
+                    .build();
+        }
     }
 }
+
+

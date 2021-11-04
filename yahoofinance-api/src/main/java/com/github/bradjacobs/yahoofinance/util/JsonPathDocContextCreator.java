@@ -8,13 +8,15 @@ public class JsonPathDocContextCreator
 {
     private final Configuration jsonPathConfig;
 
-    // todo - come back w/ better soln for these constructors.
     public JsonPathDocContextCreator() {
-        this(false, false);
+        this(null);
     }
 
-    public JsonPathDocContextCreator(boolean usePretty, boolean useBigDecimal) {
-        this.jsonPathConfig = JsonPathConfigFactory.getConfig(usePretty, useBigDecimal);
+    public JsonPathDocContextCreator(Configuration jsonPathConfig) {
+        if (jsonPathConfig == null) {
+            jsonPathConfig = JsonPathConfigFactory.getConfig();
+        }
+        this.jsonPathConfig = jsonPathConfig;
     }
 
 

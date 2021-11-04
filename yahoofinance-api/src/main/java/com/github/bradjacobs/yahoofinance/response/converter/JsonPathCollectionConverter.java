@@ -10,20 +10,15 @@ import java.util.Map;
 
 public class JsonPathCollectionConverter implements ResponseConverter
 {
-    private static final boolean DEFAULT_USE_BIG_DECIMAL = false;
-
     private final String listOfObjectsPath;
     private final String mapOfObjectsPath;
     private final JsonPathDocContextCreator jsonPathDocContextCreator;
 
-    public JsonPathCollectionConverter(String listOfObjectsPath, String mapOfObjectsPath) {
-        this(listOfObjectsPath, mapOfObjectsPath, DEFAULT_USE_BIG_DECIMAL);
-    }
 
-    public JsonPathCollectionConverter(String listOfObjectsPath, String mapOfObjectsPath, boolean useBigDecimal) {
+    public JsonPathCollectionConverter(String listOfObjectsPath, String mapOfObjectsPath) {
         this.listOfObjectsPath = listOfObjectsPath;
         this.mapOfObjectsPath = mapOfObjectsPath;
-        this.jsonPathDocContextCreator = new JsonPathDocContextCreator(false, useBigDecimal);
+        this.jsonPathDocContextCreator = new JsonPathDocContextCreator();
     }
 
 

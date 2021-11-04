@@ -48,7 +48,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
             config = ResponseConverterConfig.DEFAULT_INSTANCE;
         }
         this.organizeByDate = (config.isUseDateAsMapKey());
-        this.jsonPathDocContextCreator = new JsonPathDocContextCreator(false, config.isUseBigDecimals());
+        this.jsonPathDocContextCreator = new JsonPathDocContextCreator();
     }
 
 

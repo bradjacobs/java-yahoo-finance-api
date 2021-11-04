@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 
 public class PrettyFormatter
 {
-    private static final JsonMapper prettyMapper = JsonMapperFactory.getMapper(true, false);
+    private static final JsonMapper prettyMapper = JsonMapperFactory.getPrettyMapper();
 
     private PrettyFormatter() { }
 
