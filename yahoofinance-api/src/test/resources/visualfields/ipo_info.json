@@ -1,0 +1,235 @@
+{
+  "finance": {
+    "result": [
+      {
+        "fields": {
+          "amendeddate": {
+            "fieldId": "amendeddate",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "DATE",
+            "deprecated": false,
+            "displayName": "Amended Date",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "count": {
+            "fieldId": "count",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "NUMBER",
+            "deprecated": false,
+            "displayName": "Document Count",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "currencyname": {
+            "fieldId": "currencyname",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Currency",
+            "sortable": false,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "dealno": {
+            "fieldId": "dealno",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Deal ID",
+            "sortable": false,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "dealtype": {
+            "fieldId": "dealtype",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Action",
+            "sortable": false,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "exchange": {
+            "fieldId": "exchange",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Exchange",
+            "sortable": false,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "exchange_short_name": {
+            "fieldId": "exchange_short_name",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Exchange Short Name",
+            "sortable": false,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "filingdate": {
+            "fieldId": "filingdate",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "DATE",
+            "deprecated": false,
+            "displayName": "Filing Date",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "investortype": {
+            "fieldId": "investortype",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Investor Type",
+            "sortable": false,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "offerprice": {
+            "fieldId": "offerprice",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "NUMBER",
+            "deprecated": false,
+            "displayName": "Price",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "pricefrom": {
+            "fieldId": "pricefrom",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "NUMBER",
+            "deprecated": false,
+            "displayName": "Price From",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "priceto": {
+            "fieldId": "priceto",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "NUMBER",
+            "deprecated": false,
+            "displayName": "Price To",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "quotetype": {
+            "fieldId": "quotetype",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Quote Type",
+            "sortable": false,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "shares": {
+            "fieldId": "shares",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "NUMBER",
+            "deprecated": false,
+            "displayName": "Shares",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "startdatetime": {
+            "fieldId": "startdatetime",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "DATE",
+            "deprecated": false,
+            "displayName": "Date",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          },
+          "ticker": {
+            "fieldId": "ticker",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Symbol",
+            "sortable": true,
+            "dropdownSupported": false,
+            "isPremium": false
+          }
+        }
+      }
+    ],
+    "error": null
+  }
+}

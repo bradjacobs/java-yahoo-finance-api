@@ -1,0 +1,34 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
+package com.github.bradjacobs.yahoofinance.types;
+
+import javax.annotation.Generated;
+
+{GENERATOR_LINE}
+public enum VisualizationField
+{
+{ENUM_LIST}
+
+    private final String value;
+    private final boolean sortable;
+    private final String displayString;
+
+    VisualizationField(String value, boolean sortable, String displayString) {
+        this.value = value;
+        this.sortable = sortable;
+        this.displayString = displayString;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isSortable() {
+        return sortable;
+    }
+
+    public String getDisplayString() {
+        return displayString;
+    }
+}

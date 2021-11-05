@@ -1,0 +1,51 @@
+{
+  "offset": 0,
+  "joinField": "startdatetime",
+  "sortField": "startdatetime",
+  "includeFields": [
+    "startdatetime"
+  ],
+  "fillNA": "pad",
+  "aggregation": {
+    "operator": "date_hist",
+    "operands": [
+      {
+        "operator": "eq",
+        "operands": [
+          "field",
+          "startdatetime"
+        ]
+      },
+      {
+        "operator": "eq",
+        "operands": [
+          "interval",
+          "1d"
+        ]
+      }
+    ]
+  },
+  "entityIdType": [
+    "earnings"
+  ],
+  "query": {
+    "operator": "and",
+    "operands": [
+      {
+        "operator": "btwn",
+        "operands": [
+          "startdatetime",
+          "2021-10-31",
+          "2021-11-06"
+        ]
+      },
+      {
+        "operator": "eq",
+        "operands": [
+          "region",
+          "us"
+        ]
+      }
+    ]
+  }
+}

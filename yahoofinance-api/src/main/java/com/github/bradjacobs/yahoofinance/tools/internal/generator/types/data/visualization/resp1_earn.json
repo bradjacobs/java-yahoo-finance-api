@@ -1,0 +1,1205 @@
+{
+  "finance": {
+    "result": [
+      {
+        "criteriaMeta": {
+          "size": 100,
+          "offset": 0,
+          "sortField": "companyshortname",
+          "sortType": "ASC",
+          "entityIdType": "EARNINGS",
+          "topOperator": "AND",
+          "criteria": [
+            {
+              "field": "startdatetime",
+              "operators": [
+                "GTE"
+              ],
+              "values": [
+                "2021-11-05T00:00:00.000-04:00"
+              ],
+              "labelsSelected": []
+            },
+            {
+              "field": "startdatetime",
+              "operators": [
+                "LT"
+              ],
+              "values": [
+                "2021-11-06T00:00:00.000-04:00"
+              ],
+              "labelsSelected": []
+            },
+            {
+              "field": "region",
+              "operators": [
+                "EQ"
+              ],
+              "values": [],
+              "labelsSelected": [
+                52
+              ]
+            }
+          ]
+        },
+        "rawCriteria": "{\"sortType\":\"ASC\",\"entityIdType\":\"earnings\",\"sortField\":\"companyshortname\",\"includeFields\":[\"ticker\",\"companyshortname\",\"startdatetime\",\"startdatetimetype\",\"epsestimate\",\"epsactual\",\"epssurprisepct\",\"timeZoneShortName\",\"gmtOffsetMilliSeconds\"],\"query\":{\"operator\":\"and\",\"operands\":[{\"operator\":\"gte\",\"operands\":[\"startdatetime\",\"2021-11-05\"]},{\"operator\":\"lt\",\"operands\":[\"startdatetime\",\"2021-11-06\"]},{\"operator\":\"eq\",\"operands\":[\"region\",\"us\"]}]},\"offset\":0,\"size\":100}",
+        "total": 100,
+        "documents": [
+          {
+            "entityIdType": "EARNINGS",
+            "columns": [
+              {
+                "id": "ticker",
+                "label": "Symbol",
+                "type": "STRING"
+              },
+              {
+                "id": "companyshortname",
+                "label": "Company Name",
+                "type": "STRING"
+              },
+              {
+                "id": "startdatetime",
+                "label": "Event Start Date",
+                "type": "DATE"
+              },
+              {
+                "id": "startdatetimetype",
+                "label": "Event Start Time",
+                "type": "STRING"
+              },
+              {
+                "id": "epsestimate",
+                "label": "EPS Estimate",
+                "type": "NUMBER"
+              },
+              {
+                "id": "epsactual",
+                "label": "Reported EPS",
+                "type": "NUMBER"
+              },
+              {
+                "id": "epssurprisepct",
+                "label": "Surprise (%)",
+                "type": "NUMBER"
+              },
+              {
+                "id": "timeZoneShortName",
+                "label": "Timezone short name",
+                "type": "STRING"
+              },
+              {
+                "id": "gmtOffsetMilliSeconds",
+                "label": "GMT Offset",
+                "type": "NUMBER"
+              }
+            ],
+            "rows": [
+              [
+                "ELAN",
+                "Elanco Animal Health Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.16,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "NOG",
+                "Northern Oil and Gas Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.89,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "FBAK",
+                "First National Bank Alaska",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "MITT",
+                "AG Mortgage Investment Trust Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.15,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "FLYLF",
+                "FLYHT Aerospace Solutions Ltd",
+                "2021-11-05T10:59:00.000Z",
+                "TNS",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "AMCX",
+                "AMC Networks Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                1.22,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "AMR",
+                "Alpha Metallurgical Resources Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                2.8,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "AXL",
+                "American Axle & Manufacturing Holdings Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.0,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HTA",
+                "Healthcare Trust Of America Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.1,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "NRK",
+                "Nuveen New York AMT-Free Quality Municipal Income Fund",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "NOBDF",
+                "North Bud Farms Inc",
+                "2021-11-05T19:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "FNWD",
+                "Finward Bancorp",
+                "2021-11-05T10:59:00.000Z",
+                "TNS",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "BLPH",
+                "Bellerophon Therapeutics Inc",
+                "2021-11-05T10:59:00.000Z",
+                "TNS",
+                -0.63,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "BEPC",
+                "Brookfield Renewable Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PLX",
+                "Protalix Biotherapeutics Inc",
+                "2021-11-05T06:30:00.000Z",
+                "BMO",
+                -0.12,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "ONCY",
+                "Oncolytics Biotech Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.12,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "STRO",
+                "Sutro Biopharma Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.65,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "SSP",
+                "E W Scripps Co",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.27,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "GOOS",
+                "Canada Goose Holdings Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.08,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "NWN",
+                "Northwest Natural Holding Co",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.74,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "CCM",
+                "Concord Medical Services Holdings Ltd",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "GCI",
+                "Gannett Co Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.11,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "RAND",
+                "Rand Capital Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "NEXT",
+                "NextDecade Corp",
+                "2021-11-05T17:06:00.000Z",
+                "TAS",
+                -0.09,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "FLR",
+                "Fluor Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.15,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "GMPXF",
+                "RF Capital Group Inc",
+                "2021-11-05T07:00:00.000Z",
+                "TAS",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "CGC",
+                "Canopy Growth Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.17,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "CGAU",
+                "Centerra Gold Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.09,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "CNTY",
+                "Century Casinos Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.27,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "GT",
+                "Goodyear Tire & Rubber Co",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.29,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PNW",
+                "Pinnacle West Capital Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                2.78,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "GECC",
+                "Great Elm Capital Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.08,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "JCI",
+                "Johnson Controls International PLC",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.87,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "SMURF",
+                "Tokens.com Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "VST",
+                "Vistra Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.99,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "TRP",
+                "TC Energy Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.8,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "INTT",
+                "inTest Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.22,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "CLMT",
+                "Calumet Specialty Products Partners LP",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.15,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "CNK",
+                "Cinemark Holdings Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.57,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PMTS",
+                "CPI Card Group Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "TU",
+                "Telus Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.23,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "TIXT",
+                "Telus International Cda Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.29,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "OFS",
+                "OFS Capital Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.25,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "KIM",
+                "Kimco Realty Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.1,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "VRS",
+                "Verso Corp",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.71,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "CAI",
+                "CAI International Inc",
+                "2021-11-05T16:00:00.000Z",
+                "TAS",
+                1.94,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "DIIBF",
+                "Dorel Industries Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "DTM",
+                "DT Midstream Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.79,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "D",
+                "Dominion Energy Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                1.06,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "DSEY",
+                "Diversey Holdings Ltd",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.15,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "DKNG",
+                "Draftkings Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -1.06,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "ESNT",
+                "Essent Group Ltd",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                1.35,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "NPO",
+                "EnPro Industries Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                1.26,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HE",
+                "Hawaiian Electric Industries Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.59,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "XELA",
+                "Exela Technologies Inc",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                -0.11,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "ENB",
+                "Enbridge Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.46,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "SRE",
+                "Sempra Energy",
+                "2021-11-05T07:00:00.000Z",
+                "TAS",
+                1.7,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "ECOL",
+                "US Ecology Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.22,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "ESVIF",
+                "Ensign Energy Services Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "TUSK",
+                "Mammoth Energy Services Inc",
+                "2021-11-05T06:00:00.000Z",
+                "TAS",
+                -0.15,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "MFA",
+                "MFA Financial Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.11,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HSON",
+                "Hudson Global Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "EAF",
+                "GrafTech International Ltd",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.41,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "GRPN",
+                "Groupon Inc",
+                "2021-11-05T06:30:00.000Z",
+                "TAS",
+                0.07,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HMTV",
+                "Hemisphere Media Group Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.07,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "NMRK",
+                "Newmark Group Inc",
+                "2021-11-05T08:00:00.000Z",
+                "TAS",
+                0.37,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PHYS",
+                "Sprott Physical Gold Trust",
+                "2021-11-05T07:00:00.000Z",
+                "TAS",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "NWLI",
+                "National Western Life Group Inc",
+                "2021-11-05T10:59:00.000Z",
+                "TNS",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "GLP",
+                "Global Partners LP",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.61,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "LTRPA",
+                "Liberty Tripadvisor Holdings Inc",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HARP",
+                "Harpoon Therapeutics Inc",
+                "2021-11-05T10:59:00.000Z",
+                "TNS",
+                -0.52,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PAYA",
+                "Paya Holdings Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.1,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HRC",
+                "Hill-Rom Holdings Inc",
+                "2021-11-05T09:00:00.000Z",
+                "TAS",
+                1.47,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "XTNT",
+                "Xtant Medical Holdings Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HSCHF",
+                "H-Source Holdings Ltd",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HSCHF",
+                "H-Source Holdings Ltd",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "HSCHF",
+                "H-Source Holdings Ltd",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "TILE",
+                "Interface Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.27,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "REV",
+                "Revlon Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -1.23,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "MGA",
+                "Magna International Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "MODV",
+                "ModivCare Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                1.42,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "ODT",
+                "Odonate Therapeutics Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.08,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "OFIX",
+                "Orthofix Medical Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.11,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "MCHX",
+                "Marchex Inc",
+                "2021-11-05T17:20:00.000Z",
+                "TAS",
+                -0.02,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "MMI",
+                "Marcus & Millichap Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.34,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "SII",
+                "Sprott Inc",
+                "2021-11-05T07:00:00.000Z",
+                "TAS",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "LMRK",
+                "Landmark Infrastructure Partners LP",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.11,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "TEN",
+                "Tenneco Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.15,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "INTEQ",
+                "Intelsat SA",
+                "2021-11-05T10:59:00.000Z",
+                "TNS",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "OCUP",
+                "Ocuphire Pharma Inc",
+                "2021-11-05T10:59:00.000Z",
+                "TNS",
+                -0.36,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "VBIV",
+                "VBI Vaccines Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.07,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PFSW",
+                "PFSweb Inc",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PLYM",
+                "Plymouth Industrial REIT Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.16,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "SYRS",
+                "Syros Pharmaceuticals Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                -0.44,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "VTR",
+                "Ventas Inc",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.05,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PHVS",
+                "Pharvaris NV",
+                "2021-11-05T08:00:00.000Z",
+                "TAS",
+                -0.53,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "LOV",
+                "Spark Networks SE",
+                "2021-11-05T04:00:05.000Z",
+                "TAS",
+                null,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "DOC",
+                "Physicians Realty Trust",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.08,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "PW",
+                "Power REIT",
+                "2021-11-05T12:30:00.000Z",
+                "BMO",
+                0.53,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ],
+              [
+                "TSE",
+                "Trinseo SA",
+                "2021-11-05T20:00:00.000Z",
+                "AMC",
+                2.25,
+                null,
+                null,
+                "EDT",
+                -14400000
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "error": null
+  }
+}

@@ -3,9 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +22,7 @@ import java.util.Objects;
     "dropdownSupported",
     "isPremium"
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScreenerFieldDefinition implements Comparable<ScreenerFieldDefinition>
 {
     @JsonProperty("fieldId")
@@ -48,6 +47,7 @@ public class ScreenerFieldDefinition implements Comparable<ScreenerFieldDefiniti
     private Boolean dropdownSupported;
     @JsonProperty("isPremium")
     private Boolean isPremium;
+
 
     @JsonProperty("fieldId")
     public String getFieldId() {

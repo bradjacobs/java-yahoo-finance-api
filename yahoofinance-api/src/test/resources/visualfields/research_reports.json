@@ -1,0 +1,635 @@
+{
+  "finance": {
+    "result": [
+      {
+        "fields": {
+          "abstract": {
+            "fieldId": "abstract",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Abstract",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "author": {
+            "fieldId": "author",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Author",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "company_name": {
+            "fieldId": "company_name",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Company Name",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "company_summary": {
+            "fieldId": "company_summary",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Company Summary",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "eps_status": {
+            "fieldId": "eps_status",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Earnings Estimates",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "id": {
+            "fieldId": "id",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "ID",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "investment_rating": {
+            "fieldId": "investment_rating",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [
+              {
+                "displayName": "Bullish",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "investment_rating",
+                    "Bullish"
+                  ]
+                }
+              },
+              {
+                "displayName": "Bearish",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "investment_rating",
+                    "Bearish"
+                  ]
+                }
+              },
+              {
+                "displayName": "Neutral",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "investment_rating",
+                    "Neutral"
+                  ]
+                }
+              }
+            ],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Rating",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "investment_rating_status": {
+            "fieldId": "investment_rating_status",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Rating Status",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "market_mover.section_text": {
+            "fieldId": "market_mover.section_text",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Market Mover's Section Text",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "pdf_url": {
+            "fieldId": "pdf_url",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Pdf URL",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "provider": {
+            "fieldId": "provider",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [
+              {
+                "displayName": "Morningstar",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "provider",
+                    "Morningstar"
+                  ]
+                }
+              },
+              {
+                "displayName": "Argus",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "provider",
+                    "Argus"
+                  ]
+                }
+              }
+            ],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Provider",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "report_date": {
+            "fieldId": "report_date",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "DATE",
+            "deprecated": false,
+            "displayName": "Report Date",
+            "dropdownSupported": false,
+            "sortable": true,
+            "isPremium": false
+          },
+          "report_headline": {
+            "fieldId": "report_headline",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Report Headline",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "report_title": {
+            "fieldId": "report_title",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Header",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "report_type": {
+            "fieldId": "report_type",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [
+              {
+                "displayName": "Quantitative Report",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Quantitative Report"
+                  ]
+                }
+              },
+              {
+                "displayName": "Analyst Report",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Analyst Report"
+                  ]
+                }
+              },
+              {
+                "displayName": "Portfolio Ideas",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Portfolio Ideas"
+                  ]
+                }
+              },
+              {
+                "displayName": "Sector Watch",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Sector Watch"
+                  ]
+                }
+              },
+              {
+                "displayName": "Thematic Portfolio",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Thematic Portfolio"
+                  ]
+                }
+              },
+              {
+                "displayName": "Technical Analysis",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Technical Analysis"
+                  ]
+                }
+              },
+              {
+                "displayName": "Market Summary",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Market Summary"
+                  ]
+                }
+              },
+              {
+                "displayName": "Market Outlook",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Market Outlook"
+                  ]
+                }
+              },
+              {
+                "displayName": "Stock Picks",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Stock Picks"
+                  ]
+                }
+              },
+              {
+                "displayName": "Market Update",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Market Update"
+                  ]
+                }
+              },
+              {
+                "displayName": "Insider Activity",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Insider Activity"
+                  ]
+                }
+              },
+              {
+                "displayName": "Top/Bottom Insider Activity",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "report_type",
+                    "Top/Bottom Insider Activity"
+                  ]
+                }
+              }
+            ],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Report type",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "sector": {
+            "fieldId": "sector",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [
+              {
+                "displayName": "Basic Materials",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Basic Materials"
+                  ]
+                }
+              },
+              {
+                "displayName": "Consumer Cyclical",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Consumer Cyclical"
+                  ]
+                }
+              },
+              {
+                "displayName": "Financial Services",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Financial Services"
+                  ]
+                }
+              },
+              {
+                "displayName": "Real Estate",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Real Estate"
+                  ]
+                }
+              },
+              {
+                "displayName": "Consumer Defensive",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Consumer Defensive"
+                  ]
+                }
+              },
+              {
+                "displayName": "Healthcare",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Healthcare"
+                  ]
+                }
+              },
+              {
+                "displayName": "Utilities",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Utilities"
+                  ]
+                }
+              },
+              {
+                "displayName": "Communication Services",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Communication Services"
+                  ]
+                }
+              },
+              {
+                "displayName": "Energy",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Energy"
+                  ]
+                }
+              },
+              {
+                "displayName": "Industrials",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Industrials"
+                  ]
+                }
+              },
+              {
+                "displayName": "Technology",
+                "criteria": {
+                  "operator": "EQ",
+                  "operands": [
+                    "sector",
+                    "Technology"
+                  ]
+                }
+              }
+            ],
+            "type": "STRING",
+            "deprecated": false,
+            "dependFor": [
+              "industry"
+            ],
+            "displayName": "Sector",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "snapshot_url": {
+            "fieldId": "snapshot_url",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Snapshot URL",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "target_price": {
+            "fieldId": "target_price",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Target Price",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "target_price_status": {
+            "fieldId": "target_price_status",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Target Price Status",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "ticker": {
+            "fieldId": "ticker",
+            "category": {
+              "categoryId": "visualizations",
+              "displayName": "Visualizations"
+            },
+            "labels": [],
+            "type": "STRING",
+            "deprecated": false,
+            "displayName": "Tickers",
+            "dropdownSupported": false,
+            "sortable": false,
+            "isPremium": false
+          },
+          "ticker_details.intradaymarketcap": {
+            "fieldId": "ticker_details.intradaymarketcap",
+            "category": {
+              "categoryId": "popular_filters",
+              "displayName": "Popular Filters"
+            },
+            "labels": [
+              {
+                "displayName": "Small Cap",
+                "criteria": {
+                  "operator": "LT",
+                  "operands": [
+                    "ticker_details.intradaymarketcap",
+                    2000000000
+                  ]
+                }
+              },
+              {
+                "displayName": "Mid Cap",
+                "criteria": {
+                  "operator": "BTWN",
+                  "operands": [
+                    "ticker_details.intradaymarketcap",
+                    2000000000,
+                    10000000000
+                  ]
+                }
+              },
+              {
+                "displayName": "Large Cap",
+                "criteria": {
+                  "operator": "BTWN",
+                  "operands": [
+                    "ticker_details.intradaymarketcap",
+                    10000000000,
+                    100000000000
+                  ]
+                }
+              },
+              {
+                "displayName": "Mega Cap",
+                "criteria": {
+                  "operator": "GT",
+                  "operands": [
+                    "ticker_details.intradaymarketcap",
+                    100000000000
+                  ]
+                }
+              }
+            ],
+            "type": "NUMBER",
+            "deprecated": false,
+            "displayName": "Intraday Market Cap",
+            "dropdownSupported": true,
+            "sortable": false,
+            "isPremium": false
+          }
+        }
+      }
+    ],
+    "error": null
+  }
+}
