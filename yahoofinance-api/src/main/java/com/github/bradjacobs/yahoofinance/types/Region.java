@@ -19,13 +19,12 @@ import java.util.Map;
  * For a more exhaustive list see see https://en.wikipedia.org/wiki/ISO_3166-2
  *
  */
-@Generated(value="yahoo-finance-api-internal-tools", date="2021-06-19")
+@Generated(value="yahoo-finance-api-internal-tools", date="2021-11-05")
 public enum Region implements CriteriaEnum
 {
     ARGENTINA("AR", "Argentina"),
     AUSTRALIA("AU", "Australia"),
     AUSTRIA("AT", "Austria"),
-    BAHRAIN("BH", "Bahrain"),
     BELGIUM("BE", "Belgium"),
     BRAZIL("BR", "Brazil"),
     CANADA("CA", "Canada"),
@@ -34,22 +33,23 @@ public enum Region implements CriteriaEnum
     CZECH_REPUBLIC("CZ", "Czech Republic"),
     DENMARK("DK", "Denmark"),
     EGYPT("EG", "Egypt"),
+    ESTONIA("EE", "Estonia"),
     FINLAND("FI", "Finland"),
     FRANCE("FR", "France"),
-    FRENCH_SOUTHERN_TERRITORIES("TF", "French Southern Territories"),
     GERMANY("DE", "Germany"),
     GREECE("GR", "Greece"),
     HONG_KONG("HK", "Hong Kong"),
     HUNGARY("HU", "Hungary"),
+    ICELAND("IS", "Iceland"),
     INDIA("IN", "India"),
     INDONESIA("ID", "Indonesia"),
     IRELAND("IE", "Ireland"),
     ISRAEL("IL", "Israel"),
     ITALY("IT", "Italy"),
     JAPAN("JP", "Japan"),
-    JORDAN("JO", "Jordan"),
     KUWAIT("KW", "Kuwait"),
-    LUXEMBOURG("LU", "Luxembourg"),
+    LATVIA("LV", "Latvia"),
+    LITHUANIA("LT", "Lithuania"),
     MALAYSIA("MY", "Malaysia"),
     MEXICO("MX", "Mexico"),
     NETHERLANDS("NL", "Netherlands"),
@@ -62,6 +62,7 @@ public enum Region implements CriteriaEnum
     PORTUGAL("PT", "Portugal"),
     QATAR("QA", "Qatar"),
     RUSSIA("RU", "Russia"),
+    SAUDI_ARABIA("SA", "Saudi Arabia"),
     SINGAPORE("SG", "Singapore"),
     SOUTH_AFRICA("ZA", "South Africa"),
     SOUTH_KOREA("KR", "South Korea"),
@@ -72,8 +73,6 @@ public enum Region implements CriteriaEnum
     SWITZERLAND("CH", "Switzerland"),
     TAIWAN("TW", "Taiwan"),
     THAILAND("TH", "Thailand"),
-    TIMOR_LESTE("TL", "Timor-Leste"),
-    TUNISIA("TN", "Tunisia"),
     TURKEY("TR", "Turkey"),
     UNITED_KINGDOM("GB", "United Kingdom"),
     UNITED_STATES("US", "United States"),
