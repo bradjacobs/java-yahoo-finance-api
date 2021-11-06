@@ -1,11 +1,14 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.batch.CountTotalPrefixBatchResponseChecker;
+import com.github.bradjacobs.yahoofinance.batch.FullBatchResponseChecker;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.types.screener.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,9 +33,11 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     // these remain const until there's need otherwise.
     //        side note:  it's possible to use 'entityIdType' instead of a quoteType, but is untested/unsupported for now
     private final Type quoteType = Type.EQUITY;
-    private final String topOperator = Operator.AND.getValue();
+    private final String topOperator = Operator.AND.getValue().toUpperCase();  // make uppercase only b/c the website does it.
     private final String userId = "";
     private final String userIdType = "guid";
+
+    private static final FullBatchResponseChecker BATCH_RESPONSE_CHECKER = new CountTotalPrefixBatchResponseChecker();
 
 
     // TODO - FIX... 'technically' if supply an industry w/o a sector then the sector could be 'auto-magically' added,
@@ -180,6 +185,13 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         criteria.setUserId(userId);
         criteria.setUserIdType(userIdType);
 
+        // TODO -- need to confirm if this is desired.
+//        String region = this.getRegion();
+//        if (!StringUtils.isEmpty(region)) {
+//            this.queryBuilder.in(ScreenerField.REGION, Collections.singletonList(region.toLowerCase()));
+//        }
+
+
         Query query = this.queryBuilder.build();
         criteria.setQuery(query);
         return criteria;
@@ -318,6 +330,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
             batchableRequestStrategy = null;
         }
 
-        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, headerMap, batchableRequestStrategy);
+        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, headerMap, batchableRequestStrategy, BATCH_RESPONSE_CHECKER);
     }
 }

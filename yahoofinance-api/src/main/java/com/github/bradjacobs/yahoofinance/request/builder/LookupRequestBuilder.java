@@ -1,5 +1,7 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.batch.CountTotalPrefixBatchResponseChecker;
+import com.github.bradjacobs.yahoofinance.batch.FullBatchResponseChecker;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Type;
@@ -22,6 +24,7 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
 
     private boolean includeTotalsOnly = false;
 
+    private static final FullBatchResponseChecker BATCH_RESPONSE_CHECKER = new CountTotalPrefixBatchResponseChecker();
 
     public LookupRequestBuilder withQuery(String query) {
         this.query = query;
@@ -121,6 +124,6 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
             batchableRequestStrategy = null;
         }
 
-        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, headerMap, batchableRequestStrategy);
+        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, headerMap, batchableRequestStrategy, BATCH_RESPONSE_CHECKER);
     }
 }

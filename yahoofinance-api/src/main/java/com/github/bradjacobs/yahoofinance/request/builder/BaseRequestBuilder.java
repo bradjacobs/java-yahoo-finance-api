@@ -31,6 +31,9 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 
     protected abstract T getThis();
 
+    protected String getRegion() {
+        return region;
+    }
 
     public T includeRegionParam(boolean includeRegion) {
         this.includeRegionParam = includeRegion;

@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance;
 
+import com.github.bradjacobs.yahoofinance.batch.FullBatchResponseChecker;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
@@ -14,10 +15,6 @@ import java.util.List;
 class BatchableRequestExecutor
 {
     private final YahooFinanceClient client;
-
-    private static final String COUNT_PREFIX = "\"count\":";
-    private static final String TOTAL_PREFIX = "\"total\":";
-    private static final int RESPONSE_INTRO_SIZE = 300; // how much of the first part of the response to analyze.
 
     // allow a very brief pause b/w each batch request for philanthropy.
     private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
@@ -36,6 +33,9 @@ class BatchableRequestExecutor
             return Collections.singletonList(client.executeInternal(batachableRequest));
         }
 
+        // todo: fix -- shouldn't get this from the request.
+        FullBatchResponseChecker fullBatchResponseChecker = batachableRequest.getFullBatchResponseChecker();
+
         List<Response> responseList = new ArrayList<>();
 
         int batchSize = batchableRequestStrategy.getBatchSize();
@@ -52,7 +52,7 @@ class BatchableRequestExecutor
                 response = client.executeInternal(batchRequest);
                 responseList.add(response);
 
-                continueBatchRequesting = shouldContinueBatchRequesting(batchSize, response);
+                continueBatchRequesting = fullBatchResponseChecker.isFullBatchResponse(response, batchSize);
                 if (continueBatchRequesting)
                 {
                     currentBatchOffset = currentBatchOffset + batchSize;
@@ -74,43 +74,6 @@ class BatchableRequestExecutor
     private static void batchIterationSleep() {
         try { Thread.sleep(SLEEP_TIME_BETWEEN_BATCH_REQUESTS); }
         catch (InterruptedException e) {/* ignore */ }
-    }
-
-
-
-
-    private boolean shouldContinueBatchRequesting(int batchSize, Response response)
-    {
-        if (response == null || response.isError()) {
-            return false;
-        }
-
-        // Note: not interested in parsing out HUGE response body, thus just grab the 'first part' of the response
-        //   to determine the information required.
-        String responseBody = response.getBody();
-        String responseBodySubstring = responseBody.substring(0, Math.min(responseBody.length(), RESPONSE_INTRO_SIZE));
-
-        int count = 0;
-        int total = 0;
-
-        try {
-            count = Integer.parseInt( StringUtils.substringBetween(responseBodySubstring, COUNT_PREFIX, ",") );
-            total = Integer.parseInt( StringUtils.substringBetween(responseBodySubstring, TOTAL_PREFIX, ",") );
-        }
-        catch (Exception e) {
-            /* ignore (for now) */
-        }
-
-        if (count == 0 || total == 0 || (count != batchSize) || (count > total)) {
-            return false;
-        }
-
-        //  note:  "count == total" can mean done for screener, but not for lookup.   (use additional substring check to tell which one we have)
-        if (count == total && responseBodySubstring.contains("\"quotes\":[")) {
-            return false;
-        }
-
-        return true;
     }
 
 }

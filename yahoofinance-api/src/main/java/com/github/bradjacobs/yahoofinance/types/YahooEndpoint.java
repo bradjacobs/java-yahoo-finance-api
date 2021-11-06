@@ -66,7 +66,7 @@ public enum YahooEndpoint
 
     //  NOTE: 'visualization' correlates to the information that can be viewed at:  https://finance.yahoo.com/calendar
     //     implementing the functionality for this is currently a lower priority.
-    //VISUALIZATION("visualization", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
+    VISUALIZATION("visualization", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST),
 
     //SEARCH("search", 1, FLAG_IS_QUERY),   // commented out b/c how it should work is semi-mysterious
 

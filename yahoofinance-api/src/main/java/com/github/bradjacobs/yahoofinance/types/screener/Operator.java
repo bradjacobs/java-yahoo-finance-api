@@ -8,10 +8,13 @@ public enum Operator
     EQUAL("eq"),
     LESS_THAN("lt"),
     GREATER_THAN("gt"),
+    GREATER_THAN_EQUAL("gte"),
     BETWEEN("btwn"),
 
-    AND("AND"),
-    OR("OR");
+//    AND("AND"),
+//    OR("OR");
+    AND("and"),
+    OR("or");
 
     private final String value;
 

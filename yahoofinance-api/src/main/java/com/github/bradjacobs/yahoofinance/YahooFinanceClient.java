@@ -14,11 +14,15 @@ import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
+import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,19 +100,37 @@ public class YahooFinanceClient
         return yahooResponseGenerator.makeBatchResponse(request, rawResponses);
     }
 
-
+    private String readFile(String filePath)
+    {
+        try {
+            return FileUtils.readFileToString(new File(filePath), Charset.defaultCharset());
+        } catch (IOException e) {
+            throw new RuntimeException("Cant read file!");
+        }
+    }
     protected Response executeInternal(YahooFinanceRequest request) throws IOException
     {
         // validation will throw an exception if invalid request is detected
         requestValidator.validationRequest(request);
 
-
         String url = buildRequestUrl(request);
         Map<String,String> headerMap = createRequestHeaderMap(request);
 
-        Response response;
+        Response response = null;
         if (request.isPost()) {
-            String postBody = request.getPostBody();
+            String postBody_orig = request.getPostBody();
+
+            String prettyPost = PrettyFormatter.prettyJson(postBody_orig);
+
+
+            String path = "/Users/bradjacobs/git/bradjacobs/java-yahoo-finance-api/yahoofinance-api/src/main/java/com/github/bradjacobs/yahoofinance/tools/internal/generator/types/data/visualization/req9_earn_past1.json";
+
+            String postBody_new = readFile(path);
+
+            String postBody = postBody_orig;
+
+            int kjkjj = 333;
+
             response = httpClient.executePost(url, postBody, headerMap);
         }
         else {
