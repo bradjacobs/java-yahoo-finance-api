@@ -7,9 +7,10 @@ import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
 
 import javax.annotation.Generated;
 
-@Generated(value="yahoo-finance-api-internal-tools", date="2021-07-09")
+@Generated(value="yahoo-finance-api-internal-tools", date="2021-11-09")
 public enum Exchange implements CriteriaEnum
 {
+    ASE("ASE"),
     BSE("BSE"),
     NASDAQ("NAS"),
     NASDAQCM("NCM"),

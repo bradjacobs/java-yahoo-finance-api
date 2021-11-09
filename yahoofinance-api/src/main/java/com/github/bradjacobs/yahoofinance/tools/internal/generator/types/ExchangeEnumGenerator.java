@@ -18,7 +18,7 @@ class ExchangeEnumGenerator extends EnumStringBlobGenerator
 
 
     // apparently legal exchange value, even though it's not returned from the query.  (add explicitly)
-    private static final List<String> EXTRA_EXCHANGES = Arrays.asList("PNK");
+    private static final List<String> EXTRA_EXCHANGES = Arrays.asList("ASE", "PNK");
 
 
     @Override
