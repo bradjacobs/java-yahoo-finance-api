@@ -118,19 +118,7 @@ public class YahooFinanceClient
 
         Response response = null;
         if (request.isPost()) {
-            String postBody_orig = request.getPostBody();
-
-            String prettyPost = PrettyFormatter.prettyJson(postBody_orig);
-
-
-            String path = "/Users/bradjacobs/git/bradjacobs/java-yahoo-finance-api/yahoofinance-api/src/main/java/com/github/bradjacobs/yahoofinance/tools/internal/generator/types/data/visualization/req9_earn_past1.json";
-
-            String postBody_new = readFile(path);
-
-            String postBody = postBody_orig;
-
-            int kjkjj = 333;
-
+            String postBody = request.getPostBody();
             response = httpClient.executePost(url, postBody, headerMap);
         }
         else {
