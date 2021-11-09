@@ -1,0 +1,10 @@
+estimatedEarningsGrowth
+estimatedRevenueGrowth
+fairValue
+morningstarCurrentRating
+morningstarLastClosePriceToFairValue
+morningstarPreviousRating
+morningstarRatingChange
+priceToFairValue
+rorPercent
+valueDescription

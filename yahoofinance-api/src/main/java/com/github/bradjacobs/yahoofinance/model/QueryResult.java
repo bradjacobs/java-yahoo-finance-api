@@ -40,14 +40,11 @@ abstract public class QueryResult implements Comparable<QueryResult>
     private Double epsForward;
     private Double epsTrailingTwelveMonths;
     private Boolean esgPopulated;
-    private Double estimatedEarningsGrowth;   //  PREMIUM ONLY
-    private Double estimatedRevenueGrowth;   //  PREMIUM ONLY
     private Long exDividendDate;
     private String exchange;
     private Long exchangeDataDelayedBy;
     private String exchangeTimezoneName;
     private String exchangeTimezoneShortName;
-    private Double fairValue;  //   PREMIUM ONLY
     private Double fiftyDayAverage;
     private Double fiftyDayAverageChange;
     private Double fiftyDayAverageChangePercent;
@@ -73,15 +70,11 @@ abstract public class QueryResult implements Comparable<QueryResult>
     private Long marketCap;
     private String marketState;
     private String messageBoardId;
-    private String morningstarCurrentRating;  //  PREMIUM ONLY   todo: should be number?
     private String morningstarEconomicMoatRating;
     private Double morningstarFairValue;
     private String morningstarIndustry;
-    private Double morningstarLastClosePriceToFairValue;  //  PREMIUM ONLY
     private String morningstarLongDescription;
     private String morningstarMoatTrendRating;
-    private String morningstarPreviousRating; //   PREMIUM ONLY   todo: should be number?
-    private String morningstarRatingChange;  //   PREMIUM ONLY
     private String morningstarReportRating;
     private String morningstarSector;
     private String morningstarStewardshipRating;
@@ -94,7 +87,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
     private Double postMarketPrice;
     private Long postMarketTime;
     private Double priceEpsCurrentYear;
-    private Double priceToFairValue;   //  PREMIUM ONLY
     private Long priceHint;
     private Double priceToBook;
     private Double priceToMorningstarFairValueRatio;
@@ -113,7 +105,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
     private Long regularMarketTime;
     private Long regularMarketVolume;
     private Long revenue;
-    private Double rorPercent;   //  PREMIUM ONLY
     private Long sharesOutstanding;
     private Long sharesShort;
     private String shortName;
@@ -130,7 +121,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
     private Double twoHundredDayAverageChange;
     private Double twoHundredDayAverageChangePercent;
     private String uuid;
-    private String valueDescription;   //  PREMIUM ONLY
 
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<>();
@@ -248,14 +238,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
         return esgPopulated;
     }
 
-    public Double getEstimatedEarningsGrowth() {
-        return estimatedEarningsGrowth;
-    }
-
-    public Double getEstimatedRevenueGrowth() {
-        return estimatedRevenueGrowth;
-    }
-
     public Long getExDividendDate() {
         return exDividendDate;
     }
@@ -274,10 +256,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
 
     public String getExchangeTimezoneShortName() {
         return exchangeTimezoneShortName;
-    }
-
-    public Double getFairValue() {
-        return fairValue;
     }
 
     public Double getFiftyDayAverage() {
@@ -380,10 +358,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
         return messageBoardId;
     }
 
-    public String getMorningstarCurrentRating() {
-        return morningstarCurrentRating;
-    }
-
     public String getMorningstarEconomicMoatRating() {
         return morningstarEconomicMoatRating;
     }
@@ -396,24 +370,12 @@ abstract public class QueryResult implements Comparable<QueryResult>
         return morningstarIndustry;
     }
 
-    public Double getMorningstarLastClosePriceToFairValue() {
-        return morningstarLastClosePriceToFairValue;
-    }
-
     public String getMorningstarLongDescription() {
         return morningstarLongDescription;
     }
 
     public String getMorningstarMoatTrendRating() {
         return morningstarMoatTrendRating;
-    }
-
-    public String getMorningstarPreviousRating() {
-        return morningstarPreviousRating;
-    }
-
-    public String getMorningstarRatingChange() {
-        return morningstarRatingChange;
     }
 
     public String getMorningstarReportRating() {
@@ -462,10 +424,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
 
     public Double getPriceEpsCurrentYear() {
         return priceEpsCurrentYear;
-    }
-
-    public Double getPriceToFairValue() {
-        return priceToFairValue;
     }
 
     public Long getPriceHint() {
@@ -540,10 +498,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
         return revenue;
     }
 
-    public Double getRorPercent() {
-        return rorPercent;
-    }
-
     public Long getSharesOutstanding() {
         return sharesOutstanding;
     }
@@ -606,10 +560,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
 
     public String getUuid() {
         return uuid;
-    }
-
-    public String getValueDescription() {
-        return valueDescription;
     }
 
     @JsonAnyGetter
