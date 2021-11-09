@@ -66,6 +66,9 @@ public class Visualization_Temp_FieldEnumGenerator extends EnumStringBlobGenerat
         String researchReportsJson = readFile("research_reports.json");
         String splitsJson = readFile("splits.json");
 
+        String equityJson = readFile("equity.json");
+        Map<String, EnumInfo> equityMap = getSubSectionEnumList(earningsJson);
+
         Map<String, EnumInfo> earnMap = getSubSectionEnumList(earningsJson);
         Map<String, EnumInfo> econMap = getSubSectionEnumList(econEventJson);
         Map<String, EnumInfo> ipoMap = getSubSectionEnumList(ipoInfoJson);
@@ -80,6 +83,9 @@ public class Visualization_Temp_FieldEnumGenerator extends EnumStringBlobGenerat
         listOfMaps.add(ipoMap);
         listOfMaps.add(researcMap);
         listOfMaps.add(splitsMap);
+
+        listOfMaps.clear();
+        listOfMaps.add(equityMap);
 
         Set<String> commonEnumNames = new HashSet<>();
         Set<String> enumNames = new HashSet<>();
@@ -107,13 +113,14 @@ public class Visualization_Temp_FieldEnumGenerator extends EnumStringBlobGenerat
         }
 
         List<EnumInfo> masterList = new ArrayList<>();
-        masterList.addAll(makeList("Common", commonMap.values()));
-        masterList.addAll(makeList("Earnings", earnMap.values()));
-        masterList.addAll(makeList("Econ", econMap.values()));
-        masterList.addAll(makeList("IPO", ipoMap.values()));
-        masterList.addAll(makeList("Splits", splitsMap.values()));
-        masterList.addAll(makeList("Research", researcMap.values()));
+//        masterList.addAll(makeList("Common", commonMap.values()));
+//        masterList.addAll(makeList("Earnings", earnMap.values()));
+//        masterList.addAll(makeList("Econ", econMap.values()));
+//        masterList.addAll(makeList("IPO", ipoMap.values()));
+//        masterList.addAll(makeList("Splits", splitsMap.values()));
+//        masterList.addAll(makeList("Research", researcMap.values()));
 
+        masterList.addAll(makeList("Equity", equityMap.values()));
 
         return masterList;
     }
@@ -145,7 +152,7 @@ public class Visualization_Temp_FieldEnumGenerator extends EnumStringBlobGenerat
         List<ScreenerFieldDefinition> basicFieldList = Arrays.stream(fields)
                 .filter(sf -> !sf.getDeprecated())
                 .filter(sf -> !sf.getIsPremium())
-                .filter(sf -> sf.getCategory().getCategoryId().equalsIgnoreCase("visualizations"))
+    ///            .filter(sf -> sf.getCategory().getCategoryId().equalsIgnoreCase("visualizations"))
                 .collect(Collectors.toList());
 
         List<EnumInfo> enumInfoList = new ArrayList<>();

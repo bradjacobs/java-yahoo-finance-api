@@ -45,7 +45,25 @@ public class EarningsRequestBuilder extends BasePeriodRequestBuilder<EarningsReq
             "epsactual",
             "epssurprisepct",
 
-            "count",
+            "sector",
+            "industry",
+            "beta",
+            "bearish_count",   //
+
+
+            //////"cashinterestpaid.lasttwelvemonths",   //
+            //  ..
+            // "cashinterestpaid" -> {LinkedHashMap@3013}  size = 4
+            // key = "cashinterestpaid"
+            // value = {LinkedHashMap@3013}  size = 4
+            //  "lasttwelvemonths" -> {Double@3031} 6.377E7
+            //  "yeartodate" -> null
+            //  "annual" -> null
+            //  "quarterly" -> null
+
+
+
+            //"count",  // NOTE:  must NOT include count... it will A) not return anything.... B)...mess up the order!!!
             "dateisestimate",
             "epsconsensus",
             ///"eventId",   // not a field

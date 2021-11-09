@@ -17,7 +17,6 @@ public class EarningsVisualizationResult
     // example values:    "BMO", "AMC", "TNS", "TAS"
     private String startdatetimetype;   // "Event Start Time"
 
-    private Long count;  // always blank
     private Boolean dateisestimate;
     private Date enddatetime;  // always blank
     private Double epsactual;
@@ -26,8 +25,11 @@ public class EarningsVisualizationResult
     private Number epssurprisepct;
     private String eventname;
     private String eventtype;   // not sure what this is...sometimes 'null'...sometimes 2
-    private String fiscalyear;  // defn says it's a string     "2021"
-    private String quarter;  // defn says it's a string      "3"
+
+//    private String fiscalyear;  // defn says it's a string     "2021"
+//    private String quarter;  // defn says it's a string      "3"
+    private Long fiscalyear;  // defn says it's a string     "2021"
+    private Long quarter;  // defn says it's a string      "3"
 
     private String timeZoneShortName;
 //    private Long gmtOffsetMilliSeconds;
@@ -66,14 +68,6 @@ public class EarningsVisualizationResult
 
     public void setStartdatetimetype(String startdatetimetype) {
         this.startdatetimetype = startdatetimetype;
-    }
-
-    public Long getCount() {
-        return count;
-    }
-
-    public void setCount(Long count) {
-        this.count = count;
     }
 
     public Boolean getDateisestimate() {
@@ -140,21 +134,37 @@ public class EarningsVisualizationResult
         this.eventtype = eventtype;
     }
 
-    public String getFiscalyear() {
+    public Long getFiscalyear() {
         return fiscalyear;
     }
 
-    public void setFiscalyear(String fiscalyear) {
+    public void setFiscalyear(Long fiscalyear) {
         this.fiscalyear = fiscalyear;
     }
 
-    public String getQuarter() {
+    public Long getQuarter() {
         return quarter;
     }
 
-    public void setQuarter(String quarter) {
+    public void setQuarter(Long quarter) {
         this.quarter = quarter;
     }
+
+    //    public String getFiscalyear() {
+//        return fiscalyear;
+//    }
+//
+//    public void setFiscalyear(String fiscalyear) {
+//        this.fiscalyear = fiscalyear;
+//    }
+//
+//    public String getQuarter() {
+//        return quarter;
+//    }
+//
+//    public void setQuarter(String quarter) {
+//        this.quarter = quarter;
+//    }
 
     public String getTimeZoneShortName() {
         return timeZoneShortName;

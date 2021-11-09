@@ -63,6 +63,9 @@ public class ResponseConverterFactory
             case PREMIUM_TIMESERIES:
                 baseResponseConverter = new TimeSeriesResponseConverter(config); // todo: come back to the future of the config param
                 break;
+            case VISUALIZATION:
+                baseResponseConverter = new VisualizationEarningsResponseConverter();
+                break;
             default:
                 baseResponseConverter = new DefaultResponseConverter();
         }
