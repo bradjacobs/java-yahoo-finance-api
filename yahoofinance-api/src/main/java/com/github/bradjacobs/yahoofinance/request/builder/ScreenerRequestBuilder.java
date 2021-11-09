@@ -16,6 +16,8 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     private static final String SORT_ASC = "ASC";
     private static final int MIN_BATCHABLE_SIZE = 10;
 
+    private boolean usePremium = false;
+
     // __NOTE__: all variables are set to DEFAULT value
     private int size = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
     private int offset = 0;
@@ -134,7 +136,17 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         if (Boolean.TRUE.equals(this.totalOnly)) {
             return YahooEndpoint.SCREENER_TOTALS;
         }
-        return YahooEndpoint.SCREENER;
+        else if (usePremium) {
+            return YahooEndpoint.PREMIUM_SCREENER;
+        }
+        else {
+            return YahooEndpoint.SCREENER;
+        }
+    }
+
+    public ScreenerRequestBuilder setPremium(boolean premium) {
+        this.usePremium = premium;
+        return this;
     }
 
 

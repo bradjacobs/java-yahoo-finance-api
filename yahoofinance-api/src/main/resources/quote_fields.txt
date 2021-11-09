@@ -25,6 +25,8 @@ epsCurrentYear
 epsForward
 epsTrailingTwelveMonths
 esgPopulated
+estimatedEarningsGrowth
+estimatedRevenueGrowth
 exchange
 exchangeDataDelayedBy
 exchangeTimezoneName
@@ -32,6 +34,7 @@ exchangeTimezoneShortName
 exDividendDate
 expireDate
 expireIsoDate
+fairValue
 fiftyDayAverage
 fiftyDayAverageChange
 fiftyDayAverageChangePercent
@@ -61,11 +64,15 @@ market
 marketCap
 marketState
 messageBoardId
+morningstarCurrentRating
 morningstarEconomicMoatRating
 morningstarFairValue
 morningstarIndustry
+morningstarLastClosePriceToFairValue
 morningstarLongDescription
 morningstarMoatTrendRating
+morningstarPreviousRating
+morningstarRatingChange
 morningstarReportRating
 morningstarSector
 morningstarStewardshipRating
@@ -81,6 +88,7 @@ postMarketTime
 priceEpsCurrentYear
 priceHint
 priceToBook
+priceToFairValue
 priceToSales
 quoteSourceName
 quoteType
@@ -96,6 +104,7 @@ regularMarketPrice
 regularMarketTime
 regularMarketVolume
 revenue
+rorPercent
 sharesOutstanding
 sharesShort
 shortName
@@ -122,6 +131,7 @@ twoHundredDayAverageChangePercent
 underlyingExchangeSymbol
 underlyingSymbol
 uuid
+valueDescription
 volume24Hr
 volumeAllCurrencies
 ytdReturn

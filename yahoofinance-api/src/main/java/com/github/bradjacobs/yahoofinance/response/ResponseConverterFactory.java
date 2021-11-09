@@ -45,6 +45,7 @@ public class ResponseConverterFactory
                 baseResponseConverter = new ChartResponseConverter(config);
                 break;
             case SCREENER:
+            case PREMIUM_SCREENER:
                 baseResponseConverter = new ScreenerResponseConverter();
                 break;
             case QUOTE_SUMMARY:
