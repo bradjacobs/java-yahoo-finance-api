@@ -58,7 +58,7 @@ public class BigCompanyRecentStockSplit
         YahooFinanceRequest screenerRequest = YahooRequestBuilder.api()
             .screener()
             .in(ScreenerField.REGION, Region.UNITED_STATES)
-            .in(ScreenerField.EXCHANGE, Exchange.NASDAQ, Exchange.NASDAQGS, Exchange.NASDAQGM, Exchange.NASDAQCM, Exchange.NYSE)
+            .in(ScreenerField.EXCHANGE, Exchange.NASDAQGS, Exchange.NASDAQGM, Exchange.NASDAQCM, Exchange.NYSE)
             .setSize(50)
             .setSortDescending(ScreenerField.INTRADAYMARKETCAP)
             .build();
