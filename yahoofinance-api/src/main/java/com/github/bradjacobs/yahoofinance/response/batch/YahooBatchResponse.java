@@ -1,6 +1,8 @@
-package com.github.bradjacobs.yahoofinance.response;
+package com.github.bradjacobs.yahoofinance.response.batch;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
+import com.github.bradjacobs.yahoofinance.response.AbstractResponse;
+import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 

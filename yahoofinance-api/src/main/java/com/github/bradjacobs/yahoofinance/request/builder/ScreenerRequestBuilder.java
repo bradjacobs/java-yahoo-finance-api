@@ -1,7 +1,5 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.batch.CountTotalPrefixBatchResponseChecker;
-import com.github.bradjacobs.yahoofinance.batch.FullBatchResponseChecker;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
@@ -12,7 +10,7 @@ import com.github.bradjacobs.yahoofinance.types.screener.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder> implements BatchableRequestStrategy
+public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder> implements BatchableRequestBuilder
 {
     private static final String SORT_DESC = "DESC";
     private static final String SORT_ASC = "ASC";
@@ -37,8 +35,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     private final String topOperator = Operator.AND.getValue().toUpperCase();  // make uppercase only b/c the website does it.
     private final String userId = "";
     private final String userIdType = "guid";
-
-    private static final FullBatchResponseChecker BATCH_RESPONSE_CHECKER = new CountTotalPrefixBatchResponseChecker();
 
 
     // TODO - FIX... 'technically' if supply an industry w/o a sector then the sector could be 'auto-magically' added,
@@ -135,7 +131,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     }
 
     @Override
-    protected YahooEndpoint _getRequestEndpoint()
+    public YahooEndpoint getEndpoint()
     {
         if (Boolean.TRUE.equals(this.totalOnly)) {
             return YahooEndpoint.SCREENER_TOTALS;
@@ -303,12 +299,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     }
 
 
-    @Override
-    public YahooFinanceRequest buildNewRequest() {
-        return this.build();
-    }
-
-
     // this will throw exception if request is invalid
     @Override
     protected void validateRequest(YahooFinanceRequest req)
@@ -335,12 +325,10 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
             YahooEndpoint endpoint, String ticker,
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
-        BatchableRequestStrategy batchableRequestStrategy = this;
-
-        if (Boolean.TRUE.equals(this.totalOnly) || size < MIN_BATCHABLE_SIZE) {
-            batchableRequestStrategy = null;
+        YahooFinanceRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
+        if (!Boolean.TRUE.equals(this.totalOnly) && size >= MIN_BATCHABLE_SIZE) {
+            req = new YahooFinanceBatchRequest(req, this);
         }
-
-        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, headerMap, batchableRequestStrategy, BATCH_RESPONSE_CHECKER);
+        return req;
     }
 }

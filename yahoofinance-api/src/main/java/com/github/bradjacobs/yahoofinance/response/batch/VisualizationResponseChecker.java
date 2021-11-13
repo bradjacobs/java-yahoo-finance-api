@@ -1,9 +1,8 @@
-package com.github.bradjacobs.yahoofinance.batch;
+package com.github.bradjacobs.yahoofinance.response.batch;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
-import org.apache.commons.lang3.StringUtils;
 
-public class VisualizationResponseChecker implements FullBatchResponseChecker
+public class VisualizationResponseChecker implements BatchResponseChecker
 {
     private static final String EMPTY_ROWS_IDENTIFIER = "\"rows\":[]";
 

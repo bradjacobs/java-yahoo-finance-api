@@ -114,7 +114,7 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
     }
 
     abstract protected Map<String,String> _buildParamMap();
-    abstract protected YahooEndpoint _getRequestEndpoint();
+    abstract public YahooEndpoint getEndpoint();
     abstract protected String _getRequestTicker();
 
     protected Object _buildRequestPostBody() {
@@ -123,7 +123,7 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 
     public YahooFinanceRequest build() {
 
-        YahooEndpoint endpoint = _getRequestEndpoint();
+        YahooEndpoint endpoint = getEndpoint();
         String ticker = _getRequestTicker();
         Map<String, String> paramMap = buildParamMap();
         Object postBody = _buildRequestPostBody();

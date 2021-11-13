@@ -4,12 +4,14 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
-public interface BatchableRequestStrategy
+public interface BatchableRequestBuilder
 {
+    YahooEndpoint getEndpoint();
     int getBatchSize();
     int getBatchOffset();
     void setBatchOffset(int offset);
 
-    YahooFinanceRequest buildNewRequest();
+    YahooFinanceRequest build();
 }

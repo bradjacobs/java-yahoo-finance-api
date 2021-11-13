@@ -3,6 +3,8 @@
  */
 package com.github.bradjacobs.yahoofinance;
 
+import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseChecker;
+import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseCheckerFactory;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
@@ -10,18 +12,17 @@ import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
-import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
+import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestBuilder;
+import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
-import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,6 +38,10 @@ public class YahooFinanceClient
 
     private static final String CRUMB_KEY = "crumb";
 
+    // allow a very brief pause b/w each batch request for philanthropy.
+    private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
+    private final BatchResponseCheckerFactory batchResponseCheckerFactory = new BatchResponseCheckerFactory();
+
     private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
 
     // httpClient is a simple interface around the 'true' httpClient.
@@ -47,7 +52,6 @@ public class YahooFinanceClient
     private final boolean throwExceptionOnHttpError = true;
 
     private final Map<String,String> defaultRequestHeaderMap = new LinkedHashMap<>();
-    private final BatchableRequestExecutor batchableRequestExecutor;
     private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
 
 
@@ -65,8 +69,6 @@ public class YahooFinanceClient
 
         this.httpClient = httpClient;
         this.crumbDataSource = new CrumbDataSource(httpClient);
-        this.batchableRequestExecutor = new BatchableRequestExecutor(this);
-
         this.initializeDefaultHeaderMap();
     }
 
@@ -95,7 +97,8 @@ public class YahooFinanceClient
 
     public YahooBatchResponse executeBatch(YahooFinanceBatchRequest request) throws IOException
     {
-        List<Response> rawResponses = batchableRequestExecutor.executeRequest(request);
+        BatchableRequestBuilder batchRequestBuilder = request.getBatchableRequestBuilder();
+        List<Response> rawResponses = executeBatchRequests(batchRequestBuilder);
         return yahooResponseGenerator.makeBatchResponse(request, rawResponses);
     }
 
@@ -169,4 +172,51 @@ public class YahooFinanceClient
 
         return builder.toString();
     }
+
+
+    protected List<Response> executeBatchRequests(BatchableRequestBuilder batchableRequestBuilder) throws IOException
+    {
+        BatchResponseChecker batchResponseChecker = batchResponseCheckerFactory.getBatchResponseChecker(batchableRequestBuilder.getEndpoint());
+        if (batchResponseChecker == null) {
+            throw new IllegalStateException("No BatchResponseChecker found for endpoint: " + batchableRequestBuilder.getEndpoint());
+        }
+
+        List<Response> responseList = new ArrayList<>();
+
+        int batchSize = batchableRequestBuilder.getBatchSize();
+        int originalBatchOffset = batchableRequestBuilder.getBatchOffset();
+        int currentBatchOffset = originalBatchOffset;
+
+        Response response;
+        boolean continueBatchRequesting = true;
+
+        try
+        {
+            do {
+                YahooFinanceRequest batchRequest = batchableRequestBuilder.build();
+                response = executeInternal(batchRequest);
+                responseList.add(response);
+
+                continueBatchRequesting = batchResponseChecker.isFullBatchResponse(response, batchSize);
+                if (continueBatchRequesting)
+                {
+                    currentBatchOffset = currentBatchOffset + batchSize;
+                    batchableRequestBuilder.setBatchOffset(currentBatchOffset);
+                    batchIterationSleep();
+                }
+            } while (continueBatchRequesting);
+        }
+        finally
+        {
+            batchableRequestBuilder.setBatchOffset(originalBatchOffset);
+        }
+
+        return responseList;
+    }
+
+    private void batchIterationSleep() {
+        try { Thread.sleep(SLEEP_TIME_BETWEEN_BATCH_REQUESTS); }
+        catch (InterruptedException e) {/* ignore */ }
+    }
+
 }

@@ -107,7 +107,7 @@ public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSerie
     }
 
     @Override
-    protected YahooEndpoint _getRequestEndpoint()
+    public YahooEndpoint getEndpoint()
     {
         if (this.usePremium) {
             return YahooEndpoint.PREMIUM_TIMESERIES;

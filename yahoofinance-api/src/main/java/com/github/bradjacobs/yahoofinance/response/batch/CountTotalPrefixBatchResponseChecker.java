@@ -1,9 +1,9 @@
-package com.github.bradjacobs.yahoofinance.batch;
+package com.github.bradjacobs.yahoofinance.response.batch;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
 import org.apache.commons.lang3.StringUtils;
 
-public class CountTotalPrefixBatchResponseChecker implements FullBatchResponseChecker
+public class CountTotalPrefixBatchResponseChecker implements BatchResponseChecker
 {
     private static final String COUNT_PREFIX = "\"count\":";
     private static final String TOTAL_PREFIX = "\"total\":";

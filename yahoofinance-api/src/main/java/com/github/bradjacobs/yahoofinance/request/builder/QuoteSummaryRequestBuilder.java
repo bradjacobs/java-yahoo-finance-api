@@ -29,7 +29,7 @@ public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryR
 
 
     @Override
-    protected YahooEndpoint _getRequestEndpoint()
+    public YahooEndpoint getEndpoint()
     {
         return YahooEndpoint.QUOTE_SUMMARY;
     }

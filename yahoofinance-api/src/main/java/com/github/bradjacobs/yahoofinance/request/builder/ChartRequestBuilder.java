@@ -113,7 +113,7 @@ public class ChartRequestBuilder extends BasePeriodRequestBuilder<ChartRequestBu
 
 
     @Override
-    protected YahooEndpoint _getRequestEndpoint()
+    public YahooEndpoint getEndpoint()
     {
         return YahooEndpoint.CHART;
     }

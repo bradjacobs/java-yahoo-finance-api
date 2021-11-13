@@ -29,7 +29,7 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
     }
 
     @Override
-    protected YahooEndpoint _getRequestEndpoint()
+    public YahooEndpoint getEndpoint()
     {
         return this.endpoint;
     }

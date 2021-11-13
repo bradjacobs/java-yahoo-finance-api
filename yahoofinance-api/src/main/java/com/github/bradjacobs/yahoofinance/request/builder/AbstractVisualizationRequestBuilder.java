@@ -1,7 +1,5 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.batch.FullBatchResponseChecker;
-import com.github.bradjacobs.yahoofinance.batch.VisualizationResponseChecker;
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
@@ -24,7 +22,7 @@ import java.util.Map;
  */
 abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisualizationRequestBuilder<T>>
         extends BasePeriodRequestBuilder<T>
-        implements BatchableRequestStrategy
+        implements BatchableRequestBuilder
 {
     private int size = 100;
     private int offset = 0;
@@ -37,14 +35,12 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     private static final long ONE_DAY_SECONDS = 24 * 60 * 60;
     private static final int MIN_BATCHABLE_SIZE = 10;
 
-    private static final FullBatchResponseChecker BATCH_RESPONSE_CHECKER = new VisualizationResponseChecker();
-
     abstract protected String getEntityType();
     abstract protected String getSortField();
     abstract protected List<String> getIncludeFields();
 
     @Override
-    protected YahooEndpoint _getRequestEndpoint()
+    public YahooEndpoint getEndpoint()
     {
         return YahooEndpoint.VISUALIZATION;
     }
@@ -112,13 +108,11 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker,
                                                   Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
-        BatchableRequestStrategy batchableRequestStrategy = this;
-
-        if (isAggregate || size < MIN_BATCHABLE_SIZE) {
-            batchableRequestStrategy = null;
+        YahooFinanceRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
+        if (!isAggregate && size >= MIN_BATCHABLE_SIZE) {
+            req = new YahooFinanceBatchRequest(req, this);
         }
-
-        return new YahooFinanceBatchRequest(endpoint, ticker, paramMap, postBody, headerMap, batchableRequestStrategy, BATCH_RESPONSE_CHECKER);
+        return req;
     }
 
     @Override
@@ -136,10 +130,6 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
         this.offset = offset;
     }
 
-    @Override
-    public YahooFinanceRequest buildNewRequest() {
-        return this.build();
-    }
 
     private static Operand generateRestriction(String fieldName, Operator op, Object value)
     {

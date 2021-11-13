@@ -3,35 +3,33 @@
  */
 package com.github.bradjacobs.yahoofinance.request;
 
-import com.github.bradjacobs.yahoofinance.batch.FullBatchResponseChecker;
-import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
+import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestBuilder;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.util.Map;
 
 public class YahooFinanceBatchRequest extends YahooFinanceRequest
 {
-    private final BatchableRequestStrategy batchableRequestStrategy;
-    private final FullBatchResponseChecker fullBatchResponseChecker;
+    private final BatchableRequestBuilder batchableRequestBuilder;
 
-    // TODO - fix.... this really isn't the correct spot to put the fullBatchResposneChecker.
+    public YahooFinanceBatchRequest(YahooFinanceRequest request,
+                                    BatchableRequestBuilder batchableRequestBuilder)
+    {
+        this(request.endpoint, request.ticker, request.paramMap, request.postBody, request.headerMap, batchableRequestBuilder);
+    }
+
 
     public YahooFinanceBatchRequest(YahooEndpoint endpoint, String ticker,
                                     Map<String, String> paramMap, Object postBody, Map<String,String> headerMap,
-        BatchableRequestStrategy batchableRequestStrategy,
-        FullBatchResponseChecker fullBatchResponseChecker)
+        BatchableRequestBuilder batchableRequestBuilder)
     {
         super(endpoint, ticker, paramMap, postBody, headerMap);
-        this.batchableRequestStrategy = batchableRequestStrategy;
-        this.fullBatchResponseChecker = fullBatchResponseChecker;
+        this.batchableRequestBuilder = batchableRequestBuilder;
     }
 
-    public BatchableRequestStrategy getBatchableRequestStrategy()
+    public BatchableRequestBuilder getBatchableRequestBuilder()
     {
-        return batchableRequestStrategy;
+        return batchableRequestBuilder;
     }
 
-    public FullBatchResponseChecker getFullBatchResponseChecker() {
-        return fullBatchResponseChecker;
-    }
 }
