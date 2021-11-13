@@ -262,6 +262,7 @@
     "CashFromDiscontinuedOperatingActivities",
     "ChangeInAccountPayable",
     "ChangeInAccruedExpense",
+    "ChangeInCashSupplementalAsReported",
     "ChangeInDeferredCharges",
     "ChangeInFederalFundsAndSecuritiesSoldForRepurchase",
     "ChangeInIncomeTaxPayable",
