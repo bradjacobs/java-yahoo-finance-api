@@ -5,7 +5,7 @@ import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.model.beta.EarningsEventResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.EarningsEventRequestBuilder;
-import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
+import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -34,7 +34,7 @@ public class VisualizationEarningsRequesterDemo
 
         try
         {
-            boolean tryBatch = true;
+            boolean tryBatch = false;
 
             YahooFinanceClient client = new YahooFinanceClient();
 
