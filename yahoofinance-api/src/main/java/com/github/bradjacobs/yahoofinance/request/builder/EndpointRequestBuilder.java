@@ -35,13 +35,13 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
     }
 
     @Override
-    protected String _getRequestTicker()
+    protected String getRequestTicker()
     {
         return generateTickerString();
     }
 
     @Override
-    protected Map<String, String> _buildParamMap()
+    protected Map<String, String> buildEndpointParamMap()
     {
         Map<String,String> requestParamMap = new LinkedHashMap<>();
 

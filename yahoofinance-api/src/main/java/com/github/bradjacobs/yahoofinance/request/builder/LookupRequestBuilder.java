@@ -57,13 +57,13 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
     }
 
     @Override
-    protected String _getRequestTicker()
+    protected String getRequestTicker()
     {
         return "";
     }
 
     @Override
-    protected Map<String, String> _buildParamMap()
+    protected Map<String, String> buildEndpointParamMap()
     {
         Map<String,String> map = new LinkedHashMap<>();
         if (this.query != null) {

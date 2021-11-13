@@ -23,13 +23,13 @@ public class QuoteRequestBuilder extends BaseRequestBuilder<QuoteRequestBuilder>
     }
 
     @Override
-    protected String _getRequestTicker()
+    protected String getRequestTicker()
     {
         return generateTickerString();
     }
 
     @Override
-    protected Map<String, String> _buildParamMap()
+    protected Map<String, String> buildEndpointParamMap()
     {
         Map<String,String> requestParamMap = new LinkedHashMap<>();
         requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());

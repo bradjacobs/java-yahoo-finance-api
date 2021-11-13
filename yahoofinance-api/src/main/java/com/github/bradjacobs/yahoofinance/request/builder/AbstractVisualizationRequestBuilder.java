@@ -46,17 +46,17 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     }
 
     @Override
-    protected String _getRequestTicker() {
+    protected String getRequestTicker() {
         return "";
     }
 
     @Override
-    protected Map<String, String> _buildParamMap() {
+    protected Map<String, String> buildEndpointParamMap() {
         return new LinkedHashMap<>();
     }
 
     @Override
-    protected Object _buildRequestPostBody()
+    protected Object buildRequestPostBody()
     {
         VisualizationCriteria criteria = new VisualizationCriteria();
         criteria.setSize(size);

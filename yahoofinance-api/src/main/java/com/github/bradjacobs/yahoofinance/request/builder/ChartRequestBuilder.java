@@ -119,13 +119,13 @@ public class ChartRequestBuilder extends BasePeriodRequestBuilder<ChartRequestBu
     }
 
     @Override
-    protected String _getRequestTicker()
+    protected String getRequestTicker()
     {
         return this.ticker;
     }
 
     @Override
-    protected Map<String, String> _buildParamMap() {
+    protected Map<String, String> buildEndpointParamMap() {
         Map<String,String> map = new LinkedHashMap<>();
 
         // if startPeriod is set, then it takes precedence over the 'range' parameter.

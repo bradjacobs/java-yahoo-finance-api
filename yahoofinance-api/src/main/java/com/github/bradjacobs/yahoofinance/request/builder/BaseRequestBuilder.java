@@ -104,7 +104,7 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 
     protected Map<String,String> buildParamMap() {
 
-        Map<String, String> paramMap = _buildParamMap();
+        Map<String, String> paramMap = buildEndpointParamMap();
         paramMap.putAll(this.extraParametersMap);
 
         if (includeRegionParam) {
@@ -113,20 +113,20 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         return paramMap;
     }
 
-    abstract protected Map<String,String> _buildParamMap();
+    abstract protected Map<String,String> buildEndpointParamMap();
     abstract public YahooEndpoint getEndpoint();
-    abstract protected String _getRequestTicker();
+    abstract protected String getRequestTicker();
 
-    protected Object _buildRequestPostBody() {
-        return null;
+    protected Object buildRequestPostBody() {
+        return null;  // no post body by default
     }
 
     public YahooFinanceRequest build() {
 
         YahooEndpoint endpoint = getEndpoint();
-        String ticker = _getRequestTicker();
+        String ticker = getRequestTicker();
         Map<String, String> paramMap = buildParamMap();
-        Object postBody = _buildRequestPostBody();
+        Object postBody = buildRequestPostBody();
 
         YahooFinanceRequest req = generateRequest(endpoint, ticker, paramMap, postBody, additionalHeaderMap);
         validateRequest(req);

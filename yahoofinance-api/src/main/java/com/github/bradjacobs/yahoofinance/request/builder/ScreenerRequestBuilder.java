@@ -151,13 +151,13 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
 
 
     @Override
-    protected String _getRequestTicker()
+    protected String getRequestTicker()
     {
         return "";
     }
 
     @Override
-    protected Map<String, String> _buildParamMap()
+    protected Map<String, String> buildEndpointParamMap()
     {
         Map<String,String> map = new LinkedHashMap<>();
         if (this.formatted != null) {
@@ -180,7 +180,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     }
 
     @Override
-    protected Object _buildRequestPostBody()
+    protected Object buildRequestPostBody()
     {
         ScreenerCriteria criteria = new ScreenerCriteria();
         criteria.setSize(size);

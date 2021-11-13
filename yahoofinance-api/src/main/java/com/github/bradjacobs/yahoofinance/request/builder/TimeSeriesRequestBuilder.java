@@ -69,7 +69,7 @@ public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSerie
     }
 
     @Override
-    protected String _getRequestTicker()
+    protected String getRequestTicker()
     {
         return this.ticker;
     }
@@ -81,7 +81,7 @@ public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSerie
     }
 
     @Override
-    protected Map<String, String> _buildParamMap()
+    protected Map<String, String> buildEndpointParamMap()
     {
         Map<String,String> requestParamMap = new LinkedHashMap<>();
 
