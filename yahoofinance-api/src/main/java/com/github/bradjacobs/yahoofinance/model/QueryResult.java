@@ -16,7 +16,6 @@ abstract public class QueryResult implements Comparable<QueryResult>
     private String symbol;
     private String name;  // derived value.
 
-
     private String argusRating;
     private Double ask;
     private Long askSize;
@@ -143,528 +142,423 @@ abstract public class QueryResult implements Comparable<QueryResult>
         else return this.shortName;
     }
 
-    public String getArgusRating()
-    {
+    public String getArgusRating() {
         return argusRating;
     }
 
-    public Double getAsk()
-    {
+    public Double getAsk() {
         return ask;
     }
 
-    public Long getAskSize()
-    {
+    public Long getAskSize() {
         return askSize;
     }
 
-    public String getAverageAnalystRating()
-    {
+    public String getAverageAnalystRating() {
         return averageAnalystRating;
     }
 
-    public Long getAverageDailyVolume10Day()
-    {
+    public Long getAverageDailyVolume10Day() {
         return averageDailyVolume10Day;
     }
 
-    public Long getAverageDailyVolume3Month()
-    {
+    public Long getAverageDailyVolume3Month() {
         return averageDailyVolume3Month;
     }
 
-    public Double getBeta()
-    {
+    public Double getBeta() {
         return beta;
     }
 
-    public Double getBid()
-    {
+    public Double getBid() {
         return bid;
     }
 
-    public Long getBidSize()
-    {
+    public Long getBidSize() {
         return bidSize;
     }
 
-    public Double getBookValue()
-    {
+    public Double getBookValue() {
         return bookValue;
     }
 
-    public String getCurrency()
-    {
+    public String getCurrency() {
         return currency;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public Long getDividendDate()
-    {
+    public Long getDividendDate() {
         return dividendDate;
     }
 
-    public Double getDividendRate()
-    {
+    public Double getDividendRate() {
         return dividendRate;
     }
 
-    public Double getDividendYield()
-    {
+    public Double getDividendYield() {
         return dividendYield;
     }
 
-    public Double getDividendsPerShare()
-    {
+    public Double getDividendsPerShare() {
         return dividendsPerShare;
     }
 
-    public Long getEarningsTimestamp()
-    {
+    public Long getEarningsTimestamp() {
         return earningsTimestamp;
     }
 
-    public Long getEarningsTimestampEnd()
-    {
+    public Long getEarningsTimestampEnd() {
         return earningsTimestampEnd;
     }
 
-    public Long getEarningsTimestampStart()
-    {
+    public Long getEarningsTimestampStart() {
         return earningsTimestampStart;
     }
 
-    public Long getEbitda()
-    {
+    public Long getEbitda() {
         return ebitda;
     }
 
-    public Double getEpsCurrentYear()
-    {
+    public Double getEpsCurrentYear() {
         return epsCurrentYear;
     }
 
-    public Double getEpsForward()
-    {
+    public Double getEpsForward() {
         return epsForward;
     }
 
-    public Double getEpsTrailingTwelveMonths()
-    {
+    public Double getEpsTrailingTwelveMonths() {
         return epsTrailingTwelveMonths;
     }
 
-    public Boolean getEsgPopulated()
-    {
+    public Boolean getEsgPopulated() {
         return esgPopulated;
     }
 
-    public Long getExDividendDate()
-    {
+    public Long getExDividendDate() {
         return exDividendDate;
     }
 
-    public String getExchange()
-    {
+    public String getExchange() {
         return exchange;
     }
 
-    public Long getExchangeDataDelayedBy()
-    {
+    public Long getExchangeDataDelayedBy() {
         return exchangeDataDelayedBy;
     }
 
-    public String getExchangeTimezoneName()
-    {
+    public String getExchangeTimezoneName() {
         return exchangeTimezoneName;
     }
 
-    public String getExchangeTimezoneShortName()
-    {
+    public String getExchangeTimezoneShortName() {
         return exchangeTimezoneShortName;
     }
 
-    public Double getFiftyDayAverage()
-    {
+    public Double getFiftyDayAverage() {
         return fiftyDayAverage;
     }
 
-    public Double getFiftyDayAverageChange()
-    {
+    public Double getFiftyDayAverageChange() {
         return fiftyDayAverageChange;
     }
 
-    public Double getFiftyDayAverageChangePercent()
-    {
+    public Double getFiftyDayAverageChangePercent() {
         return fiftyDayAverageChangePercent;
     }
 
-    public Double getFiftyTwoWeekHigh()
-    {
+    public Double getFiftyTwoWeekHigh() {
         return fiftyTwoWeekHigh;
     }
 
-    public Double getFiftyTwoWeekHighChange()
-    {
+    public Double getFiftyTwoWeekHighChange() {
         return fiftyTwoWeekHighChange;
     }
 
-    public Double getFiftyTwoWeekHighChangePercent()
-    {
+    public Double getFiftyTwoWeekHighChangePercent() {
         return fiftyTwoWeekHighChangePercent;
     }
 
-    public Double getFiftyTwoWeekLow()
-    {
+    public Double getFiftyTwoWeekLow() {
         return fiftyTwoWeekLow;
     }
 
-    public Double getFiftyTwoWeekLowChange()
-    {
+    public Double getFiftyTwoWeekLowChange() {
         return fiftyTwoWeekLowChange;
     }
 
-    public Double getFiftyTwoWeekLowChangePercent()
-    {
+    public Double getFiftyTwoWeekLowChangePercent() {
         return fiftyTwoWeekLowChangePercent;
     }
 
-    public String getFiftyTwoWeekRange()
-    {
+    public String getFiftyTwoWeekRange() {
         return fiftyTwoWeekRange;
     }
 
-    public String getFinancialCurrency()
-    {
+    public String getFinancialCurrency() {
         return financialCurrency;
     }
 
-    public Long getFirstTradeDateMilliseconds()
-    {
+    public Long getFirstTradeDateMilliseconds() {
         return firstTradeDateMilliseconds;
     }
 
-    public Double getFiveYearGrowthRate()
-    {
+    public Double getFiveYearGrowthRate() {
         return fiveYearGrowthRate;
     }
 
-    public Long getFloatShares()
-    {
+    public Long getFloatShares() {
         return floatShares;
     }
 
-    public Double getForwardPE()
-    {
+    public Double getForwardPE() {
         return forwardPE;
     }
 
-    public String getFullExchangeName()
-    {
+    public String getFullExchangeName() {
         return fullExchangeName;
     }
 
-    public Long getGmtOffSetMilliseconds()
-    {
+    public Long getGmtOffSetMilliseconds() {
         return gmtOffSetMilliseconds;
     }
 
-    public Double getHeldPercentInsiders()
-    {
+    public Double getHeldPercentInsiders() {
         return heldPercentInsiders;
     }
 
-    public Double getHeldPercentInstitutions()
-    {
+    public Double getHeldPercentInstitutions() {
         return heldPercentInstitutions;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public String getLongName()
-    {
+    public String getLongName() {
         return longName;
     }
 
-    public String getMarket()
-    {
+    public String getMarket() {
         return market;
     }
 
-    public Long getMarketCap()
-    {
+    public Long getMarketCap() {
         return marketCap;
     }
 
-    public String getMarketState()
-    {
+    public String getMarketState() {
         return marketState;
     }
 
-    public String getMessageBoardId()
-    {
+    public String getMessageBoardId() {
         return messageBoardId;
     }
 
-    public String getMorningstarEconomicMoatRating()
-    {
+    public String getMorningstarEconomicMoatRating() {
         return morningstarEconomicMoatRating;
     }
 
-    public Double getMorningstarFairValue()
-    {
+    public Double getMorningstarFairValue() {
         return morningstarFairValue;
     }
 
-    public String getMorningstarIndustry()
-    {
+    public String getMorningstarIndustry() {
         return morningstarIndustry;
     }
 
-    public String getMorningstarLongDescription()
-    {
+    public String getMorningstarLongDescription() {
         return morningstarLongDescription;
     }
 
-    public String getMorningstarMoatTrendRating()
-    {
+    public String getMorningstarMoatTrendRating() {
         return morningstarMoatTrendRating;
     }
 
-    public String getMorningstarReportRating()
-    {
+    public String getMorningstarReportRating() {
         return morningstarReportRating;
     }
 
-    public String getMorningstarSector()
-    {
+    public String getMorningstarSector() {
         return morningstarSector;
     }
 
-    public String getMorningstarStewardshipRating()
-    {
+    public String getMorningstarStewardshipRating() {
         return morningstarStewardshipRating;
     }
 
-    public String getMorningstarUncertaintyRating()
-    {
+    public String getMorningstarUncertaintyRating() {
         return morningstarUncertaintyRating;
     }
 
-    public Double getNetMargin()
-    {
+    public Double getNetMargin() {
         return netMargin;
     }
 
-    public Double getOneYearEpsGrowth()
-    {
+    public Double getOneYearEpsGrowth() {
         return oneYearEpsGrowth;
     }
 
-    public Double getPegRatio()
-    {
+    public Double getPegRatio() {
         return pegRatio;
     }
 
-    public Double getPostMarketChange()
-    {
+    public Double getPostMarketChange() {
         return postMarketChange;
     }
 
-    public Double getPostMarketChangePercent()
-    {
+    public Double getPostMarketChangePercent() {
         return postMarketChangePercent;
     }
 
-    public Double getPostMarketPrice()
-    {
+    public Double getPostMarketPrice() {
         return postMarketPrice;
     }
 
-    public Long getPostMarketTime()
-    {
+    public Long getPostMarketTime() {
         return postMarketTime;
     }
 
-    public Double getPriceEpsCurrentYear()
-    {
+    public Double getPriceEpsCurrentYear() {
         return priceEpsCurrentYear;
     }
 
-    public Long getPriceHint()
-    {
+    public Long getPriceHint() {
         return priceHint;
     }
 
-    public Double getPriceToBook()
-    {
+    public Double getPriceToBook() {
         return priceToBook;
     }
 
-    public Double getPriceToMorningstarFairValueRatio()
-    {
+    public Double getPriceToMorningstarFairValueRatio() {
         return priceToMorningstarFairValueRatio;
     }
 
-    public Double getPriceToSales()
-    {
+    public Double getPriceToSales() {
         return priceToSales;
     }
 
-    public String getQuoteSourceName()
-    {
+    public String getQuoteSourceName() {
         return quoteSourceName;
     }
 
-    public String getQuoteType()
-    {
+    public String getQuoteType() {
         return quoteType;
     }
 
-    public String getRegion()
-    {
+    public String getRegion() {
         return region;
     }
 
-    public Double getRegularMarketChange()
-    {
+    public Double getRegularMarketChange() {
         return regularMarketChange;
     }
 
-    public Double getRegularMarketChangePercent()
-    {
+    public Double getRegularMarketChangePercent() {
         return regularMarketChangePercent;
     }
 
-    public Double getRegularMarketDayHigh()
-    {
+    public Double getRegularMarketDayHigh() {
         return regularMarketDayHigh;
     }
 
-    public Double getRegularMarketDayLow()
-    {
+    public Double getRegularMarketDayLow() {
         return regularMarketDayLow;
     }
 
-    public String getRegularMarketDayRange()
-    {
+    public String getRegularMarketDayRange() {
         return regularMarketDayRange;
     }
 
-    public Double getRegularMarketOpen()
-    {
+    public Double getRegularMarketOpen() {
         return regularMarketOpen;
     }
 
-    public Double getRegularMarketPreviousClose()
-    {
+    public Double getRegularMarketPreviousClose() {
         return regularMarketPreviousClose;
     }
 
-    public Double getRegularMarketPrice()
-    {
+    public Double getRegularMarketPrice() {
         return regularMarketPrice;
     }
 
-    public Long getRegularMarketTime()
-    {
+    public Long getRegularMarketTime() {
         return regularMarketTime;
     }
 
-    public Long getRegularMarketVolume()
-    {
+    public Long getRegularMarketVolume() {
         return regularMarketVolume;
     }
 
-    public Long getRevenue()
-    {
+    public Long getRevenue() {
         return revenue;
     }
 
-    public Long getSharesOutstanding()
-    {
+    public Long getSharesOutstanding() {
         return sharesOutstanding;
     }
 
-    public Long getSharesShort()
-    {
+    public Long getSharesShort() {
         return sharesShort;
     }
 
-    public String getShortName()
-    {
+    public String getShortName() {
         return shortName;
     }
 
-    public Double getShortRatio()
-    {
+    public Double getShortRatio() {
         return shortRatio;
     }
 
-    public Long getSourceInterval()
-    {
+    public Long getSourceInterval() {
         return sourceInterval;
     }
 
-    public Double getTargetPriceMean()
-    {
+    public Double getTargetPriceMean() {
         return targetPriceMean;
     }
 
-    public Long getTotalCash()
-    {
+    public Long getTotalCash() {
         return totalCash;
     }
 
-    public Boolean getTradeable()
-    {
+    public Boolean getTradeable() {
         return tradeable;
     }
 
-    public Double getTrailingAnnualDividendRate()
-    {
+    public Double getTrailingAnnualDividendRate() {
         return trailingAnnualDividendRate;
     }
 
-    public Double getTrailingAnnualDividendYield()
-    {
+    public Double getTrailingAnnualDividendYield() {
         return trailingAnnualDividendYield;
     }
 
-    public Double getTrailingPE()
-    {
+    public Double getTrailingPE() {
         return trailingPE;
     }
 
-    public Boolean getTriggerable()
-    {
+    public Boolean getTriggerable() {
         return triggerable;
     }
 
-    public Double getTwoHundredDayAverage()
-    {
+    public Double getTwoHundredDayAverage() {
         return twoHundredDayAverage;
     }
 
-    public Double getTwoHundredDayAverageChange()
-    {
+    public Double getTwoHundredDayAverageChange() {
         return twoHundredDayAverageChange;
     }
 
-    public Double getTwoHundredDayAverageChangePercent()
-    {
+    public Double getTwoHundredDayAverageChangePercent() {
         return twoHundredDayAverageChangePercent;
     }
 
-    public String getUuid()
-    {
+    public String getUuid() {
         return uuid;
     }
 

@@ -91,7 +91,10 @@ public enum YahooEndpoint
     // NOTE: ----
     //    intro attempt of supporting 'premium' endpoints.  Must have a valid Yahoo username/password
     //      and be signed up for the premium service.
-
+    //
+    //  Currently only works if pass in an explicit "Cookie" header
+    //
+    PREMIUM_SCREENER("premium/screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST, FLAG_IS_PREMIUM),
     PREMIUM_TIMESERIES("premium/timeseries", 1, "ws/fundamentals-timeseries/", FLAG_IS_PREMIUM);
 
 

@@ -4,20 +4,57 @@
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.Category;
 import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import com.jayway.jsonpath.JsonPath;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Generates the "ScreenerField" enum class.
+ */
+// TODO - the enums really has too much clutter.  It should be reorganized and/or pruned.
 public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
 {
     private static final String TEMPLATE_NAME = "screener_field_template.txt";
-    private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=keystats%2Cfinancials%2Cvaluation%2Csector_industry%2Cesgscores%2Cincome%2Ccashflowstatement%2Cbalance_sheet%2Cearnings%2Cdividends_and_splits%2Cprofile%2Cfair_value%2Cpopular_filters%2Cchanges_in_price_and_market_cap%2Cchanges_in_volume_and_ownership%2Cvaluation_metric%2Cprofitability_ratios_and_dividends%2Cdebt_ratios%2Cliquidity_ratios%2Ceps_and_income_statement%2Ccash_flow%2Cesg_scores%2Cshort_interest";
+
+    // __SOME__ valid 'category' search criteria options (found from observation) .. for reference
+    //    i.e.   https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?&region=US&category=popular_filters,debt_ratios
+    //      popular_filters
+    //      changes_in_price_and_market_cap
+    //      changes_in_volume_and_ownership
+    //      valuation_metric
+    //      profitability_ratios_and_dividends
+    //      debt_ratios
+    //      liquidity_ratios
+    //      eps_and_income_statement
+
+
+    // don't include fiels from the following categories.
+    private static final Set<String> SKIP_CATEGORIES = new HashSet<>(Arrays.asList(
+            "indexmembership",     // indexmembership
+            "portfoliostatistics", // portfolioheldcount
+            "ranking",
+            "security_lifecycle",  // security_lifecycle
+            "security_mapping",    // isin, new_listing_date
+            "tickeralias"          // shortcuts
+            //"userInsights"          // average_analyst_rating, bearish_count, bearish_proportion ....
+    ));
+
+    private static final Set<String> SKIP_FIELDS = new HashSet<>(Arrays.asList(
+            "community_sentiment_date",
+            "page_view_growth_weekly",
+            "portfolio_sentiment_date",
+            "total_portfolio_active_users",
+            "top_fund_holder_names"
+    ));
+
+
+    private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US";
 
     private static final JsonMapper mapper = JsonMapperFactory.getPrettyMapper();
 
@@ -41,13 +78,18 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
         ScreenerFieldDefinition[] fields = mapper.convertValue(listOfMaps, ScreenerFieldDefinition[].class);
 
         // filter out fields want to ignore.
-        List<ScreenerFieldDefinition> basicFieldList = Arrays.stream(fields)
-            .filter(sf -> !sf.getDeprecated())
+        List<ScreenerFieldDefinition> filteredList = Arrays.stream(fields)
+                .filter(sf -> !sf.getDeprecated())
+                .filter(sf -> sf.getCategory() == null || !SKIP_CATEGORIES.contains(sf.getCategory().getCategoryId()))
+                .filter(sf ->  !SKIP_FIELDS.contains(sf.getFieldId()))
+                .collect(Collectors.toList());
+
+        // after initial filtering, make 2 lists non-premium and premium
+        List<ScreenerFieldDefinition> basicFieldList = filteredList.stream()
             .filter(sf -> !sf.getIsPremium())
             .collect(Collectors.toList());
 
-        List<ScreenerFieldDefinition> premiumFieldList = Arrays.stream(fields)
-            .filter(sf -> !sf.getDeprecated())
+        List<ScreenerFieldDefinition> premiumFieldList = filteredList.stream()
             .filter(sf -> sf.getIsPremium())
             .collect(Collectors.toList());
 
@@ -64,7 +106,6 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
         enumInfoList.add(new EnumInfo( ""));  // empty space line
         enumInfoList.add(new EnumInfo( "// Premium Fields"));  // comment line
         enumInfoList.addAll( generateEnumList(premiumFieldList) );
-
 
         return enumInfoList;
     }
@@ -98,5 +139,33 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
     }
 
 
+
+/*
+FULL CATEGzORY LIST
+
+    "balance_sheet",
+    "cashflowstatement",
+    "dividends_and_splits",
+    "earnings",
+    "esg_scores",
+    "fair_value",
+    "financials",
+    "income",
+    "indexmembership",
+    "institutional_interest",
+    "keystats",
+    "morningstar_rating",
+    "portfoliostatistics",
+    "profile",
+    "ranking",
+    "sector_industry",
+    "security_lifecycle",
+    "security_mapping",
+    "short_interest",
+    "signals",
+    "tickeralias",
+    "userInsights",
+    "valuation"
+ */
 
 }
