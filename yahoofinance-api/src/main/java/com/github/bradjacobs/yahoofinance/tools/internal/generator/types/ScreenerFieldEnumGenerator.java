@@ -34,7 +34,7 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
     //      eps_and_income_statement
 
 
-    // don't include fiels from the following categories.
+    // don't include fields from the following categories.
     private static final Set<String> SKIP_CATEGORIES = new HashSet<>(Arrays.asList(
             "indexmembership",     // indexmembership
             "portfoliostatistics", // portfolioheldcount
@@ -141,7 +141,7 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
 
 
 /*
-FULL CATEGzORY LIST
+FULL CATEGORY LIST
 
     "balance_sheet",
     "cashflowstatement",

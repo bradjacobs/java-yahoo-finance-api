@@ -6,9 +6,7 @@ package com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autoge
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -24,6 +22,7 @@ import java.util.TreeMap;
     "dropdownSupported",
     "isPremium"
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScreenerFieldDefinition implements Comparable<ScreenerFieldDefinition>
 {
     @JsonProperty("fieldId")
@@ -48,9 +47,6 @@ public class ScreenerFieldDefinition implements Comparable<ScreenerFieldDefiniti
     private Boolean dropdownSupported;
     @JsonProperty("isPremium")
     private Boolean isPremium;
-
-    @JsonIgnore
-    private final Map<String, Object> additionalProperties = new TreeMap<>(); // holds any extra unrecognized entries.
 
 
     @JsonProperty("fieldId")
@@ -182,17 +178,4 @@ public class ScreenerFieldDefinition implements Comparable<ScreenerFieldDefiniti
     public int hashCode() {
         return Objects.hash(fieldId);
     }
-
-    @JsonAnyGetter
-    private Map<String, Object> getAdditionalProperties()
-    {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    private void setAdditionalProperty(String name, Object value)
-    {
-        this.additionalProperties.put(name, value);
-    }
-
 }

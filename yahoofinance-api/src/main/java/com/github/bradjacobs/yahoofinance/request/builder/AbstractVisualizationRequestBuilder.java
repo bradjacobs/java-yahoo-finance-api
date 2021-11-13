@@ -12,69 +12,36 @@ import com.github.bradjacobs.yahoofinance.types.screener.Query;
 import com.github.bradjacobs.yahoofinance.types.screener.VisualizationCriteria;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-public class EarningsRequestBuilder extends BasePeriodRequestBuilder<EarningsRequestBuilder> implements BatchableRequestStrategy
+/**
+ * General Abstract class for different kinds of requests against the "visualization" endpoint.
+ * @param <T>
+ */
+abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisualizationRequestBuilder<T>>
+        extends BasePeriodRequestBuilder<T>
+        implements BatchableRequestStrategy
 {
     private int size = 100;
     private int offset = 0;
 
     private boolean isAggregate = false;  // todo - always false for now
+    private static final String SORT_TYPE = "ASC";      // for now sort order is const
 
-    // for now sort fields are const
-    private static final String SORT_FIELD = "companyshortname";
-    private static final String SORT_TYPE = "ASC";
-
-    private static final String ENTITY_TYPE = "earnings";
     private static final String DATE_CRITERIA_FIELD_NAME = "startdatetime";
-
 
     private static final long ONE_DAY_SECONDS = 24 * 60 * 60;
     private static final int MIN_BATCHABLE_SIZE = 10;
 
     private static final FullBatchResponseChecker BATCH_RESPONSE_CHECKER = new VisualizationResponseChecker();
 
-
-    private List<String> includeFields = Arrays.asList(
-            "ticker",
-            "companyshortname",
-            "startdatetime",
-            "startdatetimetype",
-
-            "epsestimate",
-            "epsactual",
-            "epssurprisepct",
-
-            "sector",
-            "industry",
-            "beta",
-            "bearish_count",   //
-
-
-            //////"cashinterestpaid.lasttwelvemonths",   //
-            //  ..
-            // "cashinterestpaid" -> {LinkedHashMap@3013}  size = 4
-            // key = "cashinterestpaid"
-            // value = {LinkedHashMap@3013}  size = 4
-            //  "lasttwelvemonths" -> {Double@3031} 6.377E7
-            //  "yeartodate" -> null
-            //  "annual" -> null
-            //  "quarterly" -> null
-
-
-
-            //"count",  // NOTE:  must NOT include count... it will A) not return anything.... B)...mess up the order!!!
-            "dateisestimate",
-            "epsconsensus",
-            ///"eventId",   // not a field
-            "eventname",
-            "eventtype",
-            "fiscalyear",
-            "quarter",
-
-            "timeZoneShortName"
-            //"gmtOffsetMilliSeconds"
-    );
+    abstract protected String getEntityType();
+    abstract protected String getSortField();
+    abstract protected List<String> getIncludeFields();
 
     @Override
     protected YahooEndpoint _getRequestEndpoint()
@@ -98,10 +65,10 @@ public class EarningsRequestBuilder extends BasePeriodRequestBuilder<EarningsReq
         VisualizationCriteria criteria = new VisualizationCriteria();
         criteria.setSize(size);
         criteria.setOffset(offset);
-        criteria.setSortField(SORT_FIELD);
+        criteria.setSortField(getSortField());
         criteria.setSortType(SORT_TYPE);
-        criteria.setEntityIdType(ENTITY_TYPE);
-        criteria.setIncludeFields(includeFields);
+        criteria.setEntityIdType(getEntityType());
+        criteria.setIncludeFields(getIncludeFields());
 
         Query query = new Query();
         query.setOperator(Operator.AND.getValue()); // unchangeable for now
@@ -133,44 +100,11 @@ public class EarningsRequestBuilder extends BasePeriodRequestBuilder<EarningsReq
 
         String region = getRegion();
         if (! StringUtils.isEmpty(region)) {
-            operandList.add(generateRestriction("region", Operator.EQUAL, region.toLowerCase()));
+            operandList.add(generateRestriction(ParamKeys.REGION, Operator.EQUAL, region.toLowerCase()));
         }
 
         query.setOperands(operandList);
         criteria.setQuery(query);
-
-        /*
-          "query": {
-    "operator": "and",
-    "operands": [
-      {
-        "operator": "gte",
-        "operands": [
-          "startdatetime",
-          "2021-11-05"
-        ]
-      },
-      {
-        "operator": "lt",
-        "operands": [
-          "startdatetime",
-          "2021-11-06"
-        ]
-      },
-      {
-        "operator": "eq",
-        "operands": [
-          "region",
-          "us"
-        ]
-      }
-    ]
-
-         */
-
-//
-//        Query query = this.queryBuilder.build();
-//        criteria.setQuery(query);
         return criteria;
     }
 
@@ -207,11 +141,6 @@ public class EarningsRequestBuilder extends BasePeriodRequestBuilder<EarningsReq
         return this.build();
     }
 
-    @Override
-    protected EarningsRequestBuilder getThis() {
-        return this;
-    }
-
     private static Operand generateRestriction(String fieldName, Operator op, Object value)
     {
         Operand operand = new Operand();
@@ -227,5 +156,4 @@ public class EarningsRequestBuilder extends BasePeriodRequestBuilder<EarningsReq
         operand.setOperands(Arrays.asList(fieldName, value1, value2));
         return operand;
     }
-
 }

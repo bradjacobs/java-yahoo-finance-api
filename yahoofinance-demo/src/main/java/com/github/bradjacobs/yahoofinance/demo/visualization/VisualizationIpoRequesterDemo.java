@@ -2,27 +2,30 @@ package com.github.bradjacobs.yahoofinance.demo.visualization;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
-import com.github.bradjacobs.yahoofinance.demo.spark.SparkRequestDemoFactory;
-import com.github.bradjacobs.yahoofinance.model.LookupResult;
-import com.github.bradjacobs.yahoofinance.model.beta.EarningsVisualizationResult;
+import com.github.bradjacobs.yahoofinance.model.beta.IpoEventResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
-import com.github.bradjacobs.yahoofinance.request.builder.EarningsRequestBuilder;
+import com.github.bradjacobs.yahoofinance.request.builder.IpoEventRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class VisualizationRequesterDemo
+public class VisualizationIpoRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        EarningsRequestBuilder earningsRequestBuilder = new EarningsRequestBuilder();
-        String date = "2021-11-01";
-        earningsRequestBuilder.setStart(date);
+        IpoEventRequestBuilder ipoRequestBuilder = new IpoEventRequestBuilder();
+        //String date = "2021-11-17";
+        String date = "2021-11-02";
+        ipoRequestBuilder.setStart(date);
 
-        YahooFinanceRequest req = earningsRequestBuilder.build();
+        YahooFinanceRequest req = ipoRequestBuilder.build();
 
         visualRequestRunner(req);
     }
@@ -47,14 +50,14 @@ public class VisualizationRequesterDemo
 
                 List<String> jsonList = batchResp.getJson();
 
-                List<EarningsVisualizationResult> pojoList = batchResp.getAsListOfPojos(EarningsVisualizationResult.class);
+                List<IpoEventResult> pojoList = batchResp.getAsListOfPojos(IpoEventResult.class);
 
-                Map<String, EarningsVisualizationResult> tickerMap = new HashMap<>();
+                Map<String, IpoEventResult> tickerMap = new HashMap<>();
 
-                for (EarningsVisualizationResult pojo : pojoList) {
+                for (IpoEventResult pojo : pojoList) {
                     String ticker = pojo.getTicker();
 
-                    EarningsVisualizationResult existingResult = tickerMap.get(ticker);
+                    IpoEventResult existingResult = tickerMap.get(ticker);
                     if (existingResult != null) {
                         int kjkjjj = 3333;
                     }
@@ -62,9 +65,8 @@ public class VisualizationRequesterDemo
                     tickerMap.put(ticker, pojo);
                 }
 
-
                 // get map results in form of predefined class (key is the ticker/symbol)
-                Map<String, EarningsVisualizationResult> pojoMap = batchResp.getAsMapOfPojos(EarningsVisualizationResult.class);
+                Map<String, IpoEventResult> pojoMap = batchResp.getAsMapOfPojos(IpoEventResult.class);
 
                 int kjjjj = 3333;
 
@@ -80,14 +82,19 @@ public class VisualizationRequesterDemo
 
                 List<Map<String, Object>> listOfMaps = resp.getAsListOfMaps();
 
-                List<EarningsVisualizationResult> pojoList = resp.getAsListOfPojos(EarningsVisualizationResult.class);
+                List<IpoEventResult> pojoList = resp.getAsListOfPojos(IpoEventResult.class);
 
-                Map<String, EarningsVisualizationResult> tickerMap = new HashMap<>();
+                Set<String> extraNames = new TreeSet<>();
 
-                for (EarningsVisualizationResult pojo : pojoList) {
+                Map<String, IpoEventResult> tickerMap = new HashMap<>();
+
+                for (IpoEventResult pojo : pojoList) {
                     String ticker = pojo.getTicker();
 
-                    EarningsVisualizationResult existingResult = tickerMap.get(ticker);
+                    Map<String, Object> propMap = pojo.getAdditionalProperties();
+                    extraNames.addAll(propMap.keySet());
+
+                    IpoEventResult existingResult = tickerMap.get(ticker);
                     if (existingResult != null) {
                         int kjkjjj = 3333;
                     }
@@ -95,16 +102,16 @@ public class VisualizationRequesterDemo
                     tickerMap.put(ticker, pojo);
                 }
 
+                for (String extraName : extraNames) {
+                    System.out.println(extraName);
+                }
+
                 // get map results in form of predefined class (key is the ticker/symbol)
-                Map<String, EarningsVisualizationResult> pojoMap = resp.getAsMapOfPojos(EarningsVisualizationResult.class);
+                Map<String, IpoEventResult> pojoMap = resp.getAsMapOfPojos(IpoEventResult.class);
 
 
                 int kjjjj = 333;
-
             }
-
-
-
 
             int kjkjj = 333;
 

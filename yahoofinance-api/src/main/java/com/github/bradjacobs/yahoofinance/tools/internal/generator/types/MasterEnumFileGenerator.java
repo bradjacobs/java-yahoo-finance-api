@@ -28,14 +28,17 @@ class MasterEnumFileGenerator
 
     // comment out lines below according if only want to run individual ones.
     static {
-        enumGeneratorMap.put("Interval.java", new IntervalEnumGenerator());
-        enumGeneratorMap.put("Range.java", new RangeEnumGenerator());
-        enumGeneratorMap.put("Region.java", new RegionEnumGenerator());
-        enumGeneratorMap.put("Type.java", new TypesEnumGenerator());
-        enumGeneratorMap.put("ScreenerField.java", new ScreenerFieldEnumGenerator());
-        //////enumGeneratorMap.put("Exchange.java", new ExchangeEnumGenerator());  // to be removed from auto-gen
-        enumGeneratorMap.put("Sector.java", new SectorEnumGenerator());
-        enumGeneratorMap.put("Industry.java", new IndustryEnumGenerator());
+//        enumGeneratorMap.put("Interval.java", new IntervalEnumGenerator());
+//        enumGeneratorMap.put("Range.java", new RangeEnumGenerator());
+//        enumGeneratorMap.put("Region.java", new RegionEnumGenerator());
+//        enumGeneratorMap.put("Type.java", new TypesEnumGenerator());
+//        enumGeneratorMap.put("ScreenerField.java", new ScreenerFieldEnumGenerator());
+//        //////enumGeneratorMap.put("Exchange.java", new ExchangeEnumGenerator());  // to be removed from auto-gen
+//        enumGeneratorMap.put("Sector.java", new SectorEnumGenerator());
+//        enumGeneratorMap.put("Industry.java", new IndustryEnumGenerator());
+
+        enumGeneratorMap.put("VisualizationField.java", new Visualization_Temp_FieldEnumGenerator());
+
     }
 
 

@@ -1,19 +1,8 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
-import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
-import com.github.bradjacobs.yahoofinance.model.beta.EarningsVisualizationResult;
-import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.response.converter.util.SimpleMapOfMapsGenerator;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import com.github.bradjacobs.yahoofinance.util.JsonPathDocContextCreator;
-import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.Option;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 

@@ -1,27 +1,21 @@
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.github.bradjacobs.yahoofinance.model.beta.EarningsVisualizationResult;
+import com.github.bradjacobs.yahoofinance.model.beta.EarningsEventResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
-import com.github.bradjacobs.yahoofinance.request.builder.EarningsRequestBuilder;
+import com.github.bradjacobs.yahoofinance.request.builder.EarningsEventRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.ScreenerRequestBuilder;
-import com.github.bradjacobs.yahoofinance.response.converter.ChartResponseConverter;
 import com.github.bradjacobs.yahoofinance.response.converter.DefaultResponsePojoConverter;
 import com.github.bradjacobs.yahoofinance.response.converter.VisualizationEarningsResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
-import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.apache.commons.io.FileUtils;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.testng.Assert.*;
 
 public class VisualizationEarningsResponseConverterTest
 {
@@ -40,7 +34,7 @@ public class VisualizationEarningsResponseConverterTest
     @Test
     public void testEarningsRequest() throws Exception
     {
-        EarningsRequestBuilder earningsRequestBuilder = new EarningsRequestBuilder();
+        EarningsEventRequestBuilder earningsEventRequestBuilder = new EarningsEventRequestBuilder();
         ScreenerRequestBuilder screenerRequestBuilder = new ScreenerRequestBuilder();
 
         screenerRequestBuilder.eq(ScreenerField.SOCIAL_SCORE, 99L);
@@ -54,10 +48,10 @@ public class VisualizationEarningsResponseConverterTest
         String dateStart = "2021-11-01";
         String dateEnd = "2021-11-05";
 
-        earningsRequestBuilder.setStart(dateStart);
+        earningsEventRequestBuilder.setStart(dateStart);
 //        earningsRequestBuilder.setEnd(dateEnd);
 
-        YahooFinanceRequest request = earningsRequestBuilder.build();
+        YahooFinanceRequest request = earningsEventRequestBuilder.build();
 
         String postBody = request.getPostBody();
 
@@ -79,8 +73,8 @@ public class VisualizationEarningsResponseConverterTest
 
         DefaultResponsePojoConverter pojoConverter = new DefaultResponsePojoConverter(responseConverter);
 
-        List<EarningsVisualizationResult> listOfPojos = pojoConverter.convertToListOfPojos(json, EarningsVisualizationResult.class);
-        Map<String, EarningsVisualizationResult> mapOfPojos = pojoConverter.convertToMapOfPojos(json, EarningsVisualizationResult.class);
+        List<EarningsEventResult> listOfPojos = pojoConverter.convertToListOfPojos(json, EarningsEventResult.class);
+        Map<String, EarningsEventResult> mapOfPojos = pojoConverter.convertToMapOfPojos(json, EarningsEventResult.class);
 
 
         int kjkjk = 333;

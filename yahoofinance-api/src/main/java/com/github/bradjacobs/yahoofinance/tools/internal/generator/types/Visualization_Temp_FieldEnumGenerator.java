@@ -85,7 +85,9 @@ public class Visualization_Temp_FieldEnumGenerator extends EnumStringBlobGenerat
         listOfMaps.add(splitsMap);
 
         listOfMaps.clear();
-        listOfMaps.add(equityMap);
+        //listOfMaps.add(equityMap);
+        //listOfMaps.add(earnMap);
+        listOfMaps.add(ipoMap);
 
         Set<String> commonEnumNames = new HashSet<>();
         Set<String> enumNames = new HashSet<>();
@@ -120,7 +122,9 @@ public class Visualization_Temp_FieldEnumGenerator extends EnumStringBlobGenerat
 //        masterList.addAll(makeList("Splits", splitsMap.values()));
 //        masterList.addAll(makeList("Research", researcMap.values()));
 
-        masterList.addAll(makeList("Equity", equityMap.values()));
+        //masterList.addAll(makeList("Equity", equityMap.values()));
+        //masterList.addAll(makeList("Earning", earnMap.values()));
+        masterList.addAll(makeList("IPO", ipoMap.values()));
 
         return masterList;
     }

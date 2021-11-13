@@ -8,7 +8,6 @@ import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.types.screener.*;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;

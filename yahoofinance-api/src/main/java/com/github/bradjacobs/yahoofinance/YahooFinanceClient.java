@@ -14,7 +14,6 @@ import com.github.bradjacobs.yahoofinance.response.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpHeaders;
@@ -100,14 +99,6 @@ public class YahooFinanceClient
         return yahooResponseGenerator.makeBatchResponse(request, rawResponses);
     }
 
-    private String readFile(String filePath)
-    {
-        try {
-            return FileUtils.readFileToString(new File(filePath), Charset.defaultCharset());
-        } catch (IOException e) {
-            throw new RuntimeException("Cant read file!");
-        }
-    }
     protected Response executeInternal(YahooFinanceRequest request) throws IOException
     {
         // validation will throw an exception if invalid request is detected

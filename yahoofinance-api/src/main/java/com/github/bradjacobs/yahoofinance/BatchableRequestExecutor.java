@@ -1,18 +1,18 @@
 package com.github.bradjacobs.yahoofinance;
 
+import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.batch.FullBatchResponseChecker;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestStrategy;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class BatchableRequestExecutor
+public class BatchableRequestExecutor
 {
     private final YahooFinanceClient client;
 
