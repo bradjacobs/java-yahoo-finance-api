@@ -27,6 +27,7 @@ import java.util.TreeMap;
  *  Alternatives will be researched when time allows.
  *
  */
+@Deprecated
 public class YahooLoginExecutor
 {
     private static final String LOGIN_BASE_URL = "https://login.yahoo.com";
@@ -52,14 +53,11 @@ public class YahooLoginExecutor
     private static final long SLEEP_BETWEEN_REQUESTS = 300L;
 
 
-
-
     private final HttpClientAdapter httpClient;
     private final String userName;
     private final String password;
 
     private boolean isLoggedIn = false;
-
 
     public YahooLoginExecutor(HttpClientAdapter httpClient, String userName, String password)
     {
@@ -75,7 +73,6 @@ public class YahooLoginExecutor
         if (! (httpClient instanceof HttpCommonsClientAdapter)) {
             throw new NotImplementedException("Only Apache Commons is supported for login (at present)");
         }
-
 
         this.httpClient = httpClient;
         this.userName = userName;
@@ -138,7 +135,6 @@ public class YahooLoginExecutor
             throw new LoginException("Unable to Login!!");
         }
 
-
         // if made it here, then login succeeded!
         this.isLoggedIn = true;
     }
@@ -156,7 +152,6 @@ public class YahooLoginExecutor
 
         return new HiddenSessionValues(crumb, acrumb, sessionIndex);
     }
-
 
 
     private Response executeRequest(String url, Map<String,String> headerMap) throws IOException
@@ -179,14 +174,11 @@ public class YahooLoginExecutor
         }
 
         return response;
-
     }
-
 
     private boolean isErrorResponse(Response response)
     {
-        int code = response.getCode();
-        if (code >= 400) {
+        if (response.isError()) {
             return true;
         }
 
@@ -201,7 +193,6 @@ public class YahooLoginExecutor
 
         return false;
     }
-
 
     private static class HiddenSessionValues {
         private final String crumb;
@@ -226,5 +217,4 @@ public class YahooLoginExecutor
             return sessionIndex;
         }
     }
-
 }
