@@ -1,4 +1,4 @@
-package com.github.bradjacobs.yahoofinance.model.beta;
+package com.github.bradjacobs.yahoofinance.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;

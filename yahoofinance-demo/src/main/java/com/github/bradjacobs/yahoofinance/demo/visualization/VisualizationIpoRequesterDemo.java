@@ -2,7 +2,7 @@ package com.github.bradjacobs.yahoofinance.demo.visualization;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
-import com.github.bradjacobs.yahoofinance.model.beta.IpoEventResult;
+import com.github.bradjacobs.yahoofinance.model.IpoEventResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.IpoEventRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;

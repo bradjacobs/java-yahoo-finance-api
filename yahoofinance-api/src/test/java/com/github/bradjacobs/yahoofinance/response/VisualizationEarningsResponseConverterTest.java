@@ -1,6 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.github.bradjacobs.yahoofinance.model.beta.EarningsEventResult;
+import com.github.bradjacobs.yahoofinance.model.EarningsEventResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.EarningsEventRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.ScreenerRequestBuilder;
