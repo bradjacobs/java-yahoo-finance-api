@@ -59,6 +59,10 @@ public class YahooFinanceRequest
         return this.endpoint != null && this.endpoint.isPostRequest();
     }
 
+    public boolean isCrumbRequired() {
+        return this.endpoint != null && this.endpoint.isCrumbRequest();
+    }
+
     public Object getPostObject()
     {
         return postBody;

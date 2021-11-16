@@ -3,6 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance;
 
+import com.github.bradjacobs.yahoofinance.request.RequestUrlGenerator;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseChecker;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseCheckerFactory;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
@@ -30,16 +31,13 @@ import java.util.Map;
 
 public class YahooFinanceClient
 {
-    private static final String BASE_API_SCHEME = "https";
-    private static final String BASE_API_HOST = "query1.finance.yahoo.com";
-
     private static final String DEFAULT_CONTENT_TYPE = "application/json";
     private static final String DEFAULT_USER_AGENT = "Java-Http-Client/11.0.0";
 
-    private static final String CRUMB_KEY = "crumb";
-
     // allow a very brief pause b/w each batch request for philanthropy.
     private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
+
+    private final RequestUrlGenerator requestUrlGenerator = new RequestUrlGenerator();
     private final BatchResponseCheckerFactory batchResponseCheckerFactory = new BatchResponseCheckerFactory();
 
     private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
@@ -107,7 +105,12 @@ public class YahooFinanceClient
         // validation will throw an exception if invalid request is detected
         requestValidator.validationRequest(request);
 
-        String url = buildRequestUrl(request);
+        String crumb = null;
+        if (request.isCrumbRequired()) {
+            crumb = crumbDataSource.getCrumb(request);
+        }
+
+        String url = requestUrlGenerator.buildRequestUrl(request, crumb);
         Map<String,String> headerMap = createRequestHeaderMap(request);
 
         Response response = null;
@@ -131,48 +134,6 @@ public class YahooFinanceClient
         headerMap.putAll(request.getHeaderMap());
         return headerMap;
     }
-
-
-    protected String buildRequestUrl(YahooFinanceRequest request) throws IOException
-    {
-        Map<String, String> paramMap = request.getParamMap();
-        if (paramMap == null) {
-            paramMap = Collections.emptyMap();
-        }
-
-        String ticker = request.getTicker().toUpperCase();
-        YahooEndpoint endpoint = request.getEndpoint();
-
-        if (endpoint.isCrumbRequest())
-        {
-            String crumb = crumbDataSource.getCrumb(request);
-            Map<String,String> updatedParamMap = new LinkedHashMap<>(paramMap);
-            updatedParamMap.put(CRUMB_KEY, crumb);
-            paramMap = updatedParamMap;
-        }
-
-        URIBuilder builder = new URIBuilder();
-        builder.setScheme(BASE_API_SCHEME);
-        builder.setHost(BASE_API_HOST);
-
-        //  e.g. /v8/finance/chart/AAPL
-        String path = endpoint.getPathPrefix() + "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
-
-        // check if need to append the ticker to the path itself.
-        if ( endpoint.isTickerOnPath() )
-        {
-            path +=  "/" + ticker;
-        }
-
-        builder.setPath(path);
-
-        for (Map.Entry<String, String> paramEntry : paramMap.entrySet()) {
-            builder.addParameter(paramEntry.getKey(), paramEntry.getValue());
-        }
-
-        return builder.toString();
-    }
-
 
     protected List<Response> executeBatchRequests(BatchableRequestBuilder batchableRequestBuilder) throws IOException
     {
