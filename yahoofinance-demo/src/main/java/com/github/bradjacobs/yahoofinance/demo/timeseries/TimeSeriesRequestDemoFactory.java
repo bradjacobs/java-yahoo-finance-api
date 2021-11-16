@@ -66,6 +66,7 @@ public class TimeSeriesRequestDemoFactory
      * Get 'annual' timeseries INCOME_STATEMENT data for AAPL for the last couple years
      *
      * NOTE:  you may have to know when the annual reports are available for any given security
+     * (e.g. must use a correct date range)
      */
     private static final YahooFinanceRequest ANNUAL =
         YahooRequestBuilder.api()
@@ -81,8 +82,6 @@ public class TimeSeriesRequestDemoFactory
 
     /**
      * Get 'quarterly' timeseries data for AAPL for the last couple years
-     *
-     * NOTE:  you may have to know when the annual reports are available for any given security
      */
     private static final YahooFinanceRequest QUARTERLY =
         YahooRequestBuilder.api()

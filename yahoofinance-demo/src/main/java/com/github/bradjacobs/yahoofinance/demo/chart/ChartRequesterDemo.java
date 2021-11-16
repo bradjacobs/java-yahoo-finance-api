@@ -13,17 +13,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.bradjacobs.yahoofinance.demo.chart.ChartRequestExample.SIMPLE;
+
 public class ChartRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        int exampleRequestId = 1;
-
-        YahooFinanceRequest req = ChartRequestDemoFactory.getRequest(exampleRequestId);
-
-        chartRequestRunner(req);
+        chartRequestRunner(SIMPLE.getRequest());
     }
-
 
     private static void chartRequestRunner(YahooFinanceRequest req) throws IOException
     {

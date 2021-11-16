@@ -10,14 +10,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.bradjacobs.yahoofinance.demo.quotesummary.QuoteSummaryRequestExample.MULTI_MODULES;
+
 public class QuoteSummaryRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        int exampleRequestId = 3;
-
-        YahooFinanceRequest req = QuoteSummaryRequestDemoFactory.getRequest(exampleRequestId);
-
+        YahooFinanceRequest req = MULTI_MODULES.getRequest();
         quoteSummaryRequestRunner(req);
     }
 
@@ -34,7 +33,6 @@ public class QuoteSummaryRequesterDemo
         String rawJson = resp.getJson();
         String prettyJson = resp.getPrettyJson();
 
-
         // note: the format of response is dependent on which modules were requested.
         List<Map<String,Object>> listOfMaps = resp.getAsListOfMaps();
         Map<String, Map<String, Object>> mapOfMaps = resp.getAsMapOfMaps();
@@ -42,7 +40,6 @@ public class QuoteSummaryRequesterDemo
 
         System.out.println("QuoteSummary JSON Response (pretty form) ...");
         System.out.println(prettyJson);
-
     }
 
 }

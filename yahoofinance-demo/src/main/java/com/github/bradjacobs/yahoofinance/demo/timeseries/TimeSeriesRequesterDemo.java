@@ -12,14 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.bradjacobs.yahoofinance.demo.timeseries.TimeSeriesRequestExample.SIMPLE;
+
 public class TimeSeriesRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        int exampleRequestId = 1;
-
-        YahooFinanceRequest req = TimeSeriesRequestDemoFactory.getRequest(exampleRequestId);
-
+        YahooFinanceRequest req = SIMPLE.getRequest();
         timeSeriesRequestRunner(req);
     }
 

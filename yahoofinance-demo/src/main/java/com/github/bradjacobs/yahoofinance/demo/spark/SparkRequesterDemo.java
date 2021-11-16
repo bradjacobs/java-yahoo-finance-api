@@ -11,14 +11,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.bradjacobs.yahoofinance.demo.spark.SparkRequestExample.MULTI;
+
 public class SparkRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        int exampleRequestId = 2;
-
-        YahooFinanceRequest req = SparkRequestDemoFactory.getRequest(exampleRequestId);
-
+        YahooFinanceRequest req = MULTI.getRequest();
         soarkRequestRunner(req);
     }
 

@@ -11,15 +11,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.bradjacobs.yahoofinance.demo.screener.ScreenerRequestExample.TOP_MARKET_CAP;
+
 public class ScreenerRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        // choose a number that represents the request to try (from the 'ScreenerRequestDemoFactory')
-        int exampleRequestId = 3;
-
-        YahooFinanceRequest req = ScreenerRequestDemoFactory.getRequest(exampleRequestId);
-
+        YahooFinanceRequest req = TOP_MARKET_CAP.getRequest();
         screenerRequestRunner(req);
     }
 

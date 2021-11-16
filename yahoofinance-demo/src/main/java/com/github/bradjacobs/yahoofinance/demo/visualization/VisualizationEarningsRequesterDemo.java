@@ -4,7 +4,6 @@ package com.github.bradjacobs.yahoofinance.demo.visualization;
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.model.EarningsEventResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
-import com.github.bradjacobs.yahoofinance.request.builder.EarningsEventRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
@@ -12,17 +11,14 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import java.io.IOException;
 import java.util.*;
 
+import static com.github.bradjacobs.yahoofinance.demo.visualization.EarningsEventRequestExample.SIMPLE;
+
 public class VisualizationEarningsRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
         boolean useBatching = false;
-        EarningsEventRequestBuilder earningsEventRequestBuilder = new EarningsEventRequestBuilder();
-        String date = "2021-11-01";
-        earningsEventRequestBuilder.setStart(date);
-
-        YahooFinanceRequest req = earningsEventRequestBuilder.build();
-
+        YahooFinanceRequest req = SIMPLE.getRequest();
         visualRequestRunner(req, useBatching);
     }
 

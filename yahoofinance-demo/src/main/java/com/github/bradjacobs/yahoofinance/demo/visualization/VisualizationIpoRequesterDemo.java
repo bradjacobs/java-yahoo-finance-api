@@ -16,18 +16,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import static com.github.bradjacobs.yahoofinance.demo.visualization.IpoEventRequestExample.SIMPLE;
+
 public class VisualizationIpoRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
         boolean useBatch = false;
-        IpoEventRequestBuilder ipoRequestBuilder = new IpoEventRequestBuilder();
-        //String date = "2021-11-17";
-        String date = "2021-11-02";
-        ipoRequestBuilder.setStart(date);
-
-        YahooFinanceRequest req = ipoRequestBuilder.build();
-
+        YahooFinanceRequest req = SIMPLE.getRequest();
         visualRequestRunner(req, useBatch);
     }
 

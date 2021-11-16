@@ -11,17 +11,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.bradjacobs.yahoofinance.demo.lookup.LookupRequestExample.SIMPLE;
+
 public class LookupRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        int exampleRequestId = 1;
-
-        YahooFinanceRequest req = LookupRequestDemoFactory.getRequest(exampleRequestId);
-
+        YahooFinanceRequest req = SIMPLE.getRequest();
         lookupRequestRunner(req);
     }
-
 
     private static void lookupRequestRunner(YahooFinanceRequest req) throws IOException
     {
@@ -53,53 +51,4 @@ public class LookupRequesterDemo
         System.out.println("Total Result Count: " + mapsOfMaps.size());
     }
 
-
-    // example response:
-    /*
-            {
-              "finance": {
-                "result": [
-                  {
-                    "start": 0,
-                    "count": 5,
-                    "total": 3,
-                    "documents": [
-                      {
-                        "symbol": "MSFT",
-                        "shortName": "Microsoft Corporation",
-                        "regularMarketPrice": 277.94,
-                        "regularMarketChange": 0.519989,
-                        "regularMarketPercentChange": 0.18743746,
-                        "industryName": "Technology",
-                        "quoteType": "equity",
-                        "exchange": "NMS",
-                        "industryLink": "https://finance.yahoo.com/sector/technology",
-                        "rank": 367763
-                      },
-                      {
-                        "symbol": "1MSF.PA",
-                        "shortName": "1X MSFT",
-                        "regularMarketPrice": 4.6585,
-                        "regularMarketChange": 0.0064001083,
-                        "regularMarketPercentChange": 0.13757461,
-                        "quoteType": "equity",
-                        "exchange": "PAR",
-                        "rank": 20001
-                      },
-                      {
-                        "symbol": "PB2661.MI",
-                        "shortName": "BPA TB SH MSFT 300,0 B300,0 OP ",
-                        "regularMarketPrice": 2.83,
-                        "regularMarketChange": -0.035000086,
-                        "regularMarketPercentChange": -1.2216434,
-                        "quoteType": "equity",
-                        "exchange": "MIL"
-                      }
-                    ]
-                  }
-                ],
-                "error": null
-              }
-            }
-     */
 }
