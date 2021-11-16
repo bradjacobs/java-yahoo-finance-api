@@ -41,6 +41,14 @@ public class YahooRequestBuilder
         return new LookupRequestBuilder();
     }
 
+    public EarningsEventRequestBuilder earningsEvent(){
+        return new EarningsEventRequestBuilder();
+    }
+
+    public IpoEventRequestBuilder ipoEvent(){
+        return new IpoEventRequestBuilder();
+    }
+
     // a generic builder for less common endpoints (i.e. "everything else"
     public EndpointRequestBuilder endpointRequest(YahooEndpoint endpoint){
         return new EndpointRequestBuilder(endpoint);
