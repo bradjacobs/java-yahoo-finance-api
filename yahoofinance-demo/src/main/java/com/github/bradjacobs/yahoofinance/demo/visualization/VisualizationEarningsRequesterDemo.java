@@ -16,17 +16,18 @@ public class VisualizationEarningsRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
+        boolean useBatching = false;
         EarningsEventRequestBuilder earningsEventRequestBuilder = new EarningsEventRequestBuilder();
         String date = "2021-11-01";
         earningsEventRequestBuilder.setStart(date);
 
         YahooFinanceRequest req = earningsEventRequestBuilder.build();
 
-        visualRequestRunner(req);
+        visualRequestRunner(req, useBatching);
     }
 
 
-    private static void visualRequestRunner(YahooFinanceRequest req) throws IOException
+    private static void visualRequestRunner(YahooFinanceRequest req, boolean useBatching) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.VISUALIZATION)) {
             throw new IllegalArgumentException("Must supply a visualization-type request");
@@ -34,44 +35,22 @@ public class VisualizationEarningsRequesterDemo
 
         try
         {
-            boolean tryBatch = false;
-
             YahooFinanceClient client = new YahooFinanceClient();
 
-
-            if (tryBatch)
+            if (useBatching)
             {
                 YahooBatchResponse batchResp = client.executeBatch(req);
 
                 List<String> jsonList = batchResp.getJson();
-
                 List<EarningsEventResult> pojoList = batchResp.getAsListOfPojos(EarningsEventResult.class);
-
-                Map<String, EarningsEventResult> tickerMap = new HashMap<>();
-
-                for (EarningsEventResult pojo : pojoList) {
-                    String ticker = pojo.getTicker();
-
-                    EarningsEventResult existingResult = tickerMap.get(ticker);
-                    if (existingResult != null) {
-                        int kjkjjj = 3333;
-                    }
-
-                    tickerMap.put(ticker, pojo);
-                }
-
                 // get map results in form of predefined class (key is the ticker/symbol)
                 Map<String, EarningsEventResult> pojoMap = batchResp.getAsMapOfPojos(EarningsEventResult.class);
-
-                int kjjjj = 3333;
-
             }
             else {
                 YahooResponse resp = client.execute(req);
 
                 // get original json response
                 String rawJson = resp.getJson();
-
                 // get original json response (in pretty format)
                 String prettyJson = resp.getPrettyJson();
 
@@ -79,58 +58,14 @@ public class VisualizationEarningsRequesterDemo
 
                 List<EarningsEventResult> pojoList = resp.getAsListOfPojos(EarningsEventResult.class);
 
-                Set<String> extraNames = new TreeSet<>();
-
-                Map<String, EarningsEventResult> tickerMap = new HashMap<>();
-
-                for (EarningsEventResult pojo : pojoList) {
-                    String ticker = pojo.getTicker();
-
-                    String type = pojo.getEventType();
-                    String eventName = pojo.getEventName();
-
-                    if (type != null) {
-                        int kjkjj = 333;
-                    }
-                    if (eventName != null) {
-                        int kjkkjjk = 333;
-                    }
-
-                    Map<String, Object> propMap = pojo.getAdditionalProperties();
-                    extraNames.addAll(propMap.keySet());
-
-                    EarningsEventResult existingResult = tickerMap.get(ticker);
-                    if (existingResult != null) {
-                        int kjkjjj = 3333;
-                    }
-
-                    tickerMap.put(ticker, pojo);
-                }
-
-                for (String extraName : extraNames) {
-                    System.out.println(extraName);
-                }
-
                 // get map results in form of predefined class (key is the ticker/symbol)
                 Map<String, EarningsEventResult> pojoMap = resp.getAsMapOfPojos(EarningsEventResult.class);
-
-
-                int kjjjj = 333;
             }
-
-            int kjkjj = 333;
-
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            int kjj = 33;
         }
-
-//        // same result as listOfMaps, but in a map where the 'key' is the ticker/symbol value.
-//        Map<String, Map<String, Object>> mapsOfMaps = resp.getAsMapOfMaps();
-//
-//        System.out.println("Total Result Count: " + mapsOfMaps.size());
     }
 
 }

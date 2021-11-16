@@ -20,6 +20,7 @@ public class VisualizationIpoRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
+        boolean useBatch = false;
         IpoEventRequestBuilder ipoRequestBuilder = new IpoEventRequestBuilder();
         //String date = "2021-11-17";
         String date = "2021-11-02";
@@ -27,11 +28,11 @@ public class VisualizationIpoRequesterDemo
 
         YahooFinanceRequest req = ipoRequestBuilder.build();
 
-        visualRequestRunner(req);
+        visualRequestRunner(req, useBatch);
     }
 
 
-    private static void visualRequestRunner(YahooFinanceRequest req) throws IOException
+    private static void visualRequestRunner(YahooFinanceRequest req, boolean useBatch) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.VISUALIZATION)) {
             throw new IllegalArgumentException("Must supply a visualization-type request");
@@ -39,37 +40,17 @@ public class VisualizationIpoRequesterDemo
 
         try
         {
-            boolean tryBatch = false;
-
             YahooFinanceClient client = new YahooFinanceClient();
 
-
-            if (tryBatch)
+            if (useBatch)
             {
                 YahooBatchResponse batchResp = client.executeBatch(req);
 
                 List<String> jsonList = batchResp.getJson();
-
                 List<IpoEventResult> pojoList = batchResp.getAsListOfPojos(IpoEventResult.class);
-
-                Map<String, IpoEventResult> tickerMap = new HashMap<>();
-
-                for (IpoEventResult pojo : pojoList) {
-                    String ticker = pojo.getTicker();
-
-                    IpoEventResult existingResult = tickerMap.get(ticker);
-                    if (existingResult != null) {
-                        int kjkjjj = 3333;
-                    }
-
-                    tickerMap.put(ticker, pojo);
-                }
 
                 // get map results in form of predefined class (key is the ticker/symbol)
                 Map<String, IpoEventResult> pojoMap = batchResp.getAsMapOfPojos(IpoEventResult.class);
-
-                int kjjjj = 3333;
-
             }
             else {
                 YahooResponse resp = client.execute(req);
@@ -84,47 +65,14 @@ public class VisualizationIpoRequesterDemo
 
                 List<IpoEventResult> pojoList = resp.getAsListOfPojos(IpoEventResult.class);
 
-                Set<String> extraNames = new TreeSet<>();
-
-                Map<String, IpoEventResult> tickerMap = new HashMap<>();
-
-                for (IpoEventResult pojo : pojoList) {
-                    String ticker = pojo.getTicker();
-
-                    Map<String, Object> propMap = pojo.getAdditionalProperties();
-                    extraNames.addAll(propMap.keySet());
-
-                    IpoEventResult existingResult = tickerMap.get(ticker);
-                    if (existingResult != null) {
-                        int kjkjjj = 3333;
-                    }
-
-                    tickerMap.put(ticker, pojo);
-                }
-
-                for (String extraName : extraNames) {
-                    System.out.println(extraName);
-                }
-
                 // get map results in form of predefined class (key is the ticker/symbol)
                 Map<String, IpoEventResult> pojoMap = resp.getAsMapOfPojos(IpoEventResult.class);
-
-
-                int kjjjj = 333;
             }
-
-            int kjkjj = 333;
-
         }
         catch (Exception e)
         {
-            int kjj = 33;
+            e.printStackTrace();
         }
-
-//        // same result as listOfMaps, but in a map where the 'key' is the ticker/symbol value.
-//        Map<String, Map<String, Object>> mapsOfMaps = resp.getAsMapOfMaps();
-//
-//        System.out.println("Total Result Count: " + mapsOfMaps.size());
     }
 
 }
