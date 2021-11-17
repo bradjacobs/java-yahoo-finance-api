@@ -17,7 +17,6 @@ import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseChecker;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseCheckerFactory;
 import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
-import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.HttpHeaders;
 
 import java.io.IOException;
@@ -42,7 +41,6 @@ public class YahooFinanceClient
     private final RequestUrlGenerator requestUrlGenerator = new RequestUrlGenerator();
     private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
     private final BatchResponseCheckerFactory batchResponseCheckerFactory = new BatchResponseCheckerFactory();
-    private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
 
     // todo: for the moment this is always true.. to fix.
     private final boolean throwExceptionOnHttpError = true;
@@ -89,9 +87,6 @@ public class YahooFinanceClient
 
     protected Response executeInternal(YahooFinanceRequest request) throws IOException
     {
-        // validation will throw an exception if invalid request is detected
-        requestValidator.validationRequest(request);
-
         String crumb = null;
         if (request.isCrumbRequired()) {
             crumb = crumbDataSource.getCrumb(request);

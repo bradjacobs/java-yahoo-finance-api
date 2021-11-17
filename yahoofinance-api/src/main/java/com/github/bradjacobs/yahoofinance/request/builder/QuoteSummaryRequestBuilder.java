@@ -10,6 +10,10 @@ public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryR
     private String ticker;
     private final Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
 
+    @Override
+    protected List<String> getRequiredParameters() {
+        return Collections.singletonList(ParamKeys.MODULES);
+    }
 
     public QuoteSummaryRequestBuilder withTicker(String ticker) {
         this.ticker = ticker;

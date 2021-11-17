@@ -5,7 +5,9 @@ import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilder> implements BatchableRequestBuilder
@@ -21,6 +23,11 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
     private int start = DEFAULT_START;
 
     private boolean includeTotalsOnly = false;
+
+    @Override
+    protected List<String> getRequiredParameters() {
+        return Collections.singletonList(ParamKeys.QUERY);
+    }
 
     public LookupRequestBuilder withQuery(String query) {
         this.query = query;

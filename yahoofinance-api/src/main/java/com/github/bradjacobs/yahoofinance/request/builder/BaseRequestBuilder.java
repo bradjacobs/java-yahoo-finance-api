@@ -6,10 +6,12 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,8 +21,6 @@ import java.util.Map;
  */
 abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 {
-    protected static final YahooRequestValidator requestValidator = new YahooRequestValidator();
-
     private boolean includeRegionParam = true;
     private String region = Locale.getDefault().getCountry();
 
@@ -143,11 +143,36 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
 
     /**
      * Will throw exception if request is invalid
-     * @param req request to be validated
+     * @param request request to be validated
      */
-    protected void validateRequest(YahooFinanceRequest req)
+    // todo: might refactor out into a separate class/strategy
+    protected void validateRequest(YahooFinanceRequest request)
     {
-        // this will throw exception if request is invalid
-        requestValidator.validationRequest(req);
+        YahooEndpoint endpoint = request.getEndpoint();
+        if (endpoint == null) {
+            throw new IllegalArgumentException("Request is missing endpoint value.");
+        }
+        if (endpoint.requiresTicker() && StringUtils.isEmpty(request.getTicker()) ) {
+            throw new IllegalArgumentException("Request is missing a ticker value.");
+        }
+
+        List<String> requiredParameters = new ArrayList<>(getRequiredParameters());
+        if (endpoint.isTickerKeyValueParam()) { requiredParameters.add(ParamKeys.SYMBOL); }
+        if (endpoint.isMultiTickerSupported()) { requiredParameters.add(ParamKeys.SYMBOLS); }
+
+        Map<String, String> paramMap = request.getParamMap() != null ? request.getParamMap() : Collections.emptyMap();
+        for (String requiredParam : requiredParameters) {
+            if (!paramMap.containsKey(requiredParam)) {
+                throw new IllegalArgumentException(String.format("Endpoint %s is missing required parameter '%s'.", endpoint, requiredParam));
+            }
+        }
+    }
+
+    /**
+     * Override method of any endpoint 'required' url parameters
+     * @return list of required parameters
+     */
+    protected List<String> getRequiredParameters() {
+        return Collections.emptyList();
     }
 }

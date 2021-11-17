@@ -11,6 +11,8 @@ import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 
 import java.util.*;
 
+import static com.github.bradjacobs.yahoofinance.types.YahooEndpoint.TIMESERIES;
+
 public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSeriesRequestBuilder>
 {
     private static final JsonMapper mapper = JsonMapperFactory.getMapper();
@@ -25,6 +27,11 @@ public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSerie
     private boolean usePremium = false;
 
     private final FieldBuilder fieldBuilder = new FieldBuilder();
+
+    @Override
+    protected List<String> getRequiredParameters() {
+        return Arrays.asList(ParamKeys.PERIOD1, ParamKeys.PERIOD2);
+    }
 
     public TimeSeriesRequestBuilder() { }
 

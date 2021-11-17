@@ -23,11 +23,6 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
         return this;
     }
 
-    public EndpointRequestBuilder withEndpoint(YahooEndpoint endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
     @Override
     public YahooEndpoint getEndpoint()
     {
