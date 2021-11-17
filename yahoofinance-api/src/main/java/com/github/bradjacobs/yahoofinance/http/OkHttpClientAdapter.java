@@ -47,8 +47,7 @@ public class OkHttpClientAdapter implements HttpClientAdapter
 
     private Response createGenericResponse(okhttp3.Response okResponse) throws IOException
     {
-        Response.Builder builder
-            = new Response.Builder()
+        Response.Builder builder = Response.builder()
             .code(okResponse.code())
             .message(okResponse.message())
             .body( (okResponse.body() != null ? okResponse.body().string() : null) );

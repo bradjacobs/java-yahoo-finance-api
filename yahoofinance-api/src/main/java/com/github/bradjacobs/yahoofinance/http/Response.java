@@ -1,6 +1,8 @@
 package com.github.bradjacobs.yahoofinance.http;
 
 
+import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -52,9 +54,14 @@ public class Response
         return this.headerMap;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static class Builder
     {
+        private Builder() { }
+
         private int code;
         private String message;
         private String body;

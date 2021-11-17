@@ -67,8 +67,7 @@ public class HttpCommonsClientAdapter implements HttpClientAdapter
             throw new IOException("Unable to read entity response from httpResponse!");
         }
 
-        Response.Builder builder
-            = new Response.Builder()
+        Response.Builder builder = Response.builder()
                 .code(response.getStatusLine().getStatusCode())
                 .message(response.getStatusLine().getReasonPhrase())
                 .body( EntityUtils.toString(entity) );
