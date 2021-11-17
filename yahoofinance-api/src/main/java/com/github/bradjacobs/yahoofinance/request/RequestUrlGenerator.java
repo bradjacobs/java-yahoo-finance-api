@@ -23,9 +23,6 @@ public class RequestUrlGenerator
     public String buildRequestUrl(YahooFinanceRequest request, String crumb) throws IOException
     {
         Map<String, String> paramMap = request.getParamMap();
-        if (paramMap == null) {
-            paramMap = Collections.emptyMap();
-        }
         if (StringUtils.isNotEmpty(crumb)) {
             Map<String,String> updatedParamMap = new LinkedHashMap<>(paramMap);
             updatedParamMap.put(CRUMB_KEY, crumb);
@@ -35,19 +32,13 @@ public class RequestUrlGenerator
         String ticker = request.getTicker().toUpperCase();
         YahooEndpoint endpoint = request.getEndpoint();
 
-        URIBuilder builder = new URIBuilder();
-        builder.setScheme(BASE_API_SCHEME);
-        builder.setHost(BASE_API_HOST);
-
         //  e.g. /v8/finance/chart/AAPL
-        String path = endpoint.getPathPrefix() + "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
-
-        // check if need to append the ticker to the path itself.
+        String urlPath = endpoint.getPathPrefix() + "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
         if ( endpoint.isTickerOnPath() ) {
-            path +=  "/" + ticker;
+            urlPath +=  "/" + ticker;
         }
 
-        builder.setPath(path);
+        URIBuilder builder = new URIBuilder().setScheme(BASE_API_SCHEME).setHost(BASE_API_HOST).setPath(urlPath);
 
         for (Map.Entry<String, String> paramEntry : paramMap.entrySet()) {
             builder.addParameter(paramEntry.getKey(), paramEntry.getValue());
