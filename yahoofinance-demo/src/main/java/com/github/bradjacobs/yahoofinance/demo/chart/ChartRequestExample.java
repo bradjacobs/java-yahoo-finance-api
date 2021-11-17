@@ -63,17 +63,5 @@ public enum ChartRequestExample implements RequestExample
                     .withInterval(Interval.FIVE_MIN)
                     .build();
         }
-    },
-    WITH_PRE_POST {
-        @Override
-        public YahooFinanceRequest getRequest() {
-            return YahooRequestBuilder.api()
-                    .chart()
-                    .withTicker("AAPL")
-                    .withRange(Range.FIVE_DAYS)
-                    .withInterval(Interval.FIFTEEN_MIN)
-                    .withPrePost(true)
-                    .build();
-        }
     };
 }

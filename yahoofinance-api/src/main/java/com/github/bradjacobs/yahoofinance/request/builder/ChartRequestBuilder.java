@@ -27,7 +27,6 @@ public class ChartRequestBuilder extends BasePeriodRequestBuilder<ChartRequestBu
     private Boolean includeAdjustedClose = Boolean.TRUE;
     private IndicatorFieldSelection indicatorFieldSelection;
     private Boolean includeTimestamps;
-    private Boolean includePrePost;
     private Integer numberOfPoints;
 
     enum IndicatorFieldSelection {
@@ -102,10 +101,6 @@ public class ChartRequestBuilder extends BasePeriodRequestBuilder<ChartRequestBu
         return this;
     }
 
-    public ChartRequestBuilder withPrePost(Boolean includePrePost) {
-        this.includePrePost = includePrePost;
-        return this;
-    }
     public ChartRequestBuilder withNumberOfPoints(Integer numberOfPoints) {
         this.numberOfPoints = numberOfPoints;
         return this;
@@ -177,10 +172,6 @@ public class ChartRequestBuilder extends BasePeriodRequestBuilder<ChartRequestBu
         if (this.includeTimestamps != null) {
             map.put(ParamKeys.INCLUDE_TIMESTAMPS, this.includeTimestamps.toString());
         }
-        if (this.includePrePost != null) {
-            map.put(ParamKeys.INCLUDE_PRE_POST, this.includePrePost.toString());
-        }
-
         if (this.numberOfPoints != null) {
             map.put(ParamKeys.NUMBER_OF_POINTS, this.numberOfPoints.toString());
         }
