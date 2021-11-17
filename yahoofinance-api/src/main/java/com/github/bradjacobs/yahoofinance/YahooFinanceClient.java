@@ -3,55 +3,49 @@
  */
 package com.github.bradjacobs.yahoofinance;
 
-import com.github.bradjacobs.yahoofinance.request.RequestUrlGenerator;
-import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseChecker;
-import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseCheckerFactory;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
+import com.github.bradjacobs.yahoofinance.request.RequestUrlGenerator;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestBuilder;
-import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
-import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
+import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseChecker;
+import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseCheckerFactory;
+import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.validation.YahooRequestValidator;
 import org.apache.http.HttpHeaders;
-import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class YahooFinanceClient
 {
-    private static final String DEFAULT_CONTENT_TYPE = "application/json";
-    private static final String DEFAULT_USER_AGENT = "Java-Http-Client/11.0.0";
+    private static final Map<String,String> DEFAULT_HEADER_MAP = new LinkedHashMap<String,String>(){{
+        put(HttpHeaders.CONTENT_TYPE, "application/json");
+        put(HttpHeaders.USER_AGENT, "Java-Http-Client/11.0.0");  // TBD what a 'good' value should be
+    }};
 
     // allow a very brief pause b/w each batch request for philanthropy.
     private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
 
-    private final RequestUrlGenerator requestUrlGenerator = new RequestUrlGenerator();
-    private final BatchResponseCheckerFactory batchResponseCheckerFactory = new BatchResponseCheckerFactory();
-
-    private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
-
     // httpClient is a simple interface around the 'true' httpClient.
     private final HttpClientAdapter httpClient;
     private final CrumbDataSource crumbDataSource;
+    private final RequestUrlGenerator requestUrlGenerator = new RequestUrlGenerator();
+    private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
+    private final BatchResponseCheckerFactory batchResponseCheckerFactory = new BatchResponseCheckerFactory();
+    private static final YahooRequestValidator requestValidator = new YahooRequestValidator();
 
     // todo: for the moment this is always true.. to fix.
     private final boolean throwExceptionOnHttpError = true;
-
-    private final Map<String,String> defaultRequestHeaderMap = new LinkedHashMap<>();
-    private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
-
 
 
     public YahooFinanceClient()
@@ -67,14 +61,7 @@ public class YahooFinanceClient
 
         this.httpClient = httpClient;
         this.crumbDataSource = new CrumbDataSource(httpClient);
-        this.initializeDefaultHeaderMap();
     }
-
-    private void initializeDefaultHeaderMap() {
-        defaultRequestHeaderMap.put(HttpHeaders.CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
-        defaultRequestHeaderMap.put(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT);
-    }
-
 
     public YahooResponse execute(YahooFinanceRequest request) throws IOException
     {
@@ -130,7 +117,7 @@ public class YahooFinanceClient
 
     private Map<String,String> createRequestHeaderMap(YahooFinanceRequest request)
     {
-        Map<String,String> headerMap = new LinkedHashMap<>(defaultRequestHeaderMap);
+        Map<String,String> headerMap = new LinkedHashMap<>(DEFAULT_HEADER_MAP);
         headerMap.putAll(request.getHeaderMap());
         return headerMap;
     }
@@ -163,21 +150,16 @@ public class YahooFinanceClient
                 {
                     currentBatchOffset = currentBatchOffset + batchSize;
                     batchableRequestBuilder.setBatchOffset(currentBatchOffset);
-                    batchIterationSleep();
+
+                    try { Thread.sleep(SLEEP_TIME_BETWEEN_BATCH_REQUESTS); }
+                    catch (InterruptedException e) {/* ignore exception */ }
                 }
             } while (continueBatchRequesting);
         }
-        finally
-        {
+        finally {
             batchableRequestBuilder.setBatchOffset(originalBatchOffset);
         }
 
         return responseList;
     }
-
-    private void batchIterationSleep() {
-        try { Thread.sleep(SLEEP_TIME_BETWEEN_BATCH_REQUESTS); }
-        catch (InterruptedException e) {/* ignore */ }
-    }
-
 }
