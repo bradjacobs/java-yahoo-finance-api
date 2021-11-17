@@ -24,7 +24,7 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
     }
 
     @Override
-    public YahooEndpoint getEndpoint()
+    protected YahooEndpoint getEndpoint()
     {
         return this.endpoint;
     }

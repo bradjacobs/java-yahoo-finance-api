@@ -33,7 +33,7 @@ public class SparkRequestBuilder extends BaseRequestBuilder<SparkRequestBuilder>
     }
 
     @Override
-    public YahooEndpoint getEndpoint()
+    protected YahooEndpoint getEndpoint()
     {
         return YahooEndpoint.SPARK;
     }

@@ -114,7 +114,7 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
     }
 
     abstract protected Map<String,String> buildEndpointParamMap();
-    abstract public YahooEndpoint getEndpoint();
+    abstract protected YahooEndpoint getEndpoint();
     abstract protected String getRequestTicker();
 
     protected Object buildRequestPostBody() {

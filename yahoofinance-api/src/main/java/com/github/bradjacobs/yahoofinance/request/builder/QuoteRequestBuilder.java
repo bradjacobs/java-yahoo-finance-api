@@ -17,7 +17,7 @@ public class QuoteRequestBuilder extends BaseRequestBuilder<QuoteRequestBuilder>
     }
 
     @Override
-    public YahooEndpoint getEndpoint()
+    protected YahooEndpoint getEndpoint()
     {
         return YahooEndpoint.QUOTE;
     }
