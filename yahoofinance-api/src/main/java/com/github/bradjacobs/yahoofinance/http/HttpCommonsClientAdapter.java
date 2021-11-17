@@ -15,9 +15,8 @@ import java.io.IOException;
 import java.util.Map;
 
 /*
-  TODO - Post can cause a Warning like the following:
-     WARNING: Invalid cookie header: ....
-  which probably just means a client configuration tweak, but it's a lower priority at present.
+  TODO - Post can cause a Warning like the following:    WARNING: Invalid cookie header: ....
+      which probably just means a client configuration tweak, but it's a lower priority at present.
  */
 public class HttpCommonsClientAdapter implements HttpClientAdapter
 {
@@ -35,16 +34,14 @@ public class HttpCommonsClientAdapter implements HttpClientAdapter
     @Override
     public Response executeGet(String url, Map<String, String> requestHeaders) throws IOException
     {
-        return executeRequest( createGetMethod(url, requestHeaders) );
+        return executeRequest( createRequest(url, requestHeaders, null) );
     }
-
 
     @Override
     public Response executePost(String url, String postBody, Map<String, String> requestHeaders) throws IOException
     {
-        return executeRequest( createPostMethod(url, postBody, requestHeaders) );
+        return executeRequest( createRequest(url, requestHeaders, postBody) );
     }
-
 
     public Response executeRequest(HttpRequestBase httpMethod) throws IOException
     {
@@ -58,7 +55,6 @@ public class HttpCommonsClientAdapter implements HttpClientAdapter
             throw e;
         }
     }
-
 
     private Response createGenericResponse(CloseableHttpResponse response) throws IOException
     {
@@ -82,32 +78,26 @@ public class HttpCommonsClientAdapter implements HttpClientAdapter
         return builder.build();
     }
 
-
-    // note:  org.apache.http.client.methods.RequestBuilder is available if need more advanced construction below.
-
-    private HttpGet createGetMethod(String url, Map<String,String> headerMap) {
-        HttpGet httpGet = new HttpGet(url);
-        addInHeaders(httpGet, headerMap);
-        return httpGet;
-    }
-
-    private HttpPost createPostMethod(String url, String body, Map<String,String> headerMap) {
-        HttpPost httpPost = new HttpPost(url);
-        if (body != null) {
-            httpPost.setEntity(new StringEntity(body, BODY_CONTENT_TYPE));
+    private HttpRequestBase createRequest(String url, Map<String,String> requestHeaders, String postBody)
+    {
+        // NOTE: there is a builder available (org.apache.http.client.methods.RequestBuilder)
+        //    but it's still kinda ugly with that as well !!
+        HttpRequestBase httpMethod;
+        if (postBody != null) {
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setEntity(new StringEntity(postBody, BODY_CONTENT_TYPE));
+            httpMethod = httpPost;
         }
-        addInHeaders(httpPost, headerMap);
-        return httpPost;
-    }
-
-    private void addInHeaders(HttpRequestBase httpMethod, Map<String,String> headerMap) {
-        if (headerMap != null) {
-            for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
+        else {
+            httpMethod = new HttpGet(url);
+        }
+        if (requestHeaders != null) {
+            for (Map.Entry<String, String> headerEntry : requestHeaders.entrySet()) {
+                // side note: "Accept-Encoding" auto-magically via the 'contentCompressionEnabled' flag
+                //  inside RequestConfig class.  (a few other headers set as well)
                 httpMethod.setHeader(headerEntry.getKey(), headerEntry.getValue());
             }
         }
-        // side note: "Accept-Encoding" auto-magically via the 'contentCompressionEnabled' flag
-        //  inside RequestConfig class.  (few other headers set as well)
+        return httpMethod;
     }
-
 }
