@@ -5,8 +5,8 @@ import com.github.bradjacobs.yahoofinance.response.converter.util.JsonNestedForm
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 import com.github.bradjacobs.yahoofinance.util.JsonPathDocContextCreator;
 import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +24,14 @@ import java.util.TreeMap;
  */
 public class TimeSeriesResponseConverter implements ResponseConverter
 {
-    private static final String ROOT_PATH = "$.timeseries.result";
-    private static final String ELEMENT_NAMES_PATH = ROOT_PATH + "[*].meta.type[0]";
-    private static final String KEY_TIMESTAMP = "timestamp";
+    private static final String RESULT_OBJECTS_PATH = "$.timeseries.result[*]";
+    private static final String ELEMENT_NAMES_PATH = RESULT_OBJECTS_PATH + ".meta.type[0]";
+
+    private static final String TIMESTAMP_FIELD_NAME = "timestamp";
+    private static final String DATE_FIELD_NAME = "asOfDate";
+    private static final String VALUE_FIELD_NAME = "reportedValue";
+
+    private static final String EXTRA_DATE_STRING_LABEL = "date";
 
     private static final String ANNUAL_PREFIX = TimeSeriesUnit.ANNUAL.toString().toLowerCase();
     private static final String QUARTERLY_PREFIX = TimeSeriesUnit.QUARTERLY.toString().toLowerCase();
@@ -37,7 +42,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
 
     private final boolean organizeByDate;
     private final JsonNestedFormatRemover jsonNestedFormatRemover = new JsonNestedFormatRemover(true);
-    private final JsonPathDocContextCreator jsonPathDocContextCreator;
+    private final JsonPathDocContextCreator jsonPathDocContextCreator = new JsonPathDocContextCreator();
 
     public TimeSeriesResponseConverter() {
         this(null);
@@ -48,7 +53,6 @@ public class TimeSeriesResponseConverter implements ResponseConverter
             config = ResponseConverterConfig.DEFAULT_INSTANCE;
         }
         this.organizeByDate = (config.isUseDateAsMapKey());
-        this.jsonPathDocContextCreator = new JsonPathDocContextCreator();
     }
 
 
@@ -65,8 +69,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
 
         // todo - this return format is TBD.   namely the resulting map has a different structure
         //   if only request a single timeUnit vs multiple.
-        if (attributeMapPojo.hasMultipleTimeFrames())
-        {
+        if (attributeMapPojo.hasMultipleTimeFrames()) {
             // this case we have at least 2 of the following:
             //     annual, quarterly, trailing
             //
@@ -77,24 +80,41 @@ public class TimeSeriesResponseConverter implements ResponseConverter
             metaMap.put(TRAILING_PREFIX, createAltMapSignature( attributeMapPojo.getTrailingDataMap() ));
             return metaMap;
         }
-        else
-        {
+        else {
             return attributeMapPojo.getSinglePopulatedMap();
         }
     }
-
 
     public Map<String, Object> createAltMapSignature(Map<String, Map<String, Object>> origDateResultMap)
     {
         return new LinkedHashMap<>(origDateResultMap);
     }
 
+    private TimeSeriesUnit getTimeSeriesType(String elementName) {
+        if (elementName.startsWith(ANNUAL_PREFIX)) {
+            return TimeSeriesUnit.ANNUAL;
+        }
+        else if (elementName.startsWith(QUARTERLY_PREFIX)) {
+            return TimeSeriesUnit.QUARTERLY;
+        }
+        else if (elementName.startsWith(TRAILING_PREFIX)) {
+            return TimeSeriesUnit.TRAILING;
+        }
+        else {
+            return null;
+        }
+    }
 
     private AttributeMapPojo extractAttributeDataValueInfo(String json)
     {
         Map<String, Map<String,Object>> annualValuesMap = new TreeMap<>();
         Map<String, Map<String,Object>> quarterlyValuesMap = new TreeMap<>();
         Map<String, Map<String,Object>> trailingValuesMap = new TreeMap<>();
+
+        Map<TimeSeriesUnit, Map<String, Map<String,Object>>> timeSeriesDataMap = new HashMap<>();
+        timeSeriesDataMap.put(TimeSeriesUnit.ANNUAL, annualValuesMap);
+        timeSeriesDataMap.put(TimeSeriesUnit.QUARTERLY, quarterlyValuesMap);
+        timeSeriesDataMap.put(TimeSeriesUnit.TRAILING, trailingValuesMap);
 
         json = jsonNestedFormatRemover.removeFormats(json);
 
@@ -103,71 +123,61 @@ public class TimeSeriesResponseConverter implements ResponseConverter
         // first fetch all the names (aka types) (aka names of the fields that were returned)
         String[] elementNames = jsonDoc.read(ELEMENT_NAMES_PATH, String[].class);
 
+        List<Map<String,Object>> resultsDataList = jsonDoc.read(RESULT_OBJECTS_PATH);;
+
         int entryCount = elementNames.length;
         for (int i = 0; i < entryCount; i++)
         {
             String elementName = elementNames[i];
-            String prefix;
-
-            Map<String, Map<String,Object>> destinationMap = null;
-            if (elementName.startsWith(ANNUAL_PREFIX)) {
-                destinationMap = annualValuesMap;
-                prefix = ANNUAL_PREFIX;
-            }
-            else if (elementName.startsWith(QUARTERLY_PREFIX)) {
-                destinationMap = quarterlyValuesMap;
-                prefix = QUARTERLY_PREFIX;
-            }
-            else if (elementName.startsWith(TRAILING_PREFIX)) {
-                destinationMap = trailingValuesMap;
-                prefix = TRAILING_PREFIX;
-            }
-            else {
+            TimeSeriesUnit type = getTimeSeriesType(elementName);
+            if (type == null) {
                 continue;
             }
 
-            String attributeName = cleanAttributeName(elementName, prefix);
+            Map<String, Map<String,Object>> destinationMap = timeSeriesDataMap.get(type);
 
-            try
-            {
-                Long[] timeValues = jsonDoc.read(constructEntryPath(i, KEY_TIMESTAMP), Long[].class);
-                List<Map<String,Object>> existingEntryDataList = jsonDoc.read(constructEntryPath(i, elementName));
-
-                for (int j = 0; j < timeValues.length; j++)
-                {
-                    Long timestamp = timeValues[j];
-                    Map<String,Object> dataMap = existingEntryDataList.get(j);
-
-                    // must be a value in BOTH the timeValues array and the dataList
-                    if (timestamp == null || dataMap == null) {
-                        continue;
-                    }
-
-                    String dateString = (String) dataMap.get("asOfDate");
-                    Number value = (Number) dataMap.get("reportedValue");
-
-                    if (this.organizeByDate)
-                    {
-                        // get map containing all the attributes for this given date.
-                        Map<String, Object> attributeMap = destinationMap.get(dateString);
-                        if (attributeMap == null) {
-                            attributeMap = new TreeMap<>();
-                            attributeMap.put("date", dateString);  // very convenient to have date in this location as well.
-                            destinationMap.put(dateString, attributeMap);
-                        }
-
-                        attributeMap.put(attributeName, value);
-                    }
-                    else
-                    {
-                        // get map containing all the dates for this given attribute.
-                        Map<String, Object> dateMap = destinationMap.computeIfAbsent(attributeName, k -> new TreeMap<>());
-                        dateMap.put(dateString, value);
-                    }
-                }
+            Map<String, Object> attributeDataMap = resultsDataList.get(i);
+            List<Long> timeValues = (List<Long>) attributeDataMap.get(TIMESTAMP_FIELD_NAME);
+            if (timeValues == null) {
+                continue;
             }
-            catch (Exception e) {
-                // this exception will occur when trying to fetch timestamps on an entry with no data.
+
+            List<Map<String,Object>> elementDataList = (List<Map<String, Object>>) attributeDataMap.get(elementName);
+            if (elementDataList == null) {
+                continue;
+            }
+
+            String attributeName = getBaseAttributeName(elementName, type);
+
+            int timeValueCount = timeValues.size();
+            for (int j = 0; j < timeValueCount; j++)
+            {
+                Map<String, Object> elementDataEntry = elementDataList.get(j);
+                if (elementDataEntry == null) {
+                    // possible that don't have values for some timestamps (usually for 'older' timestamps)
+                    continue;
+                }
+                String dateString = (String) elementDataEntry.get(DATE_FIELD_NAME);
+                Number value = (Number) elementDataEntry.get(VALUE_FIELD_NAME);
+
+                if (this.organizeByDate)
+                {
+                    // get map containing all the attributes for this given date.
+                    Map<String, Object> attributeMap = destinationMap.get(dateString);
+                    if (attributeMap == null) {
+                        attributeMap = new TreeMap<>();
+                        attributeMap.put(EXTRA_DATE_STRING_LABEL, dateString);  // very convenient to have date in this location as well.
+                        destinationMap.put(dateString, attributeMap);
+                    }
+
+                    attributeMap.put(attributeName, value);
+                }
+                else
+                {
+                    // get map containing all the dates for this given attribute.
+                    Map<String, Object> dateMap = destinationMap.computeIfAbsent(attributeName, k -> new TreeMap<>());
+                    dateMap.put(dateString, value);
+                }
             }
         }
 
@@ -175,38 +185,30 @@ public class TimeSeriesResponseConverter implements ResponseConverter
     }
 
 
-
-    private String constructEntryPath(int index, String pathSuffix)
+    /**
+     * Converts full attribute name into the base name
+     *   i.e.  annualNetIncomeContinuousOperations -->  netIncomeContinuousOperations
+     * @param attributeName attributeName
+     * @param type identifies type annual/quarterly/trailing
+     * @return return base attribuet name.
+     */
+    //  ( dev note: did NOT see any perf improvement here with a caching solution )
+    private String getBaseAttributeName(String attributeName, TimeSeriesUnit type)
     {
-        // side: only avoiding using String.format b/c of perf concerns inside huge tight loops. (probably just paranoia)
-        StringBuilder sb = new StringBuilder();
-        sb.append(ROOT_PATH);
-        sb.append('[');
-        sb.append(index);
-        sb.append("].");
-        sb.append(pathSuffix);
-        return sb.toString();
-    }
-
-
-    private String cleanAttributeName(String attributeName, String prefix)
-    {
-        String cleanName = attributeName.replace(prefix, "");
+        // first lop off the prefix... that happens to be the same length as the enum.
+        String baseName = attributeName.substring(type.toString().length());
 
         // special case... ugh
-        if (cleanName.equals(UPPER_EBIT)) {
+        if (baseName.equals(UPPER_EBIT)) {
             return LOWER_EBIT;
         }
 
-        // todo: better perf ways to do this, but could require extra attention if get 'weird' string
-        //    thus don't worry about performance (for now)
-        char firstLetter = cleanName.charAt(0);
+        char firstLetter = baseName.charAt(0);
         if (Character.isUpperCase(firstLetter)) {
-            cleanName = Character.toLowerCase(firstLetter) + cleanName.substring(1);
+            baseName = Character.toLowerCase(firstLetter) + baseName.substring(1);
         }
-        return cleanName;
+        return baseName;
     }
-
 
 
 
@@ -232,9 +234,9 @@ public class TimeSeriesResponseConverter implements ResponseConverter
         private final boolean hasMultipleTimeFrames;
 
         public AttributeMapPojo(
-            Map<String, Map<String,Object>> annualDataMap,
-            Map<String, Map<String,Object>> quarterlyDataMap,
-            Map<String, Map<String,Object>> trailingDataMap)
+                Map<String, Map<String,Object>> annualDataMap,
+                Map<String, Map<String,Object>> quarterlyDataMap,
+                Map<String, Map<String,Object>> trailingDataMap)
         {
             this.annualDataMap = annualDataMap;
             this.quarterlyDataMap = quarterlyDataMap;
