@@ -4,9 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.DoubleNode;
+import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -46,6 +49,12 @@ public class JsonNestedFormatRemover
 
     private boolean removeEmptyEntries;
 
+    // todo - clean up required
+    // values like "1.6125E10" will get turned into a Double by default
+    //   when flag is enabled, this will attempt surgery to change it to a Long
+    //    (ONLY applicable for large numbers that do NOT a value in the mantissa)
+    private boolean updateLargeScintificNotationDecimals = true;
+
     public JsonNestedFormatRemover(boolean removeEmptyEntries) {
         this.removeEmptyEntries = removeEmptyEntries;
     }
@@ -76,7 +85,7 @@ public class JsonNestedFormatRemover
      */
     public void removeFormats(JsonNode node)
     {
-        // recurse thru entire node tree, updating as needed.
+        // recurse through entire node tree, updating as needed.
         if (node.isArray()) {
             for (JsonNode childNode : node) {
                 removeFormats(childNode);
@@ -138,6 +147,7 @@ public class JsonNestedFormatRemover
 
     private List<JsonNode> getRawChildValues(JsonNode node)
     {
+        List<JsonNode> rawChildrenNodes = Collections.emptyList();
         if (node.isArray()) {
             if (node.size() > 0)
             {
@@ -145,26 +155,53 @@ public class JsonNestedFormatRemover
                 JsonNode elementRawValue = firstChildNode.get(RAW_KEY);
                 if (elementRawValue != null)
                 {
-                    List<JsonNode> resultList = new LinkedList<>();
-                    resultList.add(elementRawValue);
+                    rawChildrenNodes = new LinkedList<>();
+                    rawChildrenNodes.add(elementRawValue);
                     for (int i = 1; i < node.size(); i++)
                     {
                         JsonNode childNode = node.get(i);
                         elementRawValue = childNode.get(RAW_KEY);
-                        resultList.add(elementRawValue);
+                        rawChildrenNodes.add(elementRawValue);
                     }
-                    return resultList;
                 }
             }
         }
         else if (node.isObject()) {
             JsonNode elementRawValue = node.get(RAW_KEY);
             if (elementRawValue != null) {
-                return Collections.singletonList(elementRawValue);
+                rawChildrenNodes = Collections.singletonList(elementRawValue);
             }
         }
 
-        return Collections.emptyList();
+        if (rawChildrenNodes.size() > 0 && updateLargeScintificNotationDecimals) {
+            rawChildrenNodes = updateLargeDoubleNodes(rawChildrenNodes);
+        }
+
+        return rawChildrenNodes;
+    }
+
+    // TODO - clean up and test (and perhaps move) this code
+    /**
+     * Updates list changing DbouleNode to LongNode (if applicable)
+     * @param nodeList nodeList
+     * @return new list with updated values
+     */
+    private List<JsonNode> updateLargeDoubleNodes(List<JsonNode> nodeList)
+    {
+        List<JsonNode> updateNodeList = new ArrayList<>();
+        for (JsonNode rawChildrenNode : nodeList) {
+            JsonNode resultNode = rawChildrenNode;
+            if (rawChildrenNode instanceof DoubleNode) {
+                DoubleNode doubleNode = (DoubleNode)rawChildrenNode;
+
+                // trick to evaluate if decimal is a wholeNumber
+                if (doubleNode.doubleValue() % 1 == 0) {
+                    resultNode = new LongNode(doubleNode.longValue());
+                }
+            }
+            updateNodeList.add(resultNode);
+        }
+        return updateNodeList;
     }
 
     private JsonNode covertToNode(String json)
