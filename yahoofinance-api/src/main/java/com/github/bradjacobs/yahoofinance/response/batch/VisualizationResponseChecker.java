@@ -14,7 +14,6 @@ public class VisualizationResponseChecker implements BatchResponseChecker
         }
 
         String responseBody = response.getBody();
-
         if (responseBody.contains(EMPTY_ROWS_IDENTIFIER)) {
             return false;
         }

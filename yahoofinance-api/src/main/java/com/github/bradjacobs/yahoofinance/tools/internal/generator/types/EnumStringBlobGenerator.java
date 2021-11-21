@@ -36,7 +36,7 @@ abstract class EnumStringBlobGenerator
     /**
      * Makes Http Call to fetch the json for the value of the 'getUrl()' method.
      * @return json response.
-     * @throws IOException
+     * @throws IOException ioException
      */
     protected String fetchJson() throws IOException
     {

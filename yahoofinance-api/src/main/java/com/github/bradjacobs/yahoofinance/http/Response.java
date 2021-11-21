@@ -1,8 +1,6 @@
 package com.github.bradjacobs.yahoofinance.http;
 
 
-import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;

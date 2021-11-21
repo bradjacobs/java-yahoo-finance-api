@@ -4,7 +4,9 @@ import com.github.bradjacobs.yahoofinance.request.builder.helper.MultiTickerPara
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class QuoteRequestBuilder extends BaseRequestBuilder<QuoteRequestBuilder>
 {

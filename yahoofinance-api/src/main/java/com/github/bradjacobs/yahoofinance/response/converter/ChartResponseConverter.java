@@ -10,7 +10,11 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ChartResponseConverter implements ResponseConverter
 {
@@ -82,7 +86,7 @@ public class ChartResponseConverter implements ResponseConverter
         boolean closeValuesExist = ArrayUtils.isNotEmpty(closeValues);
         boolean adjCloseValuesExist = ArrayUtils.isNotEmpty(adjCloseValues);
 
-        // check if have the minimal data
+        // check that minimal data exists
         if (ArrayUtils.isEmpty(timestampValues)) {
             // Two scenarios for this case:
             //   1. response has no data whatsoever (i.e. a date range w/ no data) === > return empty collection

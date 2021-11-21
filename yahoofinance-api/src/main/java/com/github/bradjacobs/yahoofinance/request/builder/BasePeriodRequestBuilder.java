@@ -98,7 +98,7 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
 
         // Note: would be simpler to always do:
         //     Instant instantStart = instantNow.minus(value, unit);
-        // HOWEVER.. Instant doesn't support 'bigger' units (WEEKS,MONTHS,YEARS) for this operation.
+        // HOWEVER - Instant doesn't support 'bigger' units (WEEKS,MONTHS,YEARS) for this operation.
 
         LocalDateTime ldt = LocalDateTime.from(instantNow.atZone(GMT_ZONE));
         switch (unit) {

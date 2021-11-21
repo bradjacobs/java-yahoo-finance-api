@@ -19,7 +19,7 @@ public enum YahooModule
     BALANCE_SHEET_HISTORY_QUARTERLY("balanceSheetHistoryQuarterly"),
     DEFAULT_KEY_STATISTICS("defaultKeyStatistics"),
     CASH_FLOW_STMT_HISTORY("cashFlowStatementHistory"),
-    CASJ_FLOW_STMT_HISTORY_QUARTERLY("cashFlowStatementHistoryQuarterly"),
+    CASH_FLOW_STMT_HISTORY_QUARTERLY("cashFlowStatementHistoryQuarterly"),
     EARNINGS("earnings"),
     EARNINGS_HISTORY("earningsHistory"),
     FINANCIAL_DATA("financialData"),

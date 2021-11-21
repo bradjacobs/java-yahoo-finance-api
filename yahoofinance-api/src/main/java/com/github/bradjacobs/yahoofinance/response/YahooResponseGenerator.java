@@ -10,7 +10,7 @@ import java.util.List;
 // todo - the original need for this class is no longer, thus this class might get removed.
 public class YahooResponseGenerator
 {
-    public YahooResponse makeRessponse(YahooFinanceRequest request, Response rawResponse)
+    public YahooResponse makeResponse(YahooFinanceRequest request, Response rawResponse)
     {
         return new YahooResponse(request.getEndpoint(), rawResponse);
     }

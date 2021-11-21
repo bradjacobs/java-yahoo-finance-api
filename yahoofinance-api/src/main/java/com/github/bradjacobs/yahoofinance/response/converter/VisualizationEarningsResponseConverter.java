@@ -4,7 +4,10 @@ import com.github.bradjacobs.yahoofinance.response.converter.util.SimpleMapOfMap
 import com.github.bradjacobs.yahoofinance.util.JsonPathDocContextCreator;
 import com.jayway.jsonpath.DocumentContext;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class VisualizationEarningsResponseConverter implements ResponseConverter
 {

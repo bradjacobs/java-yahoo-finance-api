@@ -9,7 +9,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.bradjacobs.yahoofinance.request.builder.ChartRequestBuilder.IndicatorFieldSelection.*;
+import static com.github.bradjacobs.yahoofinance.request.builder.ChartRequestBuilder.IndicatorFieldSelection.ADJ_CLOSE_ONLY;
+import static com.github.bradjacobs.yahoofinance.request.builder.ChartRequestBuilder.IndicatorFieldSelection.ALL;
+import static com.github.bradjacobs.yahoofinance.request.builder.ChartRequestBuilder.IndicatorFieldSelection.CLOSE_ADJCLOSE;
+import static com.github.bradjacobs.yahoofinance.request.builder.ChartRequestBuilder.IndicatorFieldSelection.CLOSE_ONLY;
 
 public class ChartRequestBuilder extends BasePeriodRequestBuilder<ChartRequestBuilder>
 {

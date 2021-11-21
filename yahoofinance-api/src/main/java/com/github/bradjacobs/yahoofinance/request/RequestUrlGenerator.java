@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public class RequestUrlGenerator
         return buildRequestUrl(request, null);
     }
 
-    public String buildRequestUrl(YahooFinanceRequest request, String crumb) throws IOException
+    public String buildRequestUrl(YahooFinanceRequest request, String crumb)
     {
         Map<String, String> paramMap = request.getParamMap();
         if (StringUtils.isNotEmpty(crumb)) {

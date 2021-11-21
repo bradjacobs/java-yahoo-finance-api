@@ -4,14 +4,16 @@
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.Category;
 import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import com.jayway.jsonpath.JsonPath;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -90,7 +92,7 @@ public class ScreenerFieldEnumGenerator extends EnumStringBlobGenerator
             .collect(Collectors.toList());
 
         List<ScreenerFieldDefinition> premiumFieldList = filteredList.stream()
-            .filter(sf -> sf.getIsPremium())
+            .filter(ScreenerFieldDefinition::getIsPremium)
             .collect(Collectors.toList());
 
         List<EnumInfo> enumInfoList = new ArrayList<>();

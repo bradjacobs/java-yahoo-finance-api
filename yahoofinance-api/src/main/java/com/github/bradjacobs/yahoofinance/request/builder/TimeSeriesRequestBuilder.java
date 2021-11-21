@@ -9,9 +9,13 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 
-import java.util.*;
-
-import static com.github.bradjacobs.yahoofinance.types.YahooEndpoint.TIMESERIES;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSeriesRequestBuilder>
 {

@@ -4,7 +4,11 @@ import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.response.converter.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 abstract public class AbstractResponse
 {
@@ -28,15 +32,9 @@ abstract public class AbstractResponse
     abstract protected List<Response> getListResponse();
     abstract public boolean hasErrors();
 
-
     public YahooEndpoint getEndpoint()
     {
         return endpoint;
-    }
-
-    public YahooResponseConverter getResponseConverter()
-    {
-        return responseConverter;
     }
 
 

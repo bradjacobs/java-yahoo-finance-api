@@ -3,11 +3,12 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 import com.github.bradjacobs.yahoofinance.request.builder.helper.MultiTickerParamSet;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBuilder>
 {
-    private YahooEndpoint endpoint;
+    private final YahooEndpoint endpoint;
 
     // use collection to allow for case where some endpoints allow multiple ticker values
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();

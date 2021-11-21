@@ -123,7 +123,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
         // first fetch all the names (aka types) (aka names of the fields that were returned)
         String[] elementNames = jsonDoc.read(ELEMENT_NAMES_PATH, String[].class);
 
-        List<Map<String,Object>> resultsDataList = jsonDoc.read(RESULT_OBJECTS_PATH);;
+        List<Map<String,Object>> resultsDataList = jsonDoc.read(RESULT_OBJECTS_PATH);
 
         int entryCount = elementNames.length;
         for (int i = 0; i < entryCount; i++)
@@ -195,7 +195,7 @@ public class TimeSeriesResponseConverter implements ResponseConverter
     //  ( dev note: did NOT see any perf improvement here with a caching solution )
     private String getBaseAttributeName(String attributeName, TimeSeriesUnit type)
     {
-        // first lop off the prefix... that happens to be the same length as the enum.
+        // first remove the prefix, which happens to be the same length as the enum.
         String baseName = attributeName.substring(type.toString().length());
 
         // special case... ugh

@@ -17,7 +17,6 @@ public class BatchResponseCheckerFactory
         {
             case SCREENER:
             case PREMIUM_SCREENER:
-                return COUNT_TOTAL_PREFIX_CHECKER;
             case LOOKUP:
                 return COUNT_TOTAL_PREFIX_CHECKER;
             case VISUALIZATION:

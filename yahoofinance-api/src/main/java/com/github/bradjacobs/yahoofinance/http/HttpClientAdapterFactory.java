@@ -60,15 +60,13 @@ public class HttpClientAdapterFactory
             .setCookieSpec(CookieSpecs.STANDARD)
             .build();
 
-        CloseableHttpClient httpClient = HttpClientBuilder.create()
+        return HttpClientBuilder.create()
             //.setKeepAliveStrategy() // default should be fine
             .setDefaultRequestConfig(config)
             .setMaxConnPerRoute(MAX_CONNECTIONS_PER_HOST)
             .setMaxConnTotal(MAX_TOTAL_CONNECTIONS)
             .setRedirectStrategy(new LaxRedirectStrategy())  // allow redirect for all primary method types
             .build();
-
-        return httpClient;
     }
 
 

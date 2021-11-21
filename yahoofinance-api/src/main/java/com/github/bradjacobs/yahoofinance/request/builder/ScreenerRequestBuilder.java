@@ -5,9 +5,17 @@ import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.types.screener.*;
+import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
+import com.github.bradjacobs.yahoofinance.types.screener.Operand;
+import com.github.bradjacobs.yahoofinance.types.screener.Operator;
+import com.github.bradjacobs.yahoofinance.types.screener.Query;
+import com.github.bradjacobs.yahoofinance.types.screener.ScreenerCriteria;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder> implements BatchableRequestBuilder
@@ -32,9 +40,9 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     // these remain const until there's need otherwise.
     //        side note:  it's possible to use 'entityIdType' instead of a quoteType, but is untested/unsupported for now
     private final Type quoteType = Type.EQUITY;
-    private final String topOperator = Operator.AND.getValue().toUpperCase();  // make uppercase only b/c the website does it.
-    private final String userId = "";
-    private final String userIdType = "guid";
+    private static final String TOP_OPERATOR = Operator.AND.getValue().toUpperCase();  // make uppercase only b/c the website does it.
+    private static final String USER_ID = "";
+    private static final String USER_ID_TYPE = "guid";
 
 
     // TODO - FIX... 'technically' if supply an industry w/o a sector then the sector could be 'auto-magically' added,
@@ -188,9 +196,9 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         criteria.setSortField(sortField.getValue());
         criteria.setSortType(sortType);
         criteria.setQuoteType(quoteType.toString());
-        criteria.setTopOperator(topOperator);
-        criteria.setUserId(userId);
-        criteria.setUserIdType(userIdType);
+        criteria.setTopOperator(TOP_OPERATOR);
+        criteria.setUserId(USER_ID);
+        criteria.setUserIdType(USER_ID_TYPE);
 
         // TODO -- need to confirm if this is desired.
 //        String region = this.getRegion();

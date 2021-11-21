@@ -9,9 +9,13 @@ import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Given a JSON structure, return JSON with the "raw" values flattened.
@@ -44,10 +48,9 @@ import java.util.*;
 public class JsonNestedFormatRemover
 {
     private static final JsonMapper mapper = JsonMapperFactory.getMapper();
-
     private static final String RAW_KEY = "raw";
 
-    private boolean removeEmptyEntries;
+    private final boolean removeEmptyEntries;
 
     // todo - clean up required
     // values like "1.6125E10" will get turned into a Double by default

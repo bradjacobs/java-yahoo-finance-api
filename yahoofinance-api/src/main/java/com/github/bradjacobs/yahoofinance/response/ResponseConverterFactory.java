@@ -1,6 +1,18 @@
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.github.bradjacobs.yahoofinance.response.converter.*;
+import com.github.bradjacobs.yahoofinance.response.converter.ChartResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.DefaultResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.DefaultResponsePojoConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.LookupResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.QuoteResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.QuoteSummaryResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.ResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.ResponsePojoConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.ScreenerResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.SparkResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.TimeSeriesResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.VisualizationEarningsResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 public class ResponseConverterFactory
@@ -13,7 +25,7 @@ public class ResponseConverterFactory
     /**
      * Get response converter based on endpoint
      * @param endpoint endpoint
-     * @return
+     * @return converter
      */
     public static YahooResponseConverter getResponseConverter(YahooEndpoint endpoint)
     {
@@ -25,7 +37,7 @@ public class ResponseConverterFactory
      * Get response converter based on endpoint
      * @param endpoint endpoint
      * @param config (optional) specific 'date' conversion settings.   Only used for certain converters
-     * @return
+     * @return converter
      */
     public static YahooResponseConverter getResponseConverter(YahooEndpoint endpoint, ResponseConverterConfig config)
     {

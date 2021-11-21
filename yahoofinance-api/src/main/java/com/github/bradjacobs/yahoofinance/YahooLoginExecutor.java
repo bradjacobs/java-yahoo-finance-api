@@ -161,7 +161,7 @@ public class YahooLoginExecutor
 
     private Response executeRequest(String url, String postBody, Map<String,String> headerMap) throws IOException
     {
-        Response response = null;
+        Response response;
         if (StringUtils.isNotEmpty(postBody)) {
             response = this.httpClient.executePost(url, postBody, headerMap);
         }

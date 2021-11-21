@@ -6,11 +6,15 @@ import org.testng.annotations.Test;
 
 import java.util.Map;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 
 public class TimeSeriesResponseConverterTest
 {
+    private static final String ROOT_PATH = "$.timeseries.result";
+
     @Test
     public void testConvertAnnualToMapOfMaps() throws Exception
     {
@@ -22,7 +26,6 @@ public class TimeSeriesResponseConverterTest
         ResponseConverterConfig config = ResponseConverterConfig.builder()
                 .useDateAsMapKey(useDateAsMapKey)
                 .autoDetectDateTime(autoDetectDateTime)
-                .useBigDecimals(useBigDecimals)
                 .build();
 
         TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter(config);

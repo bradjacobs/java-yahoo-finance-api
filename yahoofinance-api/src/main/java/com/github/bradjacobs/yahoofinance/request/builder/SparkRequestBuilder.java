@@ -5,7 +5,8 @@ import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SparkRequestBuilder extends BaseRequestBuilder<SparkRequestBuilder>
 {
@@ -14,8 +15,8 @@ public class SparkRequestBuilder extends BaseRequestBuilder<SparkRequestBuilder>
     private Interval interval = Interval.ONE_DAY;  // default
 
     //these should be allowed, but haven't seem them work (thus far)
-    //  private Boolean includeTimestamps;
-    //  private Boolean includePrePost;
+    //private Boolean includeTimestamps;
+    //private Boolean includePrePost;
 
     public SparkRequestBuilder withTicker(String... tickers) {
         tickerSet.updateTickers(tickers);
