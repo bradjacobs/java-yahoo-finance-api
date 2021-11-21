@@ -3,10 +3,12 @@
  */
 package com.github.bradjacobs.yahoofinance.types;
 
+import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaKey;
+
 import javax.annotation.Generated;
 
 @Generated(value="yahoo-finance-api-internal-tools", date="2021-11-09")
-public enum ScreenerField
+public enum ScreenerField implements CriteriaKey
 {
     // Basic Fields
     ALTMANZSCOREUSINGTHEAVERAGESTOCKINFORMATIONFORAPERIOD("altmanzscoreusingtheaveragestockinformationforaperiod.lasttwelvemonths", true, "Altman Z Score Using the Average Stock Information for a Period", false),
@@ -173,5 +175,10 @@ public enum ScreenerField
 
     public boolean isPremium() {
         return isPremium;
+    }
+
+    @Override
+    public String getKeyName() {
+        return value;
     }
 }

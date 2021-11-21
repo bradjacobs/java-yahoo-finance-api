@@ -2,17 +2,16 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.helper.QueryBuilder;
 import com.github.bradjacobs.yahoofinance.types.Exchange;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaEnum;
-import com.github.bradjacobs.yahoofinance.types.criteria.Operand;
 import com.github.bradjacobs.yahoofinance.types.criteria.Operator;
 import com.github.bradjacobs.yahoofinance.types.criteria.Query;
 import com.github.bradjacobs.yahoofinance.types.criteria.ScreenerCriteria;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -27,11 +26,10 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     private static final String SORT_DESC = "DESC";
     private static final String SORT_ASC = "ASC";
     private static final int MIN_BATCHABLE_SIZE = 10;
+    private static final Set<Exchange> NASDAQ_SUB_TYPES =
+            new LinkedHashSet<>(Arrays.asList(Exchange.NASDAQGM, Exchange.NASDAQGS, Exchange.NASDAQCM));
 
     private boolean usePremium = false;
-
-    private Set<Exchange> NASDAQ_SUB_TYPES =
-            new LinkedHashSet<>(Arrays.asList(Exchange.NASDAQGM, Exchange.NASDAQGS, Exchange.NASDAQCM));
 
     // __NOTE__: all variables are set to DEFAULT value
     private int size = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
@@ -58,9 +56,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     //    it's important to do this check, or else the query can produce 'zero results' and might not realize there was a problem.
     private boolean sectorIsSet = false;
     private boolean industryIsSet = false;
-
-
-    private final ScreenerQueryBuilder queryBuilder = new ScreenerQueryBuilder();
+    private final QueryBuilder queryBuilder = new QueryBuilder();
 
 
     public ScreenerRequestBuilder()
@@ -120,24 +116,20 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     }
     public ScreenerRequestBuilder in(ScreenerField field, List<String> values)
     {
+        // see boolean declarations for info
+        this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
+        this.sectorIsSet |= ScreenerField.SECTOR.equals((field));
+
         this.queryBuilder.in(field, values);
         return this;
     }
     public ScreenerRequestBuilder in(ScreenerField field, String ... values)
     {
-        // see boolean declarations for info
-        this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
-        this.sectorIsSet |= ScreenerField.SECTOR.equals((field));
-
         return (values != null ? in(field, Arrays.asList(values)) : this);
     }
 
     public ScreenerRequestBuilder in(ScreenerField field, CriteriaEnum ... values)
     {
-        // see boolean declarations for info
-        this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
-        this.sectorIsSet |= ScreenerField.SECTOR.equals((field));
-
         List<String> criteriaValues = getCriteriaEnumValues(values);
         if (criteriaValues.size() > 0) {
             return in(field, criteriaValues);
@@ -181,7 +173,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         this.usePremium = premium;
         return this;
     }
-
 
     @Override
     protected String getRequestTicker()
@@ -231,8 +222,8 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
 //            this.queryBuilder.in(ScreenerField.REGION, Collections.singletonList(region.toLowerCase()));
 //        }
 
-
         Query query = this.queryBuilder.build();
+
         criteria.setQuery(query);
         return criteria;
     }
@@ -241,79 +232,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     protected ScreenerRequestBuilder getThis()
     {
         return this;
-    }
-
-
-    private static class ScreenerQueryBuilder
-    {
-        private static final Operator op = Operator.AND;  // unchangeable (for now)
-
-
-        private final Map<ScreenerField, Operand> fieldOperandMap = new LinkedHashMap<>();  // preserving creation order.
-
-        public ScreenerQueryBuilder eq(ScreenerField field, Long value)
-        {
-            fieldOperandMap.put(field, generateRestriction(field, Operator.EQUAL, value));
-            return this;
-        }
-        public ScreenerQueryBuilder lt(ScreenerField field, Number value)
-        {
-            fieldOperandMap.put(field, generateRestriction(field, Operator.LESS_THAN, value));
-            return this;
-        }
-        public ScreenerQueryBuilder gt(ScreenerField field, Number value)
-        {
-            fieldOperandMap.put(field, generateRestriction(field, Operator.GREATER_THAN, value));
-            return this;
-        }
-        public ScreenerQueryBuilder between(ScreenerField field, Number value1, Number value2)
-        {
-            fieldOperandMap.put(field, generateRestriction(field, Operator.BETWEEN, value1, value2));
-            return this;
-        }
-        public ScreenerQueryBuilder in(ScreenerField field, List<String> values)
-        {
-            fieldOperandMap.put(field, generateInListRestriction(field, values));
-            return this;
-        }
-
-        public Query build() {
-            Query query = new Query();
-            query.setOperator(op.getValue());
-            query.setOperands(new ArrayList<>(fieldOperandMap.values()));
-            return query;
-        }
-
-        private static Operand generateRestriction(ScreenerField field, Operator op, Object value)
-        {
-            Operand operand = new Operand();
-            operand.setOperator(op.getValue());
-            operand.setOperands(Arrays.asList(field.getValue(), value));
-            return operand;
-        }
-
-        private static Operand generateRestriction(ScreenerField field, Operator op, Object value1, Object value2)
-        {
-            Operand operand = new Operand();
-            operand.setOperator(op.getValue());
-            operand.setOperands(Arrays.asList(field.getValue(), value1, value2));
-            return operand;
-        }
-
-        private static Operand generateInListRestriction(ScreenerField field, List<String> values)
-        {
-            Operand operand = new Operand();
-            operand.setOperator(Operator.OR.getValue());
-
-            List<Object> subOpList = new ArrayList<>();
-            for (String value : values)
-            {
-                Operand valueOperand = generateRestriction(field, Operator.EQUAL, value);
-                subOpList.add(valueOperand);
-            }
-            operand.setOperands(subOpList);
-            return operand;
-        }
     }
 
     @Override

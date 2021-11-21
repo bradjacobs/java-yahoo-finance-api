@@ -3,14 +3,15 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.helper.QueryBuilder;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
+import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaKey;
 import com.github.bradjacobs.yahoofinance.types.criteria.Operand;
 import com.github.bradjacobs.yahoofinance.types.criteria.Operator;
 import com.github.bradjacobs.yahoofinance.types.criteria.Query;
 import com.github.bradjacobs.yahoofinance.types.criteria.VisualizationCriteria;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,10 +28,25 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     private int size = 100;
     private int offset = 0;
 
+    // todo -- better home for this.
+    private enum VisualizationCriteriaField implements CriteriaKey
+    {
+        START_DATE_TIME("startdatetime"),
+        REGION("region");
+
+        private final String key;
+        private VisualizationCriteriaField(String key) {
+            this.key = key;
+        }
+
+        @Override
+        public String getKeyName() {
+            return key;
+        }
+    }
+
     private boolean isAggregate = false;  // todo - always false for now
     private static final String SORT_TYPE = "ASC";      // for now sort order is const
-
-    private static final String DATE_CRITERIA_FIELD_NAME = "startdatetime";
 
     private static final long ONE_DAY_SECONDS = 24 * 60 * 60;
     private static final int MIN_BATCHABLE_SIZE = 10;
@@ -66,24 +82,16 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
         criteria.setEntityIdType(getEntityType());
         criteria.setIncludeFields(getIncludeFields());
 
-        Query query = new Query();
-        query.setOperator(Operator.AND.getValue()); // unchangeable for now
-
-        List<Operand> operandList = new ArrayList<>();
-
+        QueryBuilder queryBuilder = new QueryBuilder();
         MetaEpochSecondsConverter metaEpochSecondsConverter = MetaEpochSecondsConverter.getInstance();
-        if (this.startPeriod != null)
-        {
+        if (this.startPeriod != null) {
             String startPeriodString = metaEpochSecondsConverter.toDateString(this.startPeriod);
             if (this.endPeriod != null) {
                 String endPeriodString = metaEpochSecondsConverter.toDateString(this.endPeriod);
-                operandList.add(generateRestriction(DATE_CRITERIA_FIELD_NAME, Operator.BETWEEN, startPeriodString, endPeriodString));
+                queryBuilder.between(VisualizationCriteriaField.START_DATE_TIME, startPeriodString, endPeriodString);
             }
             else {
-                // todo == might be able to do a simple EQ
-                String endPeriodString = metaEpochSecondsConverter.toDateString(this.startPeriod + ONE_DAY_SECONDS);
-                operandList.add(generateRestriction(DATE_CRITERIA_FIELD_NAME, Operator.GREATER_THAN_EQUAL, startPeriodString));
-                operandList.add(generateRestriction(DATE_CRITERIA_FIELD_NAME, Operator.LESS_THAN, endPeriodString));
+                queryBuilder.eq(VisualizationCriteriaField.START_DATE_TIME, startPeriodString);
             }
         }
 
@@ -96,10 +104,10 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
 
         String region = getRegion();
         if (! StringUtils.isEmpty(region)) {
-            operandList.add(generateRestriction(ParamKeys.REGION, Operator.EQUAL, region.toLowerCase()));
+            queryBuilder.eq(VisualizationCriteriaField.REGION, region.toLowerCase());
         }
 
-        query.setOperands(operandList);
+        Query query = queryBuilder.build();
         criteria.setQuery(query);
         return criteria;
     }
@@ -130,20 +138,4 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
         this.offset = offset;
     }
 
-
-    private static Operand generateRestriction(String fieldName, Operator op, Object value)
-    {
-        Operand operand = new Operand();
-        operand.setOperator(op.getValue());
-        operand.setOperands(Arrays.asList(fieldName, value));
-        return operand;
-    }
-
-    private static Operand generateRestriction(String fieldName, Operator op, Object value1, Object value2)
-    {
-        Operand operand = new Operand();
-        operand.setOperator(op.getValue());
-        operand.setOperands(Arrays.asList(fieldName, value1, value2));
-        return operand;
-    }
 }
