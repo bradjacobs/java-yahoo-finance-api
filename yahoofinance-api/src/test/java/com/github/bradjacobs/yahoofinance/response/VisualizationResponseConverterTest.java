@@ -5,7 +5,7 @@ import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.EarningsEventRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.ScreenerRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.converter.DefaultResponsePojoConverter;
-import com.github.bradjacobs.yahoofinance.response.converter.VisualizationEarningsResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.VisualizationResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 import org.apache.commons.io.FileUtils;
@@ -17,9 +17,9 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
-public class VisualizationEarningsResponseConverterTest
+public class VisualizationResponseConverterTest
 {
-    private static final VisualizationEarningsResponseConverter responseConverter = new VisualizationEarningsResponseConverter();
+    private static final VisualizationResponseConverter responseConverter = new VisualizationResponseConverter();
 
     private static final String DIR = "/Users/bradjacobs/git/bradjacobs/java-yahoo-finance-api/yahoofinance-api/src/main/java/com/github/bradjacobs/yahoofinance/tools/internal/generator/types/data/visualization/";
 

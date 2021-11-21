@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VisualizationEarningsResponseConverter implements ResponseConverter
+public class VisualizationResponseConverter implements ResponseConverter
 {
     private static final String DOCUMENTS_PATH = "$.finance.result[0].documents[0]";
     private static final String COLUMN_NAMES_PATH = DOCUMENTS_PATH + ".columns[*].id";

@@ -11,7 +11,7 @@ import com.github.bradjacobs.yahoofinance.response.converter.ResponsePojoConvert
 import com.github.bradjacobs.yahoofinance.response.converter.ScreenerResponseConverter;
 import com.github.bradjacobs.yahoofinance.response.converter.SparkResponseConverter;
 import com.github.bradjacobs.yahoofinance.response.converter.TimeSeriesResponseConverter;
-import com.github.bradjacobs.yahoofinance.response.converter.VisualizationEarningsResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.VisualizationResponseConverter;
 import com.github.bradjacobs.yahoofinance.response.converter.YahooResponseConverter;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -77,7 +77,7 @@ public class ResponseConverterFactory
                 baseResponseConverter = new TimeSeriesResponseConverter(config); // todo: come back to the future of the config param
                 break;
             case VISUALIZATION:
-                baseResponseConverter = new VisualizationEarningsResponseConverter();
+                baseResponseConverter = new VisualizationResponseConverter();
                 break;
             default:
                 baseResponseConverter = new DefaultResponseConverter();
