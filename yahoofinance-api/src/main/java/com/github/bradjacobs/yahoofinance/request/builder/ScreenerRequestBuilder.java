@@ -2,6 +2,7 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.types.Exchange;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
@@ -13,9 +14,12 @@ import com.github.bradjacobs.yahoofinance.types.criteria.ScreenerCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder> implements BatchableRequestBuilder
@@ -25,6 +29,9 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     private static final int MIN_BATCHABLE_SIZE = 10;
 
     private boolean usePremium = false;
+
+    private Set<Exchange> NASDAQ_SUB_TYPES =
+            new LinkedHashSet<>(Arrays.asList(Exchange.NASDAQGM, Exchange.NASDAQGS, Exchange.NASDAQCM));
 
     // __NOTE__: all variables are set to DEFAULT value
     private int size = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
@@ -131,11 +138,29 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
         this.sectorIsSet |= ScreenerField.SECTOR.equals((field));
 
-        if (values != null) {
-            List<String> criteriaValues = Arrays.stream(values).map(CriteriaEnum::getCriteriaValue).collect(Collectors.toList());
+        List<String> criteriaValues = getCriteriaEnumValues(values);
+        if (criteriaValues.size() > 0) {
             return in(field, criteriaValues);
         }
         return this;
+    }
+
+    private List<String> getCriteriaEnumValues(CriteriaEnum... values) {
+        if (values == null || values.length == 0) {
+            return Collections.emptyList();
+        }
+
+        // depending on context, either needs the NASDAQ or the 3 subtypes
+        //   so just handle all scenarios.
+        //      need a better spot for this!!!
+        Set<CriteriaEnum> criteriaEnums = new LinkedHashSet<>(Arrays.asList(values));
+        if (criteriaEnums.contains(Exchange.NASDAQ)) {
+            criteriaEnums.addAll(NASDAQ_SUB_TYPES);
+        }
+        if (criteriaEnums.containsAll(NASDAQ_SUB_TYPES)) {
+            criteriaEnums.add(Exchange.NASDAQ);
+        }
+        return criteriaEnums.stream().map(CriteriaEnum::getCriteriaValue).collect(Collectors.toList());
     }
 
     @Override

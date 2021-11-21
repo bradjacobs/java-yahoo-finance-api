@@ -9,14 +9,13 @@ public enum Exchange implements CriteriaEnum
 {
     //  NOTE:  looks like 'ARCA' can't be used for queries!
     ARCA("PCX", "NYSE Arca"),     // note: Yahoo calls the value 'PSX', but it is NyseArca
-
     ASE("ASE", "NYSE American"),  // a.k.a.  AMEX
+    NASDAQ("NAS", "NASDAQ"),
     NASDAQCM("NCM", "NASDAQ Capital Market"),
     NASDAQGM("NGM", "NASDAQ (Global Market)"),
     NASDAQGS("NMS", "NASDAQ (Global Select Market)"),
     NYSE("NYQ", "New York Stock Exchange"),
     PNK("PNK", "Other OTC");
-
 
 
     //BSE("BSE", "__unused__"),  // listed as Yahoo Exchange choice, probably once meant "Boston Stock Exchange", but now looks to be "Bombay Stock Exchange"?
