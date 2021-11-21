@@ -14,7 +14,7 @@ import java.util.Set;
 public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryRequestBuilder>
 {
     private String ticker;
-    private final Set<YahooModule> modules = new LinkedHashSet<>(); // only applicable for QuoteSummary
+    private final Set<YahooModule> modules = new LinkedHashSet<>();
 
     @Override
     protected List<String> getRequiredParameters() {
@@ -28,7 +28,6 @@ public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryR
 
     public QuoteSummaryRequestBuilder withModules(YahooModule... modules) {
         if (modules != null && modules.length > 0) {
-
             this.modules.addAll(Arrays.asList(modules));
         }
         else {
@@ -36,7 +35,6 @@ public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryR
         }
         return this;
     }
-
 
     @Override
     protected YahooEndpoint getEndpoint()
@@ -49,7 +47,6 @@ public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryR
     {
         return this.ticker;
     }
-
 
     @Override
     protected Map<String, String> buildEndpointParamMap()
@@ -70,6 +67,7 @@ public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryR
 
     private String generateModuleList(Set<YahooModule> modules)
     {
+        // todo - can simplify
         StringBuilder sb = new StringBuilder();
         for (YahooModule module : modules) {
             if (sb.length() > 0) {
