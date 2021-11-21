@@ -10,7 +10,7 @@ import java.util.Map;
 public class QuoteSummaryResponseConverter extends AbstractWrappedResponseConverter implements ResponseConverter
 {
     private static final String DEFAULT_MAP_PATH = "$.quoteSummary.result[0]";
-
+    private static final String MODULE_MAP_KEY_LABEL = "module";
 
     public QuoteSummaryResponseConverter() {
         super(generateNestedResponseConverter());
@@ -21,8 +21,6 @@ public class QuoteSummaryResponseConverter extends AbstractWrappedResponseConver
         converter = new JsonNestedFormatRemoverAdapter(converter, false);
         return converter;
     }
-
-
 
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json)
@@ -40,7 +38,7 @@ public class QuoteSummaryResponseConverter extends AbstractWrappedResponseConver
 
             // creating a new map _only_ to have the module name appear first
             Map<String, Object> resultEntryMap = new LinkedHashMap<>();
-            resultEntryMap.put("module", moduleName);
+            resultEntryMap.put(MODULE_MAP_KEY_LABEL, moduleName);
             resultEntryMap.putAll(moduleDataMap);
             resultList.add(resultEntryMap);
         }
