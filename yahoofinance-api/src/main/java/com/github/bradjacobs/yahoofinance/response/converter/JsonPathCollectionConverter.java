@@ -21,7 +21,6 @@ public class JsonPathCollectionConverter implements ResponseConverter
         this.jsonPathDocContextCreator = new JsonPathDocContextCreator();
     }
 
-
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json) {
 
