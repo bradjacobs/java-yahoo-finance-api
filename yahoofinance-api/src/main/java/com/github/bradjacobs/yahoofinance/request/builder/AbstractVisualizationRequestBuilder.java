@@ -4,10 +4,10 @@ import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsCon
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.types.screener.Operand;
-import com.github.bradjacobs.yahoofinance.types.screener.Operator;
-import com.github.bradjacobs.yahoofinance.types.screener.Query;
-import com.github.bradjacobs.yahoofinance.types.screener.VisualizationCriteria;
+import com.github.bradjacobs.yahoofinance.types.criteria.Operand;
+import com.github.bradjacobs.yahoofinance.types.criteria.Operator;
+import com.github.bradjacobs.yahoofinance.types.criteria.Query;
+import com.github.bradjacobs.yahoofinance.types.criteria.VisualizationCriteria;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

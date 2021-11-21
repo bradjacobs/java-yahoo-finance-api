@@ -3,7 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.types;
 
-import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
+import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaEnum;
 
 import javax.annotation.Generated;
 

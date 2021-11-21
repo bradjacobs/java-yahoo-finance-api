@@ -1,22 +1,13 @@
 /*
  * This file is subject to the terms and conditions defined in 'LICENSE' file.
  */
-package com.github.bradjacobs.yahoofinance.types.screener;
+package com.github.bradjacobs.yahoofinance.types.criteria;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "sortType",
-        "sortField",
-        "query",
-        "offset",
-        "size"
-})
-
-public class AbstractRequestCriteria
+// it is _assumed_ that all crteria have these common fields
+//   (if discover otherwise, this class subject to removal)
+abstract public class AbstractRequestCriteria
 {
     @JsonProperty("size")
     private Integer size;
@@ -78,5 +69,4 @@ public class AbstractRequestCriteria
     {
         this.query = query;
     }
-
 }

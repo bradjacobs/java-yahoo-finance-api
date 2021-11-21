@@ -5,11 +5,11 @@ import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.types.screener.CriteriaEnum;
-import com.github.bradjacobs.yahoofinance.types.screener.Operand;
-import com.github.bradjacobs.yahoofinance.types.screener.Operator;
-import com.github.bradjacobs.yahoofinance.types.screener.Query;
-import com.github.bradjacobs.yahoofinance.types.screener.ScreenerCriteria;
+import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaEnum;
+import com.github.bradjacobs.yahoofinance.types.criteria.Operand;
+import com.github.bradjacobs.yahoofinance.types.criteria.Operator;
+import com.github.bradjacobs.yahoofinance.types.criteria.Query;
+import com.github.bradjacobs.yahoofinance.types.criteria.ScreenerCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
