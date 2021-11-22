@@ -10,6 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryRequestBuilder>
 {
@@ -67,14 +68,6 @@ public class QuoteSummaryRequestBuilder extends BaseRequestBuilder<QuoteSummaryR
 
     private String generateModuleList(Set<YahooModule> modules)
     {
-        // todo - can simplify
-        StringBuilder sb = new StringBuilder();
-        for (YahooModule module : modules) {
-            if (sb.length() > 0) {
-                sb.append(',');
-            }
-            sb.append(module.getName());
-        }
-        return sb.toString();
+        return modules.stream().map(YahooModule::getName).collect(Collectors.joining(","));
     }
 }
