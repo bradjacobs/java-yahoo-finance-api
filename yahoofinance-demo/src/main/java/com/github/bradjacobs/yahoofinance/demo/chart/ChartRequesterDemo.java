@@ -5,7 +5,7 @@ import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.model.ChartResult;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -22,7 +22,7 @@ public class ChartRequesterDemo
         chartRequestRunner(SIMPLE.getRequest());
     }
 
-    private static void chartRequestRunner(YahooFinanceRequest req) throws IOException
+    private static void chartRequestRunner(YahooRequest req) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.CHART)) {
             throw new IllegalArgumentException("Must supply a chart-type request");

@@ -3,7 +3,9 @@
  */
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +32,8 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
     private final Map<String,String> additionalHeaderMap = new LinkedHashMap<>();
 
     protected abstract T getThis();
+
+
 
     protected String getRegion() {
         return region;
@@ -102,8 +106,8 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         return getThis();
     }
 
-    protected Map<String,String> buildParamMap() {
-
+    protected Map<String,String> buildParamMap()
+    {
         Map<String, String> paramMap = buildEndpointParamMap();
         paramMap.putAll(this.extraParametersMap);
 
@@ -117,36 +121,44 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
     abstract protected YahooEndpoint getEndpoint();
     abstract protected String getRequestTicker();
 
-    protected Object buildRequestPostBody() {
-        return null;  // no post body by default
-    }
-
-    public YahooFinanceRequest build() {
+    public YahooRequest build() {
 
         YahooEndpoint endpoint = getEndpoint();
         String ticker = getRequestTicker();
         Map<String, String> paramMap = buildParamMap();
         Object postBody = buildRequestPostBody();
 
-        YahooFinanceRequest req = generateRequest(endpoint, ticker, paramMap, postBody, additionalHeaderMap);
+        YahooRequest req = generateRequest(endpoint, ticker, paramMap, postBody, additionalHeaderMap);
         validateRequest(req);
         return req;
     }
 
-    protected YahooFinanceRequest generateRequest(
+    protected YahooRequest generateRequest(
             YahooEndpoint endpoint, String ticker,
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
-        return new YahooFinanceRequest(endpoint, ticker, paramMap, postBody, headerMap);
+        YahooRequest req = new YahooFinanceRequest(endpoint, ticker, paramMap, postBody, headerMap);
+        BatchableRequestBuilder batchBuilder = getAdditionalBatchableRequestBuilder();
+        if (batchBuilder != null) {
+            req = new YahooFinanceBatchRequest(req, batchBuilder);
+        }
+        return req;
     }
 
+    protected Object buildRequestPostBody() {
+        return null;  // no post body by default
+    }
+
+    protected BatchableRequestBuilder getAdditionalBatchableRequestBuilder() {
+        return null;
+    }
 
     /**
      * Will throw exception if request is invalid
      * @param request request to be validated
      */
     // todo: might refactor out into a separate class/strategy
-    protected void validateRequest(YahooFinanceRequest request)
+    protected void validateRequest(YahooRequest request)
     {
         YahooEndpoint endpoint = request.getEndpoint();
         if (endpoint == null) {

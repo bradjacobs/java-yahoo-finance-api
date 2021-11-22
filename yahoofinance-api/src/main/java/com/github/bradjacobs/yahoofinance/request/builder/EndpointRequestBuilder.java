@@ -15,6 +15,9 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
 
     public EndpointRequestBuilder(YahooEndpoint endpoint)
     {
+        if (endpoint == null) {
+            throw new IllegalArgumentException("Request is missing endpoint value.");
+        }
         this.endpoint = endpoint;
     }
 

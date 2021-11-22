@@ -2,13 +2,11 @@ package com.github.bradjacobs.yahoofinance.demo.spark;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
-import com.github.bradjacobs.yahoofinance.model.LookupResult;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.bradjacobs.yahoofinance.demo.spark.SparkRequestExample.MULTI;
@@ -17,12 +15,12 @@ public class SparkRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        YahooFinanceRequest req = MULTI.getRequest();
+        YahooRequest req = MULTI.getRequest();
         soarkRequestRunner(req);
     }
 
 
-    private static void soarkRequestRunner(YahooFinanceRequest req) throws IOException
+    private static void soarkRequestRunner(YahooRequest req) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.SPARK)) {
             throw new IllegalArgumentException("Must supply a spark-type request");

@@ -1,10 +1,8 @@
 package com.github.bradjacobs.yahoofinance.demo.timeseries;
 
 import com.github.bradjacobs.yahoofinance.demo.RequestExample;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
-import com.github.bradjacobs.yahoofinance.types.Interval;
-import com.github.bradjacobs.yahoofinance.types.Range;
 import com.github.bradjacobs.yahoofinance.types.StatementType;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 
@@ -15,7 +13,7 @@ public enum TimeSeriesRequestExample implements RequestExample
          * Get all available timeseries data for AAPL for years 2019 and 2020
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("AAPL")
@@ -27,7 +25,7 @@ public enum TimeSeriesRequestExample implements RequestExample
     },
     SIMPLE_ALT {
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("AAPL")
@@ -44,7 +42,7 @@ public enum TimeSeriesRequestExample implements RequestExample
          *   (e.g. must use a correct date range)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("AAPL")
@@ -60,7 +58,7 @@ public enum TimeSeriesRequestExample implements RequestExample
          * Get 'quarterly' timeseries data for AAPL for the last couple years
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("CAT")
@@ -73,7 +71,7 @@ public enum TimeSeriesRequestExample implements RequestExample
     },
     QTR_VALUE {
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("AAPL")
@@ -89,7 +87,7 @@ public enum TimeSeriesRequestExample implements RequestExample
          * set explicit return fields.  Requires caller to "know" the exact field names  (no prefix required)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("AAPL")
@@ -104,7 +102,7 @@ public enum TimeSeriesRequestExample implements RequestExample
          * set explicit return fields.  Requires caller to "know" the exact field names
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("AAPL")
@@ -120,7 +118,7 @@ public enum TimeSeriesRequestExample implements RequestExample
          * Requires Authorization  (still in flux!!!!)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("AAPL")

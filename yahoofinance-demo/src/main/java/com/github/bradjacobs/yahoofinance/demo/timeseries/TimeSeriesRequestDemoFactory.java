@@ -1,6 +1,6 @@
 package com.github.bradjacobs.yahoofinance.demo.timeseries;
 
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.types.StatementType;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
@@ -23,7 +23,7 @@ public class TimeSeriesRequestDemoFactory
     private static final long ONE_YEAR_MILLIS = 31536000000L;
 
     // note: the numeric id value has no real meaning
-    public static YahooFinanceRequest getRequest(int sampleRequestId)
+    public static YahooRequest getRequest(int sampleRequestId)
     {
         switch (sampleRequestId) {
             case 1: return SIMPLE_A;
@@ -43,7 +43,7 @@ public class TimeSeriesRequestDemoFactory
      * Get all available timeseries data for AAPL for years 2019 and 2020
      */
 
-    private static final YahooFinanceRequest SIMPLE_A =
+    private static final YahooRequest SIMPLE_A =
             YahooRequestBuilder.api()
                     .timeSeries()
                     .withTicker("AAPL")
@@ -53,7 +53,7 @@ public class TimeSeriesRequestDemoFactory
                     .build();
 
 
-    private static final YahooFinanceRequest SIMPLE_B =
+    private static final YahooRequest SIMPLE_B =
         YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("AAPL")
@@ -68,7 +68,7 @@ public class TimeSeriesRequestDemoFactory
      * NOTE:  you may have to know when the annual reports are available for any given security
      * (e.g. must use a correct date range)
      */
-    private static final YahooFinanceRequest ANNUAL =
+    private static final YahooRequest ANNUAL =
         YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("AAPL")
@@ -83,7 +83,7 @@ public class TimeSeriesRequestDemoFactory
     /**
      * Get 'quarterly' timeseries data for AAPL for the last couple years
      */
-    private static final YahooFinanceRequest QUARTERLY =
+    private static final YahooRequest QUARTERLY =
         YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("CAT")
@@ -94,7 +94,7 @@ public class TimeSeriesRequestDemoFactory
             .build();
 
 
-    private static final YahooFinanceRequest MISC =
+    private static final YahooRequest MISC =
         YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("AAPL")
@@ -105,7 +105,7 @@ public class TimeSeriesRequestDemoFactory
             .build();
 
     // set explicity fields.  Requires caller to 'know' the exact names
-    private static final YahooFinanceRequest CUSTOM_FIELDS =
+    private static final YahooRequest CUSTOM_FIELDS =
         YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("AAPL")
@@ -116,7 +116,7 @@ public class TimeSeriesRequestDemoFactory
             .build();
 
 
-    private static final YahooFinanceRequest CUSTOM_FIELDS_EXPLICIT =
+    private static final YahooRequest CUSTOM_FIELDS_EXPLICIT =
         YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("AAPL")
@@ -125,7 +125,7 @@ public class TimeSeriesRequestDemoFactory
             .setEnd(1609459200000L)
             .build();
 
-    private static final YahooFinanceRequest PREMIUM_REQUEST_1  =
+    private static final YahooRequest PREMIUM_REQUEST_1  =
         YahooRequestBuilder.api()
             .timeSeries()
             .withTicker("AAPL")

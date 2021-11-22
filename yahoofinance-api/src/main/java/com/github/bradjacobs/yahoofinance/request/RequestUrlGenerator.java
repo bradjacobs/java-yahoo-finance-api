@@ -4,7 +4,6 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,12 +13,12 @@ public class RequestUrlGenerator
     private static final String BASE_API_HOST = "query1.finance.yahoo.com";
     private static final String CRUMB_KEY = "crumb";
 
-    public String buildRequestUrl(YahooFinanceRequest request) throws IOException
+    public String buildRequestUrl(YahooRequest request)
     {
         return buildRequestUrl(request, null);
     }
 
-    public String buildRequestUrl(YahooFinanceRequest request, String crumb)
+    public String buildRequestUrl(YahooRequest request, String crumb)
     {
         Map<String, String> paramMap = request.getParamMap();
         if (StringUtils.isNotEmpty(crumb)) {
@@ -37,12 +36,14 @@ public class RequestUrlGenerator
             urlPath +=  "/" + ticker;
         }
 
-        URIBuilder builder = new URIBuilder().setScheme(BASE_API_SCHEME).setHost(BASE_API_HOST).setPath(urlPath);
+        URIBuilder builder = new URIBuilder()
+                .setScheme(BASE_API_SCHEME)
+                .setHost(BASE_API_HOST)
+                .setPath(urlPath);
 
         for (Map.Entry<String, String> paramEntry : paramMap.entrySet()) {
             builder.addParameter(paramEntry.getKey(), paramEntry.getValue());
         }
-
         return builder.toString();
     }
 }

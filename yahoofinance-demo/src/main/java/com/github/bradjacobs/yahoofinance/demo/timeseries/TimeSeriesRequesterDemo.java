@@ -2,14 +2,11 @@ package com.github.bradjacobs.yahoofinance.demo.timeseries;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
-import com.github.bradjacobs.yahoofinance.model.beta.BaseTimeSeriesResult;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.bradjacobs.yahoofinance.demo.timeseries.TimeSeriesRequestExample.SIMPLE;
@@ -18,12 +15,12 @@ public class TimeSeriesRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        YahooFinanceRequest req = SIMPLE.getRequest();
+        YahooRequest req = SIMPLE.getRequest();
         timeSeriesRequestRunner(req);
     }
 
 
-    private static void timeSeriesRequestRunner(YahooFinanceRequest req) throws IOException
+    private static void timeSeriesRequestRunner(YahooRequest req) throws IOException
     {
         if (req == null || !(req.getEndpoint().equals(YahooEndpoint.TIMESERIES) || req.getEndpoint().equals(YahooEndpoint.PREMIUM_TIMESERIES))) {
             throw new IllegalArgumentException("Must supply a timeseries-type request");

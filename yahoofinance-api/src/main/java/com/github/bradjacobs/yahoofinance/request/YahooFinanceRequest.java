@@ -12,7 +12,7 @@ import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import java.util.Collections;
 import java.util.Map;
 
-public class YahooFinanceRequest
+public class YahooFinanceRequest implements YahooRequest
 {
     protected final YahooEndpoint endpoint;
     protected final String ticker;
@@ -21,7 +21,6 @@ public class YahooFinanceRequest
     protected final Map<String,String> headerMap;
 
     private static final JsonMapper mapper = JsonMapperFactory.getMapper();
-
 
     public YahooFinanceRequest(YahooEndpoint endpoint, String ticker, Map<String,String> paramMap, Object postBody, Map<String,String> headerMap)
     {
@@ -32,17 +31,21 @@ public class YahooFinanceRequest
         this.headerMap = headerMap;
     }
 
-    public String getTicker() {
-        return ticker;
-    }
 
+    @Override
     public YahooEndpoint getEndpoint() {
         return endpoint;
+    }
+
+    public String getTicker() {
+        return ticker;
     }
 
     public Map<String, String> getParamMap() {
         return Collections.unmodifiableMap(this.paramMap);
     }
+
+    @Override
     public Map<String, String> getHeaderMap() {
         if (this.headerMap == null) {
             return Collections.emptyMap();

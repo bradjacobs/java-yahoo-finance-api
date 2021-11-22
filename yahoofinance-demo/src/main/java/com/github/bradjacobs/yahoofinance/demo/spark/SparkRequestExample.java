@@ -1,7 +1,7 @@
 package com.github.bradjacobs.yahoofinance.demo.spark;
 
 import com.github.bradjacobs.yahoofinance.demo.RequestExample;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
@@ -13,7 +13,7 @@ public enum SparkRequestExample implements RequestExample
          * Get close prices for AAPL each day (last 5 days)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .spark()
                     .withTicker("AAPL")
@@ -27,7 +27,7 @@ public enum SparkRequestExample implements RequestExample
          * Get close prices for multiple tickers each day (last 5 days)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .spark()
                     .withTicker("AAPL", "MSFT", "AMZN")
@@ -38,7 +38,7 @@ public enum SparkRequestExample implements RequestExample
     },
     MULTI_SMALL_INTERVAL {
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .spark()
                     .withTicker("AAPL", "MSFT", "AMZN")

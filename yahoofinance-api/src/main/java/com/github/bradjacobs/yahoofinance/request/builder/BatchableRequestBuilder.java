@@ -3,7 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 public interface BatchableRequestBuilder
@@ -13,5 +13,5 @@ public interface BatchableRequestBuilder
     int getBatchOffset();
     void setBatchOffset(int offset);
 
-    YahooFinanceRequest build();
+    YahooRequest build();
 }

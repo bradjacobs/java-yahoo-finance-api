@@ -2,7 +2,7 @@ package com.github.bradjacobs.yahoofinance.demo.quotesummary;
 
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -16,12 +16,12 @@ public class QuoteSummaryRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        YahooFinanceRequest req = MULTI_MODULES.getRequest();
+        YahooRequest req = MULTI_MODULES.getRequest();
         quoteSummaryRequestRunner(req);
     }
 
 
-    private static void quoteSummaryRequestRunner(YahooFinanceRequest req) throws IOException
+    private static void quoteSummaryRequestRunner(YahooRequest req) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.QUOTE_SUMMARY)) {
             throw new IllegalArgumentException("Must supply a quotesummery-type request");

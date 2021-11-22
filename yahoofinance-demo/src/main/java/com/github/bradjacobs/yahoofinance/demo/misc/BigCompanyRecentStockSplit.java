@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.demo.misc.objects.KeyStatistics;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.QuoteSummaryRequestBuilder;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
@@ -55,7 +55,7 @@ public class BigCompanyRecentStockSplit
         YahooFinanceClient client = new YahooFinanceClient();
 
         // query for the top 50 stocks in the Nasdaq/Nyse
-        YahooFinanceRequest screenerRequest = YahooRequestBuilder.api()
+        YahooRequest screenerRequest = YahooRequestBuilder.api()
             .screener()
             .in(ScreenerField.REGION, Region.UNITED_STATES)
             .in(ScreenerField.EXCHANGE, Exchange.NASDAQGS, Exchange.NASDAQGM, Exchange.NASDAQCM, Exchange.NYSE)
@@ -87,7 +87,7 @@ public class BigCompanyRecentStockSplit
             System.out.println("Fetching for Ticker: " + ticker + "  COUNTER: " + (++counter));
             try
             {
-                YahooFinanceRequest quoteSummaryRequest = quoteSummaryRequestBuilder.withTicker(ticker).build();
+                YahooRequest quoteSummaryRequest = quoteSummaryRequestBuilder.withTicker(ticker).build();
 
                 YahooResponse resp = client.execute(quoteSummaryRequest);
                 tickerQuoteSummaryResponseMap.put(ticker, resp);

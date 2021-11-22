@@ -1,7 +1,7 @@
 package com.github.bradjacobs.yahoofinance.demo.chart;
 
 import com.github.bradjacobs.yahoofinance.demo.RequestExample;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
@@ -13,7 +13,7 @@ public enum ChartRequestExample implements RequestExample
          * Query all prices for AAPL in the last year (and include dividend/split info)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .chart()
                     .withTicker("AAPL")
@@ -29,7 +29,7 @@ public enum ChartRequestExample implements RequestExample
          * Query all prices for MSFT  b/w dates 2021-01-01 and 2021-03-31 (gmt) using epoch time values.
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .chart()
                     .withTicker("MSFT")
@@ -44,7 +44,7 @@ public enum ChartRequestExample implements RequestExample
          * c. and have response only return close & adjclose  (i.e. no values for open/high/low/volume)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .chart()
                     .withTicker("MSFT")
@@ -55,7 +55,7 @@ public enum ChartRequestExample implements RequestExample
     },
     SMALL_INTERVAL {
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .chart()
                     .withTicker("AAPL")

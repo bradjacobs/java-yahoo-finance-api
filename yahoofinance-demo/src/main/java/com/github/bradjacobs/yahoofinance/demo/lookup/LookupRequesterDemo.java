@@ -3,7 +3,7 @@ package com.github.bradjacobs.yahoofinance.demo.lookup;
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.model.LookupResult;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -17,11 +17,11 @@ public class LookupRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        YahooFinanceRequest req = SIMPLE.getRequest();
+        YahooRequest req = SIMPLE.getRequest();
         lookupRequestRunner(req);
     }
 
-    private static void lookupRequestRunner(YahooFinanceRequest req) throws IOException
+    private static void lookupRequestRunner(YahooRequest req) throws IOException
     {
         if (req == null || !(req.getEndpoint().equals(YahooEndpoint.LOOKUP) || req.getEndpoint().equals(YahooEndpoint.LOOKUP_TOTALS))) {
             throw new IllegalArgumentException("Must supply a lookup-type request");

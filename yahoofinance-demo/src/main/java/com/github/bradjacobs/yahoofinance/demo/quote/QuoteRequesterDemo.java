@@ -4,7 +4,7 @@ package com.github.bradjacobs.yahoofinance.demo.quote;
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.model.QuoteResult;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -18,11 +18,11 @@ public class QuoteRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        YahooFinanceRequest req = MULTI_TICKER.getRequest();
+        YahooRequest req = MULTI_TICKER.getRequest();
         quoteRequestRunner(req);
     }
 
-    private static void quoteRequestRunner(YahooFinanceRequest req) throws IOException
+    private static void quoteRequestRunner(YahooRequest req) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.QUOTE)) {
             throw new IllegalArgumentException("Must supply a quote-type request");

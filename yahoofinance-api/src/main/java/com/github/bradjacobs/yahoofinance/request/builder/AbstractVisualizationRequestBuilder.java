@@ -1,18 +1,13 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.helper.QueryBuilder;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaKey;
-import com.github.bradjacobs.yahoofinance.types.criteria.Operand;
-import com.github.bradjacobs.yahoofinance.types.criteria.Operator;
 import com.github.bradjacobs.yahoofinance.types.criteria.Query;
 import com.github.bradjacobs.yahoofinance.types.criteria.VisualizationCriteria;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,14 +108,11 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     }
 
     @Override
-    protected YahooFinanceRequest generateRequest(YahooEndpoint endpoint, String ticker,
-                                                  Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
-    {
-        YahooFinanceRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
+    protected BatchableRequestBuilder getAdditionalBatchableRequestBuilder() {
         if (!isAggregate && size >= MIN_BATCHABLE_SIZE) {
-            req = new YahooFinanceBatchRequest(req, this);
+            return this;
         }
-        return req;
+        return null;
     }
 
     @Override

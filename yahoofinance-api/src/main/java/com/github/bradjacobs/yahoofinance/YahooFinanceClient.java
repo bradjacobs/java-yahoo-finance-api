@@ -10,7 +10,7 @@ import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
 import com.github.bradjacobs.yahoofinance.request.RequestUrlGenerator;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
@@ -45,7 +45,6 @@ public class YahooFinanceClient
     // todo: for the moment this is always true.. to fix.
     private final boolean throwExceptionOnHttpError = true;
 
-
     public YahooFinanceClient()
     {
         this(HttpClientAdapterFactory.createDefaultClient());
@@ -56,18 +55,20 @@ public class YahooFinanceClient
         if (httpClient == null) {
             throw new IllegalArgumentException("httpClient cannot be null.");
         }
-
         this.httpClient = httpClient;
+
+        // important note:  the CrumbDataSource must use the SAME
+        //     httpClient that is used by the YahooClient.
         this.crumbDataSource = new CrumbDataSource(httpClient);
     }
 
-    public YahooResponse execute(YahooFinanceRequest request) throws IOException
+    public YahooResponse execute(YahooRequest request) throws IOException
     {
         Response rawResponse = executeInternal(request);
         return yahooResponseGenerator.makeResponse(request, rawResponse);
     }
 
-    public YahooBatchResponse executeBatch(YahooFinanceRequest request) throws IOException
+    public YahooBatchResponse executeBatch(YahooRequest request) throws IOException
     {
         // todo - come back to address this (a little kludgy)
         if (request instanceof YahooFinanceBatchRequest) {
@@ -85,7 +86,7 @@ public class YahooFinanceClient
         return yahooResponseGenerator.makeBatchResponse(request, rawResponses);
     }
 
-    protected Response executeInternal(YahooFinanceRequest request) throws IOException
+    protected Response executeInternal(YahooRequest request) throws IOException
     {
         String crumb = null;
         if (request.isCrumbRequired()) {
@@ -110,7 +111,7 @@ public class YahooFinanceClient
         return response;
     }
 
-    private Map<String,String> createRequestHeaderMap(YahooFinanceRequest request)
+    private Map<String,String> createRequestHeaderMap(YahooRequest request)
     {
         Map<String,String> headerMap = new LinkedHashMap<>(DEFAULT_HEADER_MAP);
         headerMap.putAll(request.getHeaderMap());
@@ -136,7 +137,7 @@ public class YahooFinanceClient
         try
         {
             do {
-                YahooFinanceRequest batchRequest = batchableRequestBuilder.build();
+                YahooRequest batchRequest = batchableRequestBuilder.build();
                 response = executeInternal(batchRequest);
                 responseList.add(response);
 

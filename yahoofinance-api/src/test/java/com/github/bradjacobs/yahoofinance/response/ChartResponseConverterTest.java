@@ -23,6 +23,26 @@ public class ChartResponseConverterTest
     // need delta b/c Doubles might not be an 'exact' match
     private static final Double DELTA = 0.00001;
 
+//    @Test
+//    public void testTime() throws Exception
+//    {
+//        String originalJson = ResourceUtil.readResourceFileAsString("aapl_chart_big.json");
+//
+//        int count = 500;
+//        long start = System.currentTimeMillis();
+//
+//        List<Map<String, Object>> listOfMapRecords = null;
+//
+//        for (int i = 0; i < count; i++) {
+//            listOfMapRecords = chartResponseConverter.convertToListOfMaps(originalJson);
+//        }
+//
+//        long end = System.currentTimeMillis();
+//        long time = end - start;
+//        System.out.println(time);
+//
+//        int kjkjk = 3333;
+//    }
 
     @Test
     public void testConvertToListOfMaps() throws Exception

@@ -1,11 +1,9 @@
 package com.github.bradjacobs.yahoofinance.demo.screener;
 
 import com.github.bradjacobs.yahoofinance.demo.RequestExample;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.types.Exchange;
-import com.github.bradjacobs.yahoofinance.types.Interval;
-import com.github.bradjacobs.yahoofinance.types.Range;
 import com.github.bradjacobs.yahoofinance.types.Region;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
 import com.github.bradjacobs.yahoofinance.types.Sector;
@@ -22,7 +20,7 @@ public enum ScreenerRequestExample implements RequestExample
          *  - price between $5 and $50
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .screener()
                     .in(ScreenerField.REGION, Region.UNITED_STATES)
@@ -39,7 +37,7 @@ public enum ScreenerRequestExample implements RequestExample
          *  Get "total only" of Healthcare equities.
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .screener()
                     .in(ScreenerField.REGION, Region.UNITED_STATES)
@@ -54,7 +52,7 @@ public enum ScreenerRequestExample implements RequestExample
          *    (i.e.  sort by MarketCap descending + limit request to just 10)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .screener()
                     .in(ScreenerField.REGION, Region.UNITED_STATES)

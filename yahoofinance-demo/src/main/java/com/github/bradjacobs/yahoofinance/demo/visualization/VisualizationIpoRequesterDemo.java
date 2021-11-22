@@ -3,18 +3,14 @@ package com.github.bradjacobs.yahoofinance.demo.visualization;
 
 import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.model.IpoEventResult;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
-import com.github.bradjacobs.yahoofinance.request.builder.IpoEventRequestBuilder;
-import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
+import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import static com.github.bradjacobs.yahoofinance.demo.visualization.IpoEventRequestExample.SIMPLE;
 
@@ -23,12 +19,12 @@ public class VisualizationIpoRequesterDemo
     public static void main(String[] args) throws Exception
     {
         boolean useBatch = false;
-        YahooFinanceRequest req = SIMPLE.getRequest();
+        YahooRequest req = SIMPLE.getRequest();
         visualRequestRunner(req, useBatch);
     }
 
 
-    private static void visualRequestRunner(YahooFinanceRequest req, boolean useBatch) throws IOException
+    private static void visualRequestRunner(YahooRequest req, boolean useBatch) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.VISUALIZATION)) {
             throw new IllegalArgumentException("Must supply a visualization-type request");

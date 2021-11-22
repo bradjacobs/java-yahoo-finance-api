@@ -1,6 +1,7 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import org.testng.annotations.Test;
 
 import static com.github.bradjacobs.yahoofinance.types.YahooEndpoint.ESG_CHART;
@@ -14,7 +15,7 @@ public class QuoteSummaryRequestBuilderTest
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_MODULES_MSG)
     public void testMissingModules() throws Exception {
 
-        YahooFinanceRequest req = YahooRequestBuilder.api()
+        YahooRequest req = YahooRequestBuilder.api()
                 .quoteSummary()
                 .withTicker("AAPL")
                 .build();

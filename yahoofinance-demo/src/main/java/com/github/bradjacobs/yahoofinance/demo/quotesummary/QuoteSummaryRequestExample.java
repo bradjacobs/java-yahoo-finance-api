@@ -1,10 +1,8 @@
 package com.github.bradjacobs.yahoofinance.demo.quotesummary;
 
 import com.github.bradjacobs.yahoofinance.demo.RequestExample;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
-import com.github.bradjacobs.yahoofinance.types.Interval;
-import com.github.bradjacobs.yahoofinance.types.Range;
 import com.github.bradjacobs.yahoofinance.types.YahooModule;
 
 import static com.github.bradjacobs.yahoofinance.types.YahooModule.*;
@@ -16,7 +14,7 @@ public enum QuoteSummaryRequestExample implements RequestExample
          * Get the assetProfile Module for AAPL
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .quoteSummary()
                     .withModules(ASSET_PROFILE)
@@ -29,7 +27,7 @@ public enum QuoteSummaryRequestExample implements RequestExample
          * Get multiple module financial data for MSFT
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .quoteSummary()
                     .withModules(FINANCIAL_DATA)
@@ -45,7 +43,7 @@ public enum QuoteSummaryRequestExample implements RequestExample
          * Get multiple module financial data for MSFT  (different form)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .quoteSummary()
                     .withModules(FINANCIAL_DATA, BALANCE_SHEET_HISTORY, INCOME_STMT_HISTORY, CASH_FLOW_STMT_HISTORY)
@@ -58,7 +56,7 @@ public enum QuoteSummaryRequestExample implements RequestExample
          * Grab _all_ information available to AAPL (all modules)
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .quoteSummary()
                     .withModules(YahooModule.values())
@@ -71,7 +69,7 @@ public enum QuoteSummaryRequestExample implements RequestExample
          * Request with invalid (non-existent) ticker, will result in a 404 response.
          */
         @Override
-        public YahooFinanceRequest getRequest() {
+        public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .quoteSummary()
                     .withModules(ASSET_PROFILE)

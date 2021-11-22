@@ -1,6 +1,7 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
 import org.testng.annotations.BeforeTest;
@@ -25,7 +26,7 @@ public class ChartRequestBuilderTest
     public void testBaseCase() throws Exception {
 
         String tickerSymbol = "MSFT";
-        YahooFinanceRequest request = this.chartRequestBuilder
+        YahooRequest request = this.chartRequestBuilder
             .withTicker(tickerSymbol)
             .withRange(Range.FIVE_DAYS)
             .withInterval(Interval.ONE_DAY)
@@ -47,7 +48,7 @@ public class ChartRequestBuilderTest
         Long period1 = 1612137600L;
         Long period2 = 1619827200L;
 
-        YahooFinanceRequest request = this.chartRequestBuilder
+        YahooRequest request = this.chartRequestBuilder
             .withTicker("AAPL")
             .setStart(period1)
             .setEnd(period2)
@@ -64,7 +65,7 @@ public class ChartRequestBuilderTest
         Long period1 = 1612137600L;
         Long period2 = 1619827200L;
 
-        YahooFinanceRequest request = this.chartRequestBuilder
+        YahooRequest request = this.chartRequestBuilder
             .withTicker("AAPL")
             .setTimeRange(period1, period2)
             .build();
@@ -83,7 +84,7 @@ public class ChartRequestBuilderTest
         Long expectedPeriod1 = period1 / 1000;
         Long expectedPeriod2 = period2 / 1000;
 
-        YahooFinanceRequest request = this.chartRequestBuilder
+        YahooRequest request = this.chartRequestBuilder
             .withTicker("AAPL")
             .setStart(period1)
             .setEnd(period2)
@@ -103,7 +104,7 @@ public class ChartRequestBuilderTest
         Long period1 = 1612137600L;
         Long period2 = 1619827200L;
 
-        YahooFinanceRequest request = this.chartRequestBuilder
+        YahooRequest request = this.chartRequestBuilder
             .withTicker("AAPL")
             .withRange(Range.FIVE_DAYS)
             .setStart(period1)
@@ -133,7 +134,7 @@ public class ChartRequestBuilderTest
     @Test(dataProvider = "event-permutations")
     public void testSetEvents(Boolean includeDividends, Boolean includeSplits, String expectedEventString) throws Exception {
 
-        YahooFinanceRequest request = this.chartRequestBuilder
+        YahooRequest request = this.chartRequestBuilder
             .withTicker("AAPL")
             .withRange(Range.FIVE_DAYS)
             .withDividends(includeDividends)
@@ -153,7 +154,7 @@ public class ChartRequestBuilderTest
             .withRange(Range.FIVE_DAYS)
             .withIndicatorCloseAdjCloseOnly();
 
-        YahooFinanceRequest req = chartRequestBuilder.build();
+        YahooRequest req = chartRequestBuilder.build();
         Map<String, String> paramMap = getParamMap(req);
         assertEquals(paramMap.get("indicators"), "close");
         assertEquals(paramMap.get("includeAdjustedClose"), "true");
@@ -181,7 +182,7 @@ public class ChartRequestBuilderTest
     @Test
     public void testIncludeTimestampsParam() throws Exception {
 
-        YahooFinanceRequest request = this.chartRequestBuilder
+        YahooRequest request = this.chartRequestBuilder
                 .withTicker("AAPL")
                 .withRange(Range.FIVE_DAYS)
                 .withTimestamps(true)
@@ -206,7 +207,7 @@ public class ChartRequestBuilderTest
 
 
     // helper to get the paramMap w/ some asserts
-    private Map<String, String> getParamMap(YahooFinanceRequest request)
+    private Map<String, String> getParamMap(YahooRequest request)
     {
         assertNotNull(request, "Expected non null request");
         Map<String, String> paramMap = request.getParamMap();

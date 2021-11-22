@@ -1,6 +1,7 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.types.Interval;
 import com.github.bradjacobs.yahoofinance.types.Range;
 import org.testng.annotations.BeforeTest;
@@ -22,12 +23,12 @@ public class EndpointRequestBuilderTest
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_ENDPOINT_MSG)
     public void testMissingEndpoint() throws Exception {
         EndpointRequestBuilder endpointRequestBuilder = new EndpointRequestBuilder(null);
-        YahooFinanceRequest request = endpointRequestBuilder.build();
+        YahooRequest request = endpointRequestBuilder.build();
     }
     @Test(expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = EXPECTED_MISSING_TICKER_MSG)
     public void testMissingTickerParam() throws Exception {
         EndpointRequestBuilder endpointRequestBuilder = new EndpointRequestBuilder(ESG_CHART);
-        YahooFinanceRequest request = endpointRequestBuilder.build();
+        YahooRequest request = endpointRequestBuilder.build();
     }
 
     // todo the 'blank' key parameter will just be ignored.

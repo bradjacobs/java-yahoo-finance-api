@@ -9,10 +9,11 @@ import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Used to fetch a yahoo finance 'crumb' value.
@@ -20,8 +21,6 @@ import java.util.TreeMap;
  */
 public class CrumbDataSource
 {
-    private final HttpClientAdapter httpClient;
-
     // url to use to get a 'crumb' value from the response.
     private static final String YAHOO_PAGE_URL = "https://finance.yahoo.com/quote/AAPL/profile?p=AAPL";
     private static final String DIRECT_JSON_URL = "https://query2.finance.yahoo.com/v1/test/getcrumb";  // only works if there is a cookie header
@@ -33,7 +32,9 @@ public class CrumbDataSource
     private static final String CRUMB_RESPONSE_INTRO = "\"CrumbStore\":{\"crumb\":\"";
     private static final String COOKIE_HEADER_NAME = "Cookie";
 
-    private CrumbObject crumbObject = null;
+    private final HttpClientAdapter httpClient;
+    private final AtomicLong expirationTime = new AtomicLong(0L);
+    private String crumbValue = "";
 
     public CrumbDataSource(HttpClientAdapter httpClient)
     {
@@ -43,22 +44,44 @@ public class CrumbDataSource
         this.httpClient = httpClient;
     }
 
-    public String getCrumb(YahooFinanceRequest request) throws IOException
+    public String getCrumb(YahooRequest request) throws IOException
     {
-        //  not thread safe!
-        if (crumbObject == null || crumbObject.isExpired()) {
-            String crumbValue = reloadCrumb(request);
-            crumbObject = new CrumbObject(crumbValue);
+        if (isExpired()) {
+            // super simplified sync
+            synchronized (this) {
+                if (isExpired()) {
+                    String newCrumbValue = null;
+                    try {
+                        newCrumbValue = reloadCrumb(request);
+                    }
+                    catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                    if (StringUtils.isNotEmpty(newCrumbValue)) {
+                        crumbValue = newCrumbValue;
+                        expirationTime.set(System.currentTimeMillis() + EXPIRATION_TIME);
+                    }
+                }
+            }
         }
-        return crumbObject.getCrumb();
+        return crumbValue;
     }
+
+    private boolean isExpired() {
+        long timeNow = System.currentTimeMillis();
+        if (timeNow >= expirationTime.longValue()) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * Makes a network call to get (or reload) a crumb value.
      * @return crumb string
      * @throws IOException exception
      */
-    private String reloadCrumb(YahooFinanceRequest request) throws IOException
+    private String reloadCrumb(YahooRequest request) throws IOException
     {
         // if the request has an explicit cookie set, then use the cookie
         //   and make an 'api' call to grab the crumb value.  (tends to be more reliable)
@@ -102,31 +125,4 @@ public class CrumbDataSource
         return crumbValue;
     }
 
-
-    private static class CrumbObject {
-        private final String crumb;
-        private final Date creationTime;
-        private Date lastAccessTime;
-
-        public CrumbObject(String crumb) {
-            this.crumb = crumb;
-            this.creationTime = new Date();
-            this.lastAccessTime = new Date();
-        }
-
-        private String getCrumb() {
-            this.lastAccessTime = new Date();
-            return crumb;
-        }
-
-        private boolean isExpired() {
-            long timeNow = System.currentTimeMillis();
-            long createTime = creationTime.getTime();
-
-            if (createTime + EXPIRATION_TIME < timeNow) {
-                return true;
-            }
-            return false;
-        }
-    }
 }

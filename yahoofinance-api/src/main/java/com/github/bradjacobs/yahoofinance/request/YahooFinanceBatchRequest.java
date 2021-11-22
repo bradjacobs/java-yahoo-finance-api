@@ -8,28 +8,55 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.util.Map;
 
-public class YahooFinanceBatchRequest extends YahooFinanceRequest
+public class YahooFinanceBatchRequest implements YahooRequest
 {
+    private final YahooRequest innerRequest;
     private final BatchableRequestBuilder batchableRequestBuilder;
 
-    public YahooFinanceBatchRequest(YahooFinanceRequest request,
-                                    BatchableRequestBuilder batchableRequestBuilder)
-    {
-        this(request.endpoint, request.ticker, request.paramMap, request.postBody, request.headerMap, batchableRequestBuilder);
-    }
-
-
-    public YahooFinanceBatchRequest(YahooEndpoint endpoint, String ticker,
-                                    Map<String, String> paramMap, Object postBody, Map<String,String> headerMap,
-        BatchableRequestBuilder batchableRequestBuilder)
-    {
-        super(endpoint, ticker, paramMap, postBody, headerMap);
+    public YahooFinanceBatchRequest(YahooRequest innerRequest, BatchableRequestBuilder batchableRequestBuilder) {
+        this.innerRequest = innerRequest;
         this.batchableRequestBuilder = batchableRequestBuilder;
     }
 
     public BatchableRequestBuilder getBatchableRequestBuilder()
     {
         return batchableRequestBuilder;
+    }
+
+
+    @Override
+    public YahooEndpoint getEndpoint() {
+        return innerRequest.getEndpoint();
+    }
+
+    @Override
+    public boolean isPost() {
+        return innerRequest.isPost();
+    }
+
+    @Override
+    public String getPostBody() {
+        return innerRequest.getPostBody();
+    }
+
+    @Override
+    public boolean isCrumbRequired() {
+        return innerRequest.isCrumbRequired();
+    }
+
+    @Override
+    public String getTicker() {
+        return innerRequest.getTicker();
+    }
+
+    @Override
+    public Map<String, String> getParamMap() {
+        return innerRequest.getParamMap();
+    }
+
+    @Override
+    public Map<String, String> getHeaderMap() {
+        return innerRequest.getHeaderMap();
     }
 
 }
