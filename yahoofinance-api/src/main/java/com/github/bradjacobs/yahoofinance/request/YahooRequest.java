@@ -8,13 +8,11 @@ public interface YahooRequest
 {
     YahooEndpoint getEndpoint();
 
-    boolean isPost();
-    String getPostBody();
-    boolean isCrumbRequired();
-
     String getTicker();
     Map<String,String> getParamMap();
 
+    String getPostBody();
+    boolean isCrumbRequired();
 
     Map<String, String> getHeaderMap();
 }

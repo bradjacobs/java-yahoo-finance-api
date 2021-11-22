@@ -97,8 +97,8 @@ public class YahooFinanceClient
         Map<String,String> headerMap = createRequestHeaderMap(request);
 
         Response response;
-        if (request.isPost()) {
-            String postBody = request.getPostBody();
+        String postBody = request.getPostBody();
+        if (postBody != null) {
             response = httpClient.executePost(url, postBody, headerMap);
         }
         else {

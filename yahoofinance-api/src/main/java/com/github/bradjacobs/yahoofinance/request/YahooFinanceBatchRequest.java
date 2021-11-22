@@ -23,15 +23,9 @@ public class YahooFinanceBatchRequest implements YahooRequest
         return batchableRequestBuilder;
     }
 
-
     @Override
     public YahooEndpoint getEndpoint() {
         return innerRequest.getEndpoint();
-    }
-
-    @Override
-    public boolean isPost() {
-        return innerRequest.isPost();
     }
 
     @Override

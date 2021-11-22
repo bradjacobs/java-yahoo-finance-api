@@ -4,7 +4,7 @@ import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.response.AbstractResponse;
 import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
+import com.github.bradjacobs.yahoofinance.util.JsonConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class YahooBatchResponse extends AbstractResponse
         for (Response response : rawResponseList) {
             String json = response.getBody();
             if (makePretty) {
-                json = PrettyFormatter.prettyJson(json);
+                json = JsonConverter.toPrettyJson(json);
             }
             jsonList.add(json);
         }

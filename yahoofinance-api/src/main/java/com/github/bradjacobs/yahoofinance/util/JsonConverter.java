@@ -4,21 +4,31 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
-public class PrettyFormatter
+public class JsonConverter
 {
+    private static final JsonMapper mapper = JsonMapperFactory.getMapper();
     private static final JsonMapper prettyMapper = JsonMapperFactory.getPrettyMapper();
 
-    private PrettyFormatter() { }
+    private JsonConverter() { }
 
-    // todo - see if this is any better or worse...
-    //             String pretty = mapper.writeValueAsString(mapper.readValue(example, Object.class));
-
-    public static String prettyJson(String json)
-    {
-        return prettyJson( convertToNode(json) );
+    public static String toJson(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        try {
+            return mapper.writeValueAsString(obj);
+        }
+        catch (JsonProcessingException e) {
+            throw new InternalError("Unable to create json from object: " + e.getMessage(), e);
+        }
     }
 
-    public static String prettyJson(Object node)
+    public static String toPrettyJson(String json)
+    {
+        return toPrettyJson( convertToNode(json) );
+    }
+
+    public static String toPrettyJson(Object node)
     {
         try {
             return prettyMapper.writeValueAsString(node);

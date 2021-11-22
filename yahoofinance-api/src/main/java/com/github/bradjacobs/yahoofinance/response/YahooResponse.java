@@ -2,7 +2,7 @@ package com.github.bradjacobs.yahoofinance.response;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
+import com.github.bradjacobs.yahoofinance.util.JsonConverter;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +38,7 @@ public class YahooResponse extends AbstractResponse
     }
 
     public String getPrettyJson() {
-        return PrettyFormatter.prettyJson(this.rawResponse.getBody());
+        return JsonConverter.toPrettyJson(this.rawResponse.getBody());
     }
 
     @Override

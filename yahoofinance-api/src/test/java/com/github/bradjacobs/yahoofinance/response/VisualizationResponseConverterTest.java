@@ -1,11 +1,8 @@
 package com.github.bradjacobs.yahoofinance.response;
 
 import com.github.bradjacobs.yahoofinance.model.EarningsEventResult;
-import com.github.bradjacobs.yahoofinance.request.YahooRequest;
-import com.github.bradjacobs.yahoofinance.request.builder.EarningsEventRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.converter.DefaultResponsePojoConverter;
 import com.github.bradjacobs.yahoofinance.response.converter.VisualizationResponseConverter;
-import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 

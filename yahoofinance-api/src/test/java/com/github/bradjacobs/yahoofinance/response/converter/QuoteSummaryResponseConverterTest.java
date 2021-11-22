@@ -1,7 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.util.PrettyFormatter;
+import com.github.bradjacobs.yahoofinance.util.JsonConverter;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
@@ -59,7 +58,7 @@ public class QuoteSummaryResponseConverterTest
         assertEquals(volumeObj.getClass().getSimpleName(), "Long","expected volume value to be of type 'Long'");
         assertEquals(Long.valueOf(volumeObj.toString()).longValue(), 18055730L);
 
-        String pJson = PrettyFormatter.prettyJson(moduleMaps);
+        String pJson = JsonConverter.toPrettyJson(moduleMaps);
         int kjkj = 333;
     }
 
