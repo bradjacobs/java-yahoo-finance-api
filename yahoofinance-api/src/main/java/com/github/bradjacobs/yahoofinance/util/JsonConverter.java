@@ -38,7 +38,7 @@ public class JsonConverter
         }
     }
 
-    private static JsonNode convertToNode(String json)
+    public static JsonNode convertToNode(String json)
     {
         try {
             return prettyMapper.readTree(json);
@@ -47,5 +47,35 @@ public class JsonConverter
             throw new IllegalArgumentException("Invalid JSON string: " + e.getMessage(), e);
         }
     }
+
+    // todo - come back to this
+    /*
+        public String convertToCsv(List<Map<String, Object>> listOfMaps) throws JsonProcessingException {
+        if (listOfMaps == null || listOfMaps.isEmpty()) {
+            return "";
+        }
+
+        String json = JsonConverter.toJson(listOfMaps);
+        JsonNode jsonTree = JsonConverter.convertToNode(json);
+
+        CsvSchema.Builder csvSchemaBuilder = CsvSchema.builder();
+        List<String> firstRecordKeys = new ArrayList<>(listOfMaps.get(0).keySet());
+        for (String firstRecordKey : firstRecordKeys) {
+            csvSchemaBuilder.addColumn(firstRecordKey);
+        }
+
+        CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();
+        CsvMapper csvMapper = new CsvMapper();
+        String csvString = csvMapper.writerFor(JsonNode.class)
+                .with(csvSchema).writeValueAsString(jsonTree);
+        return csvString;
+    }
+     */
+    /*
+            CsvSchema schema = CsvSchema.emptySchema().withHeader();
+            ObjectReader objReader = csvMapper2.readerFor(ChartResult.class).with(schema);
+            MappingIterator<ChartResult> iterator = objReader.readValues(json);
+            chartResults = iterator.readAll();
+     */
 
 }
