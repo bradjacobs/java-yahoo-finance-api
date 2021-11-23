@@ -3,102 +3,119 @@
  */
 package com.github.bradjacobs.yahoofinance.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.util.Objects;
 
 /**
  * Represents a unique record entry from a CHART response
- *
- *   IMPORTANT NOTE:  playing around to see how this might look,
- *   may ultimately decide this class isn't worth having and remove this it.
  */
+@JsonPropertyOrder( {
+        "date",
+        "timestamp",
+        "open",
+        "high",
+        "low",
+        "close",
+        "adjclose",
+        "volume",
+})
 public class ChartResult
 {
+    @JsonProperty("date")
+    @JsonAlias("Date")
     private String date;
+
+    @JsonProperty("timestamp")
     private Long timestamp;
+
+    @JsonProperty("open")
+    @JsonAlias("Open")
     private Double open;
-    private Double close;
-    private Double adjclose;
-    private Double low;
+
+    @JsonProperty("high")
+    @JsonAlias("High")
     private Double high;
+
+    @JsonProperty("low")
+    @JsonAlias("Low")
+    private Double low;
+
+    @JsonProperty("close")
+    @JsonAlias("Close")
+    private Double close;
+
+    @JsonProperty("adjclose")
+    @JsonAlias("Adj Close")
+    private Double adjclose;
+
+    @JsonProperty("volume")
+    @JsonAlias("Volume")
     private Long volume;
 
-    public String getDate()
-    {
+    public String getDate() {
         return date;
     }
 
-    public Long getTimestamp()
-    {
-        return timestamp;
-    }
-
-    public Double getOpen()
-    {
-        return open;
-    }
-
-    public Double getClose()
-    {
-        return close;
-    }
-
-    public Double getAdjclose()
-    {
-        return adjclose;
-    }
-
-    public Double getLow()
-    {
-        return low;
-    }
-
-    public Double getHigh()
-    {
-        return high;
-    }
-
-    public Long getVolume()
-    {
-        return volume;
-    }
-
-    public void setDate(String date)
-    {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public void setTimestamp(Long timestamp)
-    {
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
-    public void setOpen(Double open)
-    {
+    public Double getOpen() {
+        return open;
+    }
+
+    public void setOpen(Double open) {
         this.open = open;
     }
 
-    public void setClose(Double close)
-    {
-        this.close = close;
+    public Double getHigh() {
+        return high;
     }
 
-    public void setAdjclose(Double adjclose)
-    {
-        this.adjclose = adjclose;
-    }
-
-    public void setLow(Double low)
-    {
-        this.low = low;
-    }
-
-    public void setHigh(Double high)
-    {
+    public void setHigh(Double high) {
         this.high = high;
     }
 
-    public void setVolume(Long volume)
-    {
+    public Double getLow() {
+        return low;
+    }
+
+    public void setLow(Double low) {
+        this.low = low;
+    }
+
+    public Double getClose() {
+        return close;
+    }
+
+    public void setClose(Double close) {
+        this.close = close;
+    }
+
+    public Double getAdjclose() {
+        return adjclose;
+    }
+
+    public void setAdjclose(Double adjclose) {
+        this.adjclose = adjclose;
+    }
+
+    public Long getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Long volume) {
         this.volume = volume;
     }
 
