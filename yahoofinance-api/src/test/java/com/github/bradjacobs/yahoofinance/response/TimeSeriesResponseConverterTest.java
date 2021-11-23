@@ -22,7 +22,6 @@ public class TimeSeriesResponseConverterTest
 
         boolean useDateAsMapKey = true;
         boolean autoDetectDateTime = true;
-        boolean useBigDecimals = false;
         ResponseConverterConfig config = ResponseConverterConfig.builder()
                 .useDateAsMapKey(useDateAsMapKey)
                 .autoDetectDateTime(autoDetectDateTime)

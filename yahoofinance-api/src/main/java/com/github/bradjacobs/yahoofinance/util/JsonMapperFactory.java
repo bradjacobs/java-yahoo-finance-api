@@ -34,21 +34,13 @@ public class JsonMapperFactory
     public static class Builder
     {
         private boolean pretty = false;
-        private boolean useBigDecimal = false;
 
         public JsonMapperFactory.Builder usePretty(boolean pretty) {
             this.pretty = pretty;
             return this;
         }
 
-        public JsonMapperFactory.Builder useBigDecimals(boolean useBigDecimal) {
-            this.useBigDecimal = useBigDecimal;
-            return this;
-        }
-
         public JsonMapper build() {
-
-            // TODO - ignoring 'useBigDecimal' for now... might just remove.
 
             SimpleModule module = new SimpleModule()
                 .addSerializer(Float.class, new DecimalSerializer<>(Float.class))
@@ -85,5 +77,4 @@ public class JsonMapperFactory
             gen.writeNumber( numberAsString );
         }
     }
-
 }

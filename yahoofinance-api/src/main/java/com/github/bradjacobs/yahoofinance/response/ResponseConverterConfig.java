@@ -5,11 +5,9 @@ public class ResponseConverterConfig
 {
     private static final boolean DEFAULT_USE_DATE_MAP_KEY = true;
     private static final boolean DEFAULT_AUTO_DETECT_DATE_TIME = true;
-    private static final boolean DEFAULT_USE_BIG_DECIMALS = false;
 
     private boolean useDateAsMapKey = DEFAULT_USE_DATE_MAP_KEY;
     private boolean autoDetectDateTime = DEFAULT_AUTO_DETECT_DATE_TIME;
-    private boolean useBigDecimals = DEFAULT_USE_BIG_DECIMALS;
 
 
     public static final ResponseConverterConfig DEFAULT_INSTANCE = builder().build();
@@ -18,7 +16,6 @@ public class ResponseConverterConfig
     {
         this.useDateAsMapKey = builder.useDateAsMapKey;
         this.autoDetectDateTime = builder.autoDetectDateTime;
-        this.useBigDecimals = builder.useBigDecimals;
     }
 
     public boolean isUseDateAsMapKey()
@@ -31,10 +28,6 @@ public class ResponseConverterConfig
         return autoDetectDateTime;
     }
 
-    public boolean isUseBigDecimals() {
-        return useBigDecimals;
-    }
-
     public static Builder builder() {
         return new Builder();
     }
@@ -45,7 +38,6 @@ public class ResponseConverterConfig
 
         private boolean useDateAsMapKey = DEFAULT_USE_DATE_MAP_KEY;
         private boolean autoDetectDateTime = DEFAULT_AUTO_DETECT_DATE_TIME;
-        private boolean useBigDecimals = DEFAULT_USE_BIG_DECIMALS;
 
 
         public Builder useDateAsMapKey(boolean useDateAsMapKey) {
@@ -54,10 +46,6 @@ public class ResponseConverterConfig
         }
         public Builder autoDetectDateTime(boolean autoDetectDateTime) {
             this.autoDetectDateTime = autoDetectDateTime;
-            return this;
-        }
-        public Builder useBigDecimals(boolean useBigDecimals) {
-            this.useBigDecimals = useBigDecimals;
             return this;
         }
 

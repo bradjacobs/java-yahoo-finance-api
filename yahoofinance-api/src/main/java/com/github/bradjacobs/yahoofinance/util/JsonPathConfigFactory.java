@@ -28,16 +28,10 @@ public class JsonPathConfigFactory {
 
     public static class Builder {
         private boolean pretty = false;
-        private boolean useBigDecimal = false;
         private JsonMapper customJsonMapper = null;
 
         public JsonPathConfigFactory.Builder usePretty(boolean pretty) {
             this.pretty = pretty;
-            return this;
-        }
-
-        public JsonPathConfigFactory.Builder useBigDecimals(boolean useBigDecimal) {
-            this.useBigDecimal = useBigDecimal;
             return this;
         }
 
@@ -50,7 +44,7 @@ public class JsonPathConfigFactory {
 
             JsonMapper mapper = this.customJsonMapper;
             if (mapper == null) {
-                mapper = JsonMapperFactory.builder().usePretty(pretty).useBigDecimals(useBigDecimal).build();
+                mapper = JsonMapperFactory.builder().usePretty(pretty).build();
             }
 
             return Configuration.builder()
