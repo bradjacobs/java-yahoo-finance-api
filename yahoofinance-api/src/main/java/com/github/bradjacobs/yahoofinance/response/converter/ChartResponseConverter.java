@@ -13,6 +13,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,9 +28,7 @@ public class ChartResponseConverter implements ResponseConverter
     private static final String KEY_VOLUME = "volume";
     private static final String KEY_ADJ_CLOSE = "adjclose";
 
-
     private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
-
 
     // path locations for data within the JSON response
     private static final String BASE_PATH      = "$.chart.result[0]";
@@ -42,14 +41,12 @@ public class ChartResponseConverter implements ResponseConverter
     private static final String ADJ_CLOSE_PATH = BASE_PATH + ".indicators.adjclose[0]." + KEY_ADJ_CLOSE;
 
 
-
     // configure to return NULL (instead of Exception) if the _LEAF_ is missing
     //   b/c the field might not always be there.
     private static final Configuration JSON_PATH_CONFIG =
         Configuration.defaultConfiguration()
             .addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
             .addOptions(Option.SUPPRESS_EXCEPTIONS);
-
 
     private final ResponseConverterConfig config;
     private final SimpleMapOfMapsGenerator mapOfMapsGenerator = new SimpleMapOfMapsGenerator(KEY_DATE, false);
@@ -123,7 +120,8 @@ public class ChartResponseConverter implements ResponseConverter
 
         for (int i = 0; i < entryCount; i++)
         {
-            Map<String,Object> entryMap = new HashMap<>();
+            // note: enforcing output fields to be in a certain order
+            Map<String,Object> entryMap = new LinkedHashMap<>();
 
             // will refactor iff slow performance is shown
             Long timestamp = timestampValues[i];
@@ -132,15 +130,17 @@ public class ChartResponseConverter implements ResponseConverter
 
             if (openLowHighExists) {
                 entryMap.put(KEY_OPEN, openValues[i]);
-                entryMap.put(KEY_LOW, lowValues[i]);
                 entryMap.put(KEY_HIGH, highValues[i]);
-                entryMap.put(KEY_VOLUME, volumeValues[i]);
+                entryMap.put(KEY_LOW, lowValues[i]);
             }
             if (closeValuesExist) {
                 entryMap.put(KEY_CLOSE, closeValues[i]);
             }
             if (adjCloseValuesExist) {
                 entryMap.put(KEY_ADJ_CLOSE, adjCloseValues[i]);
+            }
+            if (openLowHighExists) {
+                entryMap.put(KEY_VOLUME, volumeValues[i]);
             }
             resultKeyValueList.add(entryMap);
         }
