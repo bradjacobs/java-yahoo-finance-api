@@ -126,7 +126,7 @@ public class ChartResponseConverter implements ResponseConverter
             // will refactor iff slow performance is shown
             Long timestamp = timestampValues[i];
             entryMap.put(KEY_DATE, epochStrConverter.convertToString(timestamp));
-            entryMap.put(KEY_TIMESTAMP, timestamp);
+            //entryMap.put(KEY_TIMESTAMP, timestamp);
 
             if (openLowHighExists) {
                 entryMap.put(KEY_OPEN, openValues[i]);

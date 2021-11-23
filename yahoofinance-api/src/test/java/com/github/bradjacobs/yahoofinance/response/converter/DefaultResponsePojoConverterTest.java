@@ -118,9 +118,6 @@ public class DefaultResponsePojoConverterTest
                 case "date":
                     result.setDate((String) val);
                     break;
-                case "timestamp":
-                    result.setTimestamp(((Number) val).longValue());
-                    break;
                 case "open":
                     result.setOpen(((Number) val).doubleValue());
                     break;

@@ -14,7 +14,6 @@ import java.util.Objects;
  */
 @JsonPropertyOrder( {
         "date",
-        "timestamp",
         "open",
         "high",
         "low",
@@ -27,9 +26,6 @@ public class ChartResult
     @JsonProperty("date")
     @JsonAlias("Date")
     private String date;
-
-    @JsonProperty("timestamp")
-    private Long timestamp;
 
     @JsonProperty("open")
     @JsonAlias("Open")
@@ -61,14 +57,6 @@ public class ChartResult
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
     }
 
     public Double getOpen() {
@@ -124,11 +112,11 @@ public class ChartResult
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChartResult that = (ChartResult) o;
-        return Objects.equals(date, that.date) && Objects.equals(timestamp, that.timestamp) && Objects.equals(open, that.open) && Objects.equals(close, that.close) && Objects.equals(adjclose, that.adjclose) && Objects.equals(low, that.low) && Objects.equals(high, that.high) && Objects.equals(volume, that.volume);
+        return Objects.equals(date, that.date) && Objects.equals(open, that.open) && Objects.equals(close, that.close) && Objects.equals(adjclose, that.adjclose) && Objects.equals(low, that.low) && Objects.equals(high, that.high) && Objects.equals(volume, that.volume);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, timestamp, open, close, adjclose, low, high, volume);
+        return Objects.hash(date, open, close, adjclose, low, high, volume);
     }
 }
