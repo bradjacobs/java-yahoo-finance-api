@@ -21,20 +21,23 @@ public class CsvConverter {
 
     private CsvConverter() {}
 
-    public static String convertToCsv(List<Map<String, Object>> listOfMaps)
-    {
+    public static String convertToCsv(List<Map<String, Object>> listOfMaps) {
         if (listOfMaps == null || listOfMaps.isEmpty()) {
             return "";
         }
-
         String json = JsonConverter.toJson(listOfMaps);
+        return convertToCsv(json);
+    }
+
+    public static String convertToCsv(String json) {
         JsonNode jsonTree = JsonConverter.convertToNode(json);
+        if (jsonTree.isEmpty()) {
+            return "";
+        }
 
         CsvSchema.Builder csvSchemaBuilder = CsvSchema.builder();
-        List<String> firstRecordKeys = new ArrayList<>(listOfMaps.get(0).keySet());
-        for (String firstRecordKey : firstRecordKeys) {
-            csvSchemaBuilder.addColumn(firstRecordKey);
-        }
+        JsonNode firstObject = jsonTree.elements().next();
+        firstObject.fieldNames().forEachRemaining(csvSchemaBuilder::addColumn);
 
         CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();
         try {
