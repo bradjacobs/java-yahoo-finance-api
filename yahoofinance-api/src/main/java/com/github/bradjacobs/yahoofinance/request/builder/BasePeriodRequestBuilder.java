@@ -30,21 +30,17 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
 
     protected abstract T getThis();
 
-    public T setTimeRangeLastXHours(int hours) {
-        return setTimeRangeLastXUnits(hours, ChronoUnit.HOURS);
+    public T setPeriodRange(Period period) {
+        if (period != null)
+        {
+            LocalDate endDate = LocalDate.now();
+            LocalDate startDate = endDate.minus(period);
+            this.startPeriod = startDate.atStartOfDay(GMT_ZONE).toInstant().getEpochSecond();
+            this.endPeriod = endDate.atStartOfDay(GMT_ZONE).toInstant().getEpochSecond();
+        }
+        return getThis();
     }
-    public T setTimeRangeLastXDays(int days) {
-        return setTimeRangeLastXUnits(days, ChronoUnit.DAYS);
-    }
-    public T setTimeRangeLastXWeeks(int weeks) {
-        return setTimeRangeLastXUnits(weeks, ChronoUnit.WEEKS);
-    }
-    public T setTimeRangeLastXMonths(int months) {
-        return setTimeRangeLastXUnits(months, ChronoUnit.MONTHS);
-    }
-    public T setTimeRangeLastXYears(int years) {
-        return setTimeRangeLastXUnits(years, ChronoUnit.YEARS);
-    }
+
 
     public T setTimeRange(String startDate, String endDate) {
         return setStart(startDate).setEnd(endDate);
@@ -92,42 +88,6 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
     }
     public T setEnd(Long end) {
         this.endPeriod = epochSecondsConverter.fromLong(end);
-        return getThis();
-    }
-
-    protected T setTimeRangeLastXUnits(int value, ChronoUnit unit) {
-        Instant instantNow = Instant.now();
-        LocalDateTime ldt = LocalDateTime.from(instantNow.atZone(GMT_ZONE));
-
-        long endPeriodSeconds = instantNow.getEpochSecond();
-        long startPeriodSeconds = 0;
-
-        // Note: would be simpler to always do:
-        //     Instant instantStart = instantNow.minus(value, unit);
-        // HOWEVER - Instant doesn't support 'bigger' units (WEEKS,MONTHS,YEARS) for this operation.
-        //   "Period" is typically for bigger units, "Duration" typically for smaller units.
-
-        switch (unit) {
-            case HOURS:
-            case DAYS:
-                startPeriodSeconds = instantNow.minus(value, unit).getEpochSecond();
-                break;
-            case WEEKS:
-                startPeriodSeconds = ldt.minusWeeks(value).atZone(GMT_ZONE).toInstant().getEpochSecond();
-                break;
-            case MONTHS:
-                startPeriodSeconds = ldt.minusMonths(value).atZone(GMT_ZONE).toInstant().getEpochSecond();
-                break;
-            case YEARS:
-                startPeriodSeconds = ldt.minusYears(value).atZone(GMT_ZONE).toInstant().getEpochSecond();
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported ChronoUnit: " + unit);
-        }
-
-        this.startPeriod = startPeriodSeconds;
-        this.endPeriod = endPeriodSeconds;
-
         return getThis();
     }
 }
