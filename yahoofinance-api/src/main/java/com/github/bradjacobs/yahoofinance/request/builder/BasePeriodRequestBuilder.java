@@ -5,8 +5,11 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -94,36 +97,37 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
 
     protected T setTimeRangeLastXUnits(int value, ChronoUnit unit) {
         Instant instantNow = Instant.now();
-        Instant instantStart;
+        LocalDateTime ldt = LocalDateTime.from(instantNow.atZone(GMT_ZONE));
+
+        long endPeriodSeconds = instantNow.getEpochSecond();
+        long startPeriodSeconds = 0;
 
         // Note: would be simpler to always do:
         //     Instant instantStart = instantNow.minus(value, unit);
         // HOWEVER - Instant doesn't support 'bigger' units (WEEKS,MONTHS,YEARS) for this operation.
+        //   "Period" is typically for bigger units, "Duration" typically for smaller units.
 
-        LocalDateTime ldt = LocalDateTime.from(instantNow.atZone(GMT_ZONE));
         switch (unit) {
             case HOURS:
             case DAYS:
-                instantStart = instantNow.minus(value, unit);
+                startPeriodSeconds = instantNow.minus(value, unit).getEpochSecond();
                 break;
             case WEEKS:
-                ldt = ldt.minusWeeks(value);
-                instantStart = ldt.atZone(GMT_ZONE).toInstant();
+                startPeriodSeconds = ldt.minusWeeks(value).atZone(GMT_ZONE).toInstant().getEpochSecond();
                 break;
             case MONTHS:
-                ldt = ldt.minusMonths(value);
-                instantStart = ldt.atZone(GMT_ZONE).toInstant();
+                startPeriodSeconds = ldt.minusMonths(value).atZone(GMT_ZONE).toInstant().getEpochSecond();
                 break;
             case YEARS:
-                ldt = ldt.minusYears(value);
-                instantStart = ldt.atZone(GMT_ZONE).toInstant();
+                startPeriodSeconds = ldt.minusYears(value).atZone(GMT_ZONE).toInstant().getEpochSecond();
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported ChronoUnit: " + unit);
         }
 
-        this.startPeriod = instantStart.getEpochSecond();
-        this.endPeriod = instantNow.getEpochSecond();
+        this.startPeriod = startPeriodSeconds;
+        this.endPeriod = endPeriodSeconds;
+
         return getThis();
     }
 }
