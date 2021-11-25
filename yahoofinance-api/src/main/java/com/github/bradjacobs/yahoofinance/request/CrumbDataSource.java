@@ -11,8 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -23,9 +23,9 @@ public class CrumbDataSource
 {
     // url to use to get a 'crumb' value from the response.
     private static final String YAHOO_PAGE_URL = "https://finance.yahoo.com/quote/AAPL/profile?p=AAPL";
-    private static final String DIRECT_JSON_URL = "https://query2.finance.yahoo.com/v1/test/getcrumb";  // only works if there is a cookie header
+    private static final String DIRECT_JSON_URL = "https://query2.finance.yahoo.com/v1/test/getcrumb";  // only works if 'correct' headers available
 
-    private static final Map<String,String> requestHeaders = Collections.singletonMap("Content-Type", "application/x-www-form-urlencoded");
+    private static final Map<String,String> WEB_REQUEST_HEADERS = Collections.singletonMap("Content-Type", "application/x-www-form-urlencoded");
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 4; // (4 hours) - max time to cache a crumb value
 
     // look for this string in the response body to 'locate' the crumb value.
@@ -47,7 +47,7 @@ public class CrumbDataSource
     public String getCrumb(YahooRequest request) throws IOException
     {
         if (isExpired()) {
-            // super simplified sync
+            // super-simplified-sync
             synchronized (this) {
                 if (isExpired()) {
                     String newCrumbValue = null;
@@ -75,7 +75,6 @@ public class CrumbDataSource
         return false;
     }
 
-
     /**
      * Makes a network call to get (or reload) a crumb value.
      * @return crumb string
@@ -83,29 +82,50 @@ public class CrumbDataSource
      */
     private String reloadCrumb(YahooRequest request) throws IOException
     {
-        // if the request has an explicit cookie set, then use the cookie
-        //   and make an 'api' call to grab the crumb value.  (tends to be more reliable)
-        // otherwise make a coll to a generic yahoo finance page and parse out the crumb from the response.
+        String newCrumbValue = "";
         Map<String, String> requestHeaderMap = request.getHeaderMap();
-        if (requestHeaderMap != null && requestHeaderMap.containsKey(COOKIE_HEADER_NAME)) {
-
-            Map<String,String> headerMap = new TreeMap<>();
-            headerMap.put("Content-Type", "application/json");
-            headerMap.put(COOKIE_HEADER_NAME, requestHeaderMap.get(COOKIE_HEADER_NAME));
-
-            Response response = httpClient.executeGet(DIRECT_JSON_URL, headerMap);
-            if (response.isError()) {
-                throw HttpExceptionFactory.createException(response);
-            }
-            return response.getBody();
+        if (requestHeaderMap == null) {
+            requestHeaderMap = Collections.emptyMap();
         }
-        else {
-            Response response = httpClient.executeGet(YAHOO_PAGE_URL, requestHeaders);
-            if (response.isError()) {
-                throw HttpExceptionFactory.createException(response);
-            }
-            return parseOutCrumb(response.getBody());
+
+        // do direct api call if have successfully had crumb value before OR have a cookie header value.
+        if (StringUtils.isNotEmpty(this.crumbValue) || requestHeaderMap.containsKey(COOKIE_HEADER_NAME)) {
+            newCrumbValue = getCrumbViaApi(requestHeaderMap);
         }
+
+        if (StringUtils.isEmpty(newCrumbValue)) {
+            // usually the very first crumb request must be called this way in order to 'prime'
+            //   the httpClient with correct headers for future requests.
+            newCrumbValue = getCrumbViaWebPage();
+        }
+
+        if (StringUtils.isEmpty(newCrumbValue)) {
+            throw new IllegalStateException("Unable to fetch crumb value.");
+        }
+        return newCrumbValue;
+    }
+
+    private String getCrumbViaApi(Map<String, String> requestHeaderMap) throws IOException
+    {
+        Map<String,String> customHeaderMap = new LinkedHashMap<>();
+        customHeaderMap.put("Content-Type", "application/json");
+        if (requestHeaderMap.containsKey(COOKIE_HEADER_NAME)) {
+            customHeaderMap.put(COOKIE_HEADER_NAME, requestHeaderMap.get(COOKIE_HEADER_NAME));
+        }
+        Response response = httpClient.executeGet(DIRECT_JSON_URL, customHeaderMap);
+        if (response.isError()) {
+            throw HttpExceptionFactory.createException(response);
+        }
+        return response.getBody();
+    }
+
+    private String getCrumbViaWebPage() throws IOException
+    {
+        Response response = httpClient.executeGet(YAHOO_PAGE_URL, WEB_REQUEST_HEADERS);
+        if (response.isError()) {
+            throw HttpExceptionFactory.createException(response);
+        }
+        return parseOutCrumb(response.getBody());
     }
 
     /**
@@ -124,5 +144,4 @@ public class CrumbDataSource
 
         return crumbValue;
     }
-
 }
