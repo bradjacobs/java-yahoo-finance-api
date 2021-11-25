@@ -6,6 +6,17 @@ import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.types.StatementType;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 
+/**
+ * TODO ***********  IMPORTANT NOTES:
+ *    1. For non-premium members the data returned will be similar to that available on the website.
+ *      (for example:  if you can only see the last 4 quarters of a income statement on the website, it will be true here as well)
+ *  .
+ *    2. It's possible that the list of fields in the request becomes "too big" and will result in a error.
+ *       (i.e. it's NOT possible to specify "every possbile conceivable field value" for this reason)
+ *  .
+ *    3. Not all values are available for all tickers
+ *      (for example: many tickers will return 'null' for GrossProfit, even though the company DID have a gross profit)
+ */
 public enum TimeSeriesRequestExample implements RequestExample
 {
     SIMPLE {
