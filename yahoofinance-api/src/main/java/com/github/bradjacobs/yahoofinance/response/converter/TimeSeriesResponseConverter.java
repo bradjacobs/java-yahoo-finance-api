@@ -1,6 +1,5 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.response.converter.util.JsonNestedFormatRemover;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 import com.github.bradjacobs.yahoofinance.util.JsonPathDocContextCreator;
@@ -39,22 +38,20 @@ public class TimeSeriesResponseConverter implements ResponseConverter
 
     private static final String UPPER_EBIT = "EBIT";
     private static final String LOWER_EBIT = "ebit";
+    private static final boolean DEFAULT_ORGANIZE_BY_DATE = true;
 
     private final boolean organizeByDate;
     private final JsonNestedFormatRemover jsonNestedFormatRemover = new JsonNestedFormatRemover(true);
     private final JsonPathDocContextCreator jsonPathDocContextCreator = new JsonPathDocContextCreator();
 
+
     public TimeSeriesResponseConverter() {
-        this(null);
+        this(DEFAULT_ORGANIZE_BY_DATE);
     }
 
-    public TimeSeriesResponseConverter(ResponseConverterConfig config) {
-        if (config == null) {
-            config = ResponseConverterConfig.DEFAULT_INSTANCE;
-        }
-        this.organizeByDate = (config.isUseDateAsMapKey());
+    public TimeSeriesResponseConverter(boolean organizeByDate) {
+        this.organizeByDate = organizeByDate;
     }
-
 
     @Override
     public List<Map<String, Object>> convertToListOfMaps(String json)

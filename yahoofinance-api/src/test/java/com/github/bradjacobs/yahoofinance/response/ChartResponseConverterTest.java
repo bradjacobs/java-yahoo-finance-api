@@ -25,6 +25,16 @@ public class ChartResponseConverterTest
     private static final Double DELTA = 0.00001;
 
     @Test
+    public void testTemp() throws Exception
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            testConvertToListOfMaps();
+        }
+    }
+
+
+    @Test
     public void testConvertToListOfMaps() throws Exception
     {
         String originalJson = ResourceUtil.readResourceFileAsString("aapl_chart_5d_formatted.json");

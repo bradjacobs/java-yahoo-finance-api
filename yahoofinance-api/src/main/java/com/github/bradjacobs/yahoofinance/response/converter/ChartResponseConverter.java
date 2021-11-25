@@ -2,7 +2,6 @@ package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
-import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.response.converter.util.SimpleMapOfMapsGenerator;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
@@ -12,7 +11,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,19 +46,10 @@ public class ChartResponseConverter implements ResponseConverter
             .addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
             .addOptions(Option.SUPPRESS_EXCEPTIONS);
 
-    private final ResponseConverterConfig config;
-    private final SimpleMapOfMapsGenerator mapOfMapsGenerator = new SimpleMapOfMapsGenerator(KEY_DATE, false);
+    private final SimpleMapOfMapsGenerator mapOfMapsGenerator = new SimpleMapOfMapsGenerator(KEY_DATE, false); // todo - fix bool param
 
 
     public ChartResponseConverter() {
-        this(null);
-    }
-
-    public ChartResponseConverter(ResponseConverterConfig config) {
-        if (config == null) {
-            config = ResponseConverterConfig.DEFAULT_INSTANCE; // if null, use instance w/ default values.
-        }
-        this.config = config;
     }
 
     @Override
@@ -94,7 +83,7 @@ public class ChartResponseConverter implements ResponseConverter
             return Collections.emptyList();
         }
 
-        EpochStrConverter epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestampValues, this.config.isAutoDetectDateTime());
+        EpochStrConverter epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestampValues, true); // todo - fix true param
 
         // _ASSERT_ all lists are same length
         int entryCount = timestampValues.length;

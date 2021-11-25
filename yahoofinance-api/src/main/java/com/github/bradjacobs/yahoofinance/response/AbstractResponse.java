@@ -15,18 +15,13 @@ abstract public class AbstractResponse
     protected final YahooEndpoint endpoint;
     protected final YahooResponseConverter responseConverter;
 
-
-    public AbstractResponse(YahooEndpoint endpoint) {
-        this(endpoint, null);
-    }
-
-    public AbstractResponse(YahooEndpoint endpoint, ResponseConverterConfig converterConfig)
+    public AbstractResponse(YahooEndpoint endpoint)
     {
         if (endpoint == null) {
             throw new IllegalArgumentException("Must provide an endpoint parameter.");
         }
         this.endpoint = endpoint;
-        this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint, converterConfig);
+        this.responseConverter = ResponseConverterFactory.getResponseConverter(endpoint);
     }
 
     abstract protected List<Response> getListResponse();

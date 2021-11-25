@@ -17,8 +17,6 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 public class ResponseConverterFactory
 {
-    private static final ResponseConverterConfig DEFAULT_CONFIG = ResponseConverterConfig.DEFAULT_INSTANCE;
-
     private ResponseConverterFactory() { }
 
 
@@ -29,24 +27,8 @@ public class ResponseConverterFactory
      */
     public static YahooResponseConverter getResponseConverter(YahooEndpoint endpoint)
     {
-        return getResponseConverter(endpoint, DEFAULT_CONFIG);
-    }
-
-
-    /**
-     * Get response converter based on endpoint
-     * @param endpoint endpoint
-     * @param config (optional) specific 'date' conversion settings.   Only used for certain converters
-     * @return converter
-     */
-    public static YahooResponseConverter getResponseConverter(YahooEndpoint endpoint, ResponseConverterConfig config)
-    {
         if (endpoint == null) {
             throw new IllegalArgumentException("Must provide an endpoint");
-        }
-
-        if (config == null) {
-            config = DEFAULT_CONFIG;
         }
 
         ResponseConverter baseResponseConverter;
@@ -54,7 +36,7 @@ public class ResponseConverterFactory
         switch (endpoint)
         {
             case CHART:
-                baseResponseConverter = new ChartResponseConverter(config);
+                baseResponseConverter = new ChartResponseConverter();
                 break;
             case SCREENER:
             case PREMIUM_SCREENER:
@@ -70,11 +52,11 @@ public class ResponseConverterFactory
                 baseResponseConverter = new LookupResponseConverter();
                 break;
             case SPARK:
-                baseResponseConverter = new SparkResponseConverter(config);  // todo: come back to the future of the config param
+                baseResponseConverter = new SparkResponseConverter();
                 break;
             case TIMESERIES:
             case PREMIUM_TIMESERIES:
-                baseResponseConverter = new TimeSeriesResponseConverter(config); // todo: come back to the future of the config param
+                baseResponseConverter = new TimeSeriesResponseConverter();
                 break;
             case VISUALIZATION:
                 baseResponseConverter = new VisualizationResponseConverter();

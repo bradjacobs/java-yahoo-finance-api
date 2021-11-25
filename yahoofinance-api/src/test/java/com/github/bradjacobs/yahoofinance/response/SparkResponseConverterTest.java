@@ -10,19 +10,8 @@ import static org.testng.Assert.assertNotNull;
 
 public class SparkResponseConverterTest
 {
-    // todo - add tests w/ true as well
-
-    private static final ResponseConverterConfig  responseConverterConfig =
-            ResponseConverterConfig.builder()
-                    .useDateAsMapKey(false)
-                    .autoDetectDateTime(false)
-                    .build();
-
-    private static final SparkResponseConverter sparkResponseConverter = new SparkResponseConverter( responseConverterConfig );
-
     // need delta b/c Doubles might not be an 'exact' match
     private static final Double DELTA = 0.00001;
-
 
     // TODO - come back to and fix this test!!!!
 
@@ -40,14 +29,7 @@ public class SparkResponseConverterTest
     @Test
     public void testConvertMultiTickerMapOfMaps() throws Exception
     {
-
-        String dString = "272.0998";
-
-        Double dd = Double.valueOf(dString);
-
-        String dString2 = dd.toString();
-
-
+        SparkResponseConverter sparkResponseConverter = new SparkResponseConverter(false); // todo - make param more clear
         Map<String, Map<String, Object>> mapOfMaps = sparkResponseConverter.convertToMapOfMaps(TEST_TWO_TICKER_RESPONSE);
 
         assertNotNull(mapOfMaps);
@@ -64,7 +46,6 @@ public class SparkResponseConverterTest
 
         // todo - fix and finish
     }
-
 
 
 

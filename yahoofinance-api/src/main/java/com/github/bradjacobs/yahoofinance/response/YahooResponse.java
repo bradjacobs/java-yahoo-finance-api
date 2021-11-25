@@ -17,12 +17,6 @@ public class YahooResponse extends AbstractResponse
         this.rawResponse = rawResponse;
     }
 
-    public YahooResponse(YahooEndpoint endpoint, ResponseConverterConfig converterConfig, Response rawResponse)
-    {
-        super(endpoint, converterConfig);
-        this.rawResponse = rawResponse;
-    }
-
     @Override
     protected List<Response> getListResponse()
     {

@@ -2,7 +2,6 @@ package com.github.bradjacobs.yahoofinance.response.converter;
 
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
-import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 
 import java.util.List;
 import java.util.Map;
@@ -16,17 +15,14 @@ public class SparkResponseConverter implements ResponseConverter
 
     private static final DefaultResponseConverter defaultConverter = new DefaultResponseConverter();
 
-    private final ResponseConverterConfig config;
+    private static final boolean DEFAULT_ORGANIZE_BY_DATE = true;
+    private final boolean organizeByDate;
 
     public SparkResponseConverter() {
-        this(null);
+        this(DEFAULT_ORGANIZE_BY_DATE);
     }
-
-    public SparkResponseConverter(ResponseConverterConfig config) {
-        if (config == null) {
-            config = ResponseConverterConfig.DEFAULT_INSTANCE; // if null, use instance w/ default values.
-        }
-        this.config = config;
+    public SparkResponseConverter(boolean organizeByDate) {
+        this.organizeByDate = organizeByDate;
     }
 
     @Override
@@ -60,7 +56,6 @@ public class SparkResponseConverter implements ResponseConverter
         Map<String, Map<String, Object>> originalMapOfMaps = defaultConverter.convertToMapOfMaps(json);
 
         EpochStrConverter epochStrConverter = null;
-        boolean organizeByDate = this.config.isUseDateAsMapKey();
 
         for (Map.Entry<String, Map<String, Object>> entry : originalMapOfMaps.entrySet())
         {
@@ -72,7 +67,7 @@ public class SparkResponseConverter implements ResponseConverter
 
             if (epochStrConverter == null) {
                 // todo - fix... moved method to a common location, but it is still ugly
-                epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestamps.toArray(new Long[0]), this.config.isAutoDetectDateTime());
+                epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestamps.toArray(new Long[0]));
             }
 
             for (int i = 0; i < timestamps.size(); i++)

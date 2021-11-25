@@ -19,15 +19,7 @@ public class TimeSeriesResponseConverterTest
     public void testConvertAnnualToMapOfMaps() throws Exception
     {
         String originalJson = ResourceUtil.readResourceFileAsString("aapl_timeseries_response.json");
-
-        boolean useDateAsMapKey = true;
-        boolean autoDetectDateTime = true;
-        ResponseConverterConfig config = ResponseConverterConfig.builder()
-                .useDateAsMapKey(useDateAsMapKey)
-                .autoDetectDateTime(autoDetectDateTime)
-                .build();
-
-        TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter(config);
+        TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter();
 
         Map<String, Map<String, Object>> annualValueMap = timeseriesResponseConverter.convertToMapOfMaps(originalJson);
 

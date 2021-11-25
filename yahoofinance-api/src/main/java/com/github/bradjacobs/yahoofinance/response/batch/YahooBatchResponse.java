@@ -2,7 +2,6 @@ package com.github.bradjacobs.yahoofinance.response.batch;
 
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.response.AbstractResponse;
-import com.github.bradjacobs.yahoofinance.response.ResponseConverterConfig;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.util.JsonConverter;
 
@@ -18,13 +17,6 @@ public class YahooBatchResponse extends AbstractResponse
         super(yahooEndpoint);
         this.rawResponseList = rawResponseList;
     }
-
-    public YahooBatchResponse(YahooEndpoint endpoint, ResponseConverterConfig converterConfig, List<Response> rawResponseList)
-    {
-        super(endpoint, converterConfig);
-        this.rawResponseList = rawResponseList;
-    }
-
 
     @Override
     protected List<Response> getListResponse()
