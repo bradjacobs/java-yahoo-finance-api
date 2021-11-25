@@ -33,10 +33,8 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
     public T setPeriodRange(Period period) {
         if (period != null)
         {
-            LocalDate endDate = LocalDate.now();
-            LocalDate startDate = endDate.minus(period);
-            this.startPeriod = startDate.atStartOfDay(GMT_ZONE).toInstant().getEpochSecond();
-            this.endPeriod = endDate.atStartOfDay(GMT_ZONE).toInstant().getEpochSecond();
+            this.startPeriod = LocalDate.now().minus(period).atStartOfDay(GMT_ZONE).toInstant().getEpochSecond();  // close approximate
+            this.endPeriod = System.currentTimeMillis() / 1000L; // ensure include right up to 'now'
         }
         return getThis();
     }
