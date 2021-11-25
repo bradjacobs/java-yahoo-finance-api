@@ -77,16 +77,13 @@ public enum YahooEndpoint
 
     OPTIONS("options", 7),
 
-
     //  NOTE:  virtually identical to ".../quoteSummary/{symbol}?modules=quoteType"
     QUOTE_TYPE("quoteType", 1),
-
 
     //  Regional requests
     MARKET_SUMMARY("quote/marketSummary", 6, FLAG_IS_REGION),
     TRENDING("trending/", 1, FLAG_IS_REGION), // 'trending/US' or 'trending/?region=US'
-
-
+    UPSELL("upsell", 1, "ws/market-analytics/", FLAG_IS_REGION),  // haven't tried  (has premium also)
 
     // NOTE: ----
     //    intro attempt of supporting 'premium' endpoints.  Must have a valid Yahoo username/password
@@ -96,7 +93,6 @@ public enum YahooEndpoint
     //
     PREMIUM_SCREENER("premium/screener", 1, FLAG_IS_QUERY, FLAG_REQUIRES_CRUMB, FLAG_REQUIRES_POST, FLAG_IS_PREMIUM),
     PREMIUM_TIMESERIES("premium/timeseries", 1, "ws/fundamentals-timeseries/", FLAG_IS_PREMIUM);
-
 
 
 
