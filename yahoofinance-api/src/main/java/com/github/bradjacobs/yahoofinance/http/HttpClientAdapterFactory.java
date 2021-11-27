@@ -20,32 +20,35 @@ import java.util.concurrent.TimeUnit;
 public class HttpClientAdapterFactory
 {
     public static HttpClientAdapter createDefaultClient() {
-        return new HttpCommonsClientAdapter( createInternalHttpCommonsClient() );
+        return createDefaultHttpCommonsClient();
     }
     public static HttpClientAdapter createDefaultHttpCommonsClient() {
-        return new HttpCommonsClientAdapter( createInternalHttpCommonsClient() );
+        return createHttpClient( createInternalHttpCommonsClient() );
     }
     public static HttpClientAdapter createDefaultOkHttpClient() {
-        return new OkHttpClientAdapter( createInternalOkHttpClient() );
+        return createHttpClient( createInternalOkHttpClient() );
     }
 
-
-
-    public static HttpClientAdapter createHttpClient(CloseableHttpClient apacheClient)
-    {
+    /**
+     * Creates httpClientAdapter for Apache Commons Http Client
+     * @param apacheClient httpClient
+     * @return httpClientAdapter
+     */
+    public static HttpClientAdapter createHttpClient(CloseableHttpClient apacheClient) {
         return new HttpCommonsClientAdapter(apacheClient);
     }
 
-    public static HttpClientAdapter createHttpClient(OkHttpClient okHttpClient)
-    {
+    /**
+     * Creates httpClientAdapter for OKHttpClient
+     * @param okHttpClient httpClient
+     * @return httpClientAdapter
+     */
+    public static HttpClientAdapter createHttpClient(OkHttpClient okHttpClient) {
         return new OkHttpClientAdapter(okHttpClient);
     }
 
 
-
-    // todo - cleanup / remove below
-
-    // todo: values are arbitrary
+    // NOTE: values are arbitrary!
     private static final int MAX_CONNECTIONS_PER_HOST = 10;
     private static final int MAX_TOTAL_CONNECTIONS = 10;
     private static final int CONNECTION_TIMEOUT = 20000;
@@ -69,10 +72,8 @@ public class HttpClientAdapterFactory
             .build();
     }
 
-
     private static OkHttpClient createInternalOkHttpClient()
     {
-        HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
         return new OkHttpClient.Builder()
             .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -82,12 +83,8 @@ public class HttpClientAdapterFactory
     }
 
     // needed for "screener" requests
-    private static class SimpleCookieJar implements CookieJar
-    {
-        private final Map<String, List<Cookie>> cookieStore;
-        SimpleCookieJar() {
-            cookieStore = new HashMap<>();
-        }
+    private static class SimpleCookieJar implements CookieJar {
+        private final Map<String, List<Cookie>> cookieStore = new HashMap<>();
 
         @Override
         public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
@@ -95,15 +92,12 @@ public class HttpClientAdapterFactory
         }
 
         @Override
-        public List<Cookie> loadForRequest(HttpUrl url)
-        {
+        public List<Cookie> loadForRequest(HttpUrl url) {
             String host = url.host();
-            //   if asking for cookie for "query1.finance.yahoo.com", then give cookie for "finance.yahoo.com"
-            // todo: make cleaner when time allows
+            //  if asking for cookie for "query1.finance.yahoo.com", then give cookie for "finance.yahoo.com"
             if (host.endsWith(".finance.yahoo.com")) {
                 host = "finance.yahoo.com";
             }
-
             List<Cookie> cookies = cookieStore.get(host);
             return cookies != null ? cookies : new ArrayList<>();
         }
