@@ -5,7 +5,6 @@ import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.model.EarningsEventResult;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
-import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.io.IOException;
@@ -36,9 +35,9 @@ public class VisualizationEarningsRequesterDemo
 
             if (useBatching)
             {
-                YahooBatchResponse batchResp = client.executeBatch(req);
+                YahooResponse batchResp = client.executeBatch(req);
 
-                List<String> jsonList = batchResp.getJson();
+                String json = batchResp.getJson();
                 List<EarningsEventResult> pojoList = batchResp.getAsListOfPojos(EarningsEventResult.class);
                 // get map results in form of predefined class (key is the ticker/symbol)
                 Map<String, EarningsEventResult> pojoMap = batchResp.getAsMapOfPojos(EarningsEventResult.class);

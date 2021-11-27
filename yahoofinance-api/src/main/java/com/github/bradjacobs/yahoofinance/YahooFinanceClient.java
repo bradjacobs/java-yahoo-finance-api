@@ -12,11 +12,11 @@ import com.github.bradjacobs.yahoofinance.request.RequestUrlGenerator;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestBuilder;
+import com.github.bradjacobs.yahoofinance.response.YahooCompositeResponse;
+import com.github.bradjacobs.yahoofinance.response.YahooSimpleResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
-import com.github.bradjacobs.yahoofinance.response.YahooResponseGenerator;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseChecker;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseCheckerFactory;
-import com.github.bradjacobs.yahoofinance.response.batch.YahooBatchResponse;
 import org.apache.http.HttpHeaders;
 
 import java.io.IOException;
@@ -39,7 +39,6 @@ public class YahooFinanceClient
     private final HttpClientAdapter httpClient;
     private final CrumbDataSource crumbDataSource;
     private final RequestUrlGenerator requestUrlGenerator = new RequestUrlGenerator();
-    private final YahooResponseGenerator yahooResponseGenerator = new YahooResponseGenerator();
     private final BatchResponseCheckerFactory batchResponseCheckerFactory = new BatchResponseCheckerFactory();
 
     // todo: for the moment this is always true.. to fix.
@@ -65,10 +64,10 @@ public class YahooFinanceClient
     public YahooResponse execute(YahooRequest request) throws IOException
     {
         Response rawResponse = executeInternal(request);
-        return yahooResponseGenerator.makeResponse(request, rawResponse);
+        return new YahooSimpleResponse(request.getEndpoint(), rawResponse);
     }
 
-    public YahooBatchResponse executeBatch(YahooRequest request) throws IOException
+    public YahooResponse executeBatch(YahooRequest request) throws IOException
     {
         // todo - come back to address this (a little kludgy)
         if (request instanceof YahooFinanceBatchRequest) {
@@ -79,11 +78,11 @@ public class YahooFinanceClient
         }
     }
 
-    public YahooBatchResponse executeBatch(YahooFinanceBatchRequest request) throws IOException
+    public YahooResponse executeBatch(YahooFinanceBatchRequest request) throws IOException
     {
         BatchableRequestBuilder batchRequestBuilder = request.getBatchableRequestBuilder();
         List<Response> rawResponses = executeBatchRequests(batchRequestBuilder);
-        return yahooResponseGenerator.makeBatchResponse(request, rawResponses);
+        return new YahooCompositeResponse(request.getEndpoint(), rawResponses);
     }
 
     protected Response executeInternal(YahooRequest request) throws IOException

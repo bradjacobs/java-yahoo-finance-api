@@ -1,43 +1,20 @@
 package com.github.bradjacobs.yahoofinance.response;
 
-import com.github.bradjacobs.yahoofinance.http.Response;
-import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.util.JsonConverter;
-
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-public class YahooResponse extends AbstractResponse
+// todo - add javadocs
+public interface YahooResponse
 {
-    private final Response rawResponse;
+    int getHttpCode();
+    boolean hasErrors();
 
-    public YahooResponse(YahooEndpoint yahooEndpoint, Response rawResponse)
-    {
-        super(yahooEndpoint);
-        this.rawResponse = rawResponse;
-    }
+    String getJson();
 
-    @Override
-    protected List<Response> getListResponse()
-    {
-        return Collections.singletonList(this.rawResponse);
-    }
+    String getPrettyJson();
 
-    public int getHttpCode() {
-        return this.rawResponse.getCode();
-    }
-
-    public String getJson() {
-        return this.rawResponse.getBody();
-    }
-
-    public String getPrettyJson() {
-        return JsonConverter.toPrettyJson(this.rawResponse.getBody());
-    }
-
-    @Override
-    public boolean hasErrors()
-    {
-        return rawResponse.isError();
-    }
+    List<Map<String,Object>> getAsListOfMaps();
+    Map<String, Map<String, Object>> getAsMapOfMaps();
+    <T> List<T> getAsListOfPojos(Class<T> targetType);
+    <T> Map<String,T> getAsMapOfPojos(Class<T> targetType);
 }
