@@ -1,5 +1,6 @@
 package com.github.bradjacobs.yahoofinance.request;
 
+import com.github.bradjacobs.yahoofinance.request.builder.ParamKeys;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
@@ -11,7 +12,6 @@ public class RequestUrlGenerator
 {
     private static final String BASE_API_SCHEME = "https";
     private static final String BASE_API_HOST = "query1.finance.yahoo.com";
-    private static final String CRUMB_KEY = "crumb";
 
     public String buildRequestUrl(YahooRequest request)
     {
@@ -23,7 +23,7 @@ public class RequestUrlGenerator
         Map<String, String> paramMap = request.getParamMap();
         if (StringUtils.isNotEmpty(crumb)) {
             Map<String,String> updatedParamMap = new LinkedHashMap<>(paramMap);
-            updatedParamMap.put(CRUMB_KEY, crumb);
+            updatedParamMap.put(ParamKeys.CRUMB, crumb);
             paramMap = updatedParamMap;
         }
 
