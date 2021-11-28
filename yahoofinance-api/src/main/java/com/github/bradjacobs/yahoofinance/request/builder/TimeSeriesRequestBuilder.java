@@ -107,7 +107,7 @@ public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSerie
         requestParamMap.put(ParamKeys.PAD_TIME_SERIES, String.valueOf(this.padTimeSeries));
 
         List<String> fieldList = fieldBuilder.build();
-        if (fieldList != null && fieldList.size() > 0)
+        if (fieldList.size() > 0)
         {
             // NOTE... this string can be __HUGE__
             String fieldValueString = String.join(",", fieldList);

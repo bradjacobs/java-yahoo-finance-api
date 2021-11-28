@@ -30,7 +30,7 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
         REGION("region");
 
         private final String key;
-        private VisualizationCriteriaField(String key) {
+        VisualizationCriteriaField(String key) {
             this.key = key;
         }
 

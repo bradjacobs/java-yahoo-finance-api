@@ -50,7 +50,7 @@ public class CrumbDataSource
             // super-simplified-sync
             synchronized (this) {
                 if (isExpired()) {
-                    String newCrumbValue = null;
+                    String newCrumbValue;
                     try {
                         newCrumbValue = reloadCrumb(request);
                     }

@@ -131,7 +131,7 @@ public class YahooFinanceClient
         int currentBatchOffset = originalBatchOffset;
 
         Response response;
-        boolean continueBatchRequesting = true;
+        boolean continueBatchRequesting;
 
         try
         {
