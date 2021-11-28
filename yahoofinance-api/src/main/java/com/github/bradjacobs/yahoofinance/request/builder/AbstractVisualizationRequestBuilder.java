@@ -41,7 +41,7 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     }
 
     private boolean isAggregate = false;  // todo - always false for now
-    private static final String SORT_TYPE = "ASC";      // for now sort order is const
+    private boolean isSortDescending = false;  // todo - always false for now
 
     private static final long ONE_DAY_SECONDS = 24 * 60 * 60;
     private static final int MIN_BATCHABLE_SIZE = 10;
@@ -73,7 +73,7 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
         criteria.setSize(size);
         criteria.setOffset(offset);
         criteria.setSortField(getSortField());
-        criteria.setSortType(SORT_TYPE);
+        criteria.setIsSortDescending(isSortDescending);
         criteria.setEntityIdType(getEntityType());
         criteria.setIncludeFields(getIncludeFields());
 

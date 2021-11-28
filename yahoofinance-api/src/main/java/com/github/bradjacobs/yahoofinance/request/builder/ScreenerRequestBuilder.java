@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 
 public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder> implements BatchableRequestBuilder
 {
-    private static final String SORT_DESC = "DESC";
-    private static final String SORT_ASC = "ASC";
     private static final int MIN_BATCHABLE_SIZE = 10;
     private static final Set<Exchange> NASDAQ_SUB_TYPES =
             new LinkedHashSet<>(Arrays.asList(Exchange.NASDAQGM, Exchange.NASDAQGS, Exchange.NASDAQCM));
@@ -35,7 +33,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     private int offset = 0;
 
     private ScreenerField sortField = ScreenerField.INTRADAYMARKETCAP;
-    private String sortType = SORT_DESC;
+    private boolean isSortDescending = true;
     private Boolean formatted = null;
 
     private Boolean useRecordResponse = null;  // not sure what this actually does
@@ -76,12 +74,12 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     }
     public ScreenerRequestBuilder setSortAscending(ScreenerField sortField) {
         this.sortField = sortField;
-        this.sortType = SORT_ASC;
+        this.isSortDescending = false;
         return this;
     }
     public ScreenerRequestBuilder setSortDescending(ScreenerField sortField) {
         this.sortField = sortField;
-        this.sortType = SORT_DESC;
+        this.isSortDescending = true;
         return this;
     }
     public ScreenerRequestBuilder setUseRecordResponse(Boolean useRecordResponse) {
@@ -209,7 +207,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         criteria.setSize(size);
         criteria.setOffset(offset);
         criteria.setSortField(sortField.getValue());
-        criteria.setSortType(sortType);
+        criteria.setIsSortDescending(isSortDescending);
         criteria.setQuoteType(quoteType.toString());
         criteria.setTopOperator(TOP_OPERATOR);
         criteria.setUserId(USER_ID);
