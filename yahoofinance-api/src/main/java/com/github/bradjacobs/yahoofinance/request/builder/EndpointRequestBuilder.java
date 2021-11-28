@@ -43,15 +43,11 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
     protected Map<String, String> buildEndpointParamMap()
     {
         Map<String,String> requestParamMap = new LinkedHashMap<>();
-
-        if (this.endpoint != null)
-        {
-            if (this.endpoint.isMultiTickerSupported()) {
-                requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());
-            }
-            else if (this.endpoint.isTickerKeyValueParam()) {
-                requestParamMap.put(ParamKeys.SYMBOL, generateTickerString());
-            }
+        if (this.endpoint.isMultiTickerSupported()) {
+            requestParamMap.put(ParamKeys.SYMBOLS, generateTickerString());
+        }
+        else if (this.endpoint.isTickerKeyValueParam()) {
+            requestParamMap.put(ParamKeys.SYMBOL, generateTickerString());
         }
         return requestParamMap;
     }
