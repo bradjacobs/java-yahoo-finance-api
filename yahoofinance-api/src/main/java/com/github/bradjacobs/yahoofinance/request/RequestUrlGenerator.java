@@ -5,6 +5,7 @@ import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,27 +14,30 @@ public class RequestUrlGenerator
     private static final String BASE_API_SCHEME = "https";
     private static final String BASE_API_HOST = "query1.finance.yahoo.com";
 
-    public String buildRequestUrl(YahooRequest request)
-    {
-        return buildRequestUrl(request, null);
+    private final CrumbDataSource crumbDataSource;
+
+    public RequestUrlGenerator() {
+        this(null);
+    }
+    public RequestUrlGenerator(CrumbDataSource crumbDataSource) {
+        this.crumbDataSource = crumbDataSource;
     }
 
-    public String buildRequestUrl(YahooRequest request, String crumb)
-    {
-        Map<String, String> paramMap = request.getParamMap();
-        if (StringUtils.isNotEmpty(crumb)) {
-            Map<String,String> updatedParamMap = new LinkedHashMap<>(paramMap);
-            updatedParamMap.put(ParamKeys.CRUMB, crumb);
-            paramMap = updatedParamMap;
+
+    public String buildRequestUrl(YahooRequest request) throws IOException {
+
+        Map<String, String> paramMap = new LinkedHashMap<>(request.getParamMap());
+        if (request.isCrumbRequired() && crumbDataSource != null) {
+            String crumb = crumbDataSource.getCrumb(request);
+            paramMap.put(ParamKeys.CRUMB, crumb);
         }
 
-        String ticker = request.getTicker().toUpperCase();
         YahooEndpoint endpoint = request.getEndpoint();
 
         //  e.g. /v8/finance/chart/AAPL
         String urlPath = endpoint.getPathPrefix() + "v" + endpoint.getVersion() + "/finance/" + endpoint.getName();
         if ( endpoint.isTickerOnPath() ) {
-            urlPath +=  "/" + ticker;
+            urlPath +=  "/" + request.getTicker().toUpperCase();
         }
 
         URIBuilder builder = new URIBuilder()

@@ -38,7 +38,7 @@ public class YahooFinanceClient
     // httpClient is a simple interface around the 'true' httpClient.
     private final HttpClientAdapter httpClient;
     private final CrumbDataSource crumbDataSource;
-    private final RequestUrlGenerator requestUrlGenerator = new RequestUrlGenerator();
+    private final RequestUrlGenerator requestUrlGenerator;
     private final BatchResponseCheckerFactory batchResponseCheckerFactory = new BatchResponseCheckerFactory();
 
     // todo: for the moment this is always true.. to fix.
@@ -56,9 +56,11 @@ public class YahooFinanceClient
         }
         this.httpClient = httpClient;
 
-        // important note:  the CrumbDataSource must use the SAME
-        //     httpClient that is used by the YahooClient.
+        // important note:  the CrumbDataSource _MUST_ use the SAME
+        //     httpClient that is used by the YahooClient!
         this.crumbDataSource = new CrumbDataSource(httpClient);
+        this.requestUrlGenerator = new RequestUrlGenerator(crumbDataSource);
+
     }
 
     public YahooResponse execute(YahooRequest request) throws IOException
@@ -87,12 +89,7 @@ public class YahooFinanceClient
 
     protected Response executeInternal(YahooRequest request) throws IOException
     {
-        String crumb = null;
-        if (request.isCrumbRequired()) {
-            crumb = crumbDataSource.getCrumb(request);
-        }
-
-        String url = requestUrlGenerator.buildRequestUrl(request, crumb);
+        String url = requestUrlGenerator.buildRequestUrl(request);
         Map<String,String> headerMap = createRequestHeaderMap(request);
 
         Response response;
