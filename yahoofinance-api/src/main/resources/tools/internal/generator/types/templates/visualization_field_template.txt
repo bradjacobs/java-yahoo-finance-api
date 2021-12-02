@@ -3,21 +3,24 @@
  */
 package com.github.bradjacobs.yahoofinance.types;
 
+import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaKey;
 import javax.annotation.Generated;
 
 {GENERATOR_LINE}
-public enum VisualizationField
+public enum {CLASS_NAME} implements CriteriaKey
 {
 {ENUM_LIST}
 
     private final String value;
     private final boolean sortable;
     private final String displayString;
+    private final boolean isPremium;
 
-    VisualizationField(String value, boolean sortable, String displayString) {
+    {CLASS_NAME}(String value, boolean sortable, String displayString, boolean isPremium) {
         this.value = value;
         this.sortable = sortable;
         this.displayString = displayString;
+        this.isPremium = isPremium;
     }
 
     public String getValue() {
@@ -30,5 +33,14 @@ public enum VisualizationField
 
     public String getDisplayString() {
         return displayString;
+    }
+
+    public boolean isPremium() {
+        return isPremium;
+    }
+
+    @Override
+    public String getKeyName() {
+        return value;
     }
 }

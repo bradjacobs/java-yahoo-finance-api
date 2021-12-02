@@ -8,13 +8,13 @@ import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaEnum;
 import javax.annotation.Generated;
 
 {GENERATOR_LINE}
-public enum Sector implements CriteriaEnum
+public enum {CLASS_NAME} implements CriteriaEnum
 {
 {ENUM_LIST}
 
     private final String value;
 
-    Sector(String value) {
+    {CLASS_NAME}(String value) {
         this.value = value;
     }
 

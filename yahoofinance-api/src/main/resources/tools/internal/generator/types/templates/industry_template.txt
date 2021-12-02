@@ -9,14 +9,14 @@ import javax.annotation.Generated;
 import static com.github.bradjacobs.yahoofinance.types.Sector.*;
 
 {GENERATOR_LINE}
-public enum Industry implements CriteriaEnum
+public enum {CLASS_NAME} implements CriteriaEnum
 {
 {ENUM_LIST}
 
     private final String value;
     private final Sector sector;
 
-    Industry(String value, Sector sector) {
+    {CLASS_NAME}(String value, Sector sector) {
         this.value = value;
         this.sector = sector;
     }

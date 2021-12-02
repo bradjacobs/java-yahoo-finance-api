@@ -16,27 +16,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+// todo - needs major comments and cleanup!!
 public class IndustryEnumGenerator extends EnumStringBlobGenerator
 {
     private static final String TEMPLATE_NAME = "industry_template.txt";
     private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=sector_industry";
-
     private static final String EXTRA_URL_REQUEST_TEMPLATE = URL + "&dependentfield=sector&dependentvalues=%s";
 
     private static final String SECTOR_NAMES_JSON_PATH = "$.finance.result[0].fields.sector.labels[*].displayName";
     private static final String INDUSTRY_NAMES_JSON_PATH = "$.finance.result[0].fields.industry.labels[*].displayName";
 
-
     private final OkHttpClient client = new OkHttpClient();
 
-    @Override
-    protected String getTemplateFileName() {
-        return TEMPLATE_NAME;
-    }
 
     @Override
     protected String getUrl() {
         return URL;
+    }
+
+    @Override
+    protected String getOutputClassName() {
+        return "Industry";
+    }
+
+    @Override
+    protected String getTemplateFileName() {
+        return TEMPLATE_NAME;
     }
 
 

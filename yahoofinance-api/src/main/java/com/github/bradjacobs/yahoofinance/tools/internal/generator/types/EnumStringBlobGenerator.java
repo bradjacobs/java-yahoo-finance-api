@@ -20,6 +20,7 @@ abstract class EnumStringBlobGenerator
     private static final String RESOURCES_TEMPLATE_DIR = "tools/internal/generator/types/templates/";
     private static final String TEMPLATE_PLACEHOLDER = "{ENUM_LIST}";
     private static final String GENERATOR_LINE_PLACEHOLDER = "{GENERATOR_LINE}";
+    private static final String CLASS_NAME_PLACEHOLDER = "{CLASS_NAME}";
 
     private static final String GENERATOR_LINE_TEMPLATE = "@Generated(value=\"yahoo-finance-api-internal-tools\", date=\"%s\")";
 
@@ -32,6 +33,8 @@ abstract class EnumStringBlobGenerator
 
     protected abstract String getTemplateFileName();
     protected abstract String getUrl();
+    protected abstract String getOutputClassName();
+
 
     /**
      * Makes Http Call to fetch the json for the value of the 'getUrl()' method.
@@ -57,6 +60,7 @@ abstract class EnumStringBlobGenerator
 
         String fileData = template.replace(TEMPLATE_PLACEHOLDER, enumStringBlob);
         fileData = fileData.replace(GENERATOR_LINE_PLACEHOLDER, String.format(GENERATOR_LINE_TEMPLATE, LocalDate.now().toString()));
+        fileData = fileData.replace(CLASS_NAME_PLACEHOLDER, this.getOutputClassName());
 
         return fileData;
     }

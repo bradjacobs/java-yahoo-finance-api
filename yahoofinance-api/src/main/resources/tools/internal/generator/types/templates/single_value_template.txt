@@ -6,15 +6,13 @@ package com.github.bradjacobs.yahoofinance.types;
 import javax.annotation.Generated;
 
 {GENERATOR_LINE}
-public enum Interval
+public enum {CLASS_NAME}
 {
 {ENUM_LIST}
-
     private final String value;
 
-    Interval(String value) {
+    {CLASS_NAME}(String value) {
         this.value = value;
-
     }
 
     public String getValue() {

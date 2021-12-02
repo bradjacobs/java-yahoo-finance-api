@@ -12,20 +12,21 @@ import java.util.List;
 
 class SectorEnumGenerator extends EnumStringBlobGenerator
 {
-    private static final String TEMPLATE_NAME = "sector_template.txt";
+    @Override
+    protected String getUrl() {
+        return "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=sector_industry";
+    }
 
-    private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=sector_industry";
-
+    @Override
+    protected String getOutputClassName() {
+        return "Sector";
+    }
 
     @Override
     protected String getTemplateFileName() {
-        return TEMPLATE_NAME;
+        return "sector_template.txt";
     }
 
-    @Override
-    protected String getUrl() {
-        return URL;
-    }
 
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
@@ -34,7 +35,6 @@ class SectorEnumGenerator extends EnumStringBlobGenerator
         List<String> values = JsonPath.read(json, "$.finance.result[0].fields.sector.labels[*].criteria.operands[1]");
 
         List<EnumInfo> enumInfoList = new ArrayList<>();
-
         int elementCount = displayNames.size();
 
         for (int i = 0; i < elementCount; i++)

@@ -55,7 +55,7 @@ class TimeIntervalEnumInfoGenerator
                         String suffixUnitName = entry.getValue();
                         if (numberName != null)
                         {
-                            // some reason putting the 's' on min seems to look funny (probably just me)
+                            // for some reason putting the 's' on min seems to look funny (probably just me)
                             if (numberVal != 1 && !suffixUnitName.equals("MIN"))
                             {
                                 suffixUnitName += "S";

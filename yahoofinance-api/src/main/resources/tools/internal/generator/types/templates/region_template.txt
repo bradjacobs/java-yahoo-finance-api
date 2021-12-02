@@ -20,7 +20,7 @@ import java.util.Map;
  *
  */
 {GENERATOR_LINE}
-public enum Region implements CriteriaEnum
+public enum {CLASS_NAME} implements CriteriaEnum
 {
 {ENUM_LIST}
 
@@ -35,7 +35,7 @@ public enum Region implements CriteriaEnum
         }
     }
 
-    Region(String code, String displayName)
+    {CLASS_NAME}(String code, String displayName)
     {
         this.code = code;
         this.displayName = displayName;

@@ -3,10 +3,11 @@
  */
 package com.github.bradjacobs.yahoofinance.types;
 
+import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaKey;
 import javax.annotation.Generated;
 
 {GENERATOR_LINE}
-public enum ScreenerField
+public enum {CLASS_NAME} implements CriteriaKey
 {
 {ENUM_LIST}
 
@@ -15,7 +16,7 @@ public enum ScreenerField
     private final String displayString;
     private final boolean isPremium;
 
-    ScreenerField(String value, boolean sortable, String displayString, boolean isPremium) {
+    {CLASS_NAME}(String value, boolean sortable, String displayString, boolean isPremium) {
         this.value = value;
         this.sortable = sortable;
         this.displayString = displayString;
@@ -36,5 +37,10 @@ public enum ScreenerField
 
     public boolean isPremium() {
         return isPremium;
+    }
+
+    @Override
+    public String getKeyName() {
+        return value;
     }
 }

@@ -10,22 +10,23 @@ import java.util.List;
 
 class TypesEnumGenerator extends EnumStringBlobGenerator
 {
-    private static final String TEMPLATE_NAME = "type_template.txt";
-
-    // NOTE: this is a bad request _ON PURPOSE_.
-    //   the error response has the required info
-    private static final String URL = "https://query1.finance.yahoo.com/v1/finance/lookup?query=ABCD&type=FAKE";
-
-    @Override
-    protected String getTemplateFileName()
-    {
-        return TEMPLATE_NAME;
-    }
-
     @Override
     protected String getUrl() {
-        return URL;
+        // NOTE: this is a bad request _ON PURPOSE_.
+        //   the error response has the required info
+        return "https://query1.finance.yahoo.com/v1/finance/lookup?query=ABCD&type=FAKE";
     }
+
+    @Override
+    protected String getOutputClassName() {
+        return "Type";
+    }
+
+    @Override
+    protected String getTemplateFileName() {
+        return "type_template.txt";
+    }
+
 
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
@@ -47,5 +48,4 @@ class TypesEnumGenerator extends EnumStringBlobGenerator
 
         return enumInfoList;
     }
-
 }

@@ -9,25 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 class IntervalEnumGenerator extends EnumStringBlobGenerator
 {
-    private static final String TEMPLATE_NAME = "interval_template.txt";
+    @Override
+    protected String getUrl() {
+        // NOTE: this is a bad request _ON PURPOSE_.
+        //     the error response has the required info
+        return "https://query1.finance.yahoo.com/v7/finance/chart/AAPL?range=1d&interval=FAKE";
+    }
 
-    // NOTE: this is a bad request _ON PURPOSE_.
-    //   the error response has the required info
-    private static final String URL = "https://query1.finance.yahoo.com/v7/finance/chart/AAPL?range=1d&interval=FAKE";
-
+    @Override
+    protected String getOutputClassName() {
+        return "Interval";
+    }
 
     @Override
     protected String getTemplateFileName() {
-        return TEMPLATE_NAME;
+        return "single_value_template.txt";
     }
 
-    @Override
-    protected String getUrl() {
-        return URL;
-    }
 
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)

@@ -4,10 +4,9 @@
 package com.github.bradjacobs.yahoofinance.types;
 
 import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaKey;
-
 import javax.annotation.Generated;
 
-@Generated(value="yahoo-finance-api-internal-tools", date="2021-11-09")
+@Generated(value="yahoo-finance-api-internal-tools", date="2021-12-01")
 public enum ScreenerField implements CriteriaKey
 {
     // Basic Fields
@@ -124,6 +123,7 @@ public enum ScreenerField implements CriteriaKey
     EARNINGS_CONSISTENCY("earnings_consistency", false, "Earnings Consistency", true),
     ESTIMATED_EARNINGS_GROWTH("estimated_earnings_growth", true, "Estimated Earnings Growth YoY %", true),
     ESTIMATED_REVENUE_GROWTH("estimated_revenue_growth", true, "Estimated Revenue Growth YoY %", true),
+    HOLDERS_FUND_TYPES("holders_fund_types", false, "Institutional Owner Types", true),
     MORNINGSTAR_ECONOMIC_MOAT("morningstar_economic_moat", false, "Economic Moat", true),
     MORNINGSTAR_LAST_CLOSE_PRICE_TO_FAIR_VALUE("morningstar_last_close_price_to_fair_value", true, "Last Close Price To Morningstar Fair Value Ratio", true),
     MORNINGSTAR_MOAT_TREND("morningstar_moat_trend", false, "Moat Trend", true),

@@ -11,19 +11,19 @@ import java.util.List;
 
 class RangeEnumGenerator extends EnumStringBlobGenerator
 {
-    private static final String TEMPLATE_NAME = "range_template.txt";
-
-    private static final String URL = "https://query1.finance.yahoo.com/v7/finance/chart/AAPL?range=1dx&interval=1d";
-
     @Override
-    protected String getTemplateFileName()
-    {
-        return TEMPLATE_NAME;
+    protected String getUrl() {
+        return "https://query1.finance.yahoo.com/v7/finance/chart/AAPL?range=1dx&interval=1d";
     }
 
     @Override
-    protected String getUrl() {
-        return URL;
+    protected String getOutputClassName() {
+        return "Range";
+    }
+
+    @Override
+    protected String getTemplateFileName() {
+        return "single_value_template.txt";
     }
 
     @Override

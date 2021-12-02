@@ -11,21 +11,22 @@ import java.util.List;
 
 class RegionEnumGenerator extends EnumStringBlobGenerator
 {
-    private static final String TEMPLATE_NAME = "region_template.txt";
-
-    // grab available regions from Yahoo's screener definition fields.
-    private static final String URL = "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=keystats";
-
-    @Override
-    protected String getTemplateFileName()
-    {
-        return TEMPLATE_NAME;
-    }
-
     @Override
     protected String getUrl() {
-        return URL;
+        // grab available regions from Yahoo's screener definition fields.
+        return "https://query1.finance.yahoo.com/v1/finance/screener/instrument/equity/fields?lang=en-US&region=US&category=keystats";
     }
+
+    @Override
+    protected String getOutputClassName() {
+        return "Region";
+    }
+
+    @Override
+    protected String getTemplateFileName() {
+        return "region_template.txt";
+    }
+
 
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)

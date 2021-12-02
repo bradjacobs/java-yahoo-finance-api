@@ -6,7 +6,7 @@ package com.github.bradjacobs.yahoofinance.types;
 import javax.annotation.Generated;
 
 {GENERATOR_LINE}
-public enum Type
+public enum {CLASS_NAME}
 {
 {ENUM_LIST}
 }

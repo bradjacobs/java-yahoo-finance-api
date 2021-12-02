@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,27 +25,26 @@ class MasterEnumFileGenerator
 
     private static final List<EnumStringBlobGenerator> enumGenerators = new ArrayList<>();
 
-    private static final Map<String,EnumStringBlobGenerator> enumGeneratorMap = new LinkedHashMap<>();
+    // comment out lines below accordingly if only want to run individual ones.
+    private static final List<EnumStringBlobGenerator> enumGeneratorList = Arrays.asList(
+            new IntervalEnumGenerator(),
+            new RangeEnumGenerator(),
+            new RegionEnumGenerator(),
+            new TypesEnumGenerator(),
+            new ScreenerFieldEnumGenerator(),
+            new SectorEnumGenerator(),
+            new IndustryEnumGenerator(),
+            new IpoEventFieldEnumGenerator(),
+            new EarningsEventFieldEnumGenerator()
+    );
 
-    // comment out lines below according if only want to run individual ones.
-    static {
-        enumGeneratorMap.put("Interval.java", new IntervalEnumGenerator());
-        enumGeneratorMap.put("Range.java", new RangeEnumGenerator());
-        enumGeneratorMap.put("Region.java", new RegionEnumGenerator());
-        enumGeneratorMap.put("Type.java", new TypesEnumGenerator());
-        enumGeneratorMap.put("ScreenerField.java", new ScreenerFieldEnumGenerator());
-        //////enumGeneratorMap.put("Exchange.java", new ExchangeEnumGenerator());  // to be removed from auto-gen
-        enumGeneratorMap.put("Sector.java", new SectorEnumGenerator());
-        enumGeneratorMap.put("Industry.java", new IndustryEnumGenerator());
-    }
 
 
     public static void main(String[] args)
     {
-        for (Map.Entry<String, EnumStringBlobGenerator> entry : enumGeneratorMap.entrySet())
-        {
-            String destinationFileName = entry.getKey();
-            EnumStringBlobGenerator enumGenerator = entry.getValue();
+        for (EnumStringBlobGenerator enumGenerator : enumGeneratorList) {
+
+            String destinationFileName = enumGenerator.getOutputClassName() + ".java";
 
             String destinationFilePath = DESTINATION_DIR + destinationFileName;
             try {
@@ -58,5 +58,4 @@ class MasterEnumFileGenerator
             }
         }
     }
-
 }
