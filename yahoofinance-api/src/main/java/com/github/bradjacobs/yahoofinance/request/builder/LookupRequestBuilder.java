@@ -1,5 +1,7 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -111,10 +113,14 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
     }
 
     @Override
-    protected BatchableRequestBuilder getAdditionalBatchableRequestBuilder() {
+    protected YahooRequest generateRequest(
+            YahooEndpoint endpoint, String ticker,
+            Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
+    {
+        YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
         if (!includeTotalsOnly && count >= MIN_BATCHABLE_SIZE) {
-            return this;
+            req = new YahooFinanceBatchRequest(req, this);
         }
-        return null;
+        return req;
     }
 }

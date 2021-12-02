@@ -1,6 +1,9 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.helper.QueryBuilder;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaKey;
@@ -107,12 +110,17 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     }
 
     @Override
-    protected BatchableRequestBuilder getAdditionalBatchableRequestBuilder() {
+    protected YahooRequest generateRequest(
+            YahooEndpoint endpoint, String ticker,
+            Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
+    {
+        YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
         if (!isAggregate && size >= MIN_BATCHABLE_SIZE) {
-            return this;
+            req = new YahooFinanceBatchRequest(req, this);
         }
-        return null;
+        return req;
     }
+
 
     @Override
     public int getBatchSize() {
@@ -128,5 +136,4 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     public void setBatchOffset(int offset) {
         this.offset = offset;
     }
-
 }

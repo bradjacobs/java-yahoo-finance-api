@@ -116,6 +116,7 @@ public class YahooFinanceClient
 
     protected List<Response> executeBatchRequests(BatchableRequestBuilder batchableRequestBuilder) throws IOException
     {
+        // todo -- needs major refactor/cleanup
         BatchResponseChecker batchResponseChecker = batchResponseCheckerFactory.getBatchResponseChecker(batchableRequestBuilder.getEndpoint());
         if (batchResponseChecker == null) {
             throw new IllegalStateException("No BatchResponseChecker found for endpoint: " + batchableRequestBuilder.getEndpoint());

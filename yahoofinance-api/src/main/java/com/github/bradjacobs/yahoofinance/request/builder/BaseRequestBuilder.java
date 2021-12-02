@@ -137,21 +137,13 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
             YahooEndpoint endpoint, String ticker,
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
-        YahooRequest req = new YahooFinanceRequest(endpoint, ticker, paramMap, postBody, headerMap);
-        BatchableRequestBuilder batchBuilder = getAdditionalBatchableRequestBuilder();
-        if (batchBuilder != null) {
-            req = new YahooFinanceBatchRequest(req, batchBuilder);
-        }
-        return req;
+        return new YahooFinanceRequest(endpoint, ticker, paramMap, postBody, headerMap);
     }
 
     protected Object buildRequestPostBody() {
         return null;  // no post body by default
     }
 
-    protected BatchableRequestBuilder getAdditionalBatchableRequestBuilder() {
-        return null;
-    }
 
     /**
      * Will throw exception if request is invalid
