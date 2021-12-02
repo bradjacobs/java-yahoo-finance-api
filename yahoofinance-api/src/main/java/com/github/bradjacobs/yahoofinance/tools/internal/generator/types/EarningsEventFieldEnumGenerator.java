@@ -3,7 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
-import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
+import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.YahooFieldDefinition;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +26,7 @@ public class EarningsEventFieldEnumGenerator extends AbstractFieldEnumGenerator
     }
 
     @Override
-    protected List<ScreenerFieldDefinition> filterFields(List<ScreenerFieldDefinition> fieldList)
+    protected List<YahooFieldDefinition> filterFields(List<YahooFieldDefinition> fieldList)
     {
         return fieldList.stream()
                 .filter(sf -> !sf.getDeprecated())

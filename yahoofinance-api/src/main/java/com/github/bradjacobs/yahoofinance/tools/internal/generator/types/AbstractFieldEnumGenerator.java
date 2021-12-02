@@ -4,16 +4,14 @@
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
+import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.YahooFieldDefinition;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -23,30 +21,30 @@ abstract public class AbstractFieldEnumGenerator extends EnumStringBlobGenerator
 {
     private static final JsonMapper mapper = JsonMapperFactory.getPrettyMapper();
 
-    protected List<ScreenerFieldDefinition> convertToFieldDefinitions(String json)
+    protected List<YahooFieldDefinition> convertToFieldDefinitions(String json)
     {
         List<Map<String, Object>> listOfMaps = JsonPath.read(json, "$.finance.result[0].fields.*");
-        ScreenerFieldDefinition[] fields = mapper.convertValue(listOfMaps, ScreenerFieldDefinition[].class);
+        YahooFieldDefinition[] fields = mapper.convertValue(listOfMaps, YahooFieldDefinition[].class);
         return Arrays.asList(fields);
     }
 
-    abstract protected List<ScreenerFieldDefinition> filterFields(List<ScreenerFieldDefinition> fieldList);
+    abstract protected List<YahooFieldDefinition> filterFields(List<YahooFieldDefinition> fieldList);
 
     @Override
     protected List<EnumInfo> convertJsonToEnumInfo(String json)
     {
-        List<ScreenerFieldDefinition> fieldList = convertToFieldDefinitions(json);
+        List<YahooFieldDefinition> fieldList = convertToFieldDefinitions(json);
 
         // filter out fields want to ignore.
-        List<ScreenerFieldDefinition> filteredList = filterFields(fieldList);
+        List<YahooFieldDefinition> filteredList = filterFields(fieldList);
 
         // after initial filtering, make 2 lists non-premium and premium
-        List<ScreenerFieldDefinition> basicFieldList = filteredList.stream()
+        List<YahooFieldDefinition> basicFieldList = filteredList.stream()
             .filter(sf -> !sf.getIsPremium())
             .collect(Collectors.toList());
 
-        List<ScreenerFieldDefinition> premiumFieldList = filteredList.stream()
-            .filter(ScreenerFieldDefinition::getIsPremium)
+        List<YahooFieldDefinition> premiumFieldList = filteredList.stream()
+            .filter(YahooFieldDefinition::getIsPremium)
             .collect(Collectors.toList());
 
         boolean havePremiumFields = !premiumFieldList.isEmpty();
@@ -70,11 +68,11 @@ abstract public class AbstractFieldEnumGenerator extends EnumStringBlobGenerator
         return enumInfoList;
     }
 
-    protected List<EnumInfo> generateEnumList(List<ScreenerFieldDefinition> fieldList)
+    protected List<EnumInfo> generateEnumList(List<YahooFieldDefinition> fieldList)
     {
         List<EnumInfo> resultList = new ArrayList<>();
 
-        for (ScreenerFieldDefinition field : fieldList) {
+        for (YahooFieldDefinition field : fieldList) {
             String fieldId = field.getFieldId();
             String sortable = field.getSortable().toString();
             String displayName = field.getDisplayName();

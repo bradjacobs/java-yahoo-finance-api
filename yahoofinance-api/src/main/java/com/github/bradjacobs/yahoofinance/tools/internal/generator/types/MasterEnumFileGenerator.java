@@ -23,8 +23,6 @@ class MasterEnumFileGenerator
     // note:   of course this only works if the 'current directory' is the project root.
     private static final String DESTINATION_DIR = "./yahoofinance-api/src/main/java/com/github/bradjacobs/yahoofinance/types/";
 
-    private static final List<EnumStringBlobGenerator> enumGenerators = new ArrayList<>();
-
     // comment out lines below accordingly if only want to run individual ones.
     private static final List<EnumStringBlobGenerator> enumGeneratorList = Arrays.asList(
             new IntervalEnumGenerator(),
@@ -37,7 +35,6 @@ class MasterEnumFileGenerator
             new IpoEventFieldEnumGenerator(),
             new EarningsEventFieldEnumGenerator()
     );
-
 
 
     public static void main(String[] args)

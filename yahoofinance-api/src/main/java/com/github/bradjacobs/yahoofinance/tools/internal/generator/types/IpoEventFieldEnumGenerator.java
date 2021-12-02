@@ -3,24 +3,9 @@
  */
 package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.ScreenerFieldDefinition;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
-import com.jayway.jsonpath.JsonPath;
-import org.apache.commons.io.FileUtils;
+import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.YahooFieldDefinition;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class IpoEventFieldEnumGenerator extends AbstractFieldEnumGenerator
@@ -41,7 +26,7 @@ public class IpoEventFieldEnumGenerator extends AbstractFieldEnumGenerator
     }
 
     @Override
-    protected List<ScreenerFieldDefinition> filterFields(List<ScreenerFieldDefinition> fieldList)
+    protected List<YahooFieldDefinition> filterFields(List<YahooFieldDefinition> fieldList)
     {
         return fieldList.stream()
                 .filter(sf -> !sf.getDeprecated())

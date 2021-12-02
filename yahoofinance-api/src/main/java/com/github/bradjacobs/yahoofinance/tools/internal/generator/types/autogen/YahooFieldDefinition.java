@@ -26,7 +26,7 @@ import java.util.Objects;
     "isPremium"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ScreenerFieldDefinition implements Comparable<ScreenerFieldDefinition>
+public class YahooFieldDefinition implements Comparable<YahooFieldDefinition>
 {
     @JsonProperty("fieldId")
     private String fieldId;
@@ -165,15 +165,15 @@ public class ScreenerFieldDefinition implements Comparable<ScreenerFieldDefiniti
 
 
     @Override
-    public int compareTo(ScreenerFieldDefinition o) {
+    public int compareTo(YahooFieldDefinition o) {
         return this.displayName.compareTo(o.displayName);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ScreenerFieldDefinition)) return false;
-        ScreenerFieldDefinition that = (ScreenerFieldDefinition) o;
+        if (!(o instanceof YahooFieldDefinition)) return false;
+        YahooFieldDefinition that = (YahooFieldDefinition) o;
         return Objects.equals(fieldId, that.fieldId);
     }
 
