@@ -1,13 +1,13 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.response.converter.util.SimpleMapOfMapsGenerator;
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.Option;
-import org.apache.commons.lang3.ArrayUtils;
+import com.github.bradjacobs.yahoofinance.util.JsonConverter;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +17,11 @@ import java.util.Map;
 
 public class ChartResponseConverter implements ResponseConverter
 {
+    private static final String KEY_CHART = "chart";
+    private static final String KEY_RESULT = "result";
+    private static final String KEY_INDICATORS = "indicators";
+    private static final String KEY_QUOTE = "quote";
+
     // key titles for the output map
     private static final String KEY_TIMESTAMP = "timestamp";
     private static final String KEY_OPEN = "open";
@@ -28,28 +33,16 @@ public class ChartResponseConverter implements ResponseConverter
 
     private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
 
-    // path locations for data within the JSON response
-    private static final String BASE_PATH      = "$.chart.result[0]";
-    private static final String TIMESTAMP_PATH = BASE_PATH + "." + KEY_TIMESTAMP;
-    private static final String OPEN_PATH      = BASE_PATH + ".indicators.quote[0]." + KEY_OPEN;
-    private static final String LOW_PATH       = BASE_PATH + ".indicators.quote[0]." + KEY_LOW;
-    private static final String HIGH_PATH      = BASE_PATH + ".indicators.quote[0]." + KEY_HIGH;
-    private static final String CLOSE_PATH     = BASE_PATH + ".indicators.quote[0]." + KEY_CLOSE;
-    private static final String VOLUME_PATH    = BASE_PATH + ".indicators.quote[0]." + KEY_VOLUME;
-    private static final String ADJ_CLOSE_PATH = BASE_PATH + ".indicators.adjclose[0]." + KEY_ADJ_CLOSE;
+    private static final JsonMapper mapper = JsonMapperFactory.getMapper();
+    private static final EpochStrConverter dateStrConverter = MetaEpochSecondsConverter.getDateStringConverter();
 
+    private static final TypeReference<Map<String, List<Object>>> REF_MAP_OF_LISTS = new TypeReference<Map<String, List<Object>>>(){};
 
-    // configure to return NULL (instead of Exception) if the _LEAF_ is missing
-    //   b/c the field might not always be there.
-    private static final Configuration JSON_PATH_CONFIG =
-        Configuration.defaultConfiguration()
-            .addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
-            .addOptions(Option.SUPPRESS_EXCEPTIONS);
 
     private final SimpleMapOfMapsGenerator mapOfMapsGenerator = new SimpleMapOfMapsGenerator(KEY_DATE, false); // todo - fix bool param
 
-
-    public ChartResponseConverter() {
+    public ChartResponseConverter()
+    {
     }
 
     @Override
@@ -58,82 +51,82 @@ public class ChartResponseConverter implements ResponseConverter
         return mapOfMapsGenerator.convertToMap( this.convertToListOfMaps(json) );
     }
 
-    @Override
+
     public List<Map<String, Object>> convertToListOfMaps(String json)
     {
-        // todo - using own special way of creating docContext.
-        //     tbd if even worrying about this...(to ponder)
-        DocumentContext jsonDoc = JsonPath.using(JSON_PATH_CONFIG).parse(json);
+        JsonNode rootNode = JsonConverter.convertToNode(json);
+        JsonNode chartNode = rootNode.get(KEY_CHART);
+        JsonNode resultNode = chartNode.get(KEY_RESULT);
+        JsonNode resultNodeElementZero = resultNode.get(0);
 
-        Long[] timestampValues = jsonDoc.read(TIMESTAMP_PATH, Long[].class);
+        JsonNode timestampNode = resultNodeElementZero.get(KEY_TIMESTAMP);
 
-        Number[] closeValues = jsonDoc.read(CLOSE_PATH, Number[].class);
-        Number[] adjCloseValues = jsonDoc.read(ADJ_CLOSE_PATH, Number[].class);
-        boolean closeValuesExist = ArrayUtils.isNotEmpty(closeValues);
-        boolean adjCloseValuesExist = ArrayUtils.isNotEmpty(adjCloseValues);
+        JsonNode indicatorsNode = resultNodeElementZero.get(KEY_INDICATORS);
+        JsonNode quoteNode = indicatorsNode.get(KEY_QUOTE);
+        JsonNode quoteNodeElementZero = quoteNode.get(0);
+        Map<String, List<Object>> quoteValueMap = mapper.convertValue(quoteNodeElementZero, REF_MAP_OF_LISTS);
 
-        // check that minimal data exists
-        if (ArrayUtils.isEmpty(timestampValues)) {
-            // Two scenarios for this case:
-            //   1. response has no data whatsoever (i.e. a date range w/ no data) === > return empty collection
-            //   2. request was made with &includeTimestamps=false === > throw an exception
-            if (ArrayUtils.isNotEmpty(closeValues) || ArrayUtils.isNotEmpty(adjCloseValues)) {
+        List<Object> openValueList = quoteValueMap.get(KEY_OPEN);
+        List<Object> highValueList = quoteValueMap.get(KEY_HIGH);
+        List<Object> lowValueList = quoteValueMap.get(KEY_LOW);
+        List<Object> closeValueList = quoteValueMap.get(KEY_CLOSE);
+        List<Object> volumeValueList = quoteValueMap.get(KEY_VOLUME);
+
+        List<Object> adjCloseValueList = null;
+        JsonNode adjQuoteNode = indicatorsNode.get(KEY_ADJ_CLOSE);
+        if (adjQuoteNode != null) {
+            JsonNode adjQuoteNodeElementZero = adjQuoteNode.get(0);
+            Map<String, List<Object>> adjQuoteValueMap = mapper.convertValue(adjQuoteNodeElementZero, REF_MAP_OF_LISTS);
+            adjCloseValueList = adjQuoteValueMap.get(KEY_ADJ_CLOSE);
+        }
+
+        Long[] timestampValues = null;
+        if (timestampNode != null) {
+            timestampValues = mapper.convertValue(timestampNode, Long[].class);
+        }
+
+        // Two scenarios for this case:
+        //   1. response has no data whatsoever (i.e. a date range w/ no data) === > return empty collection
+        //   2. request was made with &includeTimestamps=false === > throw an exception
+        if (timestampValues == null || timestampValues.length == 0) {
+            if ((closeValueList != null && closeValueList.size() > 0) ||
+                    (adjCloseValueList != null && adjCloseValueList.size() > 0)) {
                 throw new IllegalStateException("Cannot convert price history to map: Timestamps missing.");
             }
             return Collections.emptyList();
         }
 
-        EpochStrConverter epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestampValues, true); // todo - fix true param
-
-        // _ASSERT_ all lists are same length
-        int entryCount = timestampValues.length;
-
-        // assume that all (open/high/low/volume) exist or none of them do.
-        Number[] openValues = jsonDoc.read(OPEN_PATH, Number[].class);
-
-        boolean openLowHighExists = ArrayUtils.isNotEmpty(openValues);
-
-        // if there are no 'open' values, then assume there are no low/high/volume values either
-        //   thus don't waste the time to attempt to parse & load.
-        Number[] lowValues = null;
-        Number[] highValues = null;
-        Long[] volumeValues = null;
-
-        if (openLowHighExists) {
-            lowValues = jsonDoc.read(LOW_PATH, Number[].class);
-            highValues = jsonDoc.read(HIGH_PATH, Number[].class);
-            volumeValues = jsonDoc.read(VOLUME_PATH, Long[].class);
-        }
-
         List<Map<String, Object>> resultKeyValueList = new ArrayList<>();
 
-        for (int i = 0; i < entryCount; i++)
+
+        for (int i = 0; i < timestampValues.length; i++)
         {
             // note: enforcing output fields to be in a certain order
             Map<String,Object> entryMap = new LinkedHashMap<>();
 
-            // will refactor iff slow performance is shown
             Long timestamp = timestampValues[i];
-            entryMap.put(KEY_DATE, epochStrConverter.convertToString(timestamp));
-            //entryMap.put(KEY_TIMESTAMP, timestamp);
+            entryMap.put(KEY_DATE, dateStrConverter.convertToString(timestamp));
 
-            if (openLowHighExists) {
-                entryMap.put(KEY_OPEN, openValues[i]);
-                entryMap.put(KEY_HIGH, highValues[i]);
-                entryMap.put(KEY_LOW, lowValues[i]);
+            if (openValueList != null) {
+                // if open exists, then high and low will always exist
+                entryMap.put(KEY_OPEN, openValueList.get(i));
+                entryMap.put(KEY_HIGH, highValueList.get(i));
+                entryMap.put(KEY_LOW, lowValueList.get(i));
             }
-            if (closeValuesExist) {
-                entryMap.put(KEY_CLOSE, closeValues[i]);
+
+            if (closeValueList != null) {
+                entryMap.put(KEY_CLOSE, closeValueList.get(i));
             }
-            if (adjCloseValuesExist) {
-                entryMap.put(KEY_ADJ_CLOSE, adjCloseValues[i]);
+            if (adjCloseValueList != null) {
+                entryMap.put(KEY_ADJ_CLOSE, adjCloseValueList.get(i));
             }
-            if (openLowHighExists) {
-                entryMap.put(KEY_VOLUME, volumeValues[i]);
+            if (volumeValueList != null) {
+                entryMap.put(KEY_VOLUME, volumeValueList.get(i));
             }
             resultKeyValueList.add(entryMap);
         }
 
         return resultKeyValueList;
     }
+
 }
