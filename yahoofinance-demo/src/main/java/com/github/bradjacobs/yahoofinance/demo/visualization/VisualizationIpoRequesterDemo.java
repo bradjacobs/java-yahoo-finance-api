@@ -35,13 +35,15 @@ public class VisualizationIpoRequesterDemo
 
             if (useBatch)
             {
-                YahooResponse batchResp = client.executeBatch(req);
+                // todo - come back to this
 
-                String json = batchResp.getJson();
-                List<IpoEventResult> pojoList = batchResp.getAsListOfPojos(IpoEventResult.class);
-
-                // get map results in form of predefined class (key is the ticker/symbol)
-                Map<String, IpoEventResult> pojoMap = batchResp.getAsMapOfPojos(IpoEventResult.class);
+//                YahooResponse batchResp = client.executeBatch(req);
+//
+//                String json = batchResp.getJson();
+//                List<IpoEventResult> pojoList = batchResp.getAsListOfPojos(IpoEventResult.class);
+//
+//                // get map results in form of predefined class (key is the ticker/symbol)
+//                Map<String, IpoEventResult> pojoMap = batchResp.getAsMapOfPojos(IpoEventResult.class);
             }
             else {
                 YahooResponse resp = client.execute(req);

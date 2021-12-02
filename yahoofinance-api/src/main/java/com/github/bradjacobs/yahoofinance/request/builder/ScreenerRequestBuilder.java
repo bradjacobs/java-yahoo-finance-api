@@ -1,7 +1,9 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
+import com.github.bradjacobs.yahoofinance.request.batch.CriteriaPostBodyBatchUpdater;
+import com.github.bradjacobs.yahoofinance.request.batch.PostBodyBatchUpdater;
+import com.github.bradjacobs.yahoofinance.request.batch.YahooBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.helper.QueryBuilder;
 import com.github.bradjacobs.yahoofinance.types.Exchange;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
@@ -21,7 +23,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder> implements BatchableRequestBuilder
+// todo - fix bug if offset value is manuall set
+public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder>
 {
     private static final int MIN_BATCHABLE_SIZE = 10;
     private static final Set<Exchange> NASDAQ_SUB_TYPES =
@@ -32,6 +35,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     // __NOTE__: all variables are set to DEFAULT value
     private int size = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
     private int offset = 0;
+    private int maxResults = 1000;
 
     private ScreenerField sortField = ScreenerField.INTRADAYMARKETCAP;
     private boolean isSortDescending = true;
@@ -67,6 +71,10 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     }
     public ScreenerRequestBuilder setSize(int size) {
         this.size = Math.max(size, 0); // no negative allowed
+        return this;
+    }
+    public ScreenerRequestBuilder setMaxResults(int maxResults) {
+        this.maxResults = Math.max(maxResults, 0); // no negative allowed
         return this;
     }
     public ScreenerRequestBuilder setOffset(int offset) {
@@ -232,21 +240,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         return this;
     }
 
-    @Override
-    public int getBatchSize() {
-        return size;
-    }
-
-    @Override
-    public int getBatchOffset() {
-        return offset;
-    }
-
-    @Override
-    public void setBatchOffset(int offset) {
-        this.setOffset(offset);
-    }
-
 
     // this will throw exception if request is invalid
     @Override
@@ -276,7 +269,10 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     {
         YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
         if (!Boolean.TRUE.equals(this.totalOnly) && size >= MIN_BATCHABLE_SIZE) {
-            req = new YahooFinanceBatchRequest(req, this);
+
+            // todo - fix -- prob use more builder
+            PostBodyBatchUpdater postBodyBatchUpdater = new CriteriaPostBodyBatchUpdater(size);
+            req = new YahooBatchRequest(req, null, postBodyBatchUpdater, size, maxResults);
         }
         return req;
     }

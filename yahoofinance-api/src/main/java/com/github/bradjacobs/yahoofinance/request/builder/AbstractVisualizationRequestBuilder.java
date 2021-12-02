@@ -1,9 +1,13 @@
+/*
+ * This file is subject to the terms and conditions defined in 'LICENSE' file.
+ */
 package com.github.bradjacobs.yahoofinance.request.builder;
 
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
+import com.github.bradjacobs.yahoofinance.request.batch.CriteriaPostBodyBatchUpdater;
+import com.github.bradjacobs.yahoofinance.request.batch.PostBodyBatchUpdater;
+import com.github.bradjacobs.yahoofinance.request.batch.YahooBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.helper.QueryBuilder;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaKey;
@@ -21,10 +25,10 @@ import java.util.Map;
  */
 abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisualizationRequestBuilder<T>>
         extends BasePeriodRequestBuilder<T>
-        implements BatchableRequestBuilder
 {
-    private int size = 100;
+    private int batchSize = 100;
     private int offset = 0;
+    private int maxResults = 100;
 
     // todo -- better home for this.
     private enum VisualizationCriteriaField implements CriteriaKey
@@ -52,6 +56,11 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     abstract protected String getSortField();
     abstract protected List<String> getIncludeFields();
 
+    public T setMaxResults(int maxResults) {
+        this.maxResults = Math.max(maxResults, 0); // no negative allowed
+        return getThis();
+    }
+
     @Override
     public YahooEndpoint getEndpoint()
     {
@@ -72,7 +81,7 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     protected Object buildRequestPostBody()
     {
         VisualizationCriteria criteria = new VisualizationCriteria();
-        criteria.setSize(size);
+        criteria.setSize(batchSize);
         criteria.setOffset(offset);
         criteria.setSortField(getSortField());
         criteria.setIsSortDescending(isSortDescending);
@@ -115,25 +124,13 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
-        if (!isAggregate && size >= MIN_BATCHABLE_SIZE) {
-            req = new YahooFinanceBatchRequest(req, this);
+        if (!isAggregate && batchSize >= MIN_BATCHABLE_SIZE) {
+
+            // todo - fix -- prob use more builder
+            PostBodyBatchUpdater postBodyBatchUpdater = new CriteriaPostBodyBatchUpdater(batchSize);
+            req = new YahooBatchRequest(req, null, postBodyBatchUpdater, batchSize, maxResults);
         }
         return req;
     }
 
-
-    @Override
-    public int getBatchSize() {
-        return size;
-    }
-
-    @Override
-    public int getBatchOffset() {
-        return offset;
-    }
-
-    @Override
-    public void setBatchOffset(int offset) {
-        this.offset = offset;
-    }
 }

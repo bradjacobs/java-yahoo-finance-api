@@ -2,13 +2,10 @@ package com.github.bradjacobs.yahoofinance.response.batch;
 
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
+// todo - think of better names for classes
 public class BatchResponseCheckerFactory
 {
-    // no reason to keep recreating these instances (have no state)
-    private static final CountTotalPrefixBatchResponseChecker COUNT_TOTAL_PREFIX_CHECKER = new CountTotalPrefixBatchResponseChecker();
-    private static final VisualizationResponseChecker VISUALIZATION_RESPONSE_CHECKER = new VisualizationResponseChecker();
-
-    public BatchResponseChecker getBatchResponseChecker(YahooEndpoint endpoint)
+    public BatchResponseTerminationChecker getBatchResponseChecker(YahooEndpoint endpoint, int batchSize)
     {
         if (endpoint == null) {
             return null;
@@ -18,9 +15,9 @@ public class BatchResponseCheckerFactory
             case SCREENER:
             case PREMIUM_SCREENER:
             case LOOKUP:
-                return COUNT_TOTAL_PREFIX_CHECKER;
+                return new CountTotalPrefixBatchResponseChecker(batchSize);
             case VISUALIZATION:
-                return VISUALIZATION_RESPONSE_CHECKER;
+                return new VisualizationResponseChecker(batchSize);
             default:
                 return null;
         }

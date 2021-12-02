@@ -3,7 +3,6 @@
  */
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.types.Region;
@@ -18,7 +17,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Class for common code for _ALL_ requests regarding building the parameter map.
+ * common code for building _ALL_ requests
  * @param <T>
  */
 abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
@@ -32,7 +31,6 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
     private final Map<String,String> additionalHeaderMap = new LinkedHashMap<>();
 
     protected abstract T getThis();
-
 
 
     protected String getRegion() {

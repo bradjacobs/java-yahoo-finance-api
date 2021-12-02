@@ -1,7 +1,9 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
+import com.github.bradjacobs.yahoofinance.request.batch.ParamMapBatchOffsetUpdater;
+import com.github.bradjacobs.yahoofinance.request.batch.ParamMapBatchUpdater;
+import com.github.bradjacobs.yahoofinance.request.batch.YahooBatchRequest;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
@@ -10,10 +12,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilder> implements BatchableRequestBuilder
+// todo - come back and fix method naming
+// todo - validation on missing query
+public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilder>
 {
     private static final int DEFAULT_COUNT = 100;
     private static final int DEFAULT_START = 0;
+    private static final int DEFAULT_MAX_RESULTS = 1000;
     private static final int MIN_BATCHABLE_SIZE = 10;
 
     private String query;
@@ -21,6 +26,7 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
     private Type type;
     private int count = DEFAULT_COUNT;
     private int start = DEFAULT_START;
+    private int maxResults = DEFAULT_MAX_RESULTS;
 
     private boolean includeTotalsOnly = false;
 
@@ -51,6 +57,11 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
     }
     public LookupRequestBuilder withStart(int start) {
         this.start = Math.max(start, 0); // no negative allowed
+        return this;
+    }
+
+    public LookupRequestBuilder setMaxResults(int maxResults) {
+        this.maxResults = Math.max(maxResults, 0); // no negative allowed
         return this;
     }
 
@@ -97,29 +108,16 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
     }
 
     @Override
-    public int getBatchSize() {
-        return this.count;
-    }
-
-    @Override
-    public int getBatchOffset() {
-        return this.start;
-    }
-
-    @Override
-    public void setBatchOffset(int offset)
-    {
-        this.withStart(offset);
-    }
-
-    @Override
     protected YahooRequest generateRequest(
             YahooEndpoint endpoint, String ticker,
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
         if (!includeTotalsOnly && count >= MIN_BATCHABLE_SIZE) {
-            req = new YahooFinanceBatchRequest(req, this);
+
+            // todo - fix -- prob use more builder
+            ParamMapBatchUpdater paramMapBatchUpdater = new ParamMapBatchOffsetUpdater(ParamKeys.START, this.count);
+            req = new YahooBatchRequest(req, paramMapBatchUpdater, null, this.count, this.maxResults);
         }
         return req;
     }

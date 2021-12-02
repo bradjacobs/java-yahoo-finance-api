@@ -19,7 +19,6 @@ public enum Exchange implements CriteriaEnum
 
 
     //BSE("BSE", "__unused__"),  // listed as Yahoo Exchange choice, probably once meant "Boston Stock Exchange", but now looks to be "Bombay Stock Exchange"?
-    //NASDAQ("NAS", "NASDAQ"),   // listed as Yahoo Exchange choice, but never seems to match anything.
     //YHD("YHD", "Yahoo (UNUSED)");  // listed as Yahoo Exchange choice, but doesn't seem to have any value.
 
 

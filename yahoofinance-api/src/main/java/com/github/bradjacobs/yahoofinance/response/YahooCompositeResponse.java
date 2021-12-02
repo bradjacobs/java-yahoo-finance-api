@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+// TODO -- need to respect the 'maxResults' value when converting to list or maps
 public class YahooCompositeResponse implements YahooResponse
 {
-    protected List<YahooResponse> children = new ArrayList<>();
+    protected final List<YahooResponse> children = new ArrayList<>();
+    private final int maxResults;
 
-    public YahooCompositeResponse(YahooEndpoint endpoint, List<Response> responseList) {
+    public YahooCompositeResponse(YahooEndpoint endpoint, List<Response> responseList, int maxResults) {
         if (endpoint == null) {
             throw new IllegalArgumentException("Must provide an endpoint parameter.");
         }
@@ -25,6 +27,7 @@ public class YahooCompositeResponse implements YahooResponse
         for (Response response : responseList) {
             children.add(new YahooSimpleResponse(endpoint, response));
         }
+        this.maxResults = maxResults;
     }
 
     @Override

@@ -9,13 +9,12 @@ import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import com.github.bradjacobs.yahoofinance.request.CrumbDataSource;
 import com.github.bradjacobs.yahoofinance.request.RequestUrlGenerator;
-import com.github.bradjacobs.yahoofinance.request.YahooFinanceBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
-import com.github.bradjacobs.yahoofinance.request.builder.BatchableRequestBuilder;
+import com.github.bradjacobs.yahoofinance.request.batch.YahooBatchRequest;
 import com.github.bradjacobs.yahoofinance.response.YahooCompositeResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooSimpleResponse;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
-import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseChecker;
+import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseTerminationChecker;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseCheckerFactory;
 import org.apache.http.HttpHeaders;
 
@@ -65,35 +64,28 @@ public class YahooFinanceClient
 
     public YahooResponse execute(YahooRequest request) throws IOException
     {
+        // todo - come back to address this (a little kludgy)
+        if (request instanceof YahooBatchRequest) {
+            return executeBatch((YahooBatchRequest)request);
+        }
+
         Response rawResponse = executeInternal(request);
         return new YahooSimpleResponse(request.getEndpoint(), rawResponse);
     }
 
-    public YahooResponse executeBatch(YahooRequest request) throws IOException
-    {
-        // todo - come back to address this (a little kludgy)
-        if (request instanceof YahooFinanceBatchRequest) {
-            return executeBatch((YahooFinanceBatchRequest)request);
-        }
-        else {
-            throw new IllegalArgumentException("Error: cannot execute batch request.  The request is not batchable.");
-        }
-    }
 
-    public YahooResponse executeBatch(YahooFinanceBatchRequest request) throws IOException
-    {
-        BatchableRequestBuilder batchRequestBuilder = request.getBatchableRequestBuilder();
-        List<Response> rawResponses = executeBatchRequests(batchRequestBuilder);
-        return new YahooCompositeResponse(request.getEndpoint(), rawResponses);
-    }
 
     protected Response executeInternal(YahooRequest request) throws IOException
     {
         String url = requestUrlGenerator.buildRequestUrl(request);
-        Map<String,String> headerMap = createRequestHeaderMap(request);
-
-        Response response;
         String postBody = request.getPostBody();
+        Map<String,String> headerMap = createRequestHeaderMap(request);
+        return executeInternal(url, postBody, headerMap);
+    }
+
+    protected Response executeInternal(String url, String postBody, Map<String,String> headerMap) throws IOException
+    {
+        Response response;
         if (postBody != null) {
             response = httpClient.executePost(url, postBody, headerMap);
         }
@@ -114,45 +106,49 @@ public class YahooFinanceClient
         return headerMap;
     }
 
-    protected List<Response> executeBatchRequests(BatchableRequestBuilder batchableRequestBuilder) throws IOException
+    public YahooResponse executeBatch(YahooBatchRequest request) throws IOException
     {
-        // todo -- needs major refactor/cleanup
-        BatchResponseChecker batchResponseChecker = batchResponseCheckerFactory.getBatchResponseChecker(batchableRequestBuilder.getEndpoint());
+        int batchSize = request.getBatchSize();
+
+        BatchResponseTerminationChecker batchResponseChecker = batchResponseCheckerFactory.getBatchResponseChecker(request.getEndpoint(), batchSize);
         if (batchResponseChecker == null) {
-            throw new IllegalStateException("No BatchResponseChecker found for endpoint: " + batchableRequestBuilder.getEndpoint());
+            throw new IllegalStateException("No BatchResponseChecker found for endpoint: " + request.getEndpoint());
         }
 
         List<Response> responseList = new ArrayList<>();
-
-        int batchSize = batchableRequestBuilder.getBatchSize();
-        int originalBatchOffset = batchableRequestBuilder.getBatchOffset();
-        int currentBatchOffset = originalBatchOffset;
+        Map<String,String> headerMap = createRequestHeaderMap(request);
 
         Response response;
         boolean continueBatchRequesting;
 
-        try
-        {
-            do {
-                YahooRequest batchRequest = batchableRequestBuilder.build();
-                response = executeInternal(batchRequest);
-                responseList.add(response);
-
-                continueBatchRequesting = batchResponseChecker.isFullBatchResponse(response, batchSize);
-                if (continueBatchRequesting)
-                {
-                    currentBatchOffset = currentBatchOffset + batchSize;
-                    batchableRequestBuilder.setBatchOffset(currentBatchOffset);
-
-                    try { Thread.sleep(SLEEP_TIME_BETWEEN_BATCH_REQUESTS); }
-                    catch (InterruptedException e) {/* ignore exception */ }
-                }
-            } while (continueBatchRequesting);
-        }
-        finally {
-            batchableRequestBuilder.setBatchOffset(originalBatchOffset);
+        int batchNumber = 1;
+        int maxResults = request.getMaxResults();
+        int maxBatchNumber = maxResults / batchSize;
+        if (maxResults % batchSize != 0) {
+            maxBatchNumber++;
         }
 
-        return responseList;
+        do {
+            Map<String, String> paramMap = request.getParamMap(batchNumber);
+            String postBody = request.getPostBody(batchNumber);
+            String url = requestUrlGenerator.buildRequestUrl(request, paramMap);
+
+            response = executeInternal(url, postBody, headerMap);
+            responseList.add(response);
+
+            if (batchNumber >= maxBatchNumber) {
+                break;
+            }
+
+            continueBatchRequesting = batchResponseChecker.isFullBatchResponse(response);
+            if (continueBatchRequesting) {
+                try { Thread.sleep(SLEEP_TIME_BETWEEN_BATCH_REQUESTS); }
+                catch (InterruptedException e) {/* ignore exception */ }
+            }
+            batchNumber++;
+
+        } while (continueBatchRequesting);
+
+        return new YahooCompositeResponse(request.getEndpoint(), responseList, maxResults);
     }
 }

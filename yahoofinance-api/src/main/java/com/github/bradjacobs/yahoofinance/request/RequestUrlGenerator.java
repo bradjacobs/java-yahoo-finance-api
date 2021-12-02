@@ -25,9 +25,13 @@ public class RequestUrlGenerator
 
 
     public String buildRequestUrl(YahooRequest request) throws IOException {
+        return buildRequestUrl(request, request.getParamMap());
+    }
 
-        Map<String, String> paramMap = new LinkedHashMap<>(request.getParamMap());
+    public String buildRequestUrl(YahooRequest request, Map<String, String> paramMap) throws IOException {
+
         if (request.isCrumbRequired() && crumbDataSource != null) {
+            paramMap = new LinkedHashMap<>(paramMap);  // input paramMap could be read-only
             String crumb = crumbDataSource.getCrumb(request);
             paramMap.put(ParamKeys.CRUMB, crumb);
         }

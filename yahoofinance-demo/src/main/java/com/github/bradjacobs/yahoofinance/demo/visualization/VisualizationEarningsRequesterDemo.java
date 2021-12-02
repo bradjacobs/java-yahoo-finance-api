@@ -35,12 +35,13 @@ public class VisualizationEarningsRequesterDemo
 
             if (useBatching)
             {
-                YahooResponse batchResp = client.executeBatch(req);
-
-                String json = batchResp.getJson();
-                List<EarningsEventResult> pojoList = batchResp.getAsListOfPojos(EarningsEventResult.class);
-                // get map results in form of predefined class (key is the ticker/symbol)
-                Map<String, EarningsEventResult> pojoMap = batchResp.getAsMapOfPojos(EarningsEventResult.class);
+                // todo - come back to this
+//                YahooResponse batchResp = client.executeBatch(req);
+//
+//                String json = batchResp.getJson();
+//                List<EarningsEventResult> pojoList = batchResp.getAsListOfPojos(EarningsEventResult.class);
+//                // get map results in form of predefined class (key is the ticker/symbol)
+//                Map<String, EarningsEventResult> pojoMap = batchResp.getAsMapOfPojos(EarningsEventResult.class);
             }
             else {
                 YahooResponse resp = client.execute(req);

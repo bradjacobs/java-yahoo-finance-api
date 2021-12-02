@@ -3,14 +3,20 @@ package com.github.bradjacobs.yahoofinance.response.batch;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import org.apache.commons.lang3.StringUtils;
 
-public class CountTotalPrefixBatchResponseChecker implements BatchResponseChecker
+public class CountTotalPrefixBatchResponseChecker implements BatchResponseTerminationChecker
 {
     private static final String COUNT_PREFIX = "\"count\":";
     private static final String TOTAL_PREFIX = "\"total\":";
     private static final int RESPONSE_INTRO_SIZE = 300; // how much of the first part of the response to analyze.
 
+    private final int batchSize;
+
+    public CountTotalPrefixBatchResponseChecker(int batchSize) {
+        this.batchSize = batchSize;
+    }
+
     @Override
-    public boolean isFullBatchResponse(Response response, int batchSize)
+    public boolean isFullBatchResponse(Response response)
     {
         if (response == null || response.isError()) {
             return false;
