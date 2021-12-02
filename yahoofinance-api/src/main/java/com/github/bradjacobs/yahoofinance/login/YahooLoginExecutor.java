@@ -1,4 +1,4 @@
-package com.github.bradjacobs.yahoofinance;
+package com.github.bradjacobs.yahoofinance.login;
 
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.HttpCommonsClientAdapter;
@@ -10,7 +10,6 @@ import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
-
 
 /**
  * Helper method to "Login" to yahoo.  Namely to allow use of extra functionality if you have a 'premium' membership.
