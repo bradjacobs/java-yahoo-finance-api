@@ -47,6 +47,8 @@ public class JsonNestedFormatRemoverAdapter implements ResponseConverter
      * @param targetConverter nested converter
      * @param removeEmptyEntries (true = remove empty entries, false = reassign value to 'null')
      */
+
+    // TODO -- need to fix the 2nd boolean param... it's confusing.
     public JsonNestedFormatRemoverAdapter(ResponseConverter targetConverter, boolean removeEmptyEntries)
     {
         if (targetConverter == null) {
