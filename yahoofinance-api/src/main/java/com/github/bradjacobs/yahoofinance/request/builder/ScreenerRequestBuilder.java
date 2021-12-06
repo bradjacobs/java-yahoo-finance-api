@@ -28,16 +28,15 @@ import java.util.stream.Collectors;
 // todo - fix bug if offset value is manually set
 public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder>
 {
-    private static final int MIN_BATCHABLE_SIZE = 10;
+    private static final int MAX_BATCH_SIZE = 250; // note: going bigger than 250 can result in a yahoo error saying the value is 'too big'
     private static final Set<Exchange> NASDAQ_SUB_TYPES =
             new LinkedHashSet<>(Arrays.asList(Exchange.NASDAQGM, Exchange.NASDAQGS, Exchange.NASDAQCM));
 
     private boolean usePremium = false;
 
     // __NOTE__: all variables are set to DEFAULT value
-    private int batchSize = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
     private int offset = 0;
-    private int maxResults = 1000;
+    private int maxResults = MAX_BATCH_SIZE * 2;
 
     private ScreenerField sortField = ScreenerField.INTRADAYMARKETCAP;
     private boolean isSortDescending = true;
@@ -63,12 +62,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
 
     public ScreenerRequestBuilder setFormatted(Boolean formatted) {
         this.formatted = formatted;
-        return this;
-    }
-
-    // todo - reason to be public?  (otherwise remove)
-    private ScreenerRequestBuilder setBatchSize(int batchSize) {
-        this.batchSize = Math.max(batchSize, 0); // no negative allowed
         return this;
     }
 
@@ -142,7 +135,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         return in(ScreenerField.INDUSTRY, industries);
     }
 
-
     private ScreenerRequestBuilder in(ScreenerField field, CriteriaEnum ... values)
     {
         List<String> criteriaValues = getCriteriaEnumValues(values);
@@ -157,7 +149,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         this.queryBuilder.in(field, values);
         return this;
     }
-
 
     private List<String> getCriteriaEnumValues(CriteriaEnum... values) {
         if (values == null || values.length == 0) {
@@ -229,7 +220,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     protected Object buildRequestPostBody()
     {
         ScreenerCriteria criteria = new ScreenerCriteria();
-        criteria.setSize(batchSize);
+        criteria.setSize(calculateRequestBatchSize());
         criteria.setOffset(offset);
         criteria.setSortField(sortField.getValue());
         criteria.setIsSortDescending(isSortDescending);
@@ -248,6 +239,10 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
 
         criteria.setQuery(query);
         return criteria;
+    }
+
+    private int calculateRequestBatchSize() {
+        return Math.min(MAX_BATCH_SIZE, this.maxResults);
     }
 
     @Override
@@ -280,9 +275,10 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
-        if (!Boolean.TRUE.equals(this.totalOnly) && batchSize >= MIN_BATCHABLE_SIZE) {
+        if (!Boolean.TRUE.equals(this.totalOnly)) {
 
             // todo - fix -- prob use more builder
+            int batchSize = calculateRequestBatchSize();
             PostBodyBatchUpdater postBodyBatchUpdater = new CriteriaPostBodyBatchUpdater(batchSize);
             req = new YahooBatchRequest(req, null, postBodyBatchUpdater, batchSize, maxResults);
         }
