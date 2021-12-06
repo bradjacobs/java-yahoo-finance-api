@@ -7,6 +7,7 @@ import com.github.bradjacobs.yahoofinance.http.HttpClientAdapter;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.http.exception.HttpExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -25,7 +26,9 @@ public class CrumbDataSource
     private static final String YAHOO_PAGE_URL = "https://finance.yahoo.com/quote/AAPL/profile?p=AAPL";
     private static final String DIRECT_JSON_URL = "https://query2.finance.yahoo.com/v1/test/getcrumb";  // only works if 'correct' headers available
 
-    private static final Map<String,String> WEB_REQUEST_HEADERS = Collections.singletonMap("Content-Type", "application/x-www-form-urlencoded");
+    private static final Map<String,String> WEB_REQUEST_HEADERS = Collections.singletonMap(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
+    private static final Map<String,String> API_REQUEST_HEADERS = Collections.singletonMap(HttpHeaders.CONTENT_TYPE, "application/json");
+
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 4; // (4 hours) - max time to cache a crumb value
 
     // look for this string in the response body to 'locate' the crumb value.
@@ -107,8 +110,7 @@ public class CrumbDataSource
 
     private String getCrumbViaApi(Map<String, String> requestHeaderMap) throws IOException
     {
-        Map<String,String> customHeaderMap = new LinkedHashMap<>();
-        customHeaderMap.put("Content-Type", "application/json");
+        Map<String,String> customHeaderMap = new LinkedHashMap<>(API_REQUEST_HEADERS);
         if (requestHeaderMap.containsKey(COOKIE_HEADER_NAME)) {
             customHeaderMap.put(COOKIE_HEADER_NAME, requestHeaderMap.get(COOKIE_HEADER_NAME));
         }

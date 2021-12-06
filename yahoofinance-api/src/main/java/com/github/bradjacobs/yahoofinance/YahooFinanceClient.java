@@ -17,6 +17,7 @@ import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseTerminationChecker;
 import com.github.bradjacobs.yahoofinance.response.batch.BatchResponseCheckerFactory;
 import org.apache.http.HttpHeaders;
+import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,10 +27,7 @@ import java.util.Map;
 
 public class YahooFinanceClient
 {
-    private static final Map<String,String> DEFAULT_HEADER_MAP = new LinkedHashMap<String,String>(){{
-        put(HttpHeaders.CONTENT_TYPE, "application/json");
-        put(HttpHeaders.USER_AGENT, "Java-Http-Client/11.0.0");  // TBD what a 'good' value should be
-    }};
+    private static final String DEFAULT_CONTENT_TYPE = ContentType.APPLICATION_JSON.getMimeType();
 
     // allow a very brief pause b/w each batch request for philanthropy.
     private static final long SLEEP_TIME_BETWEEN_BATCH_REQUESTS = 100L;
@@ -59,7 +57,6 @@ public class YahooFinanceClient
         //     httpClient that is used by the YahooClient!
         this.crumbDataSource = new CrumbDataSource(httpClient);
         this.requestUrlGenerator = new RequestUrlGenerator(crumbDataSource);
-
     }
 
     public YahooResponse execute(YahooRequest request) throws IOException
@@ -74,12 +71,11 @@ public class YahooFinanceClient
     }
 
 
-
     protected Response executeInternal(YahooRequest request) throws IOException
     {
         String url = requestUrlGenerator.buildRequestUrl(request);
         String postBody = request.getPostBody();
-        Map<String,String> headerMap = createRequestHeaderMap(request);
+        Map<String,String> headerMap = createAdditionalRequestHeaderMap(request);
         return executeInternal(url, postBody, headerMap);
     }
 
@@ -99,10 +95,17 @@ public class YahooFinanceClient
         return response;
     }
 
-    private Map<String,String> createRequestHeaderMap(YahooRequest request)
+    /**
+     * Map of additional headers to be added to the request.
+     *   It's assumed the underlying httpClient usually has a few common
+     *   http request headers already set (e.g. 'accept-encoding')
+     */
+    private Map<String,String> createAdditionalRequestHeaderMap(YahooRequest request)
     {
-        Map<String,String> headerMap = new LinkedHashMap<>(DEFAULT_HEADER_MAP);
-        headerMap.putAll(request.getHeaderMap());
+        Map<String,String> headerMap = new LinkedHashMap<>(request.getHeaderMap());
+        if (!headerMap.containsKey(HttpHeaders.CONTENT_TYPE)) {
+            headerMap.put(HttpHeaders.CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
+        }
         return headerMap;
     }
 
@@ -116,7 +119,7 @@ public class YahooFinanceClient
         }
 
         List<Response> responseList = new ArrayList<>();
-        Map<String,String> headerMap = createRequestHeaderMap(request);
+        Map<String,String> headerMap = createAdditionalRequestHeaderMap(request);
 
         Response response;
         boolean continueBatchRequesting;
