@@ -23,10 +23,10 @@ public enum ScreenerRequestExample implements RequestExample
         public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .screener()
-                    .in(ScreenerField.REGION, Region.UNITED_STATES)
+                    .setRegion(Region.UNITED_STATES)
                     .gt(ScreenerField.NETINCOME1YRGROWTH, 5)
                     .gt(ScreenerField.CURRENTRATIO, 2)
-                    .in(ScreenerField.SECTOR, Sector.TECHNOLOGY)
+                    .setSectors(Sector.TECHNOLOGY)
                     .lt(ScreenerField.TOTALDEBTEQUITY, 200)
                     .btwn(ScreenerField.INTRADAYPRICE, 5, 50)
                     .build();
@@ -40,8 +40,8 @@ public enum ScreenerRequestExample implements RequestExample
         public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .screener()
-                    .in(ScreenerField.REGION, Region.UNITED_STATES)
-                    .in(ScreenerField.SECTOR, Sector.HEALTHCARE)
+                    .setRegion(Region.UNITED_STATES)
+                    .setSectors(Sector.HEALTHCARE)
                     .setTotalOnly(true)
                     .build();
         }
@@ -55,9 +55,9 @@ public enum ScreenerRequestExample implements RequestExample
         public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .screener()
-                    .in(ScreenerField.REGION, Region.UNITED_STATES)
-                    .in(ScreenerField.EXCHANGE, Exchange.NASDAQGS, Exchange.NASDAQGM, Exchange.NASDAQCM, Exchange.NYSE)
-                    .setSize(10)
+                    .setRegion(Region.UNITED_STATES)
+                    .setExchanges(Exchange.NASDAQGS, Exchange.NASDAQGM, Exchange.NASDAQCM, Exchange.NYSE)
+                    .setMaxResults(10)
                     .setSortDescending(ScreenerField.INTRADAYMARKETCAP)
                     .build();
         }

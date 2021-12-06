@@ -57,9 +57,9 @@ public class BigCompanyRecentStockSplit
         // query for the top 50 stocks in the Nasdaq/Nyse
         YahooRequest screenerRequest = YahooRequestBuilder.api()
             .screener()
-            .in(ScreenerField.REGION, Region.UNITED_STATES)
-            .in(ScreenerField.EXCHANGE, Exchange.NASDAQGS, Exchange.NASDAQGM, Exchange.NASDAQCM, Exchange.NYSE)
-            .setSize(50)
+            .setRegion(Region.UNITED_STATES)
+            .setExchanges(Exchange.NASDAQGS, Exchange.NASDAQGM, Exchange.NASDAQCM, Exchange.NYSE)
+            .setMaxResults(50)
             .setSortDescending(ScreenerField.INTRADAYMARKETCAP)
             .build();
 

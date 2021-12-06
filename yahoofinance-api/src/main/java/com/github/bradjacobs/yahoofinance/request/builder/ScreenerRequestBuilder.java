@@ -6,7 +6,9 @@ import com.github.bradjacobs.yahoofinance.request.batch.PostBodyBatchUpdater;
 import com.github.bradjacobs.yahoofinance.request.batch.YahooBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.helper.QueryBuilder;
 import com.github.bradjacobs.yahoofinance.types.Exchange;
+import com.github.bradjacobs.yahoofinance.types.Industry;
 import com.github.bradjacobs.yahoofinance.types.ScreenerField;
+import com.github.bradjacobs.yahoofinance.types.Sector;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaEnum;
@@ -23,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// todo - fix bug if offset value is manuall set
+// todo - fix bug if offset value is manually set
 public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBuilder>
 {
     private static final int MIN_BATCHABLE_SIZE = 10;
@@ -33,7 +35,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     private boolean usePremium = false;
 
     // __NOTE__: all variables are set to DEFAULT value
-    private int size = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
+    private int batchSize = 250;  // note: going much bigger than 250 can result in a yahoo error saying the value is 'too big'
     private int offset = 0;
     private int maxResults = 1000;
 
@@ -52,12 +54,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     private static final String USER_ID_TYPE = "guid";
 
 
-    // TODO - FIX... 'technically' if supply an industry w/o a sector then the sector could be 'auto-magically' added,
-    //    but for now explicitly require sector is set if an industry is set (b/c that's what the web does)
-    //      however the method of validation is kludgy.
-    //    it's important to do this check, or else the query can produce 'zero results' and might not realize there was a problem.
-    private boolean sectorIsSet = false;
-    private boolean industryIsSet = false;
     private final QueryBuilder queryBuilder = new QueryBuilder();
 
 
@@ -69,10 +65,13 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         this.formatted = formatted;
         return this;
     }
-    public ScreenerRequestBuilder setSize(int size) {
-        this.size = Math.max(size, 0); // no negative allowed
+
+    // todo - reason to be public?  (otherwise remove)
+    private ScreenerRequestBuilder setBatchSize(int batchSize) {
+        this.batchSize = Math.max(batchSize, 0); // no negative allowed
         return this;
     }
+
     public ScreenerRequestBuilder setMaxResults(int maxResults) {
         this.maxResults = Math.max(maxResults, 0); // no negative allowed
         return this;
@@ -120,21 +119,31 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         this.queryBuilder.between(field, value1, value2);
         return this;
     }
-    public ScreenerRequestBuilder in(ScreenerField field, List<String> values)
-    {
-        // see boolean declarations for info
-        this.industryIsSet |= ScreenerField.INDUSTRY.equals((field));
-        this.sectorIsSet |= ScreenerField.SECTOR.equals((field));
 
-        this.queryBuilder.in(field, values);
-        return this;
+    // todo - candidate for removal
+//    public ScreenerRequestBuilder setRegions(Region... regions) {
+//        return in(ScreenerField.REGION, regions);
+//    }
+
+    public ScreenerRequestBuilder setExchanges(Exchange... exchanges) {
+        return in(ScreenerField.EXCHANGE, exchanges);
     }
-    public ScreenerRequestBuilder in(ScreenerField field, String ... values)
-    {
-        return (values != null ? in(field, Arrays.asList(values)) : this);
+    public ScreenerRequestBuilder setSectors(Sector... sectors) {
+        return in(ScreenerField.SECTOR, sectors);
+    }
+    public ScreenerRequestBuilder setIndustries(Industry... industries) {
+        if (industries != null && industries.length > 0) {
+            Set<Sector> sectorSet = new LinkedHashSet<>();
+            for (Industry industry : industries) {
+                sectorSet.add(industry.getSector());
+            }
+            setSectors(sectorSet.toArray(new Sector[0]));
+        }
+        return in(ScreenerField.INDUSTRY, industries);
     }
 
-    public ScreenerRequestBuilder in(ScreenerField field, CriteriaEnum ... values)
+
+    private ScreenerRequestBuilder in(ScreenerField field, CriteriaEnum ... values)
     {
         List<String> criteriaValues = getCriteriaEnumValues(values);
         if (criteriaValues.size() > 0) {
@@ -142,6 +151,13 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         }
         return this;
     }
+
+    private ScreenerRequestBuilder in(ScreenerField field, List<String> values)
+    {
+        this.queryBuilder.in(field, values);
+        return this;
+    }
+
 
     private List<String> getCriteriaEnumValues(CriteriaEnum... values) {
         if (values == null || values.length == 0) {
@@ -213,7 +229,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     protected Object buildRequestPostBody()
     {
         ScreenerCriteria criteria = new ScreenerCriteria();
-        criteria.setSize(size);
+        criteria.setSize(batchSize);
         criteria.setOffset(offset);
         criteria.setSortField(sortField.getValue());
         criteria.setIsSortDescending(isSortDescending);
@@ -256,10 +272,6 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         if (! sortField.isSortable()) {
             throw new IllegalArgumentException(String.format("Cannot sort by '%s'.  It is not a sortable field", sortField));
         }
-
-        if (this.industryIsSet && !this.sectorIsSet) {
-            throw new IllegalArgumentException("Must set a 'sector' before can set an 'industry'.");
-        }
     }
 
     @Override
@@ -268,11 +280,11 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
-        if (!Boolean.TRUE.equals(this.totalOnly) && size >= MIN_BATCHABLE_SIZE) {
+        if (!Boolean.TRUE.equals(this.totalOnly) && batchSize >= MIN_BATCHABLE_SIZE) {
 
             // todo - fix -- prob use more builder
-            PostBodyBatchUpdater postBodyBatchUpdater = new CriteriaPostBodyBatchUpdater(size);
-            req = new YahooBatchRequest(req, null, postBodyBatchUpdater, size, maxResults);
+            PostBodyBatchUpdater postBodyBatchUpdater = new CriteriaPostBodyBatchUpdater(batchSize);
+            req = new YahooBatchRequest(req, null, postBodyBatchUpdater, batchSize, maxResults);
         }
         return req;
     }

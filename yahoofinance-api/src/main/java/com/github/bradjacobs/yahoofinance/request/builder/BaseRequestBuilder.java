@@ -42,23 +42,23 @@ abstract public class BaseRequestBuilder<T extends BaseRequestBuilder<T>>
         return getThis();
     }
 
-    public T withRegion(Locale locale) {
+    public T setRegion(Locale locale) {
         if (locale != null) {
-            return withRegion(locale.getCountry());
+            return setRegion(locale.getCountry());
         }
         else {
-            return withRegion("");
+            return setRegion("");
         }
     }
 
-    public T withRegion(Region region) {
+    public T setRegion(Region region) {
         if (region != null) {
             this.region = region.getCode();
         }
         return getThis();
     }
 
-    protected T withRegion(String region) {
+    protected T setRegion(String region) {
         if (StringUtils.isEmpty(region)) {
             throw new IllegalArgumentException("Region value cannot be blank/empty.");
         }
