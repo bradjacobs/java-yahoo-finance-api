@@ -6,6 +6,7 @@ import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 
 public enum IpoEventRequestExample implements RequestExample
 {
+    // todo - need to review example, sometimes can get 'unexpected' response based on criteria
     SIMPLE {
         @Override
         public YahooRequest getRequest() {

@@ -17,13 +17,12 @@ public class VisualizationEarningsRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        boolean useBatching = false;
         YahooRequest req = SIMPLE.getRequest();
-        visualRequestRunner(req, useBatching);
+        visualRequestRunner(req);
     }
 
 
-    private static void visualRequestRunner(YahooRequest req, boolean useBatching) throws IOException
+    private static void visualRequestRunner(YahooRequest req) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.VISUALIZATION)) {
             throw new IllegalArgumentException("Must supply a visualization-type request");
@@ -32,32 +31,19 @@ public class VisualizationEarningsRequesterDemo
         try
         {
             YahooFinanceClient client = new YahooFinanceClient();
+            YahooResponse resp = client.execute(req);
 
-            if (useBatching)
-            {
-                // todo - come back to this
-//                YahooResponse batchResp = client.executeBatch(req);
-//
-//                String json = batchResp.getJson();
-//                List<EarningsEventResult> pojoList = batchResp.getAsListOfPojos(EarningsEventResult.class);
-//                // get map results in form of predefined class (key is the ticker/symbol)
-//                Map<String, EarningsEventResult> pojoMap = batchResp.getAsMapOfPojos(EarningsEventResult.class);
-            }
-            else {
-                YahooResponse resp = client.execute(req);
+            // get original json response
+            String rawJson = resp.getJson();
+            // get original json response (in pretty format)
+            String prettyJson = resp.getPrettyJson();
 
-                // get original json response
-                String rawJson = resp.getJson();
-                // get original json response (in pretty format)
-                String prettyJson = resp.getPrettyJson();
+            List<Map<String, Object>> listOfMaps = resp.getAsListOfMaps();
 
-                List<Map<String, Object>> listOfMaps = resp.getAsListOfMaps();
+            List<EarningsEventResult> pojoList = resp.getAsListOfPojos(EarningsEventResult.class);
 
-                List<EarningsEventResult> pojoList = resp.getAsListOfPojos(EarningsEventResult.class);
-
-                // get map results in form of predefined class (key is the ticker/symbol)
-                Map<String, EarningsEventResult> pojoMap = resp.getAsMapOfPojos(EarningsEventResult.class);
-            }
+            // get map results in form of predefined class (key is the ticker/symbol)
+            Map<String, EarningsEventResult> pojoMap = resp.getAsMapOfPojos(EarningsEventResult.class);
         }
         catch (Exception e)
         {

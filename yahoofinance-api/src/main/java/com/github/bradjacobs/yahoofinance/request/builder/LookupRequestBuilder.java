@@ -16,15 +16,13 @@ import java.util.Map;
 // todo - validation on missing query
 public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilder>
 {
-    private static final int DEFAULT_COUNT = 100;
+    private static final int MAX_BATCH_SIZE = 1000;
     private static final int DEFAULT_START = 0;
-    private static final int DEFAULT_MAX_RESULTS = 1000;
-    private static final int MIN_BATCHABLE_SIZE = 10;
+    private static final int DEFAULT_MAX_RESULTS = MAX_BATCH_SIZE;
 
     private String query;
     private Boolean formatted;
     private Type type;
-    private int count = DEFAULT_COUNT;
     private int start = DEFAULT_START;
     private int maxResults = DEFAULT_MAX_RESULTS;
 
@@ -51,10 +49,7 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
         this.type = type;
         return this;
     }
-    public LookupRequestBuilder withCount(int count) {
-        this.count = Math.max(count, 0); // no negative allowed
-        return this;
-    }
+
     public LookupRequestBuilder withStart(int start) {
         this.start = Math.max(start, 0); // no negative allowed
         return this;
@@ -96,11 +91,16 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
                 map.put(ParamKeys.FORMATTED, formatted.toString());
             }
 
-            map.put(ParamKeys.COUNT, String.valueOf(count));
+            map.put(ParamKeys.COUNT, String.valueOf(calculateRequestBatchSize()));
             map.put(ParamKeys.START, String.valueOf(start));
         }
         return map;
     }
+
+    private int calculateRequestBatchSize() {
+        return Math.min(MAX_BATCH_SIZE, this.maxResults);
+    }
+
 
     @Override
     protected LookupRequestBuilder getThis() {
@@ -113,11 +113,13 @@ public class LookupRequestBuilder extends BaseRequestBuilder<LookupRequestBuilde
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
-        if (!includeTotalsOnly && count >= MIN_BATCHABLE_SIZE) {
+        int batchSize = calculateRequestBatchSize();
+
+        if (!includeTotalsOnly && this.maxResults > batchSize) {
 
             // todo - fix -- prob use more builder
-            ParamMapBatchUpdater paramMapBatchUpdater = new ParamMapBatchOffsetUpdater(ParamKeys.START, this.count);
-            req = new YahooBatchRequest(req, paramMapBatchUpdater, null, this.count, this.maxResults);
+            ParamMapBatchUpdater paramMapBatchUpdater = new ParamMapBatchOffsetUpdater(ParamKeys.START, batchSize);
+            req = new YahooBatchRequest(req, paramMapBatchUpdater, null, batchSize, this.maxResults);
         }
         return req;
     }

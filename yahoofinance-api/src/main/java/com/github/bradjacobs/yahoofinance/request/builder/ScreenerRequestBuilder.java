@@ -43,7 +43,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     private Boolean formatted = null;
 
     private Boolean useRecordResponse = null;  // not sure what this actually does
-    private Boolean totalOnly = null; // return record count only
+    private boolean totalOnly = false; // return record count only
 
     // these remain const until there's need otherwise.
     //        side note:  it's possible to use 'entityIdType' instead of a quoteType, but is untested/unsupported for now
@@ -87,7 +87,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         this.useRecordResponse = useRecordResponse;
         return this;
     }
-    public ScreenerRequestBuilder setTotalOnly(Boolean totalOnly) {
+    public ScreenerRequestBuilder setTotalOnly(boolean totalOnly) {
         this.totalOnly = totalOnly;
         return this;
     }
@@ -171,7 +171,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
     @Override
     public YahooEndpoint getEndpoint()
     {
-        if (Boolean.TRUE.equals(this.totalOnly)) {
+        if (this.totalOnly) {
             return YahooEndpoint.SCREENER_TOTALS;
         }
         else if (usePremium) {
@@ -201,7 +201,7 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
             map.put(ParamKeys.FORMATTED, Boolean.toString(this.formatted));
         }
 
-        if (! Boolean.TRUE.equals(this.totalOnly))
+        if (!this.totalOnly)
         {
             if (this.useRecordResponse != null) {
                 map.put(ParamKeys.USE_RECORD_RESPONSE, Boolean.toString(this.useRecordResponse));
@@ -275,10 +275,10 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
-        if (!Boolean.TRUE.equals(this.totalOnly)) {
+        int batchSize = calculateRequestBatchSize();
 
+        if (!this.totalOnly && maxResults > batchSize) {
             // todo - fix -- prob use more builder
-            int batchSize = calculateRequestBatchSize();
             PostBodyBatchUpdater postBodyBatchUpdater = new CriteriaPostBodyBatchUpdater(batchSize);
             req = new YahooBatchRequest(req, null, postBodyBatchUpdater, batchSize, maxResults);
         }

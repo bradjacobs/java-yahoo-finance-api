@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-// TODO -- need to respect the 'maxResults' value when converting to list or maps
+// TODO - FIX -- need to respect the 'maxResults' value when converting to list or maps
 public class YahooCompositeResponse implements YahooResponse
 {
     protected final List<YahooResponse> children = new ArrayList<>();

@@ -11,7 +11,8 @@ public enum EarningsEventRequestExample implements RequestExample
         public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .earningsEvent()
-                    .setStart("2021-11-01")
+                    .setStart("2021-12-06")
+                    .setEnd("2021-12-07")
                     .build();
         }
     };

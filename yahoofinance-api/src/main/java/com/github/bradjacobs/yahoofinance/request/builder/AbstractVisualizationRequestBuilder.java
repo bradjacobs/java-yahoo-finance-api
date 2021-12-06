@@ -26,7 +26,8 @@ import java.util.Map;
 abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisualizationRequestBuilder<T>>
         extends BasePeriodRequestBuilder<T>
 {
-    private int batchSize = 100;
+    private static final int MAX_BATCH_SIZE = 1000;
+
     private int offset = 0;
     private int maxResults = 100;
 
@@ -50,7 +51,6 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     private boolean isAggregate = false;  // todo - always false for now
     private boolean isSortDescending = false;  // todo - always false for now
 
-    private static final int MIN_BATCHABLE_SIZE = 10;
 
     abstract protected String getEntityType();
     abstract protected String getSortField();
@@ -81,7 +81,7 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
     protected Object buildRequestPostBody()
     {
         VisualizationCriteria criteria = new VisualizationCriteria();
-        criteria.setSize(batchSize);
+        criteria.setSize(calculateRequestBatchSize());
         criteria.setOffset(offset);
         criteria.setSortField(getSortField());
         criteria.setIsSortDescending(isSortDescending);
@@ -118,15 +118,20 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
         return criteria;
     }
 
+    private int calculateRequestBatchSize() {
+        return Math.min(MAX_BATCH_SIZE, this.maxResults);
+    }
+
     @Override
     protected YahooRequest generateRequest(
             YahooEndpoint endpoint, String ticker,
             Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
     {
         YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
-        if (!isAggregate && batchSize >= MIN_BATCHABLE_SIZE) {
+        if (!isAggregate && maxResults > MAX_BATCH_SIZE) {
 
             // todo - fix -- prob use more builder
+            int batchSize = calculateRequestBatchSize();
             PostBodyBatchUpdater postBodyBatchUpdater = new CriteriaPostBodyBatchUpdater(batchSize);
             req = new YahooBatchRequest(req, null, postBodyBatchUpdater, batchSize, maxResults);
         }
