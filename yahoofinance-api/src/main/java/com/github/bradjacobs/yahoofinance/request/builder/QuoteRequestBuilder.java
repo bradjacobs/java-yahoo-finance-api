@@ -4,6 +4,7 @@ import com.github.bradjacobs.yahoofinance.request.builder.helper.MultiTickerPara
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,13 @@ public class QuoteRequestBuilder extends BaseRequestBuilder<QuoteRequestBuilder>
     // use collection to allow for case where some endpoints allow multiple ticker values
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
 
+    // todo - add batching logic if the ticker list is 'too big'
+    public QuoteRequestBuilder withTicker(Collection<String> tickers) {
+        if (tickers != null) {
+            withTicker(tickers.toArray(new String[0]));
+        }
+        return this;
+    }
     public QuoteRequestBuilder withTicker(String... tickers) {
         this.tickerSet.updateTickers(tickers);
         return this;
