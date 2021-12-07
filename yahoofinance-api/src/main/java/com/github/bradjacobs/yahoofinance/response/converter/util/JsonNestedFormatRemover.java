@@ -58,6 +58,7 @@ public class JsonNestedFormatRemover
     //    (ONLY applicable for large numbers that do NOT a value in the mantissa)
     private boolean updateLargeScintificNotationDecimals = true;
 
+    // todo - fix the silly boolean constructor param   (will cause too much confusion)
     public JsonNestedFormatRemover(boolean removeEmptyEntries) {
         this.removeEmptyEntries = removeEmptyEntries;
     }
