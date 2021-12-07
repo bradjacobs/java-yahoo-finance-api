@@ -1,7 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response;
 
 import com.github.bradjacobs.yahoofinance.response.converter.TimeSeriesResponseConverter;
-import com.github.bradjacobs.yahoofinance.response.converter.TimeSeriesResponseConverter__NEW;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
@@ -37,10 +36,8 @@ public class TimeSeriesResponseConverterTest
     {
         String originalJson = ResourceUtil.readResourceFileAsString("timeseries.json");
         TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter();
-        TimeSeriesResponseConverter__NEW timeseriesResponseConverterV2 = new TimeSeriesResponseConverter__NEW();
 
         Map<String, Map<String, Object>> annualValueMap = timeseriesResponseConverter.convertToMapOfMaps(originalJson);
-        Map<String, Map<String, Object>> annualValueMapv2 = timeseriesResponseConverterV2.convertToMapOfMaps(originalJson);
 
         assertNotNull(annualValueMap, "expected non-null map result");
         assertEquals(annualValueMap.size(), 2);
