@@ -1,6 +1,7 @@
 package com.github.bradjacobs.yahoofinance.response;
 
 import com.github.bradjacobs.yahoofinance.response.converter.TimeSeriesResponseConverter;
+import com.github.bradjacobs.yahoofinance.response.converter.TimeSeriesResponseConverter__NEW;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 import org.testng.annotations.Test;
 
@@ -13,8 +14,6 @@ import static org.testng.Assert.assertTrue;
 
 public class TimeSeriesResponseConverterTest
 {
-    private static final String ROOT_PATH = "$.timeseries.result";
-
     @Test
     public void testConvertAnnualToMapOfMaps() throws Exception
     {
@@ -33,4 +32,19 @@ public class TimeSeriesResponseConverterTest
         // TODO -- this is (obviously) only partially done.
     }
 
+    @Test
+    public void testConvertAnnualToMapOfMapsMultipleTypes() throws Exception
+    {
+        String originalJson = ResourceUtil.readResourceFileAsString("timeseries.json");
+        TimeSeriesResponseConverter timeseriesResponseConverter = new TimeSeriesResponseConverter();
+        TimeSeriesResponseConverter__NEW timeseriesResponseConverterV2 = new TimeSeriesResponseConverter__NEW();
+
+        Map<String, Map<String, Object>> annualValueMap = timeseriesResponseConverter.convertToMapOfMaps(originalJson);
+        Map<String, Map<String, Object>> annualValueMapv2 = timeseriesResponseConverterV2.convertToMapOfMaps(originalJson);
+
+        assertNotNull(annualValueMap, "expected non-null map result");
+        assertEquals(annualValueMap.size(), 2);
+
+        // TODO -- this is (obviously) only partially done.
+    }
 }
