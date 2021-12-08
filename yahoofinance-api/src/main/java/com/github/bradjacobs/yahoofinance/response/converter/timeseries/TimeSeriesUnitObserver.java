@@ -71,10 +71,7 @@ abstract class TimeSeriesUnitObserver implements TimeSeriesResponseObserver
             return LOWER_EBIT;
         }
 
-        char firstLetter = baseName.charAt(0);
-        if (Character.isUpperCase(firstLetter)) {
-            baseName = Character.toLowerCase(firstLetter) + baseName.substring(1);
-        }
-        return baseName;
+        // baseName should start with lowercase letter
+        return Character.toLowerCase(baseName.charAt(0)) + baseName.substring(1);
     }
 }

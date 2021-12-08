@@ -5,6 +5,7 @@ import com.github.bradjacobs.yahoofinance.response.converter.util.JsonNestedForm
 import com.github.bradjacobs.yahoofinance.util.JsonPathDocContextCreator;
 import com.jayway.jsonpath.DocumentContext;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,8 @@ import java.util.Map;
 public class TimeSeriesResponseConverter implements ResponseConverter
 {
     private static final String RESULT_OBJECTS_PATH = "$.timeseries.result[*]";
-    private static final String ELEMENT_NAMES_PATH = RESULT_OBJECTS_PATH + ".meta.type[0]";
+    private static final String META_KEY = "meta";
+    private static final String TIMESTAMP_KEY = "timestamp";
 
     private final JsonNestedFormatRemover jsonNestedFormatRemover = new JsonNestedFormatRemover(true);
     private final JsonPathDocContextCreator jsonPathDocContextCreator = new JsonPathDocContextCreator();
@@ -40,21 +42,24 @@ public class TimeSeriesResponseConverter implements ResponseConverter
         json = jsonNestedFormatRemover.removeFormats(json);
         DocumentContext jsonDoc = jsonPathDocContextCreator.createDocContext(json);
 
-        // first fetch all the names (aka names of the fields that were returned)
-        String[] elementNames = jsonDoc.read(ELEMENT_NAMES_PATH, String[].class);
+        // parse out sub list.  map within the list has 3 values 'meta', 'timestamp' and '__the_attribute_name__'
+        List<Map<String,List<Map<String, Object>>>> resultsDataList = jsonDoc.read(RESULT_OBJECTS_PATH);
 
-        List<Map<String,Object>> resultsDataList = jsonDoc.read(RESULT_OBJECTS_PATH);
+        // loop thru the list and make one master list.
+        //  (the 'meta' and 'timestamp' keys will be overwritten each iteration, but don't care about those values.
+        Map<String,List<Map<String, Object>>> buildMap = new LinkedHashMap<>();
+        for (Map<String,List<Map<String, Object>>> stringObjectMap : resultsDataList) {
+            buildMap.putAll(stringObjectMap);
+        }
 
-        int entryCount = elementNames.length;
-        for (int i = 0; i < entryCount; i++)
-        {
-            String elementName = elementNames[i];
-            Map<String, Object> attributeDataMap = resultsDataList.get(i);
-            if (attributeDataMap != null)
-            {
-                List<Map<String,Object>> elementDataList = (List<Map<String, Object>>) attributeDataMap.get(elementName);
-                observer.updateAttributeMap(elementName, elementDataList);
-            }
+        // post cleanup.. remove the keys don't care about.
+        buildMap.remove(META_KEY);
+        buildMap.remove(TIMESTAMP_KEY);
+
+        for (Map.Entry<String, List<Map<String, Object>>> entry : buildMap.entrySet()) {
+            String elementName = entry.getKey();
+            List<Map<String,Object>> elementDataList = entry.getValue();
+            observer.updateAttributeMap(elementName, elementDataList);
         }
 
         return observer.getMap();
