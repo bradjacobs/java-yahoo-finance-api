@@ -32,10 +32,10 @@ class MasterEnumFileGenerator
             new ScreenerFieldEnumGenerator(),
             new SectorEnumGenerator(),
             new IndustryEnumGenerator(),
+            new StockValueDescriptionFieldGenerator(),
             new IpoEventFieldEnumGenerator(),
             new EarningsEventFieldEnumGenerator()
     );
-
 
     public static void main(String[] args)
     {

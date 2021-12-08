@@ -5,21 +5,20 @@ package com.github.bradjacobs.yahoofinance.types;
 
 import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaEnum;
 
-/**
- * Enum used with Stock Screener endpoint:
- *  *****  Only applicable for 'Premium' *****
- */
-//  note: seemed overkill to auto-gen this
-public enum StockValueDesc implements CriteriaEnum
+import javax.annotation.Generated;
+
+@Generated(value="yahoo-finance-api-internal-tools", date="2021-12-07")
+public enum StockValueDescription implements CriteriaEnum
 {
-    UNDERVALUED("Under Valued"),
-    FAIRVALUE("Near Fair Value"),
-    OVERVALUED("Over Valued");
+    NEAR_FAIR_VALUE("Near Fair Value"),
+    OVERVALUED("Over Valued"),
+    UNDERVALUED("Under Valued");
+
 
 
     private final String value;
 
-    StockValueDesc(String value) {
+    StockValueDescription(String value) {
         this.value = value;
     }
 
