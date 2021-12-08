@@ -1,6 +1,7 @@
 package com.github.bradjacobs.yahoofinance.request.builder.helper;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,10 +32,7 @@ public class MultiTickerParamSet
     }
 
     public String generateTickerString() {
-        if (this.tickerSet.size() > 0) {
-            return String.join(",", this.tickerSet);
-        }
-        return "";
+        return String.join(",", this.tickerSet);
     }
 
 }
