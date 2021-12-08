@@ -14,7 +14,7 @@ public enum QuoteRequestExample implements RequestExample
         public YahooRequest getRequest() {
             return YahooRequestBuilder.api()
                     .quote()
-                    .withTicker("AAPL")
+                    .withTicker("MSFT")
                     .build();
         }
     },

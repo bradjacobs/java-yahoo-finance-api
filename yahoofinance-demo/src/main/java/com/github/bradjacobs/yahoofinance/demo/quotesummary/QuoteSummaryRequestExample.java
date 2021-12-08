@@ -60,7 +60,7 @@ public enum QuoteSummaryRequestExample implements RequestExample
             return YahooRequestBuilder.api()
                     .quoteSummary()
                     .withModules(YahooModule.values())
-                    .withTicker("AAPL")
+                    .withTicker("MSFT")
                     .build();
         }
     },
