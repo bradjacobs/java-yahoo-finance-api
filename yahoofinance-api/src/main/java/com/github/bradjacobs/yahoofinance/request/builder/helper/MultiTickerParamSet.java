@@ -27,6 +27,10 @@ public class MultiTickerParamSet
         }
     }
 
+    public int size() {
+        return tickerSet.size();
+    }
+
     public void clearAllTickers() {
         tickerSet.clear();
     }

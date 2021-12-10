@@ -1,5 +1,8 @@
 package com.github.bradjacobs.yahoofinance.request.builder;
 
+import com.github.bradjacobs.yahoofinance.request.YahooRequest;
+import com.github.bradjacobs.yahoofinance.request.batch.ParamMapSymbolBatchUpdater;
+import com.github.bradjacobs.yahoofinance.request.batch.YahooBatchRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.helper.MultiTickerParamSet;
 import com.github.bradjacobs.yahoofinance.types.Type;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
@@ -11,6 +14,10 @@ import java.util.Map;
 
 public class QuoteRequestBuilder extends BaseRequestBuilder<QuoteRequestBuilder>
 {
+    // the batchSize limits the number of tickers on a single request to avoid
+    // the GET url from becoming "too big"
+    private static final int BATCH_SIZE = 200;
+
     // use collection to allow for case where some endpoints allow multiple ticker values
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
 
@@ -50,6 +57,23 @@ public class QuoteRequestBuilder extends BaseRequestBuilder<QuoteRequestBuilder>
         requestParamMap.put(ParamKeys.FIELDS, fieldValueString);
 
         return requestParamMap;
+    }
+
+    @Override
+    protected YahooRequest generateRequest(
+            YahooEndpoint endpoint, String ticker,
+            Map<String, String> paramMap, Object postBody, Map<String,String> headerMap)
+    {
+        YahooRequest req = super.generateRequest(endpoint, ticker, paramMap, postBody, headerMap);
+
+        int tickerCount = this.tickerSet.size();
+        if (tickerCount > BATCH_SIZE) {
+            // todo - fix -- prob use more builder
+            ParamMapSymbolBatchUpdater paramMapBatchUpdater = new ParamMapSymbolBatchUpdater(ParamKeys.SYMBOLS, BATCH_SIZE);
+            req = new YahooBatchRequest(req, paramMapBatchUpdater, null, BATCH_SIZE, tickerCount);
+        }
+
+        return req;
     }
 
     @Override

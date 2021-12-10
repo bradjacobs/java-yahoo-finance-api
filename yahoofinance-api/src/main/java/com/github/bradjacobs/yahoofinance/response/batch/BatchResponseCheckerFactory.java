@@ -18,6 +18,8 @@ public class BatchResponseCheckerFactory
                 return new CountTotalPrefixBatchResponseChecker(batchSize);
             case VISUALIZATION:
                 return new VisualizationResponseChecker(batchSize);
+            case QUOTE:
+                return new NoOpBatchResponseChecker();
             default:
                 return null;
         }
