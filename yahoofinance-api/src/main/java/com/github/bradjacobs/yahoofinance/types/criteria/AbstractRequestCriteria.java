@@ -6,7 +6,7 @@ package com.github.bradjacobs.yahoofinance.types.criteria;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-// it is _assumed_ that all crteria have these common fields
+// it is _assumed_ that all criteria have these common fields
 //   (if discover otherwise, this class subject for removal)
 abstract public class AbstractRequestCriteria
 {
