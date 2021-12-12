@@ -21,7 +21,6 @@ public class QuoteRequestBuilder extends BaseRequestBuilder<QuoteRequestBuilder>
     // use collection to allow for case where some endpoints allow multiple ticker values
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
 
-    // todo - add batching logic if the ticker list is 'too big'
     public QuoteRequestBuilder withTicker(Collection<String> tickers) {
         if (tickers != null) {
             withTicker(tickers.toArray(new String[0]));
