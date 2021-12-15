@@ -8,6 +8,8 @@ import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen
 import java.util.List;
 import java.util.stream.Collectors;
 
+// TODO - the output enum list appears to be "incomplete", but it's (currently)
+//   unclear which values are (and aren't) supported
 public class EarningsEventFieldEnumGenerator extends AbstractFieldEnumGenerator
 {
     @Override
