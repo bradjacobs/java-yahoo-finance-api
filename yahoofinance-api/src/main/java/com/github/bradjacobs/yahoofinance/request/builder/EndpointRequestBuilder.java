@@ -3,6 +3,7 @@ package com.github.bradjacobs.yahoofinance.request.builder;
 import com.github.bradjacobs.yahoofinance.request.builder.helper.MultiTickerParamSet;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,6 +22,12 @@ public class EndpointRequestBuilder extends BaseRequestBuilder<EndpointRequestBu
         this.endpoint = endpoint;
     }
 
+    public EndpointRequestBuilder withTicker(Collection<String> tickers) {
+        if (tickers != null) {
+            withTicker(tickers.toArray(new String[0]));
+        }
+        return this;
+    }
 
     public EndpointRequestBuilder withTicker(String... tickers) {
         tickerSet.updateTickers(tickers);
