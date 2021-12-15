@@ -111,32 +111,21 @@ public class YahooFinanceClient
 
     public YahooResponse executeBatch(YahooBatchRequest request) throws IOException
     {
-        int batchSize = request.getBatchSize();
-
-        BatchResponseTerminationChecker batchResponseChecker = batchResponseCheckerFactory.getBatchResponseChecker(request.getEndpoint(), batchSize);
-        if (batchResponseChecker == null) {
-            throw new IllegalStateException("No BatchResponseChecker found for endpoint: " + request.getEndpoint());
-        }
-
-        List<Response> responseList = new ArrayList<>();
+        BatchResponseTerminationChecker batchResponseChecker = batchResponseCheckerFactory.getBatchResponseChecker(request);
         Map<String,String> headerMap = createAdditionalRequestHeaderMap(request);
 
-        Response response;
+        List<Response> responseList = new ArrayList<>();
         boolean continueBatchRequesting;
 
         int batchNumber = 1;
-        int maxResults = request.getMaxResults();
-        int maxBatchNumber = maxResults / batchSize;
-        if (maxResults % batchSize != 0) {
-            maxBatchNumber++;
-        }
+        int maxBatchNumber = request.getMaxBatchNumber();
 
         do {
             Map<String, String> paramMap = request.getParamMap(batchNumber);
             String postBody = request.getPostBody(batchNumber);
             String url = requestUrlGenerator.buildRequestUrl(request, paramMap);
 
-            response = executeInternal(url, postBody, headerMap);
+            Response response = executeInternal(url, postBody, headerMap);
             responseList.add(response);
 
             if (batchNumber >= maxBatchNumber) {
@@ -149,9 +138,8 @@ public class YahooFinanceClient
                 catch (InterruptedException e) {/* ignore exception */ }
             }
             batchNumber++;
-
         } while (continueBatchRequesting);
 
-        return new YahooCompositeResponse(request.getEndpoint(), responseList, maxResults);
+        return new YahooCompositeResponse(request.getEndpoint(), responseList, request.getMaxResults());
     }
 }

@@ -43,6 +43,15 @@ public class YahooBatchRequest implements YahooRequest, YahooBatchableRequest
         return maxResults;
     }
 
+    public int getMaxBatchNumber() {
+        int maxBatchNumber = maxResults / batchSize;
+        if (maxResults % batchSize != 0) {
+            maxBatchNumber++;
+        }
+        return maxBatchNumber;
+    }
+
+
     @Override
     public Map<String, String> getParamMap(int batchNumber) {
         Map<String, String> paramMap = innerRequest.getParamMap();

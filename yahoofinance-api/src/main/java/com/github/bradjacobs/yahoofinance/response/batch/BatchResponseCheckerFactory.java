@@ -1,15 +1,16 @@
 package com.github.bradjacobs.yahoofinance.response.batch;
 
+import com.github.bradjacobs.yahoofinance.request.batch.YahooBatchRequest;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 // todo - think of better names for classes
 public class BatchResponseCheckerFactory
 {
-    public BatchResponseTerminationChecker getBatchResponseChecker(YahooEndpoint endpoint, int batchSize)
+    public BatchResponseTerminationChecker getBatchResponseChecker(YahooBatchRequest request)
     {
-        if (endpoint == null) {
-            return null;
-        }
+        YahooEndpoint endpoint = request.getEndpoint();
+        int batchSize = request.getBatchSize();
+
         switch (endpoint)
         {
             case SCREENER:
@@ -21,7 +22,7 @@ public class BatchResponseCheckerFactory
             case QUOTE:
                 return new NoOpBatchResponseChecker();
             default:
-                return null;
+                throw new IllegalStateException("No BatchResponseChecker found for endpoint: " + request.getEndpoint());
         }
     }
 }
