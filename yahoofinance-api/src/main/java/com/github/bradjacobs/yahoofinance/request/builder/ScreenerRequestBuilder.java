@@ -15,6 +15,7 @@ import com.github.bradjacobs.yahoofinance.types.criteria.CriteriaEnum;
 import com.github.bradjacobs.yahoofinance.types.criteria.Operator;
 import com.github.bradjacobs.yahoofinance.types.criteria.Query;
 import com.github.bradjacobs.yahoofinance.types.criteria.ScreenerCriteria;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -229,11 +230,11 @@ public class ScreenerRequestBuilder extends BaseRequestBuilder<ScreenerRequestBu
         criteria.setUserId(USER_ID);
         criteria.setUserIdType(USER_ID_TYPE);
 
-        // TODO -- need to confirm if this is desired.
-//        String region = this.getRegion();
-//        if (!StringUtils.isEmpty(region)) {
-//            this.queryBuilder.in(ScreenerField.REGION, Collections.singletonList(region.toLowerCase()));
-//        }
+        String region = this.getRegion();
+        if (!StringUtils.isEmpty(region)) {
+            // note: must be lowercase (or else will return 0 results)
+            this.queryBuilder.in(ScreenerField.REGION, Collections.singletonList(region.toLowerCase()));
+        }
 
         Query query = this.queryBuilder.build();
 

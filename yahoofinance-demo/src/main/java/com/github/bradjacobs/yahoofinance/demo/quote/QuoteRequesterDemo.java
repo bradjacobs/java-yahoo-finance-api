@@ -5,28 +5,43 @@ import com.github.bradjacobs.yahoofinance.YahooFinanceClient;
 import com.github.bradjacobs.yahoofinance.http.HttpClientAdapterFactory;
 import com.github.bradjacobs.yahoofinance.model.QuoteResult;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
+import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
 import com.github.bradjacobs.yahoofinance.response.YahooResponse;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.bradjacobs.yahoofinance.demo.quote.QuoteRequestExample.MULTI_TICKER;
+import static com.github.bradjacobs.yahoofinance.demo.quote.QuoteRequestExample.*;
 
 public class QuoteRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        YahooRequest req = MULTI_TICKER.getRequest();
+        String ss = "AAPL,MSFT,GOOG,AMZN,TSLA,FB,JPM,V,HD,UNH,JNJ,WMT";
+        List<String> tickerList = Arrays.asList(ss.split(","));
+
+        YahooRequest req = YahooRequestBuilder.api()
+                .quote()
+                .withTicker(tickerList)
+                .build();
+
+//        YahooRequest req = YahooRequestBuilder.api()
+//                .validate()
+//                .withTicker(tickerList)
+//                .build();
+
+        ///YahooRequest req = SIMPLE.getRequest();
         quoteRequestRunner(req);
     }
 
     private static void quoteRequestRunner(YahooRequest req) throws IOException
     {
-        if (req == null || !req.getEndpoint().equals(YahooEndpoint.QUOTE)) {
-            throw new IllegalArgumentException("Must supply a quote-type request");
-        }
+//        if (req == null || !req.getEndpoint().equals(YahooEndpoint.QUOTE)) {
+//            throw new IllegalArgumentException("Must supply a quote-type request");
+//        }
 
         //YahooFinanceClient client = new YahooFinanceClient();
         YahooFinanceClient client = new YahooFinanceClient(HttpClientAdapterFactory.createDefaultOkHttpClient());
