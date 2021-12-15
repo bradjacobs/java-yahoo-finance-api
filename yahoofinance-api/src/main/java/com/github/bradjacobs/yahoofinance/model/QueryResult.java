@@ -14,7 +14,6 @@ import java.util.Map;
 abstract public class QueryResult implements Comparable<QueryResult>
 {
     private String symbol;
-    private String name;  // derived value.
 
     private String argusRating;
     private Double ask;
@@ -134,12 +133,20 @@ abstract public class QueryResult implements Comparable<QueryResult>
      * Generically get most readable available 'name'
      * @return name
      */
+    @JsonIgnore
     public String getName()
     {
-        if (this.name != null) return this.name;
-        else if (this.displayName != null) return this.displayName;
+        if (this.displayName != null) return this.displayName;
         else if (this.longName != null) return this.longName;
         else return this.shortName;
+    }
+
+    @JsonIgnore
+    public Double getAverageAnalystRatingValue() {
+        if (this.averageAnalystRating != null && this.averageAnalystRating.length() >= 3) {
+            return Double.parseDouble(this.averageAnalystRating.substring(0,3));
+        }
+        return null;
     }
 
     public String getArgusRating() {
