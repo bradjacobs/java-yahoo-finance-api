@@ -6,7 +6,6 @@ package com.github.bradjacobs.yahoofinance.model;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -583,7 +582,7 @@ abstract public class QueryResult implements Comparable<QueryResult>
 
 
     @Override
-    public int compareTo(@NotNull QueryResult other)
+    public int compareTo(QueryResult other)
     {
         return this.symbol.compareTo(other.symbol);
     }

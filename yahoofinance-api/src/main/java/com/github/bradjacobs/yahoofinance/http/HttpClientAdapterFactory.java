@@ -10,7 +10,6 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,11 +87,10 @@ public class HttpClientAdapterFactory
         private final Map<String, List<Cookie>> cookieStore = new HashMap<>();
 
         @Override
-        public void saveFromResponse(HttpUrl url, @NotNull List<Cookie> cookies) {
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
             cookieStore.put(url.host(), cookies);
         }
 
-        @NotNull
         @Override
         public List<Cookie> loadForRequest(HttpUrl url) {
             String host = url.host();
