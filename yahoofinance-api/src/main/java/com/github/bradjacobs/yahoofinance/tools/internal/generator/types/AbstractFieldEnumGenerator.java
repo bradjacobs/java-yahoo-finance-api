@@ -5,7 +5,7 @@ package com.github.bradjacobs.yahoofinance.tools.internal.generator.types;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.tools.internal.generator.types.autogen.YahooFieldDefinition;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 // TODO - the enums really has too much clutter.  It should be reorganized and/or pruned.
 abstract public class AbstractFieldEnumGenerator extends EnumStringBlobGenerator
 {
-    private static final JsonMapper mapper = JsonMapperFactory.getPrettyMapper();
+    private static final JsonMapper mapper = JsonMapperSingleton.getPrettyInstance();
 
     protected List<YahooFieldDefinition> convertToFieldDefinitions(String json)
     {

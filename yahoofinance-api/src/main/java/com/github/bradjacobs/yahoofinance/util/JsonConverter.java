@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class JsonConverter
 {
-    private static final JsonMapper mapper = JsonMapperFactory.getMapper();
-    private static final JsonMapper prettyMapper = JsonMapperFactory.getPrettyMapper();
+    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
+    private static final JsonMapper prettyMapper = JsonMapperSingleton.getPrettyInstance();
     private static final TypeReference<Map<String, Object>> MAP_OF_OBJECTS_TYPE_REF = new TypeReference<Map<String, Object>>(){};
 
     private JsonConverter() { }

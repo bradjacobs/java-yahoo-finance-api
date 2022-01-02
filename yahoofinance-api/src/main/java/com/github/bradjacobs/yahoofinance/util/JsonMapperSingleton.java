@@ -17,52 +17,42 @@ import java.math.BigDecimal;
  * VERY Simplistic Factory when you want a 'basic' jsonMapper
  *   with default configs set.
  */
-//  basically just keeping impl of creating a JsonMapper in a single location.
-public class JsonMapperFactory
+//  SIDE:  ok, ok, it's technically not 'singleton' b/c there's 2 instances
+//      (but not important enough to worry about at present)
+public class JsonMapperSingleton
 {
-    public static JsonMapper getMapper() {
-        return builder().build();
+    private static final JsonMapper instance = createInstance(false);
+    private static final JsonMapper prettyInstance = createInstance(true);
+
+    public static JsonMapper getInstance() {
+        return instance;
     }
-    public static JsonMapper getPrettyMapper() {
-        return builder().usePretty(true).build();
+    public static JsonMapper getPrettyInstance() {
+        return prettyInstance;
     }
 
-    public static JsonMapperFactory.Builder builder() {
-        return new JsonMapperFactory.Builder();
-    }
-
-    public static class Builder
+    private static JsonMapper createInstance(boolean makePretty)
     {
-        private boolean pretty = false;
-
-        public JsonMapperFactory.Builder usePretty(boolean pretty) {
-            this.pretty = pretty;
-            return this;
-        }
-
-        public JsonMapper build() {
-
-            SimpleModule module = new SimpleModule()
+        SimpleModule module = new SimpleModule()
                 .addSerializer(Float.class, new DecimalSerializer<>(Float.class))
                 .addSerializer(Double.class, new DecimalSerializer<>(Double.class));
 
-            JsonMapper.Builder builder = JsonMapper.builder()
-                    .enable(DeserializationFeature.USE_LONG_FOR_INTS)
-                    .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN)
-                    .addModule(module);
+        JsonMapper.Builder builder = JsonMapper.builder()
+                .enable(DeserializationFeature.USE_LONG_FOR_INTS)
+                .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN)
+                .addModule(module);
 
-            if (pretty) {
-                builder = builder
-                        .enable(SerializationFeature.INDENT_OUTPUT)
-                        .defaultPrettyPrinter(new DefaultPrettyPrinter()
-                               .withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE));
-            }
-
-            return builder.build();
+        if (makePretty) {
+            builder = builder
+                    .enable(SerializationFeature.INDENT_OUTPUT)
+                    .defaultPrettyPrinter(new DefaultPrettyPrinter()
+                            .withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE));
         }
+        return builder.build();
     }
 
-    // Special number serializer to ensure NEVER WRITE SCIENTIFIC NOTATION !
+
+    // Special number serializer to ensure NEVER WRITE SCIENTIFIC NOTATION !!
     private static class DecimalSerializer<T extends Number> extends StdSerializer<T> {
         public DecimalSerializer(Class<T> t) {
             super(t);

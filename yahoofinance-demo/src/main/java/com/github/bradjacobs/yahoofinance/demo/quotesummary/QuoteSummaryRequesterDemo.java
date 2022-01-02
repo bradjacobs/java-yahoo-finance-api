@@ -10,13 +10,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.bradjacobs.yahoofinance.demo.quotesummary.QuoteSummaryRequestExample.ALL_MODULES;
 import static com.github.bradjacobs.yahoofinance.demo.quotesummary.QuoteSummaryRequestExample.MULTI_MODULES;
 
 public class QuoteSummaryRequesterDemo
 {
     public static void main(String[] args) throws Exception
     {
-        YahooRequest req = MULTI_MODULES.getRequest();
+        YahooRequest req = ALL_MODULES.getRequest();
         quoteSummaryRequestRunner(req);
     }
 

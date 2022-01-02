@@ -44,7 +44,12 @@ public class JsonPathConfigFactory {
 
             JsonMapper mapper = this.customJsonMapper;
             if (mapper == null) {
-                mapper = JsonMapperFactory.builder().usePretty(pretty).build();
+                if (pretty) {
+                    mapper = JsonMapperSingleton.getPrettyInstance();
+                }
+                else {
+                    mapper = JsonMapperSingleton.getInstance();
+                }
             }
 
             return Configuration.builder()

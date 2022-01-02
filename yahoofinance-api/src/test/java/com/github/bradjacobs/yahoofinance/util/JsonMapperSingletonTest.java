@@ -27,7 +27,7 @@ public class JsonMapperSingletonTest
     public void testWrite() throws Exception
     {
 //        JsonMapper mapper = JsonMapperSingleton.getPrettyInstance();
-        JsonMapper mapper = JsonMapperFactory.getMapper();
+        JsonMapper mapper = JsonMapperSingleton.getInstance();
 
         Map<String,Number> map = new LinkedHashMap<>();
 

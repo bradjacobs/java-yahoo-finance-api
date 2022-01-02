@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.types.StatementType;
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import com.github.bradjacobs.yahoofinance.util.ResourceUtil;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class TimeSeriesRequestBuilder extends BasePeriodRequestBuilder<TimeSeriesRequestBuilder>
 {
-    private static final JsonMapper mapper = JsonMapperFactory.getMapper();
+    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
 
 
     private String ticker;

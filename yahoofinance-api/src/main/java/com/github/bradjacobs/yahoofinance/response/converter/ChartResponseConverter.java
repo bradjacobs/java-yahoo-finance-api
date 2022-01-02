@@ -7,7 +7,7 @@ import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
 import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.response.converter.util.SimpleMapOfMapsGenerator;
 import com.github.bradjacobs.yahoofinance.util.JsonConverter;
-import com.github.bradjacobs.yahoofinance.util.JsonMapperFactory;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class ChartResponseConverter implements ResponseConverter
 
     private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
 
-    private static final JsonMapper mapper = JsonMapperFactory.getMapper();
+    private static final JsonMapper mapper = JsonMapperSingleton.getInstance();
     private static final EpochStrConverter dateStrConverter = MetaEpochSecondsConverter.getDateStringConverter();
 
     private static final TypeReference<Map<String, List<Object>>> REF_MAP_OF_LISTS = new TypeReference<Map<String, List<Object>>>(){};
