@@ -20,6 +20,7 @@ public class BatchResponseCheckerFactory
             case VISUALIZATION:
                 return new VisualizationResponseChecker(batchSize);
             case QUOTE:
+            case SPARK:
                 return new NoOpBatchResponseChecker();
             default:
                 throw new IllegalStateException("No BatchResponseChecker found for endpoint: " + request.getEndpoint());

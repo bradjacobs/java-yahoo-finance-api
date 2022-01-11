@@ -16,11 +16,11 @@ public class SparkRequesterDemo
     public static void main(String[] args) throws Exception
     {
         YahooRequest req = MULTI.getRequest();
-        soarkRequestRunner(req);
+        sparkRequestRunner(req);
     }
 
 
-    private static void soarkRequestRunner(YahooRequest req) throws IOException
+    private static void sparkRequestRunner(YahooRequest req) throws IOException
     {
         if (req == null || !req.getEndpoint().equals(YahooEndpoint.SPARK)) {
             throw new IllegalArgumentException("Must supply a spark-type request");

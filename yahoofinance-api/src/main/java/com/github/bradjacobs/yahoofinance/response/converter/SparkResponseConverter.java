@@ -15,7 +15,9 @@ public class SparkResponseConverter implements ResponseConverter
 
     private static final DefaultResponseConverter defaultConverter = new DefaultResponseConverter();
 
-    private static final boolean DEFAULT_ORGANIZE_BY_DATE = true;
+    // TODO - FIX - bug to fix.  organizeByDate = true is broken if ticker count > batchSize
+    //   (the dates in the map will get overwritten)
+    private static final boolean DEFAULT_ORGANIZE_BY_DATE = false;
     private final boolean organizeByDate;
 
     public SparkResponseConverter() {
