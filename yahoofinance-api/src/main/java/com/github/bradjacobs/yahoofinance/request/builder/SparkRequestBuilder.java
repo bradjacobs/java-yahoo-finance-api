@@ -16,7 +16,7 @@ public class SparkRequestBuilder extends BaseRequestBuilder<SparkRequestBuilder>
 {
     // the batchSize limits the number of tickers on a single request to avoid
     // the GET url from becoming "too big"
-    private static final int BATCH_SIZE = 200;
+    private static final int BATCH_SIZE = 20;  // this is the max Yahoo will allow
 
     private final MultiTickerParamSet tickerSet = new MultiTickerParamSet();
     private Range range;
