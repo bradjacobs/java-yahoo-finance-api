@@ -3,7 +3,7 @@
  */
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConverter;
 import com.github.bradjacobs.yahoofinance.request.YahooRequest;
 import com.github.bradjacobs.yahoofinance.request.batch.CriteriaPostBodyBatchUpdater;
 import com.github.bradjacobs.yahoofinance.request.batch.PostBodyBatchUpdater;
@@ -27,6 +27,7 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
         extends BasePeriodRequestBuilder<T>
 {
     private static final int MAX_BATCH_SIZE = 1000;
+    private static final EpochSecondsConverter EPOCH_SECONDS_CONVERTER = new EpochSecondsConverter();
 
     private int offset = 0;
     private int maxResults = 100;
@@ -89,11 +90,10 @@ abstract public class AbstractVisualizationRequestBuilder<T extends AbstractVisu
         criteria.setIncludeFields(getIncludeFields());
 
         QueryBuilder queryBuilder = new QueryBuilder();
-        MetaEpochSecondsConverter metaEpochSecondsConverter = MetaEpochSecondsConverter.getInstance();
         if (this.startPeriod != null) {
-            String startPeriodString = metaEpochSecondsConverter.toDateString(this.startPeriod);
+            String startPeriodString = EPOCH_SECONDS_CONVERTER.toString(this.startPeriod);
             if (this.endPeriod != null) {
-                String endPeriodString = metaEpochSecondsConverter.toDateString(this.endPeriod);
+                String endPeriodString = EPOCH_SECONDS_CONVERTER.toString(this.endPeriod);
                 queryBuilder.between(VisualizationCriteriaField.START_DATE_TIME, startPeriodString, endPeriodString);
             }
             else {

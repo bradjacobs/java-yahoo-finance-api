@@ -1,7 +1,6 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
-import com.github.bradjacobs.yahoofinance.converter.datetime.EpochStrConverter;
-import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConverter;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,9 @@ public class SparkResponseConverter implements ResponseConverter
     private static final String KEY_TIMESTAMP = "timestamp";
     private static final String KEY_CLOSE = "close";
     private static final String KEY_DATE = "date";  // extra that converts timestamp to human-readable
+
+    // TODO - fix dossn't allow for timestamps more granular than day.
+    private static final EpochSecondsConverter EPOCH_SECONDS_CONVERTER = new EpochSecondsConverter();
 
     private static final DefaultResponseConverter defaultConverter = new DefaultResponseConverter();
 
@@ -57,8 +59,6 @@ public class SparkResponseConverter implements ResponseConverter
 
         Map<String, Map<String, Object>> originalMapOfMaps = defaultConverter.convertToMapOfMaps(json);
 
-        EpochStrConverter epochStrConverter = null;
-
         for (Map.Entry<String, Map<String, Object>> entry : originalMapOfMaps.entrySet())
         {
             String ticker = entry.getKey();
@@ -67,16 +67,11 @@ public class SparkResponseConverter implements ResponseConverter
             List<Long> timestamps = (List<Long>) dataMap.get(KEY_TIMESTAMP);
             List<Number> closeValues = (List<Number>) dataMap.get(KEY_CLOSE);
 
-            if (epochStrConverter == null) {
-                // todo - fix... moved method to a common location, but it is still ugly
-                epochStrConverter = MetaEpochSecondsConverter.selectDateStrConverter(timestamps.toArray(new Long[0]));
-            }
-
             for (int i = 0; i < timestamps.size(); i++)
             {
                 Long timestamp = timestamps.get(i);
                 Number closeValue = closeValues.get(i);
-                String date = epochStrConverter.convertToString(timestamp);
+                String date = EPOCH_SECONDS_CONVERTER.toString(timestamp);
 
                 if (organizeByDate)
                 {

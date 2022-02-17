@@ -3,13 +3,12 @@
  */
 package com.github.bradjacobs.yahoofinance.request.builder;
 
-import com.github.bradjacobs.yahoofinance.converter.datetime.MetaEpochSecondsConverter;
+import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConverter;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.ZoneOffset;
 
 /**
  * All the builder logic for setting "&period1=..."  "&period2=..." values
@@ -19,8 +18,8 @@ import java.util.Date;
  */
 abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilder<T>> extends BaseRequestBuilder<T>
 {
-    private static final MetaEpochSecondsConverter epochSecondsConverter = MetaEpochSecondsConverter.getInstance();
-    private static final ZoneId GMT_ZONE = ZoneId.of("GMT");
+    private static final ZoneOffset GMT_ZONE = ZoneOffset.UTC;
+    private static final EpochSecondsConverter epochSecondsConverter = new EpochSecondsConverter(GMT_ZONE);
 
     protected Long startPeriod;
     protected Long endPeriod;
@@ -43,9 +42,6 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
     public T setTimeRange(Long start, Long end) {
         return setStart(start).setEnd(end);
     }
-    public T setTimeRange(Date start, Date end) {
-        return setStart(start).setEnd(end);
-    }
     public T setTimeRange(Instant start, Instant end) {
         return setStart(start).setEnd(end);
     }
@@ -60,10 +56,6 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
         this.startPeriod = epochSecondsConverter.fromInstant(start);
         return getThis();
     }
-    public T setStart(Date start) {
-        this.startPeriod = epochSecondsConverter.fromDate(start);
-        return getThis();
-    }
     public T setStart(Long start) {
         this.startPeriod = epochSecondsConverter.fromLong(start);
         return getThis();
@@ -75,10 +67,6 @@ abstract public class BasePeriodRequestBuilder<T extends BasePeriodRequestBuilde
     }
     public T setEnd(Instant end) {
         this.endPeriod = epochSecondsConverter.fromInstant(end);
-        return getThis();
-    }
-    public T setEnd(Date end) {
-        this.endPeriod = epochSecondsConverter.fromDate(end);
         return getThis();
     }
     public T setEnd(Long end) {
