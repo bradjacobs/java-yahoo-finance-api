@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+// todo - rename or refactor  ('factory' in class name midleading)
 public class HttpClientAdapterFactory
 {
     public static HttpClientAdapter createDefaultClient() {
