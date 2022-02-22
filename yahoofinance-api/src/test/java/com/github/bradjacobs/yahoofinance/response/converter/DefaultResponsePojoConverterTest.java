@@ -1,8 +1,12 @@
 package com.github.bradjacobs.yahoofinance.response.converter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.bradjacobs.yahoofinance.model.ChartResult;
 import com.github.bradjacobs.yahoofinance.request.YahooFinanceRequest;
 import com.github.bradjacobs.yahoofinance.request.builder.YahooRequestBuilder;
+import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -108,36 +112,14 @@ public class DefaultResponsePojoConverterTest
         return resultList;
     }
 
-    private ChartResult createExpectedResult(Map<String, Object> valueMap)
-    {
-        ChartResult result = new ChartResult();
-        List<String> fieldNames = new ArrayList<>(valueMap.keySet());
-        for (String fieldName : fieldNames) {
-            Object val = valueMap.get(fieldName);
-            switch (fieldName) {
-                case "date":
-                    result.setDate((String) val);
-                    break;
-                case "open":
-                    result.setOpen(((Number) val).doubleValue());
-                    break;
-                case "close":
-                    result.setClose(((Number) val).doubleValue());
-                    break;
-                case "adjclose":
-                    result.setAdjclose(((Number) val).doubleValue());
-                    break;
-                case "low":
-                    result.setLow(((Number) val).doubleValue());
-                    break;
-                case "high":
-                    result.setHigh(((Number) val).doubleValue());
-                    break;
-                case "volume":
-                    result.setVolume(((Number) val).longValue());
-                    break;
-            }
+    private ChartResult createExpectedResult(Map<String, Object> valueMap) {
+        JsonMapper mapper = JsonMapperSingleton.getInstance();
+        try {
+            String jsonString = mapper.writeValueAsString(valueMap);
+            return mapper.readValue(jsonString, new TypeReference<ChartResult>(){});
         }
-        return result;
+        catch (Exception e) {
+            throw new IllegalArgumentException("Unable to convert data to ChartResult: " + e.getMessage(), e);
+        }
     }
 }
