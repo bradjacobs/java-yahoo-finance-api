@@ -4,8 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class EpochSecondsConverter
@@ -15,14 +14,13 @@ public class EpochSecondsConverter
 
     private static final int DATE_ONLY_STRING_MAX_LENGTH = 10;  // e.g. 2021-01-31  // todo use or remove
 
-
-    private static final ZoneOffset DEFAULT_ZONE = ZoneOffset.UTC;
-    private final ZoneOffset zone;
+    private static final ZoneId DEFAULT_ZONE = ZoneId.of("GMT");
+    private final ZoneId zone;
 
     public EpochSecondsConverter() {
         this(DEFAULT_ZONE);
     }
-    public EpochSecondsConverter(ZoneOffset zone) {
+    public EpochSecondsConverter(ZoneId zone) {
         this.zone = (zone != null ? zone : DEFAULT_ZONE);
     }
 
@@ -59,16 +57,15 @@ public class EpochSecondsConverter
         if (epochSeconds == null) {
             return null;
         }
-        return LocalDateTime.ofEpochSecond(ensureSeconds(epochSeconds), 0, zone).toLocalDate();
+        return Instant.ofEpochSecond(ensureSeconds(epochSeconds)).atZone(zone).toLocalDate();
     }
 
     public Long fromLocalDate(LocalDate localDate) {
         if (localDate == null) {
             return null;
         }
-        return localDate.atStartOfDay().toEpochSecond(zone);
+        return localDate.atStartOfDay().atZone(zone).toInstant().toEpochMilli() / 1000;
     }
-
 
     public Long fromLong(Long input) {
         return ensureSeconds(input);
@@ -87,6 +84,5 @@ public class EpochSecondsConverter
         }
         return timestamp;
     }
-
 
 }
