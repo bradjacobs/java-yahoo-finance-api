@@ -3,6 +3,8 @@
  */
 package com.github.bradjacobs.yahoofinance.request.batch;
 
+import org.apache.commons.collections4.MapUtils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,7 +20,7 @@ public class ParamMapBatchOffsetUpdater implements ParamMapBatchUpdater
 
     @Override
     public Map<String, String> convert(Map<String, String> paramMap, int batchNumber) {
-        if (paramMap == null || paramMap.isEmpty()) {
+        if (MapUtils.isEmpty(paramMap)) {
             throw new IllegalArgumentException("Must supply a populated paramMap.");
         }
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class CsvConverter {
     private CsvConverter() {}
 
     public static String convertToCsv(List<Map<String, Object>> listOfMaps) {
-        if (listOfMaps == null || listOfMaps.isEmpty()) {
+        if (CollectionUtils.isEmpty(listOfMaps)) {
             return "";
         }
         String json = JsonConverter.toJson(listOfMaps);

@@ -3,6 +3,7 @@ package com.github.bradjacobs.yahoofinance.response;
 import com.github.bradjacobs.yahoofinance.http.Response;
 import com.github.bradjacobs.yahoofinance.types.YahooEndpoint;
 import com.github.bradjacobs.yahoofinance.util.JsonConverter;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class YahooCompositeResponse implements YahooResponse
         if (endpoint == null) {
             throw new IllegalArgumentException("Must provide an endpoint parameter.");
         }
-        if (responseList == null || responseList.isEmpty()) {
+        if (CollectionUtils.isEmpty(responseList)) {
             throw new IllegalArgumentException("Must provide non-empty responseList.");
         }
         for (Response response : responseList) {
