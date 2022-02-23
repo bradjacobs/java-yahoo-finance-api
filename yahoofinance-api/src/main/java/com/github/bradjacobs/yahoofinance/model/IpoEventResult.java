@@ -3,45 +3,75 @@ package com.github.bradjacobs.yahoofinance.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class IpoEventResult
 {
     @JsonProperty("ticker")
     private String ticker;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonProperty("startdatetime")
-    private Date startDateTime;
+    private LocalDateTime startDateTime;
+
     @JsonProperty("companyshortname")
     private String companyName;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonProperty("amendeddate")
-    private Date amendedDate;
+    private LocalDateTime amendedDate;
+
     @JsonProperty("currencyname")
     private String currencyName;
+
     @JsonProperty("dealno")
     private String dealId;
+
     @JsonProperty("dealtype")
     @JsonAlias("action")
     private String dealType;
+
     @JsonProperty("exchange")
     private String exchange;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonProperty("filingdate")
-    private Date filingDate;
+    private LocalDateTime filingDate;
+
     @JsonProperty("investortype")
     private String investorType;
+
     @JsonProperty("offerprice")
     @JsonAlias("price")
     private Double offerPrice;
+
     @JsonProperty("pricefrom")
     private Double priceFrom;
+
     @JsonProperty("priceto")
     private Double priceTo;
+
     @JsonProperty("quotetype")
     private String quoteType;
+
     @JsonProperty("shares")
     private Long shares;
 
@@ -56,11 +86,11 @@ public class IpoEventResult
         this.ticker = ticker;
     }
 
-    public Date getStartDateTime() {
+    public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(Date startDateTime) {
+    public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
@@ -72,11 +102,11 @@ public class IpoEventResult
         this.companyName = companyName;
     }
 
-    public Date getAmendedDate() {
+    public LocalDateTime getAmendedDate() {
         return amendedDate;
     }
 
-    public void setAmendedDate(Date amendedDate) {
+    public void setAmendedDate(LocalDateTime amendedDate) {
         this.amendedDate = amendedDate;
     }
 
@@ -112,11 +142,11 @@ public class IpoEventResult
         this.exchange = exchange;
     }
 
-    public Date getFilingDate() {
+    public LocalDateTime getFilingDate() {
         return filingDate;
     }
 
-    public void setFilingDate(Date filingDate) {
+    public void setFilingDate(LocalDateTime filingDate) {
         this.filingDate = filingDate;
     }
 

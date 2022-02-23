@@ -2,53 +2,85 @@ package com.github.bradjacobs.yahoofinance.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class EarningsEventResult
 {
     @JsonProperty("ticker")
     private String ticker;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonProperty("startdatetime")
-    private Date startDateTime;
+    private LocalDateTime startDateTime;
+
     @JsonProperty("companyshortname")
     private String companyName;
+
     @JsonProperty("startdatetimetype")
     private String startDateTimeType;   // "Event Start Time"  (example values: "BMO", "AMC", "TNS", "TAS")
+
     @JsonProperty("dateisestimate")
     private Boolean dateIsEstimate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonProperty("enddatetime")
-    private Date endDateTime;  // always blank??
+    private LocalDateTime endDateTime;  // always blank??
+
     @JsonProperty("epsactual")
     private Double epsActual;
+
     @JsonProperty("epsconsensus")
     private Number epsConsensus;
+
     @JsonProperty("epsestimate")
     private Number epsEstimate;
+
     @JsonProperty("epssurprisepct")
     private Number epsSurprisePct;
+
     @JsonProperty("eventtype")
     private String eventType;   // only seen values of 'null' and '2' (so far)
+
     @JsonProperty("eventname")
     private String eventName;
+
     @JsonProperty("sector")
     private String sector;
+
     @JsonProperty("industry")
     private String industry;
+
     @JsonProperty("beta")
     private Double beta;
+
     @JsonProperty("isin")
     private String isin;
+
     @JsonProperty("exchange")
     private String exchange;
+
     @JsonProperty("fiscalyear")
     private Long fiscalYear;
+
     @JsonProperty("quarter")
     private Long quarter;
+
     @JsonProperty("timeZoneShortName")
     private String timeZoneShortName;
 
@@ -63,11 +95,11 @@ public class EarningsEventResult
         this.ticker = ticker;
     }
 
-    public Date getStartDateTime() {
+    public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(Date startDateTime) {
+    public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
@@ -95,11 +127,11 @@ public class EarningsEventResult
         this.dateIsEstimate = dateIsEstimate;
     }
 
-    public Date getEndDateTime() {
+    public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(Date endDateTime) {
+    public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
