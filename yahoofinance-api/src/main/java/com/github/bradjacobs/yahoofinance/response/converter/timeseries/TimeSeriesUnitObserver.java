@@ -1,6 +1,8 @@
 package com.github.bradjacobs.yahoofinance.response.converter.timeseries;
 
 import com.github.bradjacobs.yahoofinance.types.TimeSeriesUnit;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,7 @@ abstract class TimeSeriesUnitObserver implements TimeSeriesResponseObserver
     @Override
     public void updateAttributeMap(String elementName, List<Map<String,Object>> elementDataList)
     {
-        if (elementName == null || elementDataList == null || elementDataList.size() == 0) {
+        if (StringUtils.isEmpty(elementName) || CollectionUtils.isEmpty(elementDataList)) {
             return;
         }
         String attributeName = getBaseAttributeName(elementName);

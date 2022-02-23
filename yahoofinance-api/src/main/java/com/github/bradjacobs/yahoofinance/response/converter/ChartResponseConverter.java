@@ -7,6 +7,8 @@ import com.github.bradjacobs.yahoofinance.converter.datetime.EpochSecondsConvert
 import com.github.bradjacobs.yahoofinance.response.converter.util.SimpleMapOfMapsGenerator;
 import com.github.bradjacobs.yahoofinance.util.JsonConverter;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,9 +89,8 @@ public class ChartResponseConverter implements ResponseConverter
         // Two scenarios for this case:
         //   1. response has no data whatsoever (i.e. a date range w/ no data) === > return empty collection
         //   2. request was made with &includeTimestamps=false === > throw an exception
-        if (timestampValues == null || timestampValues.length == 0) {
-            if ((closeValueList != null && closeValueList.size() > 0) ||
-                    (adjCloseValueList != null && adjCloseValueList.size() > 0)) {
+        if (ArrayUtils.isEmpty(timestampValues)) {
+            if (CollectionUtils.isNotEmpty(closeValueList) || CollectionUtils.isNotEmpty(adjCloseValueList)) {
                 throw new IllegalStateException("Cannot convert price history to map: Timestamps missing.");
             }
             return Collections.emptyList();
