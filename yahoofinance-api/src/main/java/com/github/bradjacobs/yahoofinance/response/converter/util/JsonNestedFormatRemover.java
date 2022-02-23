@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.bradjacobs.yahoofinance.util.JsonConverter;
 import com.github.bradjacobs.yahoofinance.util.JsonMapperSingleton;
 import org.apache.commons.lang3.StringUtils;
 
@@ -71,7 +72,7 @@ public class JsonNestedFormatRemover
      */
     public String removeFormats(String json)
     {
-        JsonNode node = covertToNode(json);
+        JsonNode node = JsonConverter.convertToNode(json);
         removeFormats(node);
 
         try {
@@ -206,19 +207,5 @@ public class JsonNestedFormatRemover
             updateNodeList.add(resultNode);
         }
         return updateNodeList;
-    }
-
-    private JsonNode covertToNode(String json)
-    {
-        if (StringUtils.isEmpty(json)) {
-            throw new IllegalArgumentException("Must provide json data");
-        }
-
-        try {
-            return mapper.readTree(json);
-        }
-        catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("Invalid JSON string: " + e.getMessage(), e);
-        }
     }
 }
