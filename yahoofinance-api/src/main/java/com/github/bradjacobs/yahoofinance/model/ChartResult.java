@@ -23,6 +23,7 @@ import java.util.Objects;
 })
 public class ChartResult
 {
+    // todo: change to LocalDate (or LocalDateTime)
     @JsonProperty("date")
     @JsonAlias("Date")
     private String date;
