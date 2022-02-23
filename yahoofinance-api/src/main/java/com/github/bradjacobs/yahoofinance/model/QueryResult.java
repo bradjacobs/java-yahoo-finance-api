@@ -10,6 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashMap;
 import java.util.Map;
 
+// NOTE: the following fields are (currently) numeric but could be rendered as LocalDate
+//    [dividendDate, exDividendDate, earningsTimestamp, earningsTimestampStart,
+//           earningsTimestampEnd, firstTradeDateMilliseconds, postMarketTime]
+
 abstract public class QueryResult implements Comparable<QueryResult>
 {
     private String symbol;
